@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -19,7 +20,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "#app/*": ["./src/app"],
+      "#atoms/*": ["./src/components/atoms"],
+      "#molecules/*": ["./src/components/molecules"],
+      "#organisms/*": ["./src/components/organisms"],
+      "#templates/*": ["./src/components/templates"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
