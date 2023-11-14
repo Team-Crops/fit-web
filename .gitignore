@@ -23,7 +23,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -140,9 +141,9 @@ $RECYCLE.BIN/
 
 # if you are NOT using Zero-installs, then:
 # comment the following lines
-!.yarn/cache
+# !.yarn/cache
 
 # and uncomment the following lines
-# .pnp.*
+.pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,nextjs,visualstudiocode,macos,windows,linux
