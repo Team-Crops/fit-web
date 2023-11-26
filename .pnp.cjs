@@ -40,9 +40,11 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:8.0.3"],\
           ["lint-staged", "npm:15.1.0"],\
           ["next", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:14.0.2"],\
+          ["prettier", "npm:3.1.0"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:18.2.0"],\
           ["react-redux", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:8.1.3"],\
+          ["return-fetch", "npm:0.4.5"],\
           ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
@@ -2120,9 +2122,11 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:8.0.3"],\
           ["lint-staged", "npm:15.1.0"],\
           ["next", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:14.0.2"],\
+          ["prettier", "npm:3.1.0"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:18.2.0"],\
           ["react-redux", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:8.1.3"],\
+          ["return-fetch", "npm:0.4.5"],\
           ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
@@ -3504,6 +3508,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["prettier", [\
+      ["npm:3.1.0", {\
+        "packageLocation": "./.yarn/unplugged/prettier-npm-3.1.0-708d6027b1/node_modules/prettier/",\
+        "packageDependencies": [\
+          ["prettier", "npm:3.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["prop-types", [\
       ["npm:15.8.1", {\
         "packageLocation": "./.yarn/cache/prop-types-npm-15.8.1-17c71ee7ee-59ece7ca2f.zip/node_modules/prop-types/",\
@@ -3748,6 +3761,15 @@ const RAW_RUNTIME_STATE =
           ["restore-cursor", "npm:4.0.0"],\
           ["onetime", "npm:5.1.2"],\
           ["signal-exit", "npm:3.0.7"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["return-fetch", [\
+      ["npm:0.4.5", {\
+        "packageLocation": "./.yarn/unplugged/return-fetch-npm-0.4.5-8a87756498/node_modules/return-fetch/",\
+        "packageDependencies": [\
+          ["return-fetch", "npm:0.4.5"]\
         ],\
         "linkType": "HARD"\
       }]\
