@@ -147,3 +147,4 @@ $RECYCLE.BIN/
 .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,nextjs,visualstudiocode,macos,windows,linux
+./.yarn/install-state.gz
