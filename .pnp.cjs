@@ -33,6 +33,7 @@ const RAW_RUNTIME_STATE =
           ["@storybook/addon-interactions", "npm:7.6.5"],\
           ["@storybook/addon-links", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
           ["@storybook/addon-onboarding", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:1.0.10"],\
+          ["@storybook/addon-themes", "npm:7.6.5"],\
           ["@storybook/blocks", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
           ["@storybook/nextjs", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
           ["@storybook/react", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
@@ -5385,6 +5386,16 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@storybook/addon-outline", "npm:7.6.5"],\
           ["@storybook/global", "npm:5.0.0"],\
+          ["ts-dedent", "npm:2.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@storybook/addon-themes", [\
+      ["npm:7.6.5", {\
+        "packageLocation": "./.yarn/cache/@storybook-addon-themes-npm-7.6.5-768b72e87f-3a12190e9a.zip/node_modules/@storybook/addon-themes/",\
+        "packageDependencies": [\
+          ["@storybook/addon-themes", "npm:7.6.5"],\
           ["ts-dedent", "npm:2.2.0"]\
         ],\
         "linkType": "HARD"\
@@ -11356,6 +11367,7 @@ const RAW_RUNTIME_STATE =
           ["@storybook/addon-interactions", "npm:7.6.5"],\
           ["@storybook/addon-links", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
           ["@storybook/addon-onboarding", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:1.0.10"],\
+          ["@storybook/addon-themes", "npm:7.6.5"],\
           ["@storybook/blocks", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
           ["@storybook/nextjs", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
           ["@storybook/react", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.6.5"],\
