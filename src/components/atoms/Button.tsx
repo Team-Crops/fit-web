@@ -22,7 +22,6 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
         height: 20px;
         font-size: 12px;
         font-weight: 400;
-        letter-spacing: -0.6px;
       `;
     case '30':
       return css`
@@ -30,7 +29,6 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
         height: 30px;
         font-size: 12px;
         font-weight: 400;
-        letter-spacing: -0.6px;
       `;
     case '50':
       return css`
@@ -38,7 +36,6 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
         height: 50px;
         font-size: 20px;
         font-weight: 500;
-        letter-spacing: -1px;
       `;
     case '60':
       return css`
@@ -46,7 +43,6 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
         height: 60px;
         font-size: 20px;
         font-weight: 700;
-        letter-spacing: -0.6px;
       `;
     case '70':
       return css`
@@ -54,7 +50,6 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
         height: 70px;
         font-size: 20px;
         font-weight: 700;
-        letter-spacing: -0.6px;
       `;
   }
 };
@@ -79,6 +74,7 @@ const ButtonColorCSS = ({ color }: ButtonProps) => {
 const StyledButton = styled.button<ButtonProps>`
   border: none;
   color: #ffffff;
+  letter-spacing: -0.6px;
   ${ButtonVariantsCSS}
   ${ButtonSizeCSS}
   ${ButtonColorCSS};
