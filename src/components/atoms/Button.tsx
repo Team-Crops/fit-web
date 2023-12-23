@@ -14,8 +14,8 @@ const ButtonVariantsCSS = ({ variant }: ButtonProps) => {
       `;
   }
 };
-const ButtonSizeCSS = ({ size }: ButtonProps) => {
-  switch (size) {
+const ButtonSizeCSS = ({ height }: ButtonProps) => {
+  switch (height) {
     case '20':
       return css`
         padding: 0 8px;
@@ -86,7 +86,7 @@ const StyledButton = styled.button<ButtonProps>`
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'angular' | 'round';
-  size: '20' | '30' | '50' | '60' | '70';
+  height: '20' | '30' | '50' | '60' | '70';
   color: 'primary' | 'secondary';
   children?: ReactNode;
 }

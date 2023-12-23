@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     variant: 'angular',
-    size: '20',
+    height: '20',
     color: 'primary',
     children: 'Button',
   },
