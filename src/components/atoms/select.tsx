@@ -1,6 +1,15 @@
 'use client';
 
-import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react';
+import React, { Children, createContext, useContext, useEffect, useRef, useState } from 'react';
+
+import type {
+  ChangeEvent,
+  ChangeEventHandler,
+  Dispatch,
+  SetStateAction,
+  InputHTMLAttributes,
+  ReactNode,
+} from 'react';
 
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
@@ -14,6 +23,13 @@ const arrowSvg = (
 const arrowImage = ({ color }: { color: string }) =>
   `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(arrowSvg(color))}')`;
 
+const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 11" fill="none">
+<path d="M1 5L5 8.66667L9 1" stroke="#FF706C" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+
+const checkImage = () =>
+  `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(checkSvg)}')`;
+
 const colorCSS = ({ error, value }: SelectProps) => {
   if (error) {
     return css`
@@ -21,9 +37,9 @@ const colorCSS = ({ error, value }: SelectProps) => {
       background-color: #fafafa;
       border-color: #ff0800;
     `;
-  } else if (value === undefined) {
+  } else if (value !== undefined) {
     return css`
-      color: #bdbdbd;
+      color: #212121;
       background-color: #ffffff;
       border-color: #9e9e9e;
 
@@ -34,7 +50,7 @@ const colorCSS = ({ error, value }: SelectProps) => {
     `;
   } else {
     return css`
-      color: #9e9e9e;
+      color: #bdbdbd;
       background-color: #ffffff;
       border-color: #9e9e9e;
 
@@ -70,12 +86,28 @@ const arrowCSS = ({ error }: SelectProps) => {
   }
 };
 
-const SelectButton = styled.button`
+const SelectContext = createContext<{
+  value?: string | number | readonly string[];
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  setOpened?: Dispatch<SetStateAction<boolean>>;
+  setLabel?: Dispatch<SetStateAction<string | undefined>>;
+}>({});
+
+const SelectContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const SelectButton = styled.button<SelectProps>`
   appearance: none;
   border: 1px solid #9e9e9e;
   border-radius: 4px;
   padding: 10px;
 
+  width: 100%;
+
+  text-align: left;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -87,9 +119,29 @@ const SelectButton = styled.button`
 `;
 
 const OptionList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  position: absolute;
+  top: 52.5px;
+  width: calc(100% - 36px + 2px);
+
+  margin: 0;
+  padding: 0;
+
+  border-radius: 5px;
+  border: 1px solid #eeeeee;
+  background-color: #f5f5f5;
+  box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15);
+`;
+
+const HelperText = styled.div<{ error?: boolean }>`
+  width: 100%;
+
+  color: ${({ error }) => (error ? '#ff0800' : '#9e9e9e')};
+  text-align: right;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
 `;
 
 type SelectProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -97,8 +149,17 @@ type SelectProps = InputHTMLAttributes<HTMLInputElement> & {
   helperText?: string;
 };
 
-export function Select({ error, helperText, value, placeholder, children, ...props }: SelectProps) {
-  const [isOpened, setOpened] = useState(false);
+export function Select({
+  error,
+  helperText,
+  value,
+  onChange,
+  placeholder,
+  children,
+  ...props
+}: SelectProps) {
+  const [isOpened, setOpened] = useState(true);
+  const [label, setLabel] = useState<string | undefined>();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -113,42 +174,107 @@ export function Select({ error, helperText, value, placeholder, children, ...pro
   });
 
   return (
-    <div ref={containerRef}>
-      <input type="text" value={value} style={{ display: 'none' }} {...props} />
-      <SelectButton error={error} onClick={() => setOpened((prev) => !prev)}>
-        {value ?? placeholder}
-      </SelectButton>
-      {isOpened && <OptionList>{children}</OptionList>}
-    </div>
+    <SelectContext.Provider value={{ value, onChange, setOpened, setLabel }}>
+      <SelectContainer ref={containerRef}>
+        <input type="text" value={value} style={{ display: 'none' }} {...props} />
+        <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
+          {label ?? placeholder}
+        </SelectButton>
+        {isOpened && <OptionList>{children}</OptionList>}
+        {helperText && <HelperText error={error}>{helperText}</HelperText>}
+      </SelectContainer>
+    </SelectContext.Provider>
   );
 }
+
+const OptionGroupContainer = styled.div`
+  margin-top: 8px;
+
+  background-color: #ffffff;
+`;
+
+const OptionGroupLabel = styled.div`
+  padding: 4px 12px;
+
+  color: #bdbdbd;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.45px;
+`;
+
+const OptionGroupHr = styled.hr`
+  width: 100%;
+  margin: 0;
+  border: 1px solid #eeeeee;
+`;
 
 type OptionGroupProps = {
   label: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-function OptionGroup({ label, children }: OptionGroupProps) {
-  const Container = styled.div``;
-  const StyledHr = styled.hr``;
-  return (
-    <Container>
-      {label}
-      <StyledHr />
-      {children}
-    </Container>
-  );
-}
+const OptionGroup = ({ label, children }: OptionGroupProps) => (
+  <OptionGroupContainer>
+    <OptionGroupLabel>{label}</OptionGroupLabel>
+    <OptionGroupHr />
+    {children}
+  </OptionGroupContainer>
+);
 
 Select.OptionGroup = OptionGroup;
 
+const OptionItem = styled.li<{ isSelected: boolean }>`
+  cursor: pointer;
+  list-style-type: none;
+
+  padding: 10px;
+
+  background-color: #ffffff;
+  color: #616161;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.6px;
+
+  &:hover {
+    background-color: #eeeeee;
+  }
+`;
+
 type OptionProps = {
   value: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 function Option({ value, children }: OptionProps) {
-  return <li>{children}</li>;
+  const { value: currentValue, onChange, setOpened, setLabel } = useContext(SelectContext);
+  return (
+    <OptionItem
+      isSelected={currentValue === value}
+      onClick={() => {
+        if (onChange) {
+          onChange({ target: { value } } as ChangeEvent<HTMLInputElement>);
+        }
+        if (setLabel) {
+          let label = '';
+          Children.map(children, (child) => {
+            if (typeof child === 'string' || typeof child === 'number') {
+              label += child.toString();
+            }
+          });
+          setLabel(label);
+        }
+        if (setOpened) {
+          setOpened(false);
+        }
+      }}
+    >
+      {children}
+    </OptionItem>
+  );
 }
 
 Select.Option = Option;
