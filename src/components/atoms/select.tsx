@@ -1,95 +1,154 @@
-import React, { SelectHTMLAttributes, useState } from 'react';
+'use client';
+
+import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
+
+const arrowSvg = (
+  color: string
+) => `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">
+  <path d="M6.4147 8.38433C6.21651 8.67856 5.78348 8.67856 5.5853 8.38433L0.462761 0.779331C0.239057 0.447218 0.47703 4.85377e-09 0.877459 3.51928e-08L11.1225 8.11426e-07C11.523 8.41765e-07 11.7609 0.447218 11.5372 0.779331L6.4147 8.38433Z" fill="${color}"/>
+</svg>`;
 
 const arrowImage = ({ color }: { color: string }) =>
-  `url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23${color}%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')`;
+  `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(arrowSvg(color))}')`;
 
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const colorCSS = ({ error, value }: SelectProps) => {
+  if (error) {
+    return css`
+      color: #bdbdbd;
+      background-color: #fafafa;
+      border-color: #ff0800;
+    `;
+  } else if (value === undefined) {
+    return css`
+      color: #bdbdbd;
+      background-color: #ffffff;
+      border-color: #9e9e9e;
 
-const StyledSelect = styled.select<{
-  isSelected: boolean;
-  isError: boolean;
-  width: 'medium' | 'large';
-}>`
-  outline: none;
+      &:hover,
+      &:focus {
+        border-color: #ff908d;
+      }
+    `;
+  } else {
+    return css`
+      color: #9e9e9e;
+      background-color: #ffffff;
+      border-color: #9e9e9e;
+
+      &:hover,
+      &:focus {
+        border-color: #ff908d;
+      }
+    `;
+  }
+};
+
+const arrowCSS = ({ error }: SelectProps) => {
+  if (error) {
+    return css`
+      background-image: ${arrowImage({ color: '#bdbdbd' })};
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+
+      &:focus {
+        background-image: ${arrowImage({ color: '#ff0800' })};
+      }
+    `;
+  } else {
+    return css`
+      background-image: ${arrowImage({ color: '#9e9e9e' })};
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+
+      &:focus {
+        background-image: ${arrowImage({ color: '#ff908d' })};
+      }
+    `;
+  }
+};
+
+const SelectButton = styled.button`
   appearance: none;
-  background-image: ${arrowImage({ color: '424242' })};
-  background-repeat: no-repeat;
-  background-position: right 0.7rem top 50%;
-  background-size: 0.65rem auto;
+  border: 1px solid #9e9e9e;
+  border-radius: 4px;
+  padding: 10px;
 
-  width: ${(props) => (props.width == 'medium' ? '7.5rem' : '12.5rem')};
-  padding: 0.5rem;
-  border: ${(props) => (props.isError ? '1px solid #ff0800' : '1px solid #424242')};
-  border-radius: 0.25rem;
-
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: ${(props) => (props.isSelected ? '500' : '400')};
-  color: ${(props) => (props.isSelected ? '#212121' : '#bdbdbd')};
-
-  &:hover {
-    border-color: ${(props) => (props.isError ? '#ff0800' : '#ff908d')};
-  }
-
-  &:focus {
-    border-color: ${(props) => (props.isError ? '#ff0800' : '#ff908d')};
-    background-image: ${(props) => arrowImage({ color: props.isError ? 'ff0800' : 'ff908d' })};
-  }
-`;
-
-const StyledSpan = styled.span<{ isError: boolean }>`
-  margin: 0.25rem;
-
-  font-size: 0.5rem;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  color: ${(props) => (props.isError ? '#ff0800' : '#424242')};
+  line-height: normal;
+  letter-spacing: -0.6px;
+
+  ${colorCSS}
+  ${arrowCSS}
 `;
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  width?: 'medium' | 'large';
-  placeholder?: string;
+const OptionList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+type SelectProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
   helperText?: string;
-}
+};
 
-export function Select({
-  width = 'medium',
-  placeholder,
-  error,
-  helperText,
-  onChange,
-  children,
-  ...props
-}: SelectProps) {
-  const [selected, setSelected] = useState(false);
+export function Select({ error, helperText, value, placeholder, children, ...props }: SelectProps) {
+  const [isOpened, setOpened] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpened(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  });
+
   return (
-    <StyledContainer>
-      <StyledSelect
-        width={width}
-        isError={error ?? false}
-        isSelected={selected}
-        {...props}
-        onChange={(event) => {
-          setSelected(event.target.value !== placeholder);
-          event.target.blur();
-          onChange?.(event);
-        }}
-      >
-        <Select.Option disabled hidden selected>
-          {placeholder}
-        </Select.Option>
-        {children}
-      </StyledSelect>
-      {helperText && <StyledSpan isError={error ?? false}>{helperText}</StyledSpan>}
-    </StyledContainer>
+    <div ref={containerRef}>
+      <input type="text" value={value} style={{ display: 'none' }} {...props} />
+      <SelectButton error={error} onClick={() => setOpened((prev) => !prev)}>
+        {value ?? placeholder}
+      </SelectButton>
+      {isOpened && <OptionList>{children}</OptionList>}
+    </div>
   );
 }
 
-Select.Optgroup = styled.optgroup``;
-Select.Option = styled.option``;
+type OptionGroupProps = {
+  label: string;
+  children?: React.ReactNode;
+};
+
+function OptionGroup({ label, children }: OptionGroupProps) {
+  const Container = styled.div``;
+  const StyledHr = styled.hr``;
+  return (
+    <Container>
+      {label}
+      <StyledHr />
+      {children}
+    </Container>
+  );
+}
+
+Select.OptionGroup = OptionGroup;
+
+type OptionProps = {
+  value: string;
+  children?: React.ReactNode;
+};
+
+function Option({ value, children }: OptionProps) {
+  return <li>{children}</li>;
+}
+
+Select.Option = Option;
