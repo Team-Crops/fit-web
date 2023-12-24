@@ -4,7 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Select } from 'src/components/atoms/Select';
 
 const meta = {
-  title: 'Atom/Select',
+  title: 'Atoms/Select',
   component: Select,
   tags: ['atom', 'select'],
 } satisfies Meta<typeof Select>;
