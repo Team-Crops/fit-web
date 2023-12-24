@@ -27,8 +27,7 @@ const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11"
 <path d="M1 5L5 8.66667L9 1" stroke="#FF706C" stroke-width="2" stroke-linecap="round"/>
 </svg>`;
 
-const checkImage = () =>
-  `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(checkSvg)}')`;
+const checkImage = `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(checkSvg)}')`;
 
 const colorCSS = ({ error, value }: SelectProps) => {
   if (error) {
@@ -238,6 +237,14 @@ const OptionItem = styled.li<{ isSelected: boolean }>`
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.6px;
+
+  ${({ isSelected }) =>
+    isSelected &&
+    css`
+      background-image: ${checkImage};
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    `}
 
   &:hover {
     background-color: #eeeeee;
