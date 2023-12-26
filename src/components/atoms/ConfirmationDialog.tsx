@@ -119,15 +119,15 @@ export function ConfirmationDialog({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  });
+  }, [onCancel]);
 
   if (!isOpen) {
     return null;
   }
 
   return (
-    <Backdrop ref={containerRef}>
-      <DialogContainer>
+    <Backdrop>
+      <DialogContainer ref={containerRef}>
         <TextContainer>
           {text}
           <HelperText>{helperText}</HelperText>
