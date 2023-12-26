@@ -85,13 +85,6 @@ const arrowCSS = ({ error }: SelectProps) => {
   }
 };
 
-const SelectContext = createContext<{
-  value?: string | number | readonly string[];
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  setOpened?: Dispatch<SetStateAction<boolean>>;
-  setLabel?: Dispatch<SetStateAction<string | undefined>>;
-}>({});
-
 const SelectContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -142,6 +135,13 @@ const HelperText = styled.div<{ error?: boolean }>`
   line-height: normal;
   letter-spacing: -0.4px;
 `;
+
+const SelectContext = createContext<{
+  value?: string | number | readonly string[];
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  setOpened?: Dispatch<SetStateAction<boolean>>;
+  setLabel?: Dispatch<SetStateAction<string | undefined>>;
+}>({});
 
 type SelectProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
