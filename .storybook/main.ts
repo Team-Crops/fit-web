@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/nextjs';
 
 import { join, dirname } from 'path';
+import type { RuleSetRule } from 'webpack';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -23,6 +24,18 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: 'tag',
+  },
+  webpackFinal: async (config) => {
+    const rules = config?.module?.rules as RuleSetRule[];
+    const imageRule = rules.find((rule) => rule?.test instanceof RegExp && rule.test.test('.svg'));
+    if (imageRule) {
+      imageRule.exclude = /\.svg$/;
+    }
+    rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    return config;
   },
 };
 export default config;
