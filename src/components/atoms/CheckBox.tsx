@@ -46,7 +46,11 @@ const StyledCheckIcon = styled(CheckIcon)<CheckBoxProps>`
 export function CheckBox({ checked, ...props }: CheckBoxProps) {
   return (
     <StyledContainer>
-      <StyledInput type="checkbox" checked={checked} {...props} />
+      {checked === undefined ? (
+        <StyledInput type="checkbox" {...props} />
+      ) : (
+        <StyledInput type="checkbox" checked={checked} {...props} />
+      )}
       {checked && <StyledCheckIcon {...props} />}
     </StyledContainer>
   );
