@@ -16,12 +16,11 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  cursor: pointer;
 `;
 
 const StyledInput = styled.input<CheckBoxProps>`
   appearance: none;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   width: 20px;
   height: 20px;
@@ -37,6 +36,7 @@ const StyledCheckIcon = styled(CheckIcon)<CheckBoxProps>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 
   width: 14px;
   height: 14px;
