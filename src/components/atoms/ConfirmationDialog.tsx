@@ -88,7 +88,7 @@ const Button = styled.button<{ primary?: boolean }>`
   letter-spacing: -0.6px;
 `;
 
-interface Props {
+interface ConfirmationDialogProps {
   isOpen: boolean;
   text: string;
   helperText?: string;
@@ -106,7 +106,7 @@ export function ConfirmationDialog({
   cancelText = '아니오',
   onConfirm,
   onCancel,
-}: Props) {
+}: ConfirmationDialogProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
