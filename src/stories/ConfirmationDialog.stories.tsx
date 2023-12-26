@@ -12,16 +12,22 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function TemplateComponent({ isOpen: opened, ...args }: Story['args']) {
+function TemplateComponent({ isOpen: opened, onConfirm, onCancel, ...args }: Story['args']) {
   const [isOpen, setOpen] = useState(opened);
   return (
     <>
       <button onClick={() => setOpen(true)}>Open</button>
       <ConfirmationDialog
         isOpen={isOpen}
-        onConfirm={() => setOpen(false)}
+        onConfirm={() => {
+          setOpen(false);
+          onConfirm?.();
+        }}
         confirmText="네"
-        onCancel={() => setOpen(false)}
+        onCancel={() => {
+          setOpen(false);
+          onCancel?.();
+        }}
         {...args}
       />
     </>
