@@ -56,18 +56,19 @@ const ErrorText = styled.span`
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   value?: string;
-  errorText?: string;
+  error?: boolean;
+  helperText?: string;
 }
 interface StyledInputProps {
-  isError: boolean;
+  isError?: boolean;
 }
 
-export const Input = ({ errorText, ...props }: InputProps) => {
+export const Input = ({ error, helperText, ...props }: InputProps) => {
   return (
     <InputContainer>
-      <StyledInput isError={errorText !== '' && errorText !== undefined} type="text" {...props} />
+      <StyledInput isError={error} type="text" {...props} />
       {/* TODO: Text Component 추가 시 교체 */}
-      {errorText && <ErrorText>{errorText}</ErrorText>}
+      {error && helperText && <ErrorText>{helperText}</ErrorText>}
     </InputContainer>
   );
 };
