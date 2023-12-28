@@ -31,7 +31,14 @@ function OptionsComponent(args: Story['args']) {
   );
 }
 
-const OptionGroupsComponent = (args: Story['args']) => {
+export const WithOptions: Story = {
+  args: {
+    placeholder: '선택하세요.',
+  },
+  render: OptionsComponent,
+};
+
+function OptionGroupsComponent(args: Story['args']) {
   const [value, setValue] = useState<string>();
   return (
     <Select
@@ -59,27 +66,11 @@ const OptionGroupsComponent = (args: Story['args']) => {
       </Select.OptionGroup>
     </Select>
   );
-};
-
-export const WithOptions: Story = {
-  args: {
-    placeholder: '선택하세요.',
-  },
-  render: OptionsComponent,
-};
+}
 
 export const WithOptionGroups: Story = {
   args: {
     placeholder: '선택하세요.',
   },
   render: OptionGroupsComponent,
-};
-
-export const Error: Story = {
-  args: {
-    placeholder: '선택하세요.',
-    helperText: '필수 입력 항목입니다',
-    error: true,
-  },
-  render: OptionsComponent,
 };
