@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 
@@ -6,6 +7,33 @@ import type { InputHTMLAttributes } from 'react';
 import CheckIcon from 'src/assets/icons/check.svg';
 
 interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
+
+function inputColorCSS({ checked, disabled }: CheckBoxProps) {
+  // background-color: ${({ checked, disabled }) => (checked && !disabled ? '#ff706c' : '#ffffff')};
+  if (checked && !disabled) {
+    return css`
+      border-color: #ff706c;
+      background-color: #ffffff;
+    `;
+  } else if (checked && disabled) {
+    return css`
+      border-color: #ffc7c6;
+      background-color: #ffffff;
+    `;
+  } else if (!checked && !disabled) {
+    return css`
+      border-color: #9e9e9e;
+      background-color: #ffffff;
+    `;
+  } else if (!checked && disabled) {
+    return css`
+      border-color: #eeeeee;
+      background-color: #ffffff;
+    `;
+  } else {
+    throw new Error(`Invalid props: checked: ${checked}, disabled: ${disabled}`);
+  }
+}
 
 const StyledContainer = styled.div`
   display: inline-block;
@@ -28,9 +56,11 @@ const StyledInput = styled.input<CheckBoxProps>`
   height: 20px;
   flex-shrink: 0;
 
+  border-width: 1px;
+  border-style: solid;
   border-radius: 2px;
-  border: 1px solid ${({ checked, disabled }) => (checked && !disabled ? '#ff706c' : '#BDBDBD')};
-  background-color: ${({ checked, disabled }) => (checked && !disabled ? '#ff706c' : '#ffffff')};
+
+  ${inputColorCSS}
 `;
 
 const StyledCheckIcon = styled(CheckIcon)<CheckBoxProps>`
@@ -42,7 +72,7 @@ const StyledCheckIcon = styled(CheckIcon)<CheckBoxProps>`
 
   width: 14px;
   height: 14px;
-  stroke: ${({ disabled }) => (disabled ? '#bdbdbd' : '#ffffff')};
+  stroke: ${({ disabled }) => (disabled ? '#ffc7c6' : '#ff706c')};
 `;
 
 export function CheckBox({ checked, ...props }: CheckBoxProps) {
