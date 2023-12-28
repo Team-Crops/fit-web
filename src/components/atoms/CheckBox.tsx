@@ -8,19 +8,21 @@ import CheckIcon from 'src/assets/icons/check.svg';
 interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 const StyledContainer = styled.div`
+  display: inline-block;
   position: relative;
+  padding: 0;
+  padding-inline: 0;
+  padding-block: 0;
 
-  width: 20px;
-  height: 20px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 24px;
+  height: 24px;
 `;
 
 const StyledInput = styled.input<CheckBoxProps>`
   appearance: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
+  margin: 2px;
 
   width: 20px;
   height: 20px;
