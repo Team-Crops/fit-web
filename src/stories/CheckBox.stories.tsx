@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CheckBox } from 'src/components/atoms/CheckBox';
 
@@ -14,6 +14,11 @@ type Story = StoryObj<typeof meta>;
 
 function DefaultTemplate(args: Story['args']) {
   const [isChecked, setChecked] = useState(args?.checked);
+
+  useEffect(() => {
+    setChecked(args?.checked);
+  }, [args?.checked]);
+
   return (
     <div style={{ display: 'flex' }}>
       <CheckBox
