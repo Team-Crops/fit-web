@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { MouseEventHandler } from 'react';
 
-const ToggleOutBlock = styled.div<ToggleProps>`
+const ToggleOutBlock = styled.label<Pick<ToggleProps, 'checked'>>`
   position: relative;
   display: flex;
   align-items: center;
@@ -23,16 +22,20 @@ const ToggleInBlock = styled.div<Pick<ToggleProps, 'checked'>>`
 
   transition: left 0.2s ease-in-out;
 `;
+const StyledInput = styled.input`
+  display: none;
+`;
 
 interface ToggleProps {
   checked: boolean;
-  onClick?: MouseEventHandler<HTMLDivElement>;
+  onChange: () => void;
 }
 
-export const Toggle = ({ checked, onClick }: ToggleProps) => {
+export const Toggle = ({ checked, onChange }: ToggleProps) => {
   return (
-    <ToggleOutBlock checked={checked} onClick={onClick}>
+    <ToggleOutBlock checked={checked}>
       <ToggleInBlock checked={checked} />
+      <StyledInput type="checkbox" checked={checked} onChange={onChange} />
     </ToggleOutBlock>
   );
 };

@@ -22,7 +22,7 @@ const ToggleTemplate = (args: Story['args']) => {
     <Toggle
       {...args}
       checked={checked}
-      onClick={() => {
+      onChange={() => {
         setChecked((checked) => !checked);
       }}
     />
