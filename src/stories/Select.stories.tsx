@@ -12,7 +12,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function OptionsComponent(args: Story['args']) {
+const OptionsComponent = (args: Story['args']) => {
   const [value, setValue] = useState<string>();
   return (
     <Select
@@ -29,7 +29,7 @@ function OptionsComponent(args: Story['args']) {
       <Select.Option value="5">5개</Select.Option>
     </Select>
   );
-}
+};
 
 export const WithOptions: Story = {
   args: {
@@ -38,7 +38,7 @@ export const WithOptions: Story = {
   render: OptionsComponent,
 };
 
-function OptionGroupsComponent(args: Story['args']) {
+const OptionGroupsComponent = (args: Story['args']) => {
   const [value, setValue] = useState<string>();
   return (
     <Select
@@ -66,7 +66,7 @@ function OptionGroupsComponent(args: Story['args']) {
       </Select.OptionGroup>
     </Select>
   );
-}
+};
 
 export const WithOptionGroups: Story = {
   args: {
