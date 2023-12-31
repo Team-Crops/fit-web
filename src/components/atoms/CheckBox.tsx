@@ -6,8 +6,6 @@ import type { InputHTMLAttributes } from 'react';
 
 import CheckIcon from 'src/assets/icons/check.svg';
 
-interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
-
 function inputColorCSS({ checked, disabled }: CheckBoxProps) {
   // background-color: ${({ checked, disabled }) => (checked && !disabled ? '#ff706c' : '#ffffff')};
   if (checked && !disabled) {
@@ -74,6 +72,8 @@ const StyledCheckIcon = styled(CheckIcon)<CheckBoxProps>`
   height: 14px;
   stroke: ${({ disabled }) => (disabled ? '#ffc7c6' : '#ff706c')};
 `;
+
+interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 export function CheckBox({ checked, ...props }: CheckBoxProps) {
   return (
