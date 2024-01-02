@@ -29,7 +29,7 @@ export const Icons = ({ icon, color, width, height }: IconsProps) => {
     case 'account':
       return <AccountIcon width={width} height={height} fill={color ?? '#212121'} />;
     case 'arrow-forward':
-      return <ArrowForward width={width} height={height} stroke={color ?? '#9E9E9E'} />;
+      return <ArrowForward width={width} height={height} fill={color ?? '#919191'} />;
     case 'arrow-right':
       return <ArrowRightIcon width={width} height={height} stroke={color ?? '#212121'} />;
     case 'away':
