@@ -1,0 +1,12 @@
+<svg width="current" height="current" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="megaphone">
+        <path id="Rectangle 220" d="M0 7.8C0 6.14315 1.34315 4.8 3 4.8H4.8V13.6H3C1.34314 13.6 0 12.2569 0 10.6V7.8Z"
+            fill="#EE5550" />
+        <path id="Union" fill-rule="evenodd" clip-rule="evenodd"
+            d="M18.4 0H16.5714L15.0296 1.6789L8 4.93333V13.4667L15.0296 16.7211L16.5714 18.4H18.4V0Z" fill="#FF706C" />
+        <circle id="Ellipse 135" cx="18.4" cy="8.8" r="1.6" fill="#FF706C" />
+        <rect id="Rectangle 223" x="16.8" width="1.6" height="18.4" fill="#F5F5F5" />
+        <rect id="Rectangle 219" x="4" y="4.8" width="2.4" height="13.6" fill="#FF706C" />
+        <path id="Rectangle 224" d="M8 9.60001H15.2V16.8L8 13.6V9.60001Z" fill="#EE5550" />
+    </g>
+</svg>
