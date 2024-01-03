@@ -1,4 +1,4 @@
-import { Button } from 'src/components/atoms/Button';
+import { Button } from '#atoms/Button';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

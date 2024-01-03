@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 
-import { Input } from 'src/components/atoms/Input';
+import { Input } from '#atoms/Input';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

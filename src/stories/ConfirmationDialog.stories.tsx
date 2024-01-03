@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ConfirmationDialog } from 'src/components/atoms/ConfirmationDialog';
+import { ConfirmationDialog } from '#atoms/ConfirmationDialog';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

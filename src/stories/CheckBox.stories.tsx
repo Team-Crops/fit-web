@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { CheckBox } from 'src/components/atoms/CheckBox';
+import { CheckBox } from '#atoms/CheckBox';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
