@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useState } from 'react';
+
 import { Toggle } from 'src/components/atoms/Toggle';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Atoms/Toggle',
