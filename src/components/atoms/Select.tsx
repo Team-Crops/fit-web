@@ -1,18 +1,17 @@
 'use client';
 
-import React, { Children, createContext, useContext, useEffect, useRef, useState } from 'react';
-
 import type {
   ChangeEvent,
   ChangeEventHandler,
   Dispatch,
-  SetStateAction,
   InputHTMLAttributes,
   ReactNode,
+  SetStateAction,
 } from 'react';
+import { Children, createContext, useContext, useEffect, useRef, useState } from 'react';
 
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 
 function getArrowSvg(color: string) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">

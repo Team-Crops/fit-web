@@ -1,9 +1,7 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import React from 'react';
-
 import type { InputHTMLAttributes } from 'react';
 
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import CheckIcon from 'src/assets/icons/check.svg';
 
 function inputColorCSS({ checked, disabled }: CheckBoxProps) {
