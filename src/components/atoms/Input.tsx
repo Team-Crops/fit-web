@@ -1,6 +1,7 @@
+import { InputHTMLAttributes } from 'react';
+
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { InputHTMLAttributes } from 'react';
 
 const InputContainer = styled.div`
   display: flex;

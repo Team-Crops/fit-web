@@ -1,13 +1,45 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:import/typescript",
-    "plugin:storybook/recommended"
-  ],
+  "extends": ["next/core-web-vitals", "plugin:import/typescript", "plugin:storybook/recommended"],
   "settings": {
     "import/resolver": {
       "typescript": true,
       "node": true
     }
+  },
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "newlines-between": "always",
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling", "index"],
+          ["object", "type", "unknown"]
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "builtin",
+            "position": "after"
+          },
+          {
+            "pattern": "{next,next/*}",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ]
+      }
+    ]
   }
 }

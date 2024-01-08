@@ -1,6 +1,7 @@
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 const ButtonVariantsCSS = ({ variant }: ButtonProps) => {
   switch (variant) {

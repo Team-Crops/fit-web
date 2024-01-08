@@ -1,5 +1,6 @@
+import { useEffect, useRef } from 'react';
+
 import styled from '@emotion/styled';
-import React, { useEffect, useRef } from 'react';
 
 const Backdrop = styled.div`
   display: flex;
