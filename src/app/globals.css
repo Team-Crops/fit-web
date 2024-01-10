@@ -1,11 +1,30 @@
 @font-face {
   font-family: 'SpoqaHanSansNeo';
-  src: url('/fonts/SpoqaHanSansNeo-Regular.woff2');
-    format('woff2');
+  src: url('../../public/fonts/SpoqaHanSansNeo-Regular.woff2');
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo';
+  src: url('../../public/fonts/SpoqaHanSansNeo-Bold.woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo';
+  src: url('../../public/fonts/SpoqaHanSansNeo-Medium.woff2');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo';
+  src: url('../../public/fonts/SpoqaHanSansNeo-Light.woff2');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo';
+  src: url('../../public/fonts/SpoqaHanSansNeo-Thin.woff2');
+  font-weight: 100;
 }
 
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
@@ -13,8 +32,18 @@ body,
 input {
   padding: 0;
   margin: 0;
-  font-family: 'SpoqaHanSansNeo', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-family:
+    'SpoqaHanSansNeo',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    sans-serif;
   font-size: 20px;
 }
 
