@@ -1,13 +1,13 @@
-import React from 'react';
-
 import AccountIcon from 'src/assets/icons/account.svg';
 import ArrowForward from 'src/assets/icons/arrow-forward.svg';
 import ArrowRightIcon from 'src/assets/icons/arrow-right.svg';
 import AwayIcon from 'src/assets/icons/away.svg';
+import BellIcon from 'src/assets/icons/bell.svg';
 import CheckIcon from 'src/assets/icons/check.svg';
 import ClickIcon from 'src/assets/icons/click.svg';
 import MegaphoneIcon from 'src/assets/icons/megaphone.svg';
 import RunIcon from 'src/assets/icons/run.svg';
+import UserIcon from 'src/assets/icons/user.svg';
 
 interface IconsProps {
   icon:
@@ -15,10 +15,12 @@ interface IconsProps {
     | 'arrow-forward'
     | 'arrow-right'
     | 'away'
+    | 'bell'
     | 'check'
     | 'click'
     | 'megaphone'
-    | 'run';
+    | 'run'
+    | 'user';
   color?: string;
   width?: number;
   height?: number;
@@ -42,6 +44,10 @@ export const Icons = ({ icon, color, width, height }: IconsProps) => {
       return <MegaphoneIcon width={width} height={height} fill={color ?? '#212121'} />;
     case 'run':
       return <RunIcon width={width} height={height} fill={color ?? '#212121'} />;
+    case 'user':
+      return <UserIcon width={width} height={height} fill={color ?? '#212121'} />;
+    case 'bell':
+      return <BellIcon width={width} height={height} fill={color ?? '#212121'} />;
     default:
       throw new Error(`Icon ${icon} is not supported!`);
   }
