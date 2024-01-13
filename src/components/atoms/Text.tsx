@@ -53,7 +53,8 @@ const TxtWeightCSS = ({ weight }: TxtProps) => {
       `;
   }
 };
-const StyledTxt = styled.span`
+const StyledTxt = styled.span<TxtProps>`
+  color: ${({ color }) => color};
   ${TxtSizeCSS}
   ${TxtWeightCSS}
 `;
@@ -61,8 +62,13 @@ const StyledTxt = styled.span`
 interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
   size: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6';
   weight: 'bold' | 'medium' | 'regular';
+  color?: string;
 }
 
-export const Txt = ({ children, ...props }: TxtProps) => {
-  return <StyledTxt {...props}>{children}</StyledTxt>;
+export const Txt = ({ children, color = '#333', ...props }: TxtProps) => {
+  return (
+    <StyledTxt color={color} {...props}>
+      {children}
+    </StyledTxt>
+  );
 };
