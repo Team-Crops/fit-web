@@ -47,10 +47,10 @@ export const LoginEntrance = ({ onClose }: LoginEntranceProps) => (
       로그인
     </Txt>
     <div style={{ height: '30px' }} />
-    <Txt size="typo4" weight="regular">
+    <Txt size="typo4" weight="regular" style={{ color: '#BDBDBD' }}>
       F-it에 오신 것을 환영해요!
     </Txt>
-    <Txt size="typo4" weight="regular">
+    <Txt size="typo4" weight="regular" style={{ color: '#BDBDBD' }}>
       간편 로그인으로 서비스를 이용해보세요 😉
     </Txt>
     <div style={{ height: '65px' }} />
