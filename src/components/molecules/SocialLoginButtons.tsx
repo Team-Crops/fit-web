@@ -13,6 +13,8 @@ const SocialButton = styled(Button)`
   justify-content: center;
   align-items: center;
 
+  cursor: pointer;
+
   &:hover {
     color: #212121;
   }
@@ -41,17 +43,22 @@ const Column = styled.div`
   gap: 20px;
 `;
 
-export const SocialLoginButtons = () => {
+interface Props {
+  onSuccess: () => void;
+  onFailure: () => void;
+}
+
+export const SocialLoginButtons = ({ onSuccess }: Props) => {
   return (
     <Column>
-      <KakaoButton variant="angular" height="60" color="primary">
+      <KakaoButton variant="angular" height="60" color="primary" onClick={onSuccess}>
         <Icons icon="kakao" width={27} height={25} />
         <div style={{ width: '18px' }} />
         <Txt size="typo4" weight="regular">
           카카오톡으로 로그인하기
         </Txt>
       </KakaoButton>
-      <GoogleButton variant="angular" height="60" color="primary">
+      <GoogleButton variant="angular" height="60" color="primary" onClick={onSuccess}>
         <Icons icon="google" width={32} height={32} />
         <div style={{ width: '18px' }} />
         <Txt size="typo4" weight="regular">

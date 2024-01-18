@@ -34,13 +34,15 @@ const CrossButton = styled.div`
   }
 `;
 
-interface LoginEntranceProps {
-  onClose: () => void;
+interface SignInEntranceProps {
+  onCancel: () => void;
+  onSuccess: () => void;
+  onFailure: () => void;
 }
 
-export const LoginEntrance = ({ onClose }: LoginEntranceProps) => (
+export const SignInEntrance = ({ onCancel, onSuccess, onFailure }: SignInEntranceProps) => (
   <Container>
-    <CrossButton onClick={() => onClose()}>
+    <CrossButton onClick={() => onCancel()}>
       <Icons icon="cross" width={20} height={20} color="#BDBDBD" />
     </CrossButton>
     <Txt size="typo1" weight="bold">
@@ -54,6 +56,6 @@ export const LoginEntrance = ({ onClose }: LoginEntranceProps) => (
       간편 로그인으로 서비스를 이용해보세요 😉
     </Txt>
     <div style={{ height: '65px' }} />
-    <SocialLoginButtons />
+    <SocialLoginButtons onSuccess={onSuccess} onFailure={onFailure} />
   </Container>
 );
