@@ -33,10 +33,12 @@ function DefaultTemplate(args: Story['args']) {
   );
 }
 
-export const Default: Story = {
+export const WithState: Story = {
   args: {
     checked: false,
     disabled: false,
   },
   render: DefaultTemplate,
 };
+
+export const WithoutState: Story = {};

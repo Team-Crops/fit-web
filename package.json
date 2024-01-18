@@ -23,6 +23,7 @@
     "swiper": "^11.0.5"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.11.0",
     "@storybook/addon-essentials": "^8.0.0-alpha.8",
     "@storybook/addon-interactions": "^8.0.0-alpha.8",
     "@storybook/addon-links": "^8.0.0-alpha.8",

@@ -1,35 +1,50 @@
-import type { InputHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import CheckIcon from 'src/assets/icons/check.svg';
 
-function inputColorCSS({ checked, disabled }: CheckBoxProps) {
-  // background-color: ${({ checked, disabled }) => (checked && !disabled ? '#ff706c' : '#ffffff')};
-  if (checked && !disabled) {
-    return css`
-      border-color: #ff706c;
-      background-color: #ffffff;
-    `;
-  } else if (checked && disabled) {
-    return css`
-      border-color: #ffc7c6;
-      background-color: #ffffff;
-    `;
-  } else if (!checked && !disabled) {
-    return css`
-      border-color: #9e9e9e;
-      background-color: #ffffff;
-    `;
-  } else if (!checked && disabled) {
-    return css`
-      border-color: #eeeeee;
-      background-color: #ffffff;
-    `;
-  } else {
-    throw new Error(`Invalid props: checked: ${checked}, disabled: ${disabled}`);
+const StyledCheckIcon = styled(CheckIcon)`
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  width: 14px;
+  height: 14px;
+`;
+
+const inputColorCSS = css`
+  border-color: #9e9e9e;
+  background-color: #ffffff;
+
+  &:disabled {
+    border-color: #eeeeee;
+    background-color: #ffffff;
   }
-}
+
+  &:checked {
+    border-color: #ff706c;
+    background-color: #ffffff;
+
+    + ${StyledCheckIcon} {
+      display: block;
+      stroke: #ff706c;
+    }
+  }
+
+  &:checked:disabled {
+    border-color: #ffc7c6;
+    background-color: #ffffff;
+
+    + ${StyledCheckIcon} {
+      display: block;
+      stroke: #ffc7c6;
+    }
+  }
+`;
 
 const StyledContainer = styled.div`
   display: inline-block;
@@ -42,7 +57,7 @@ const StyledContainer = styled.div`
   height: 24px;
 `;
 
-const StyledInput = styled.input<CheckBoxProps>`
+const StyledInput = styled.input`
   appearance: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
@@ -59,29 +74,15 @@ const StyledInput = styled.input<CheckBoxProps>`
   ${inputColorCSS}
 `;
 
-const StyledCheckIcon = styled(CheckIcon)<CheckBoxProps>`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-
-  width: 14px;
-  height: 14px;
-  stroke: ${({ disabled }) => (disabled ? '#ffc7c6' : '#ff706c')};
-`;
-
 interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-export function CheckBox({ checked, ...props }: CheckBoxProps) {
-  return (
+export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
+  ({ checked, ...props }, ref) => (
     <StyledContainer>
-      {checked === undefined ? (
-        <StyledInput type="checkbox" {...props} />
-      ) : (
-        <StyledInput type="checkbox" checked={checked} {...props} />
-      )}
-      {checked && <StyledCheckIcon {...props} />}
+      <StyledInput ref={ref} type="checkbox" checked={checked} {...props} />
+      <StyledCheckIcon />
     </StyledContainer>
-  );
-}
+  )
+);
+
+CheckBox.displayName = 'CheckBox';
