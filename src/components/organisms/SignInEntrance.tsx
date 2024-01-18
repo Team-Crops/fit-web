@@ -5,11 +5,19 @@ import styled from '@emotion/styled';
 
 const Container = styled.div`
   position: relative;
-  padding: 100px 250px;
+
+  @media (min-width: 768px) {
+    width: 768px;
+    height: 510px;
+  }
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+  }
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   border-radius: 15px;
   background: linear-gradient(180deg, #f0f3ff 0%, #fff 100%);
@@ -19,11 +27,16 @@ const CrossButton = styled.div`
   position: absolute;
   top: 30px;
   right: 40px;
-  cursor: pointer;
+
+  @media (max-width: 768px) {
+    top: 15px;
+    right: 10px;
+  }
 
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  cursor: pointer;
 
   display: flex;
   justify-content: center;
