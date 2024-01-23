@@ -7,8 +7,8 @@ const Container = styled.div`
   position: relative;
 
   @media (min-width: 768px) {
-    width: 768px;
-    height: 510px;
+    width: 480px;
+    height: 500px;
   }
   @media (max-width: 768px) {
     padding: 30px 20px;
@@ -25,8 +25,8 @@ const Container = styled.div`
 
 const CrossButton = styled.div`
   position: absolute;
-  top: 30px;
-  right: 40px;
+  top: 28px;
+  right: 28px;
 
   @media (max-width: 768px) {
     top: 15px;
@@ -42,6 +42,8 @@ const CrossButton = styled.div`
   justify-content: center;
   align-items: center;
 
+  transition: all 0.2s ease-in-out;
+
   &:hover {
     background-color: #e0e0e0;
   }
@@ -49,11 +51,9 @@ const CrossButton = styled.div`
 
 interface SignInEntranceProps {
   onCancel: () => void;
-  onSuccess: () => void;
-  onFailure: () => void;
 }
 
-export const SignInEntrance = ({ onCancel, onSuccess, onFailure }: SignInEntranceProps) => (
+export const SignInEntrance = ({ onCancel }: SignInEntranceProps) => (
   <Container>
     <CrossButton onClick={() => onCancel()}>
       <Icons icon="cross" width={20} height={20} color="#BDBDBD" />
@@ -69,6 +69,6 @@ export const SignInEntrance = ({ onCancel, onSuccess, onFailure }: SignInEntranc
       간편 로그인으로 서비스를 이용해보세요 😉
     </Txt>
     <div style={{ height: '65px' }} />
-    <SocialLoginButtons onSuccess={onSuccess} onFailure={onFailure} />
+    <SocialLoginButtons />
   </Container>
 );

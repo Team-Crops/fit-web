@@ -1,14 +1,11 @@
 import { Backdrop } from '#atoms/Backdrop';
 import { SignInEntrance as Contents } from '#organisms/SignInEntrance';
-import styled from '@emotion/styled';
 
 interface SignInEntranceProps {
   onCancel: () => void;
-  onSuccess: () => void;
-  onFailure: () => void;
 }
 
-export const SignInEntrance = ({ onCancel, onSuccess, onFailure }: SignInEntranceProps) => (
+export const SignInEntrance = ({ onCancel }: SignInEntranceProps) => (
   <Backdrop
     onClick={(e) => {
       if (e.target === e.currentTarget) {
@@ -16,6 +13,6 @@ export const SignInEntrance = ({ onCancel, onSuccess, onFailure }: SignInEntranc
       }
     }}
   >
-    <Contents onCancel={onCancel} onSuccess={onSuccess} onFailure={onFailure} />
+    <Contents onCancel={onCancel} />
   </Backdrop>
 );
