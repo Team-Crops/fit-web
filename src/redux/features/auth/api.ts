@@ -10,7 +10,7 @@ const authApi = api.injectEndpoints({
   endpoints: (build) => ({
     loginPage: build.query<LoginPageResponse, LoginServer>({
       query: (loginServer) => ({
-        url: `/social/${loginServer}/login-page`,
+        url: `/auth/social/${loginServer}/login-page`,
         method: 'GET',
       }),
     }),
