@@ -58,6 +58,7 @@ const RAW_RUNTIME_STATE =
           ["react-redux", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:8.1.3"],\
           ["return-fetch", "npm:0.4.5"],\
           ["storybook", "npm:8.0.0-alpha.9"],\
+          ["swiper", "npm:11.0.5"],\
           ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["webpack", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:5.89.0"]\
         ],\
@@ -10684,6 +10685,7 @@ const RAW_RUNTIME_STATE =
           ["react-redux", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:8.1.3"],\
           ["return-fetch", "npm:0.4.5"],\
           ["storybook", "npm:8.0.0-alpha.9"],\
+          ["swiper", "npm:11.0.5"],\
           ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["webpack", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:5.89.0"]\
         ],\
@@ -16375,6 +16377,15 @@ const RAW_RUNTIME_STATE =
           "@types/swc__core",\
           "@types/webpack",\
           "webpack"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["swiper", [\
+      ["npm:11.0.5", {\
+        "packageLocation": "./.yarn/cache/swiper-npm-11.0.5-152220df64-443d147cdc.zip/node_modules/swiper/",\
+        "packageDependencies": [\
+          ["swiper", "npm:11.0.5"]\
         ],\
         "linkType": "HARD"\
       }]\
