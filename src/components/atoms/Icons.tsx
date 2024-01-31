@@ -5,6 +5,7 @@ import AwayIcon from 'src/assets/icons/away.svg';
 import BellIcon from 'src/assets/icons/bell.svg';
 import CheckIcon from 'src/assets/icons/check.svg';
 import ClickIcon from 'src/assets/icons/click.svg';
+import InstagramIcon from 'src/assets/icons/instagram.svg';
 import MegaphoneIcon from 'src/assets/icons/megaphone.svg';
 import RunIcon from 'src/assets/icons/run.svg';
 import UserIcon from 'src/assets/icons/user.svg';
@@ -20,7 +21,8 @@ interface IconsProps {
     | 'click'
     | 'megaphone'
     | 'run'
-    | 'user';
+    | 'user'
+    | 'instagram';
   color?: string;
   width?: number;
   height?: number;
@@ -48,6 +50,8 @@ export const Icons = ({ icon, color, width, height }: IconsProps) => {
       return <UserIcon width={width} height={height} fill={color ?? '#212121'} />;
     case 'bell':
       return <BellIcon width={width} height={height} fill={color ?? '#212121'} />;
+    case 'instagram':
+      return <InstagramIcon width={width} height={height} fill={color ?? '#212121'} />;
     default:
       throw new Error(`Icon ${icon} is not supported!`);
   }

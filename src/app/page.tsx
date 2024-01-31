@@ -1,3 +1,4 @@
+import { Footer } from '#templates/Footer';
 import { Header } from '#templates/Header';
 import { FirstSection } from '#templates/main/FirstSection';
 import { FourthSection } from '#templates/main/FourthSection';
@@ -12,6 +13,7 @@ export default function Home() {
       <SecondSection />
       <ThirdSection />
       <FourthSection />
+      <Footer />
     </>
   );
 }
