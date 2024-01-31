@@ -9,13 +9,18 @@ const NavBlock = styled.div`
   align-items: center;
   height: 100%;
 `;
-const NavLink = styled(Link)<{ isCurrent: boolean }>`
+const NavLink = styled.div<{ isCurrent: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   padding: 18px 50px 0;
+  span {
+    display: flex;
+    align-items: center;
+    height: 80px;
+  }
   &::after {
     content: '';
     position: absolute;
@@ -48,10 +53,12 @@ export const HeaderNav = () => {
     <NavBlock>
       {LinkList.map((link) => {
         return (
-          <NavLink href={link.href} key={link.name} isCurrent={pathName === link.href}>
-            <Txt size={'typo5'} weight={'bold'}>
-              {link.name}
-            </Txt>
+          <NavLink key={link.name} isCurrent={pathName === link.href}>
+            <Link href={link.href}>
+              <Txt size={'typo5'} weight={'bold'}>
+                {link.name}
+              </Txt>
+            </Link>
           </NavLink>
         );
       })}
