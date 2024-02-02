@@ -1,20 +1,23 @@
 'use client';
 
 import { HeaderContent } from '#organisms/HeaderContent';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const StyledHeader = styled.header`
-  position: fixed;
+const SpaceCSS = css`
   width: 100%;
   height: 100px;
+`;
+const StyledHeader = styled.header`
+  position: fixed;
+  ${SpaceCSS}
 
   border-bottom: 1px solid #eee;
   background: #fff;
   z-index: 3;
 `;
-const HeaderShadow = styled.div`
-  width: 100%;
-  height: 100px;
+const HeaderSpace = styled.div`
+  ${SpaceCSS}
 `;
 
 export const Header = () => {
@@ -23,9 +26,7 @@ export const Header = () => {
       <StyledHeader>
         <HeaderContent />
       </StyledHeader>
-
-      {/* 헤더의 높이만큼 공간을 차지하기 위해 만듦 (Header가 absolute기 때문) */}
-      <HeaderShadow />
+      <HeaderSpace />
     </>
   );
 };
