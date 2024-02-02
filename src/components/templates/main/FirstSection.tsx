@@ -46,7 +46,7 @@ export const FirstSection = () => {
         </MainTxt>
       </ContentBlock>
       <BackgroundImage
-        src={'/img/firstSectionBackground.svg'}
+        src={'/images/firstSectionBackground.svg'}
         alt="first-section"
         width={0}
         height={0}

@@ -33,7 +33,7 @@ export const SecondSection = () => {
         <Title size={'display1'} weight={'bold'} color="#000">
           어떻게 팀원을 구하지?
         </Title>
-        <Image src={'/img/main_section2_img.svg'} alt={'image'} width={1332} height={756} />
+        <Image src={'/images/main_section2_img.svg'} alt={'image'} width={1332} height={756} />
       </ContentBlock>
     </StyledSection>
   );
