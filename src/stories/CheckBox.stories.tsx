@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { CheckBox } from '#atoms/CheckBox';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { CheckBox } from '#atoms/CheckBox';
 
 const meta = {
   title: 'Atoms/CheckBox',

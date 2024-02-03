@@ -1,5 +1,9 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:import/typescript", "plugin:storybook/recommended"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:import/typescript",
+    "plugin:storybook/recommended"
+  ],
   "settings": {
     "import/resolver": {
       "typescript": true,
@@ -10,17 +14,20 @@
     "import/order": [
       "error",
       {
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        },
-        "newlines-between": "always",
         "groups": [
           "builtin",
           "external",
           "internal",
-          ["parent", "sibling", "index"],
-          ["object", "type", "unknown"]
+          [
+            "parent",
+            "sibling",
+            "index"
+          ],
+          [
+            "object",
+            "type"
+          ],
+          "unknown"
         ],
         "pathGroups": [
           {
@@ -29,16 +36,33 @@
             "position": "after"
           },
           {
-            "pattern": "{next,next/*}",
-            "group": "external",
-            "position": "before"
+            "pattern": "next/**",
+            "group": "builtin",
+            "position": "after"
           },
           {
-            "pattern": "@/**",
-            "group": "internal",
-            "position": "before"
+            "pattern": "#/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "#*/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "@*/**",
+            "group": "external"
           }
-        ]
+        ],
+        "distinctGroup": false,
+        "pathGroupsExcludedImportTypes": [
+          "react"
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "warnOnUnassignedImports": true
       }
     ]
   }

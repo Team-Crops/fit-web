@@ -1,29 +1,45 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { User, Tokens } from 'src/entities/user';
+import type { User } from '#/entities/user';
+
+export enum AuthStep {
+  Entrance,
+  Policies,
+  UserInfo,
+  PositionInfo,
+  PersonalInfo,
+  ActivityInfo,
+  SkillInfo,
+  Complete,
+}
 
 type AuthState = {
+  step: AuthStep | null;
   user: User | null;
-  tokens: Tokens | null;
+  accessToken: string | null;
+  refreshToken: string | null;
 };
 
 const initialState: AuthState = {
+  step: null,
   user: null,
-  tokens: null,
+  accessToken: null,
+  refreshToken: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser(state, action) {
-      state.user = action.payload;
+    updateAuth(state, action: PayloadAction<Partial<AuthState>>) {
+      return { ...state, ...action.payload };
     },
-    setTokens(state, action) {
-      state.tokens = action.payload;
+    deleteAuth() {
+      return initialState;
     },
   },
 });
 
-export const { setUser, setTokens } = authSlice.actions;
+export const { updateAuth, deleteAuth } = authSlice.actions;
 export default authSlice.reducer;

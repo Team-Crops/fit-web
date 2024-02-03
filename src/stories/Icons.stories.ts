@@ -1,6 +1,6 @@
-import { Icons } from 'src/components/atoms/Icons';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Icons } from 'src/components/atoms/Icons';
 
 const meta = {
   title: 'Atoms/Icons',

@@ -1,6 +1,6 @@
 import { LoginServer } from 'src/entities/loginServer';
 
-import { api } from '../../api';
+import { api } from '#/redux/api';
 
 export interface LoginPageResponse {
   loginPageUrl: string;
@@ -10,7 +10,7 @@ const authApi = api.injectEndpoints({
   endpoints: (build) => ({
     loginPage: build.query<LoginPageResponse, LoginServer>({
       query: (loginServer) => ({
-        url: `/auth/social/${loginServer}/login-page`,
+        url: `/v1/auth/social/${loginServer}/login-page`,
         method: 'GET',
       }),
     }),

@@ -2,9 +2,10 @@ import { forwardRef, type InputHTMLAttributes } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import CheckIcon from 'src/assets/icons/check.svg';
 
-const StyledCheckIcon = styled(CheckIcon)`
+import { Icons } from '#/components/atoms/Icons';
+
+const StyledIcon = styled(Icons)`
   display: none;
   position: absolute;
   top: 50%;
@@ -29,9 +30,9 @@ const inputColorCSS = css`
     border-color: #ff706c;
     background-color: #ffffff;
 
-    + ${StyledCheckIcon} {
+    + ${StyledIcon} {
       display: block;
-      stroke: #ff706c;
+      color: #ff706c;
     }
   }
 
@@ -39,9 +40,9 @@ const inputColorCSS = css`
     border-color: #ffc7c6;
     background-color: #ffffff;
 
-    + ${StyledCheckIcon} {
+    + ${StyledIcon} {
       display: block;
-      stroke: #ffc7c6;
+      color: #ffc7c6;
     }
   }
 `;
@@ -80,7 +81,7 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
   ({ checked, ...props }, ref) => (
     <StyledContainer>
       <StyledInput ref={ref} type="checkbox" checked={checked} {...props} />
-      <StyledCheckIcon />
+      <StyledIcon icon="check" />
     </StyledContainer>
   )
 );

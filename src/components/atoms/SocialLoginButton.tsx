@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
+import Link from 'next/link';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { LoginServer } from 'src/entities/loginServer';
-import { useLazyLoginPageQuery } from 'src/redux/services/auth/api';
 
-import { Button } from './Button';
-import { Icons } from './Icons';
-import { Txt } from './Text';
+import { Button } from '#/components/atoms/Button';
+import { Icons } from '#/components/atoms/Icons';
+import { Txt } from '#/components/atoms/Text';
+import { LoginServer } from '#/entities/loginServer';
+import { useLoginPageQuery } from '#/redux/features/auth/api';
 
 const StyledButton = styled(Button)<SocialLoginButtonProps>`
   width: 300px;
@@ -29,24 +29,30 @@ const StyledButton = styled(Button)<SocialLoginButtonProps>`
     switch (loginServer) {
       case 'kakao':
         return css`
-          &:not([disabled]) {
-            color: #616161;
-            background-color: #fbe80c;
-          }
-          &:not([disabled]):hover {
+          color: #616161;
+          background-color: #fbe80c;
+
+          &:hover {
             color: #212121;
             background-color: #fee500;
+          }
+
+          &:disabled {
+            background-color: rgba(251, 232, 12, 0.5);
           }
         `;
       case 'google':
         return css`
-          &:not([disabled]) {
-            color: #616161;
-            background-color: #ffffff;
-          }
-          &:not([disabled]):hover {
+          color: #616161;
+          background-color: #ffffff;
+
+          &:hover {
             color: #212121;
             background-color: #f2f2f2;
+          }
+
+          &:disabled {
+            background-color: rgba(255, 255, 255, 0.5);
           }
         `;
     }
@@ -58,32 +64,27 @@ interface SocialLoginButtonProps {
 }
 
 export const SocialLoginButton = ({ loginServer }: SocialLoginButtonProps) => {
-  const [trigger, { data, isFetching }] = useLazyLoginPageQuery();
+  const { data, isLoading } = useLoginPageQuery(loginServer);
   const text: Record<LoginServer, string> = {
     kakao: '카카오 계정으로 로그인하기',
     google: '구글 계정으로 로그인하기',
   };
 
-  useEffect(() => {
-    if (data) {
-      window.open(data.loginPageUrl, '_blank', 'width=500,height=800');
-    }
-  }, [data]);
-
   return (
-    <StyledButton
-      loginServer={loginServer}
-      variant={'angular'}
-      height={'60'}
-      color={'secondary'}
-      disabled={isFetching}
-      onClick={() => trigger(loginServer)}
-    >
-      <Icons icon={loginServer} width={32} height={32} />
-      <div style={{ width: '18px' }} />
-      <Txt size="typo5" weight="medium">
-        {text[loginServer]}
-      </Txt>
-    </StyledButton>
+    <Link href={data?.loginPageUrl ?? ''}>
+      <StyledButton
+        loginServer={loginServer}
+        variant={'angular'}
+        height={'60'}
+        color={'secondary'}
+        disabled={isLoading}
+      >
+        <Icons icon={loginServer} width={32} height={32} />
+        <div style={{ width: '18px' }} />
+        <Txt size="typo5" weight="medium">
+          {text[loginServer]}
+        </Txt>
+      </StyledButton>
+    </Link>
   );
 };
