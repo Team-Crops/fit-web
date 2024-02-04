@@ -32,7 +32,6 @@ const Container = styled.div`
   background: linear-gradient(180deg, #ffffff 0%, #fff2f1 91.5%, #ffeae9 100%);
 
   position: relative;
-  overflow: hidden;
 `;
 
 const PositionContainer = styled.div`

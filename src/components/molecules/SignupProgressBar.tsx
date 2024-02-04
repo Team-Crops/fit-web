@@ -6,12 +6,19 @@ import { Icons } from '#/components/atoms/Icons';
 import { ProgressBar, ProgressBarProps } from '#/components/atoms/ProgressBar';
 import { Txt } from '#/components/atoms/Text';
 
+const StyledProgressBar = styled(ProgressBar)`
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
 
   width: 100%;
+
+  overflow: hidden;
 `;
 
 const ButtonsContainer = styled.div`
@@ -60,7 +67,7 @@ export const SignupProgressBar = ({
   const enabledBackward = onBackwardClick !== undefined;
   return (
     <Container {...props}>
-      <ProgressBar value={(currentStep / totalStep) * 100} />
+      <StyledProgressBar value={(currentStep / totalStep) * 100} />
       <ButtonsContainer>
         <IconButton
           icon={enabledBackward ? 'arrowBackwardOutlined' : 'arrowBackward'}
