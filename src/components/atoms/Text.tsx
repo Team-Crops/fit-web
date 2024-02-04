@@ -35,6 +35,16 @@ const TxtSizeCSS = ({ size, weight }: TxtProps) => {
         font-size: 0.6rem;
         letter-spacing: ${weight === 'bold' ? '-0.36px' : '-0.6px'};
       `;
+    case 'display1':
+      return css`
+        font-size: 2.5rem;
+        letter-spacing: -1.5px;
+      `;
+    case 'display2':
+      return css`
+        font-size: 2.4rem;
+        letter-spacing: -1.44px;
+      `;
   }
 };
 const TxtWeightCSS = ({ weight }: TxtProps) => {
@@ -53,16 +63,25 @@ const TxtWeightCSS = ({ weight }: TxtProps) => {
       `;
   }
 };
-const StyledTxt = styled.span`
+const StyledTxt = styled.span<TxtProps>`
+  display: block;
+  margin-bottom: ${({ marginBottom }) => marginBottom}px;
+  color: ${({ color }) => color};
   ${TxtSizeCSS}
   ${TxtWeightCSS}
 `;
 
 interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
-  size: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6';
+  size: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'display1' | 'display2';
   weight: 'bold' | 'medium' | 'regular';
+  color?: string;
+  marginBottom?: number;
 }
 
-export const Txt = ({ children, ...props }: TxtProps) => {
-  return <StyledTxt {...props}>{children}</StyledTxt>;
+export const Txt = ({ children, color = '#333', marginBottom = 0, ...props }: TxtProps) => {
+  return (
+    <StyledTxt color={color} marginBottom={marginBottom} {...props}>
+      {children}
+    </StyledTxt>
+  );
 };
