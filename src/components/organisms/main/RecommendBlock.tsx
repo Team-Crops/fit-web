@@ -1,14 +1,23 @@
+import Image from 'next/image';
+
 import { MainDescriptionBlock } from '#molecules/MainDescriptionBlock';
 import { MainDescriptionCard } from '#molecules/MainDescriptionCard';
 import styled from '@emotion/styled';
 
 const Block = styled.div`
+  position: relative;
   width: 1194px;
   margin-bottom: 389px;
 `;
 const CardWrapper = styled.div`
   display: flex;
   gap: 19px;
+`;
+const BackgroundImage = styled(Image)`
+  position: absolute;
+  top: 815px;
+  left: -105px;
+  pointer-events: none;
 `;
 
 const CardInfo = [
@@ -57,6 +66,12 @@ export const RecommendBlock = () => {
           );
         })}
       </CardWrapper>
+      <BackgroundImage
+        src={'/images/main_recommend_background.png'}
+        width={102}
+        height={102}
+        alt={'background'}
+      />
     </Block>
   );
 };

@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { MainDescriptionBlock } from '#molecules/MainDescriptionBlock';
 import { MainDescriptionCard } from '#molecules/MainDescriptionCard';
 import styled from '@emotion/styled';
@@ -5,6 +7,7 @@ import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 const Block = styled.div`
+  position: relative;
   width: 1194px;
   margin: 258px 0 320px;
 `;
@@ -12,6 +15,12 @@ const CardSwiper = styled(Swiper)`
   .swiper-slide {
     width: max-content;
   }
+`;
+const BackgroundImage = styled(Image)`
+  position: absolute;
+  top: 30px;
+  left: -360px;
+  pointer-events: none;
 `;
 
 const CardInfo = [
@@ -74,6 +83,12 @@ export const InfoMatchingBlock = () => {
           );
         })}
       </CardSwiper>
+      <BackgroundImage
+        src={'/images/main_matching_background.png'}
+        width={553}
+        height={656}
+        alt={'background'}
+      />
     </Block>
   );
 };
