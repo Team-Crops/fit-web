@@ -62,7 +62,7 @@ export const MainDescriptionBlock = ({
         <Txt size={'typo4'} weight={'bold'} color="#fff">
           {buttonText}
         </Txt>
-        <Icons icon={'arrow-right'} color="#fff" width={24} />
+        <Icons icon={'arrowRight'} color="#fff" width={24} />
       </LinkButton>
     </Block>
   );

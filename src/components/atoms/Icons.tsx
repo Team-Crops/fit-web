@@ -1,6 +1,3 @@
-import React from 'react';
-import GoogleIcon from 'src/assets/icons/google.svg';
-import KakaoIcon from 'src/assets/icons/kakao.svg';
 import AccountIcon from 'src/assets/icons/account.svg';
 import ArrowForward from 'src/assets/icons/arrow-forward.svg';
 import ArrowRightIcon from 'src/assets/icons/arrow-right.svg';
@@ -8,8 +5,10 @@ import AwayIcon from 'src/assets/icons/away.svg';
 import BellIcon from 'src/assets/icons/bell.svg';
 import CheckIcon from 'src/assets/icons/check.svg';
 import ClickIcon from 'src/assets/icons/click.svg';
-import InstagramIcon from 'src/assets/icons/instagram.svg';
 import CrossIcon from 'src/assets/icons/cross.svg';
+import GoogleIcon from 'src/assets/icons/google.svg';
+import InstagramIcon from 'src/assets/icons/instagram.svg';
+import KakaoIcon from 'src/assets/icons/kakao.svg';
 import LogoIcon from 'src/assets/icons/logo.svg';
 import MegaphoneIcon from 'src/assets/icons/megaphone.svg';
 import RunIcon from 'src/assets/icons/run.svg';
@@ -20,14 +19,17 @@ type IconName =
   | 'arrowForward'
   | 'arrowRight'
   | 'away'
+  | 'bell'
   | 'check'
   | 'click'
   | 'cross'
   | 'google'
+  | 'instagram'
   | 'kakao'
   | 'logo'
   | 'megaphone'
-  | 'run';
+  | 'run'
+  | 'user';
 
 interface Icon {
   SVGR: any;
@@ -51,6 +53,9 @@ const icons: Record<IconName, Icon> = {
     SVGR: AwayIcon,
     color: '#212121',
   },
+  bell: {
+    SVGR: BellIcon,
+  },
   check: {
     SVGR: CheckIcon,
     color: '#9E9E9E',
@@ -66,6 +71,9 @@ const icons: Record<IconName, Icon> = {
   google: {
     SVGR: GoogleIcon,
   },
+  instagram: {
+    SVGR: InstagramIcon,
+  },
   kakao: {
     SVGR: KakaoIcon,
   },
@@ -79,6 +87,9 @@ const icons: Record<IconName, Icon> = {
   run: {
     SVGR: RunIcon,
     color: '#212121',
+  },
+  user: {
+    SVGR: UserIcon,
   },
 };
 
