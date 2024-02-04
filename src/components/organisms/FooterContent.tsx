@@ -45,7 +45,7 @@ export const FooterContent = () => {
   return (
     <ContentBlock>
       <FlexBlock>
-        <FitLogo width={118} color="gray" />
+        <FitLogo width={118} height={39} color="gray" />
         <PolicyLinkBlock>
           <Link href={'/policy/term'}>
             <Txt size={'typo5'} weight={'bold'} color="#757575">
