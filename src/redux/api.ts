@@ -1,12 +1,4 @@
-import {
-  BaseQueryFn,
-  FetchBaseQueryError,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react';
-
-import { jwtDecode } from 'jwt-decode';
-import { FetchArgs } from 'return-fetch';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { deleteAuth, updateAuth } from '#/redux/features/auth/slice';
 import { RootState } from './store';
