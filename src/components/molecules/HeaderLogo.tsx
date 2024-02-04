@@ -5,7 +5,7 @@ import { FitLogo } from '#atoms/FitLogo';
 export const HeaderLogo = () => {
   return (
     <Link href={'/'}>
-      <FitLogo width={119} />
+      <FitLogo width={118} height={38} />
     </Link>
   );
 };

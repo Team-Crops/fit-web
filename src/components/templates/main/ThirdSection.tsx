@@ -74,7 +74,7 @@ export const ThirdSection = () => {
           여러 구인 사이트에서{`\n`} 일일히 조건과 정보를 파악
         </Txt>
       </Block>
-      <Image src={'/img/main_section3_arrow.svg'} alt={'arrow'} width={118} height={60} />
+      <Image src={'/images/main_section3_arrow.svg'} alt={'arrow'} width={118} height={60} />
       <FilledBlock>
         <Txt size={'typo3'} weight={'medium'} color="#ffffffc4" marginBottom={12}>
           Sol
@@ -84,7 +84,7 @@ export const ThirdSection = () => {
         </Txt>
       </FilledBlock>
       <BackgroundImage
-        src={'/img/main_section3_background.svg'}
+        src={'/images/main_section3_background.svg'}
         alt={'image'}
         width={0}
         height={0}

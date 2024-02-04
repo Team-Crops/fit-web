@@ -29,6 +29,7 @@ export const HeaderContent = () => {
         <HeaderNav />
       </HeaderLeftBlock>
       <HeaderRightBlock>
+        {/* TODO: 로그인 전, 후 Component 구분하기 */}
         <HeaderLoginBlock />
         {/* <HeaderNonLoginBlock /> */}
       </HeaderRightBlock>
