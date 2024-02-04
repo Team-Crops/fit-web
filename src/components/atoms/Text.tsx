@@ -33,7 +33,7 @@ const TxtSizeCSS = ({ size, weight }: TxtProps) => {
     case 'typo6':
       return css`
         font-size: 0.6rem;
-        letter-spacing: ${weight === 'bold' ? '-0.36px' : '-6px'};
+        letter-spacing: ${weight === 'bold' ? '-0.36px' : '-0.6px'};
       `;
     case 'display1':
       return css`
