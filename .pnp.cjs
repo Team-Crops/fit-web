@@ -51,7 +51,6 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-import", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:2.29.1"],\
           ["eslint-plugin-storybook", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:0.6.15"],\
           ["husky", "npm:9.0.11"],\
-          ["jwt-decode", "npm:4.0.0"],\
           ["lint-staged", "npm:15.2.2"],\
           ["next", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:14.0.2"],\
           ["prettier", "npm:3.2.5"],\
@@ -10451,7 +10450,6 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-import", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:2.29.1"],\
           ["eslint-plugin-storybook", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:0.6.15"],\
           ["husky", "npm:9.0.11"],\
-          ["jwt-decode", "npm:4.0.0"],\
           ["lint-staged", "npm:15.2.2"],\
           ["next", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:14.0.2"],\
           ["prettier", "npm:3.2.5"],\
@@ -12236,15 +12234,6 @@ const RAW_RUNTIME_STATE =
           ["array.prototype.flat", "npm:1.3.2"],\
           ["object.assign", "npm:4.1.5"],\
           ["object.values", "npm:1.1.7"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["jwt-decode", [\
-      ["npm:4.0.0", {\
-        "packageLocation": "./.yarn/cache/jwt-decode-npm-4.0.0-4cd8e89909-de75bbf892.zip/node_modules/jwt-decode/",\
-        "packageDependencies": [\
-          ["jwt-decode", "npm:4.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

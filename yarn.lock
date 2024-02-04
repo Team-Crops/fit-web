@@ -7579,7 +7579,6 @@ __metadata:
     eslint-plugin-import: "npm:^2.29.0"
     eslint-plugin-storybook: "npm:^0.6.15"
     husky: "npm:>=7"
-    jwt-decode: "npm:^4.0.0"
     lint-staged: "npm:>=10"
     next: "npm:14.0.2"
     prettier: "npm:^3.1.1"
@@ -9133,13 +9132,6 @@ __metadata:
     object.assign: "npm:^4.1.4"
     object.values: "npm:^1.1.6"
   checksum: 10c0/a32679e9cb55469cb6d8bbc863f7d631b2c98b7fc7bf172629261751a6e7bc8da6ae374ddb74d5fbd8b06cf0eb4572287b259813d92b36e384024ed35e4c13e1
-  languageName: node
-  linkType: hard
-
-"jwt-decode@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "jwt-decode@npm:4.0.0"
-  checksum: 10c0/de75bbf89220746c388cf6a7b71e56080437b77d2edb29bae1c2155048b02c6b8c59a3e5e8d6ccdfd54f0b8bda25226e491a4f1b55ac5f8da04cfbadec4e546c
   languageName: node
   linkType: hard
 
