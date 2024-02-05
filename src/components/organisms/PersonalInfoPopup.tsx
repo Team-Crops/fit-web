@@ -55,7 +55,7 @@ const StyledInput = styled(Input)`
   width: 100%;
 `;
 
-const StyledSelect = styled(CareerSelect)`
+const StyledCareerSelect = styled(CareerSelect)`
   width: 100%;
   height: 36px;
 `;
@@ -76,7 +76,7 @@ export const PersonalInfoPopup = () => {
   useEffect(() => {
     if (isLoading === false) {
       if (isSuccess) {
-        dispatch(updateAuth({ step: AuthStep.PositionInfo }));
+        dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
       }
       if (isError) {
         throw error;
@@ -90,19 +90,18 @@ export const PersonalInfoPopup = () => {
         currentStep={2}
         totalStep={4}
         progressName="회원정보"
+        onBackwardClick={() => dispatch(updateAuth({ step: AuthStep.PersonalInfo - 1 }))}
         onForwardClick={
           [name, email, career, groupName].every((v) => v !== undefined)
-            ? () => {
+            ? () =>
                 updateMe({
                   username: name,
                   email,
                   backgroundStatus: career,
                   backgroundText: groupName,
-                });
-              }
+                })
             : undefined
         }
-        onBackwardClick={() => dispatch(updateAuth({ step: AuthStep.PositionInfo }))}
       />
       <TitleContainer>
         <Txt size="typo1" weight="bold">
@@ -131,7 +130,7 @@ export const PersonalInfoPopup = () => {
             <Txt size="typo5" weight="medium">
               학력/경력
             </Txt>
-            <StyledSelect value={career} onChange={(e) => setCareer(e.target.value)} />
+            <StyledCareerSelect value={career} onChange={(e) => setCareer(e.target.value)} />
           </InputContainer>
           {career && (
             <InputContainer style={{ width: '50%' }}>
