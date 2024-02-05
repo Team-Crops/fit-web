@@ -141,7 +141,7 @@ export const PositionInfoPopup = () => {
               }
         }
         onBackwardClick={() => {
-          dispatch(updateAuth({ step: AuthStep.Policies }));
+          dispatch(updateAuth({ step: AuthStep.PositionInfo - 1 }));
         }}
       />
       <Txt size="typo1" weight="bold">
