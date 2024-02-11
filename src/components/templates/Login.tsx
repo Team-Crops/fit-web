@@ -9,6 +9,7 @@ import { LoginPopup } from '#organisms/LoginPopup';
 import { PersonalInfoPopup } from '#organisms/PersonalInfoPopup';
 import { PoliciesPopup } from '#organisms/PoliciesPopup';
 import { PositionInfoPopup } from '#organisms/PositionInfoPopup';
+import { SkillInfoPopup } from '#organisms/SkillInfoPopup';
 import { UserInfoPopup } from '#organisms/UserInfoPopup';
 
 export const Backdrop = styled.div`
@@ -38,7 +39,7 @@ export const Login = ({ onCancel }: LoginProps) => {
     [AuthStep.PositionInfo]: <PositionInfoPopup />,
     [AuthStep.PersonalInfo]: <PersonalInfoPopup />,
     [AuthStep.ActivityInfo]: <ActivityInfoPopup />,
-    6: <div></div>,
+    [AuthStep.SkillInfo]: <SkillInfoPopup />,
     7: <div></div>,
   };
 
