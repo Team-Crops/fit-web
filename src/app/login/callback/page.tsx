@@ -1,9 +1,9 @@
-import { LoginCallback as Contents } from '#/components/templates/LoginCallback';
+'use client';
+
+import { redirect, useSearchParams } from 'next/navigation';
 
 export default function LoginCallback() {
-  return (
-    <main>
-      <Contents />
-    </main>
-  );
+  const searchParams = useSearchParams();
+  const code = searchParams.get('code');
+  redirect(`/login/kakao/callback?code=${code}`);
 }

@@ -1,28 +1,46 @@
 'use client';
 
-import { use, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useSearchParams, useRouter, notFound } from 'next/navigation';
 
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-import { NotFound } from '#/components/templates/NotFound';
+import { SocialPlatform } from '#/entities/socialPlatform';
+import { useLazyAcquireTokenQuery } from '#/redux/features/auth/api';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useLazyMeQuery } from '#/redux/features/user/api';
 import { useAppDispatch } from '#/redux/hooks';
+import { Txt } from '#atoms/Text';
 
-export const LoginCallback = () => {
-  const searchParams = useSearchParams();
-  const accessToken = searchParams.get('accessToken');
-  const refreshToken = searchParams.get('refreshToken');
+interface LoginCallbackProps {
+  platform: SocialPlatform;
+}
 
+export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [trigger, { data: me, error }] = useLazyMeQuery();
+
+  const [acquireToken, { data: tokens, error: acquireTokenError }] = useLazyAcquireTokenQuery();
+  const [queryMe, { data: me, error: queryMeError }] = useLazyMeQuery();
+
+  const searchParams = useSearchParams();
+  const code = searchParams.get('code');
+
+  console.table({ code, platform });
+  useEffect(() => {
+    if (code) {
+      acquireToken({ platform, code });
+    } else {
+      notFound();
+    }
+  }, [acquireToken, code, platform]);
 
   useEffect(() => {
-    dispatch(updateAuth({ accessToken, refreshToken }));
-    trigger();
-  }, [trigger, dispatch, accessToken, refreshToken]);
+    if (tokens) {
+      dispatch(updateAuth(tokens));
+      queryMe();
+    }
+  }, [dispatch, queryMe, tokens]);
 
   useEffect(() => {
     if (me) {
@@ -41,25 +59,27 @@ export const LoginCallback = () => {
         step = AuthStep.Complete;
       }
 
+      //FIXME: FOR DEBUGGING
+      step = AuthStep.SkillInfo;
+
       dispatch(
         updateAuth({
           step,
           user: me,
-          accessToken,
-          refreshToken,
         })
       );
 
       router.push('/');
     }
-  }, [me, dispatch, router, accessToken, refreshToken]);
+  }, [me, dispatch, router]);
 
-  if (!accessToken || !refreshToken) {
-    return <NotFound />;
-  }
-  if (error) {
-    const queryError = error as FetchBaseQueryError;
-    return <div>{queryError.status} Error occured</div>;
+  if (acquireTokenError || queryMeError) {
+    const queryError = (acquireTokenError ?? queryMeError) as FetchBaseQueryError;
+    return (
+      <Txt size="typo4" weight="regular">
+        {JSON.stringify(queryError.data)}
+      </Txt>
+    );
   }
   return <div>Loading</div>;
 };
