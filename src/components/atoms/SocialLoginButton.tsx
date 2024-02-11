@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import { Button } from '#/components/atoms/Button';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { LoginServer } from '#/entities/loginServer';
+import { SocialPlatform } from '#/entities/socialPlatform';
 import { useLoginPageQuery } from '#/redux/features/auth/api';
 
 const StyledButton = styled(Button)<SocialLoginButtonProps>`
@@ -60,12 +60,12 @@ const StyledButton = styled(Button)<SocialLoginButtonProps>`
 `;
 
 interface SocialLoginButtonProps {
-  loginServer: LoginServer;
+  loginServer: SocialPlatform;
 }
 
 export const SocialLoginButton = ({ loginServer }: SocialLoginButtonProps) => {
   const { data, isLoading } = useLoginPageQuery(loginServer);
-  const text: Record<LoginServer, string> = {
+  const text: Record<SocialPlatform, string> = {
     kakao: '카카오 계정으로 로그인하기',
     google: '구글 계정으로 로그인하기',
   };
