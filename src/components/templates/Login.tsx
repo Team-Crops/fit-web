@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { AuthStep } from '#/redux/features/auth/slice';
 import { useAppSelector } from '#/redux/hooks';
 import { ActivityInfoPopup } from '#organisms/ActivityInfoPopup';
+import { CompletePopup } from '#organisms/CompletePopup';
 import { LoginPopup } from '#organisms/LoginPopup';
 import { PersonalInfoPopup } from '#organisms/PersonalInfoPopup';
 import { PoliciesPopup } from '#organisms/PoliciesPopup';
@@ -40,7 +41,7 @@ export const Login = ({ onCancel }: LoginProps) => {
     [AuthStep.PersonalInfo]: <PersonalInfoPopup />,
     [AuthStep.ActivityInfo]: <ActivityInfoPopup />,
     [AuthStep.SkillInfo]: <SkillInfoPopup />,
-    7: <div></div>,
+    [AuthStep.Complete]: <CompletePopup />,
   };
 
   return (
