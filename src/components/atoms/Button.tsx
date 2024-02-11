@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 const ButtonVariantsCSS = ({ variant }: ButtonProps) => {
   switch (variant) {
     case 'angular':
+    case 'outlined':
       return css`
         border-radius: 5px;
       `;
@@ -54,35 +55,60 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
       `;
   }
 };
-const ButtonColorCSS = ({ color }: ButtonProps) => {
-  switch (color) {
-    case 'primary':
-      return css`
-        background-color: #ff706c;
-        &:hover {
-          background-color: #ee5550;
-        }
-      `;
-    case 'secondary':
-      return css`
-        background-color: #bdbdbd;
-        &:hover {
-          background-color: #9e9e9e;
-        }
-      `;
+const ButtonColorCSS = ({ variant, color }: ButtonProps) => {
+  if (variant === 'outlined') {
+    switch (color) {
+      case 'primary':
+        return css`
+          background-color: #ffffff;
+          color: #ff706c;
+          border: 1px solid #ff706c;
+          &:hover {
+            background-color: #ffeae9;
+          }
+        `;
+      case 'secondary':
+        return css`
+          background-color: #ffffff;
+          color: #bdbdbd;
+          border: 1px solid #bdbdbd;
+          &:hover {
+            background-color: #fafafa;
+          }
+        `;
+    }
+  } else {
+    switch (color) {
+      case 'primary':
+        return css`
+          background-color: #ff706c;
+          &:hover {
+            background-color: #ee5550;
+          }
+        `;
+      case 'secondary':
+        return css`
+          background-color: #bdbdbd;
+          &:hover {
+            background-color: #9e9e9e;
+          }
+        `;
+    }
   }
 };
 const StyledButton = styled.button<ButtonProps>`
   border: none;
   color: #ffffff;
   letter-spacing: -0.6px;
+
+  transition: background-color 0.2s;
   ${ButtonVariantsCSS}
   ${ButtonSizeCSS}
   ${ButtonColorCSS};
 `;
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: 'angular' | 'round';
+  variant: 'angular' | 'round' | 'outlined';
   height: '20' | '30' | '50' | '60' | '70';
   color: 'primary' | 'secondary';
   children?: ReactNode;

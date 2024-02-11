@@ -187,7 +187,7 @@ export const SkillInfoPopup = () => {
               <SkillButton
                 key={skill.id}
                 onClick={() => skillClickHandler(skill.id)}
-                variant="angular"
+                variant="outlined"
                 height="50"
                 color={selectedSkills.includes(skill.id) ? 'primary' : 'secondary'}
               >
