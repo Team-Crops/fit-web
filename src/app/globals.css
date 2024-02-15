@@ -23,6 +23,16 @@
   font-weight: 100;
 }
 
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
