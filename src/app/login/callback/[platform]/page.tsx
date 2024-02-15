@@ -8,7 +8,7 @@ interface PathParams {
 export default function LoginCallbackPage({ params }: { params: PathParams }) {
   const { platform } = params;
 
-  if (platform === 'kakao') {
+  if (platform === 'kakao' || platform === 'google') {
     return (
       <main>
         <LoginCallback platform={platform as SocialPlatform} />
