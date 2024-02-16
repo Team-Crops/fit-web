@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useRouter, notFound } from 'next/navigation';
 
+import styled from '@emotion/styled';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 import { SocialPlatform } from '#/entities/socialPlatform';
@@ -11,6 +12,20 @@ import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useLazyMeQuery } from '#/redux/features/user/api';
 import { useAppDispatch } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
+
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #eeeeee;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+`;
 
 interface LoginCallbackProps {
   platform: SocialPlatform;
@@ -26,11 +41,11 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
-  console.table({ code, platform });
   useEffect(() => {
     if (code) {
       acquireToken({ platform, code });
     } else {
+      console.log(code);
       notFound();
     }
   }, [acquireToken, code, platform]);
@@ -76,10 +91,22 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   if (acquireTokenError || queryMeError) {
     const queryError = (acquireTokenError ?? queryMeError) as FetchBaseQueryError;
     return (
-      <Txt size="typo4" weight="regular">
-        {JSON.stringify(queryError.data)}
-      </Txt>
+      <>
+        <h1>{queryError.status}</h1>
+        <Txt size="typo4" weight="regular">
+          {JSON.stringify(queryError.data)}
+        </Txt>
+      </>
     );
   }
-  return <div>Loading</div>;
+  return (
+    <Container>
+      <Txt size="typo2" weight="bold">
+        로그인 중입니다
+      </Txt>
+      <Txt size="typo4" weight="medium">
+        F-IT, 프로젝트 시작을 위한 최적의 팀원 매칭 및 추천 서비스
+      </Txt>
+    </Container>
+  );
 };
