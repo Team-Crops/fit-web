@@ -68,7 +68,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
         step = AuthStep.PersonalInfo;
       } else if (!me.projectCount || !me.regionId || !me.activityHours) {
         step = AuthStep.ActivityInfo;
-      } else if (me.skillIds.length === 0) {
+      } else if (!me.skillIdList) {
         step = AuthStep.SkillInfo;
       } else {
         step = AuthStep.Complete;
