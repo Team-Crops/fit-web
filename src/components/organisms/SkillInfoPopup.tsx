@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { Position } from '#/entities/position';
-import { Skill } from '#/entities/skill';
+import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useGetPositionsQuery, useGetSkillsQuery } from '#/redux/features/skill-set/api';
+import { useAppDispatch } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
@@ -97,6 +97,8 @@ const SkillButton = styled(Button)<{ loading?: boolean }>`
 `;
 
 export const SkillInfoPopup = () => {
+  const dispatch = useAppDispatch();
+
   const { data: positions, isLoading: isLoadingPositions } = useGetPositionsQuery();
   const { data: skills, isLoading: isLoadingSkills } = useGetSkillsQuery();
   const [selectedPosition, setSelectedPosition] = useState<number>();
@@ -112,7 +114,15 @@ export const SkillInfoPopup = () => {
 
   return (
     <Container>
-      <SignupProgressBar currentStep={4} totalStep={4} progressName="활동정보" />
+      <SignupProgressBar
+        currentStep={4}
+        totalStep={4}
+        progressName="활동정보"
+        onForwardClick={() => {
+          dispatch(updateAuth({ step: AuthStep.SkillInfo + 1 }));
+        }}
+        onBackwardClick={() => dispatch(updateAuth({ step: AuthStep.SkillInfo - 1 }))}
+      />
       <HeaderContainer>
         <Txt size="typo1" weight="bold">
           사용 가능한 툴을 선택해주세요
