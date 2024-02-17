@@ -1,10 +1,15 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
 import PartyingFaceImage from '#/assets/images/partying-face.png';
+import { updateAuth } from '#/redux/features/auth/slice';
+import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
@@ -46,6 +51,10 @@ const ContentContainer = styled.div`
   justify-content: center;
 `;
 
+const Tooltip = styled.div`
+  position: absolute;
+`;
+
 const HeaderText = styled(Txt)`
   margin: 20px 0;
 `;
@@ -61,16 +70,46 @@ const ContinueButtonContainer = styled.div`
 `;
 
 export const CompletePopup = () => {
+  const dispatch = useAppDispatch();
+  const userid = useAppSelector((state) => state.auth.user?.id);
+  const isOpenProfile = useAppSelector((state) => state.auth.user?.isOpenProfile);
+  const isOpenPhoneNum = useAppSelector((state) => state.auth.user?.isOpenPhoneNum);
+
+  const [updateMe, { data: updateMeResponse }] = useUpdateMeMutation();
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    if (updateMeResponse && userid) {
+      dispatch(updateAuth({ user: { id: userid, ...updateMeResponse } }));
+    }
+  }, [updateMeResponse, dispatch, userid]);
+
   return (
     <Container>
       <ProfileVisibilityToggleContainer>
-        <Icons icon="info" width={13} height={13} />
+        {showTooltip && (
+          <Tooltip>
+            <Txt size="typo6" weight="regular">
+              다른 사용자들의 추천 목록에 프로필이 공개됩니다.
+            </Txt>
+          </Tooltip>
+        )}
+        <Icons
+          icon="info"
+          width={13}
+          height={13}
+          onMouseOver={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        />
         <div style={{ width: '5px' }} />
         <Txt size="typo5" weight="bold">
           내 프로필 공개
         </Txt>
         <div style={{ width: '9px' }} />
-        <Toggle checked={true} onChange={() => {}} />
+        <Toggle
+          checked={isOpenProfile}
+          onChange={(e) => updateMe({ isOpenProfile: e.target.checked, isOpenPhoneNum })}
+        />
       </ProfileVisibilityToggleContainer>
       <CrossButton icon="cross" width={24} height={24} color="#bdbdbd" />
       <div />
@@ -87,9 +126,11 @@ export const CompletePopup = () => {
         </BodyText>
       </ContentContainer>
       <ContinueButtonContainer>
-        <Button variant="round" color="primary" height="70">
-          포트폴리오 업로드 하러가기
-        </Button>
+        <Link href="/mypage">
+          <Button variant="round" color="primary" height="70">
+            포트폴리오 업로드 하러가기
+          </Button>
+        </Link>
       </ContinueButtonContainer>
     </Container>
   );
