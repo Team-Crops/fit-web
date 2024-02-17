@@ -26,16 +26,13 @@ const StyledInput = styled.input`
   display: none;
 `;
 
-interface ToggleProps {
-  checked: boolean;
-  onChange: () => void;
-}
+interface ToggleProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-export const Toggle = ({ checked, onChange }: ToggleProps) => {
+export const Toggle = ({ checked, onChange, ...props }: ToggleProps) => {
   return (
     <ToggleOutBlock checked={checked}>
       <ToggleInBlock checked={checked} />
-      <StyledInput type="checkbox" checked={checked} onChange={onChange} />
+      <StyledInput type="checkbox" {...props} />
     </ToggleOutBlock>
   );
 };
