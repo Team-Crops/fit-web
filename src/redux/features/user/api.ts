@@ -1,18 +1,18 @@
 import { User } from '#/entities/user';
 import { api } from '#/redux/api';
 
-export interface UserResponse extends User {}
-export interface UserUpdateRequest extends Partial<Omit<User, 'id'>> {}
+export interface UserUpdateRequest extends Partial<Omit<User, 'id' | 'status'>> {}
+export interface UserUpdateResponse extends Partial<Omit<User, 'id'>> {}
 
 const userApi = api.injectEndpoints({
   endpoints: (build) => ({
-    me: build.query<UserResponse, void>({
+    me: build.query<User, void>({
       query: () => ({
         url: `/v1/user`,
         method: 'GET',
       }),
     }),
-    updateMe: build.mutation<UserResponse, UserUpdateRequest>({
+    updateMe: build.mutation<UserUpdateResponse, UserUpdateRequest>({
       query: (user) => ({
         url: `/v1/user`,
         method: 'PUT',
