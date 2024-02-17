@@ -74,9 +74,6 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
         step = AuthStep.Complete;
       }
 
-      //FIXME: FOR DEBUGGING
-      step = AuthStep.SkillInfo;
-
       dispatch(
         updateAuth({
           step,
