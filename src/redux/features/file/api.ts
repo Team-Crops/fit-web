@@ -1,28 +1,29 @@
 import { api } from '#/redux/api';
 
-interface PresignedUrlRequest {
-  filename: string;
+interface UploadSignedUrlRequest {
+  fileDomain: 'PROFILE_IMAGE' | 'PORTFOLIO' | 'CHAT';
+  fileName: string;
 }
 
-interface PresignedUrlResponse {
+interface UploadSignedUrlResponse {
   preSignedUrl: string;
   fileKey: string;
 }
 
 const fileApi = api.injectEndpoints({
   endpoints: (build) => ({
-    presignedProfileImageUploadUrl: build.mutation<PresignedUrlResponse, PresignedUrlRequest>({
-      query: ({ filename }) => ({
+    getUploadSignedUrl: build.query<UploadSignedUrlResponse, UploadSignedUrlRequest>({
+      query: ({ fileDomain, fileName }) => ({
         url: '/v1/file/pre-signed-url',
         method: 'POST',
         body: {
-          fileDomain: 'PROFILE_IMAGE',
-          fileName: filename,
+          fileDomain,
+          fileName,
         },
       }),
     }),
   }),
 });
 
-export const { usePresignedProfileImageUploadUrlMutation } = fileApi;
+export const { useGetUploadSignedUrlQuery, useLazyGetUploadSignedUrlQuery } = fileApi;
 export default fileApi;
