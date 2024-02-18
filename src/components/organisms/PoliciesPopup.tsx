@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useForm } from 'react-hook-form';
-import { Policies } from 'src/entities/policy';
-
+import { policies } from '#/entities/policy';
+import { useUpdateMyAgreementsMutation } from '#/redux/features/user/api';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -68,13 +67,26 @@ const HelperTextContainer = styled.div`
 const signUpTermNames: PolicyName[] = ['service', 'privacy'];
 
 export const PoliciesPopup = () => {
-  const { register, watch, setValue } = useForm<Partial<Record<PolicyName, boolean>>>();
-  const [allChecked, setAllChecked] = useState<boolean>(false);
+  const [updateAgreements, { data: agreementsResult }] = useUpdateMyAgreementsMutation();
+
+  const [agreements, setAgreements] = useState<Record<PolicyName, boolean>>(
+    signUpTermNames.reduce((acc, name) => ({ ...acc, [name]: false }), {}) as Record<
+      PolicyName,
+      boolean
+    >
+  );
 
   useEffect(() => {
-    const subscription = watch((value) => setAllChecked(Object.values(value).every((v) => v)));
-    return () => subscription.unsubscribe();
-  }, [watch]);
+    if (Object.values(agreements).every((v) => v)) {
+      updateAgreements({
+        policyAgreementList: signUpTermNames.map((name) => ({
+          policyType: policies[name].title,
+          version: policies[name].version,
+          isAgree: agreements[name],
+        })),
+      });
+    }
+  }, [agreements, updateAgreements]);
 
   return (
     <Container>
@@ -88,15 +100,16 @@ export const PoliciesPopup = () => {
       <Divider />
       <Body>
         <PoliciesBox
-          allChecked={allChecked}
-          toggleAll={(e) => signUpTermNames.forEach((name) => setValue(name, e.target.checked))}
+          allChecked={Object.values(agreements).every((v) => v)}
+          toggleAll={(e) => setAgreements(getAgreements(e.target.checked))}
         >
           {signUpTermNames.map((name) => (
             <PoliciesBox.Policy
               key={name}
-              register={register(name)}
-              title={Policies[name].title}
-              text={Policies[name].text}
+              title={policies[name].title}
+              text={policies[name].text}
+              value={agreements[name]}
+              onChange={(e) => setAgreements({ ...agreements, [name]: e.target.checked })}
             />
           ))}
         </PoliciesBox>
@@ -109,3 +122,10 @@ export const PoliciesPopup = () => {
     </Container>
   );
 };
+
+function getAgreements(value: boolean = false): Record<PolicyName, boolean> {
+  return signUpTermNames.reduce((acc, name) => ({ ...acc, [name]: value }), {}) as Record<
+    PolicyName,
+    boolean
+  >;
+}
