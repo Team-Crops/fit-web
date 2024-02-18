@@ -55,7 +55,7 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
       `;
   }
 };
-const ButtonColorCSS = ({ variant, color }: ButtonProps) => {
+const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
   if (variant === 'outlined') {
     switch (color) {
       case 'primary':
@@ -81,16 +81,19 @@ const ButtonColorCSS = ({ variant, color }: ButtonProps) => {
     switch (color) {
       case 'primary':
         return css`
-          background-color: #ff706c;
+          color: ${disabled ? '#FFC7C6' : '#ffffff'};
+          background-color: ${disabled ? '#FFA7A5' : '#ff706c'};
           &:hover {
-            background-color: #ee5550;
+            color: ${disabled ? '#FFC7C6' : '#E0E0E0'};
+            background-color: ${disabled ? '#FFA7A5' : '#ee5550'};
           }
         `;
       case 'secondary':
         return css`
-          background-color: #bdbdbd;
+          color: ${disabled ? '#9E9E9E' : '#000000'};
+          background-color: ${disabled ? '#EEEEEE' : '#bdbdbd'};
           &:hover {
-            background-color: #9e9e9e;
+            background-color: ${disabled ? '#EEEEEE' : '#9e9e9e'};
           }
         `;
     }
@@ -101,7 +104,8 @@ const StyledButton = styled.button<ButtonProps>`
   color: #ffffff;
   letter-spacing: -0.6px;
 
-  transition: background-color 0.2s;
+  transition-property: background-color color;
+  transition-duration: 0.2s;
   ${ButtonVariantsCSS}
   ${ButtonSizeCSS}
   ${ButtonColorCSS};
