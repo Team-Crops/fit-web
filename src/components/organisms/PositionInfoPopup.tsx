@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -112,8 +112,8 @@ const BackgroundImage2 = styled(Image)`
 export const PositionInfoPopup = () => {
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
 
-  const { data: me, isLoading: loadingMe } = useMeQuery();
-  const [updateMe, { data, isLoading }] = useUpdateMeMutation();
+  const { data: me } = useMeQuery();
+  const [updateMe, { data: updatedMe }] = useUpdateMeMutation();
 
   const dispatch = useAppDispatch();
   const nickname = useAppSelector((state) => state.auth.user?.nickname);
@@ -125,6 +125,23 @@ export const PositionInfoPopup = () => {
     { id: 3, image: positionServerDeveloperPic, name: '서버 개발자' },
     { id: 4, image: positionMobileDeveloperPic, name: '모바일 개발자' },
   ];
+
+  useEffect(() => {
+    if (me?.positionId) {
+      setSelectedPosition(me.positionId);
+    }
+  }, [me]);
+
+  useEffect(() => {
+    if (me && updatedMe) {
+      dispatch(
+        updateAuth({
+          user: { ...updatedMe, id: me.id },
+          step: AuthStep.PositionInfo + 1,
+        })
+      );
+    }
+  }, [dispatch, me, updatedMe]);
 
   return (
     <Container>
