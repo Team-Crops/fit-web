@@ -16,7 +16,7 @@ import { positionPageBackground1, positionPageBackground2 } from '#/assets/image
 import { Txt } from '#/components/atoms/Text';
 import { SignupProgressBar } from '#/components/molecules/SignupProgressBar';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { useMeQuery, useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 
 const Container = styled.div`
@@ -41,9 +41,11 @@ const PositionContainer = styled.div`
   gap: 23px;
 `;
 
-const PositionRow = styled.div`
+const PositionCards = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
+  justify-content: center;
   gap: 40px;
 `;
 
@@ -108,21 +110,20 @@ const BackgroundImage2 = styled(Image)`
 `;
 
 export const PositionInfoPopup = () => {
-  const dispatch = useAppDispatch();
-  const nickname = useAppSelector((state) => state.auth.user?.nickname);
-  const [updateMe, { data, isLoading }] = useUpdateMeMutation();
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
 
+  const { data: me, isLoading: loadingMe } = useMeQuery();
+  const [updateMe, { data, isLoading }] = useUpdateMeMutation();
+
+  const dispatch = useAppDispatch();
+  const nickname = useAppSelector((state) => state.auth.user?.nickname);
+
   const positions = [
-    [
-      { id: 0, image: positionPlannerPic, name: '기획자' },
-      { id: 1, image: positionDesignerPic, name: '디자이너' },
-      { id: 2, image: positionWebDeveloperPic, name: '웹 개발자' },
-    ],
-    [
-      { id: 3, image: positionServerDeveloperPic, name: '서버 개발자' },
-      { id: 4, image: positionMobileDeveloperPic, name: '모바일 개발자' },
-    ],
+    { id: 0, image: positionPlannerPic, name: '기획자' },
+    { id: 1, image: positionDesignerPic, name: '디자이너' },
+    { id: 2, image: positionWebDeveloperPic, name: '웹 개발자' },
+    { id: 3, image: positionServerDeveloperPic, name: '서버 개발자' },
+    { id: 4, image: positionMobileDeveloperPic, name: '모바일 개발자' },
   ];
 
   return (
@@ -148,24 +149,22 @@ export const PositionInfoPopup = () => {
         {nickname}님의 포지션을 설정해주세요!
       </Txt>
       <PositionContainer>
-        {positions.map((target, index) => (
-          <PositionRow key={index}>
-            {target.map(({ id, image, name }) => (
-              <PositionCard
-                key={id}
-                selected={id === selectedPosition}
-                onClick={() => setSelectedPosition(id === selectedPosition ? null : id)}
-              >
-                <PositionImageContainer>
-                  <Image src={image} width={130} height={130} alt={name} />
-                </PositionImageContainer>
-                <Txt size="typo4" weight={id === selectedPosition ? 'bold' : 'medium'}>
-                  {name}
-                </Txt>
-              </PositionCard>
-            ))}
-          </PositionRow>
-        ))}
+        <PositionCards>
+          {positions.map(({ id, image, name }) => (
+            <PositionCard
+              key={id}
+              selected={id === selectedPosition}
+              onClick={() => setSelectedPosition(id === selectedPosition ? null : id)}
+            >
+              <PositionImageContainer>
+                <Image src={image} width={130} height={130} alt={name} />
+              </PositionImageContainer>
+              <Txt size="typo4" weight={id === selectedPosition ? 'bold' : 'medium'}>
+                {name}
+              </Txt>
+            </PositionCard>
+          ))}
+        </PositionCards>
       </PositionContainer>
       <div />
 
