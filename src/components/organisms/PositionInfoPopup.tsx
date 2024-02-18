@@ -112,7 +112,7 @@ const BackgroundImage2 = styled(Image)`
 export const PositionInfoPopup = () => {
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
 
-  const { data: me } = useMeQuery();
+  const me = useAppSelector((state) => state.auth.user);
   const [updateMe, { data: updatedMe }] = useUpdateMeMutation();
 
   const dispatch = useAppDispatch();
@@ -154,7 +154,7 @@ export const PositionInfoPopup = () => {
             ? undefined
             : () => {
                 if (selectedPosition) {
-                  updateMe({ positionId: selectedPosition });
+                  updateMe({ ...me, positionId: selectedPosition });
                 }
               }
         }

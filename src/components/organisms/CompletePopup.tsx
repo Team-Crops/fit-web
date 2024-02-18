@@ -71,18 +71,16 @@ const ContinueButtonContainer = styled.div`
 
 export const CompletePopup = () => {
   const dispatch = useAppDispatch();
-  const userid = useAppSelector((state) => state.auth.user?.id);
-  const isOpenProfile = useAppSelector((state) => state.auth.user?.isOpenProfile);
-  const isOpenPhoneNum = useAppSelector((state) => state.auth.user?.isOpenPhoneNum);
+  const me = useAppSelector((state) => state.auth.user);
 
   const [updateMe, { data: updateMeResponse }] = useUpdateMeMutation();
   const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    if (updateMeResponse && userid) {
-      dispatch(updateAuth({ user: { id: userid, ...updateMeResponse } }));
+    if (updateMeResponse && me?.id) {
+      dispatch(updateAuth({ user: { id: me.id, ...updateMeResponse } }));
     }
-  }, [updateMeResponse, dispatch, userid]);
+  }, [updateMeResponse, dispatch, me]);
 
   return (
     <Container>
@@ -107,8 +105,8 @@ export const CompletePopup = () => {
         </Txt>
         <div style={{ width: '9px' }} />
         <Toggle
-          checked={isOpenProfile}
-          onChange={(e) => updateMe({ isOpenProfile: e.target.checked, isOpenPhoneNum })}
+          checked={me?.isOpenProfile}
+          onChange={(e) => updateMe({ ...me, isOpenProfile: e.target.checked })}
         />
       </ProfileVisibilityToggleContainer>
       <CrossButton icon="cross" width={24} height={24} color="#bdbdbd" />

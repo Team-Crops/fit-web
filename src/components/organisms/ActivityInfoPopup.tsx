@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
-import { useAppDispatch } from '#/redux/hooks';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Icons } from '#atoms/Icons';
 import { Select } from '#atoms/Select';
 import { Txt } from '#atoms/Text';
@@ -57,6 +57,7 @@ const Spacer = styled.div``;
 
 export const ActivityInfoPopup = () => {
   const dispatch = useAppDispatch();
+  const me = useAppSelector((state) => state.auth.user);
   const [updateMe, { isLoading, isSuccess, isError }] = useUpdateMeMutation();
 
   const [projectCount, setProjectCount] = useState<number>();
@@ -76,7 +77,7 @@ export const ActivityInfoPopup = () => {
         }}
         onForwardClick={
           [projectCount, regionId, activityHours].every((v) => v !== undefined)
-            ? () => updateMe({ projectCount, regionId, activityHours })
+            ? () => updateMe({ ...me, projectCount, regionId, activityHours })
             : undefined
         }
       />

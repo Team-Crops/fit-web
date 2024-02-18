@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 
 import { useLazyGetUploadSignedUrlQuery } from '#/redux/features/file/api';
 import { useMeQuery, useUpdateMeMutation } from '#/redux/features/user/api';
+import { useAppSelector } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -66,7 +67,7 @@ const StyledInput = styled.input`
 `;
 
 export const UserInfoPopup = () => {
-  const { data: me } = useMeQuery();
+  const me = useAppSelector((state) => state.auth.user);
   const [updateMe] = useUpdateMeMutation();
   const [getSignedUrl, { data: signedUrl }] = useLazyGetUploadSignedUrlQuery();
 
@@ -106,7 +107,7 @@ export const UserInfoPopup = () => {
         method: 'PUT',
         body: image,
       }).then(() => {
-        updateMe({ nickname, profileImageUrl: signedUrl.fileKey });
+        updateMe({ ...me, nickname, profileImageUrl: signedUrl.fileKey });
       });
     }
   });

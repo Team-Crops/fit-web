@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
-import { useAppDispatch } from '#/redux/hooks';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Input } from '#atoms/Input';
 import { Txt } from '#atoms/Text';
 import { CareerSelect } from '#molecules/CareerSelect';
@@ -66,6 +66,7 @@ const Spacer = styled.div`
 
 export const PersonalInfoPopup = () => {
   const dispatch = useAppDispatch();
+  const me = useAppSelector((state) => state.auth.user);
   const [updateMe, { error, isLoading, isSuccess, isError }] = useUpdateMeMutation();
 
   const [name, setName] = useState('');
@@ -95,6 +96,7 @@ export const PersonalInfoPopup = () => {
           [name, email, career, groupName].every((v) => v !== undefined)
             ? () =>
                 updateMe({
+                  ...me,
                   username: name,
                   email,
                   backgroundStatus: career,
