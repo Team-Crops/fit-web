@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { ChangeEvent, HTMLAttributes } from 'react';
+import type { ChangeEvent, ChangeEventHandler, HTMLAttributes } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -9,8 +9,6 @@ import { CheckBox } from '#atoms/CheckBox';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
-
-import type { UseFormRegisterReturn } from 'react-hook-form';
 
 const Container = styled.div`
   width: 700px;
@@ -26,10 +24,16 @@ const Container = styled.div`
 `;
 
 const PolicyContainer = styled.div`
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const PolicyHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px 0 40px;
 `;
 
 const CheckBoxContainer = styled.div`
@@ -38,7 +42,7 @@ const CheckBoxContainer = styled.div`
   gap: 20px;
 `;
 
-const ExpandContainer = styled.div`
+const ExpandButtonContainer = styled.div`
   display: flex;
   align-items: center;
   color: #9e9e9e;
@@ -70,28 +74,31 @@ export const PoliciesBox = ({ children, allChecked, toggleAll, ...props }: Polic
   );
 };
 
-interface PolicyProps<FieldName extends string> {
-  register: UseFormRegisterReturn<FieldName>;
+interface PolicyProps {
   title: string;
   text: string;
+  value: boolean;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Policy = <FieldName extends string>({ register, title, text }: PolicyProps<FieldName>) => {
+const Policy = ({ title, text, value, onChange }: PolicyProps) => {
   const [isExpanded, setExpanded] = useState(false);
   return (
     <PolicyContainer>
-      <CheckBoxContainer>
-        <CheckBox {...register} />
-        <Txt size="typo4" weight="bold">
-          {title}
-        </Txt>
-      </CheckBoxContainer>
-      <ExpandContainer onClick={() => setExpanded((prev) => !prev)}>
-        <Txt size="typo5" weight="medium">
-          상세보기
-        </Txt>
-        <Icons icon="arrowForward" width={20} height={20} color="#9E9E9E" />
-      </ExpandContainer>
+      <PolicyHeader>
+        <CheckBoxContainer>
+          <CheckBox checked={value} onChange={onChange} />
+          <Txt size="typo4" weight="bold">
+            {title}
+          </Txt>
+        </CheckBoxContainer>
+        <ExpandButtonContainer onClick={() => setExpanded((prev) => !prev)}>
+          <Txt size="typo5" weight="medium">
+            상세보기
+          </Txt>
+          <Icons icon="arrowForward" width={20} height={20} color="#9E9E9E" />
+        </ExpandButtonContainer>
+      </PolicyHeader>
       {isExpanded && (
         <Txt size="typo5" weight={'medium'}>
           {text}
