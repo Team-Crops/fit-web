@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useLazyGetUploadSignedUrlQuery } from '#/redux/features/file/api';
-import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { useMeQuery, useUpdateMeMutation } from '#/redux/features/user/api';
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -66,6 +66,7 @@ const StyledInput = styled.input`
 `;
 
 export const UserInfoPopup = () => {
+  const { data: me } = useMeQuery();
   const [updateMe] = useUpdateMeMutation();
   const [getSignedUrl, { data: signedUrl }] = useLazyGetUploadSignedUrlQuery();
 
@@ -73,6 +74,12 @@ export const UserInfoPopup = () => {
   const [nickname, setNickname] = useState('');
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [enableContinue, setEnableContinue] = useState(false);
+
+  useEffect(() => {
+    if (me) {
+      setNickname(me.nickname || '');
+    }
+  }, [me]);
 
   const handleImageChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const image = e.target.files?.item(0);
