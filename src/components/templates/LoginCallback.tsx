@@ -64,7 +64,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
       let step: AuthStep;
       if (myAgreements.some((policy) => policy.isAgree === false)) {
         step = AuthStep.Policies;
-      } else if (!me.profileImageUrl || !me.nickname) {
+      } else if (!me.nickname) {
         step = AuthStep.UserInfo;
       } else if (!me.positionId) {
         step = AuthStep.PositionInfo;
