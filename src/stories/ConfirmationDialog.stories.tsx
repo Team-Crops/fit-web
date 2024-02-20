@@ -40,6 +40,9 @@ export const Primary: Story = {
     isOpen: true,
     text: '예진님을 강퇴하시겠습니까?',
     helperText: '강퇴하시면 다시 초대할 수 없습니다.',
+    onConfirm: () => {
+      console.log('confirmed');
+    },
   },
   render: TemplateComponent,
 };
