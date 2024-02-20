@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
+
+import { Txt } from '#atoms/Text';
 
 const NavBlock = styled.div`
   display: flex;

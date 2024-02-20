@@ -1,8 +1,9 @@
 import Image from 'next/image';
 
+import styled from '@emotion/styled';
+
 import { MainDescriptionBlock } from '#molecules/MainDescriptionBlock';
 import { MainDescriptionCard } from '#molecules/MainDescriptionCard';
-import styled from '@emotion/styled';
 
 const Block = styled.div`
   position: relative;

@@ -1,7 +1,8 @@
 import Image from 'next/image';
 
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
+
+import { Txt } from '#atoms/Text';
 
 const Card = styled.div<{ width: number; height: number }>`
   display: flex;
