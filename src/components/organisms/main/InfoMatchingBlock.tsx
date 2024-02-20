@@ -1,10 +1,12 @@
 import Image from 'next/image';
 
-import { MainDescriptionBlock } from '#molecules/MainDescriptionBlock';
-import { MainDescriptionCard } from '#molecules/MainDescriptionCard';
 import styled from '@emotion/styled';
+
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
+import { MainDescriptionBlock } from '#molecules/MainDescriptionBlock';
+import { MainDescriptionCard } from '#molecules/MainDescriptionCard';
 
 const Block = styled.div`
   position: relative;
