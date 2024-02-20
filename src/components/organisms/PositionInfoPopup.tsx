@@ -16,7 +16,8 @@ import { positionPageBackground1, positionPageBackground2 } from '#/assets/image
 import { Txt } from '#/components/atoms/Text';
 import { SignupProgressBar } from '#/components/molecules/SignupProgressBar';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useMeQuery, useUpdateMeMutation } from '#/redux/features/user/api';
+import { useGetPositionsQuery } from '#/redux/features/skill-set/api';
+import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 
 const Container = styled.div`
@@ -109,22 +110,23 @@ const BackgroundImage2 = styled(Image)`
   filter: blur(1px);
 `;
 
+const images = [
+  positionPlannerPic,
+  positionDesignerPic,
+  positionWebDeveloperPic,
+  positionServerDeveloperPic,
+  positionMobileDeveloperPic,
+];
+
 export const PositionInfoPopup = () => {
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
 
   const me = useAppSelector((state) => state.auth.user);
   const [updateMe, { data: updatedMe }] = useUpdateMeMutation();
+  const { data: positions } = useGetPositionsQuery();
 
   const dispatch = useAppDispatch();
   const nickname = useAppSelector((state) => state.auth.user?.nickname);
-
-  const positions = [
-    { id: 0, image: positionPlannerPic, name: '기획자' },
-    { id: 1, image: positionDesignerPic, name: '디자이너' },
-    { id: 2, image: positionWebDeveloperPic, name: '웹 개발자' },
-    { id: 3, image: positionServerDeveloperPic, name: '서버 개발자' },
-    { id: 4, image: positionMobileDeveloperPic, name: '모바일 개발자' },
-  ];
 
   useEffect(() => {
     if (me?.positionId) {
@@ -167,20 +169,24 @@ export const PositionInfoPopup = () => {
       </Txt>
       <PositionContainer>
         <PositionCards>
-          {positions.map(({ id, image, name }) => (
-            <PositionCard
-              key={id}
-              selected={id === selectedPosition}
-              onClick={() => setSelectedPosition(id === selectedPosition ? null : id)}
-            >
-              <PositionImageContainer>
-                <Image src={image} width={130} height={130} alt={name} />
-              </PositionImageContainer>
-              <Txt size="typo4" weight={id === selectedPosition ? 'bold' : 'medium'}>
-                {name}
-              </Txt>
-            </PositionCard>
-          ))}
+          {positions ? (
+            positions.positionList.map(({ id, displayName }, index) => (
+              <PositionCard
+                key={id}
+                selected={id === selectedPosition}
+                onClick={() => setSelectedPosition(id === selectedPosition ? null : id)}
+              >
+                <PositionImageContainer>
+                  <Image src={images[index]} width={130} height={130} alt={displayName} />
+                </PositionImageContainer>
+                <Txt size="typo4" weight={id === selectedPosition ? 'bold' : 'medium'}>
+                  {displayName}
+                </Txt>
+              </PositionCard>
+            ))
+          ) : (
+            <div />
+          )}
         </PositionCards>
       </PositionContainer>
       <div />
