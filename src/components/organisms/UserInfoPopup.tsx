@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useLazyGetUploadSignedUrlQuery } from '#/redux/features/file/api';
-import { useMeQuery, useUpdateMeMutation } from '#/redux/features/user/api';
-import { useAppSelector } from '#/redux/hooks';
+import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -67,8 +68,9 @@ const StyledInput = styled.input`
 `;
 
 export const UserInfoPopup = () => {
+  const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.auth.user);
-  const [updateMe] = useUpdateMeMutation();
+  const [updateMe, { data: updatedMe, isSuccess: updateSuccess }] = useUpdateMeMutation();
   const [getSignedUrl, { data: signedUrl }] = useLazyGetUploadSignedUrlQuery();
 
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -81,6 +83,12 @@ export const UserInfoPopup = () => {
       setNickname(me.nickname || '');
     }
   }, [me]);
+
+  useEffect(() => {
+    if (me && updateSuccess) {
+      dispatch(updateAuth({ user: { id: me.id, ...updatedMe }, step: AuthStep.UserInfo + 1 }));
+    }
+  }, [dispatch, me, updateSuccess, updatedMe]);
 
   const handleImageChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const image = e.target.files?.item(0);
@@ -96,7 +104,7 @@ export const UserInfoPopup = () => {
   }, [imageInputRef, nickname]);
 
   useEffect(() => {
-    if (signedUrl) {
+    if (me && signedUrl) {
       const image = imageInputRef.current?.files?.item(0);
       if (!image) {
         return;
@@ -107,7 +115,8 @@ export const UserInfoPopup = () => {
         method: 'PUT',
         body: image,
       }).then(() => {
-        updateMe({ ...me, nickname, profileImageUrl: signedUrl.fileKey });
+        const { id, status, ...updatableMe } = me;
+        updateMe({ ...updatableMe, nickname, profileImageUrl: signedUrl.fileKey });
       });
     }
   });
@@ -153,14 +162,19 @@ export const UserInfoPopup = () => {
         variant="round"
         disabled={!enableContinue}
         onClick={() => {
-          const image = imageInputRef.current?.files?.item(0);
-          if (!image) {
+          if (!me) {
             return;
           }
-          getSignedUrl({
-            fileDomain: 'PROFILE_IMAGE',
-            fileName: image.name,
-          });
+          const image = imageInputRef.current?.files?.item(0);
+          if (image) {
+            return getSignedUrl({
+              fileDomain: 'PROFILE_IMAGE',
+              fileName: image.name,
+            });
+          } else {
+            const { id, ...meWithoutId } = me;
+            updateMe({ ...meWithoutId, nickname });
+          }
         }}
       >
         시작하기
