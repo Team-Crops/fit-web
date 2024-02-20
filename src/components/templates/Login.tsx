@@ -4,14 +4,16 @@ import styled from '@emotion/styled';
 
 import { AuthStep } from '#/redux/features/auth/slice';
 import { useAppSelector } from '#/redux/hooks';
-import { ActivityInfoPopup } from '#organisms/ActivityInfoPopup';
-import { CompletePopup } from '#organisms/CompletePopup';
-import { LoginPopup } from '#organisms/LoginPopup';
-import { PersonalInfoPopup } from '#organisms/PersonalInfoPopup';
-import { PoliciesPopup } from '#organisms/PoliciesPopup';
-import { PositionInfoPopup } from '#organisms/PositionInfoPopup';
-import { SkillInfoPopup } from '#organisms/SkillInfoPopup';
-import { UserInfoPopup } from '#organisms/UserInfoPopup';
+import {
+  LoginPopup,
+  PoliciesPopup,
+  UserInfoPopup,
+  PositionInfoPopup,
+  PersonalInfoPopup,
+  ActivityInfoPopup,
+  SkillInfoPopup,
+  CompletePopup,
+} from '#organisms/login';
 
 export const Backdrop = styled.div`
   width: 100vw;

@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
-import { Button } from '../atoms/Button';
+import { Button } from '../../atoms/Button';
 
 const Container = styled.div`
   display: flex;
