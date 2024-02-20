@@ -44,7 +44,6 @@ type IconName =
   | 'google'
   | 'info'
   | 'instagram'
-  | 'info'
   | 'kakao'
   | 'logo'
   | 'megaphone'
