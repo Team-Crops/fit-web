@@ -3,73 +3,92 @@ import { InputHTMLAttributes } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { Txt, TxtProps, TxtSizeCSS, TxtWeightCSS } from './Text';
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
 `;
-const StyledInput = styled.input<StyledInputProps>`
-  height: 32px;
-  border: none;
-  border-radius: 5px;
-  padding: 1px 10px 0px;
-  background-color: #eeeeee;
-  /* error css */
-  ${(props) =>
-    props.isError &&
-    css`
-      border: 1px solid #ff0800;
-      background-color: #f7c6c4;
-    `}
 
-  -webkit-appearance: none;
-  -moz-appearance: none;
+interface CommonInputProps {
+  typo: TxtProps['size'];
+  weight: TxtProps['weight'];
+  error?: boolean;
+}
+
+const CommonInput = styled.input<CommonInputProps>`
   appearance: none;
 
-  /* font css */
-  font-family: Spoqa Han Sans Neo;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.6px;
+  padding: 10px;
+
+  ${({ typo }) => TxtSizeCSS({ size: typo })}
+  ${({ weight }) => TxtWeightCSS({ weight })}
+`;
+
+const FilledInput = styled(CommonInput)`
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.2)' : '#eeeeee')};
+  &:focus {
+    outline: 2px solid #ffc7c6;
+    border: 1px solid #ff706c;
+    background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.1)' : '#fff')};
+  }
+
+  color: #212121;
   &::placeholder {
     color: #9e9e9e;
   }
-  &:focus,
-  &:focus-visible {
-    padding: 0px 9px;
-    outline: 2px solid #ffc7c6;
-    border: 1px solid #ff706c;
-    background-color: #fff;
+`;
+
+const StandardInput = styled(CommonInput)`
+  border-bottom: 3px solid #ff908d;
+  &:focus {
+    border-bottom: 3px solid #ff706c;
+  }
+
+  color: #212121;
+  &::placeholder {
+    color: #bdbdbd;
   }
 `;
-const ErrorText = styled.span`
-  color: #ff0800;
-  font-family: Spoqa Han Sans Neo;
-  font-size: 8px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.4px;
+
+interface HelperTextProps {
+  error: boolean;
+}
+
+const HelperText = styled(Txt)<HelperTextProps>`
+  color: ${({ error }) => (error ? '#ff0800' : '#9e9e9e')};
   text-align: right;
 `;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  value?: string;
-  error?: boolean;
+  variant?: 'filled' | 'standard';
   helperText?: string;
-}
-interface StyledInputProps {
-  isError?: boolean;
+  error?: boolean;
+
+  typo?: TxtProps['size'];
+  weight?: TxtProps['weight'];
 }
 
-export const Input = ({ error, helperText, ...props }: InputProps) => {
+export const Input = ({
+  variant = 'filled',
+  helperText,
+  error = false,
+  typo = 'typo6',
+  weight = 'medium',
+  ...props
+}: InputProps) => {
   return (
     <InputContainer>
-      <StyledInput isError={error} type="text" {...props} />
-      {/* TODO: Text Component 추가 시 교체 */}
-      {error && helperText && <ErrorText>{helperText}</ErrorText>}
+      {variant === 'filled' && <FilledInput typo={typo} weight={weight} error={error} {...props} />}
+      {variant === 'standard' && (
+        <StandardInput typo={typo} weight={weight} error={error} {...props} />
+      )}
+      <HelperText size="typo6" weight="regular" error={error}>
+        {helperText}
+      </HelperText>
     </InputContainer>
   );
 };
