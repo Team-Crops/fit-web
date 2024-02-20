@@ -3,7 +3,7 @@ import { HTMLAttributes } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const TxtSizeCSS = ({ size, weight }: TxtProps) => {
+export const TxtSizeCSS = ({ size, weight }: TxtProps) => {
   switch (size) {
     case 'typo1':
       return css`
@@ -47,7 +47,7 @@ const TxtSizeCSS = ({ size, weight }: TxtProps) => {
       `;
   }
 };
-const TxtWeightCSS = ({ weight }: TxtProps) => {
+export const TxtWeightCSS = ({ weight }: TxtProps) => {
   switch (weight) {
     case 'bold':
       return css`
@@ -71,16 +71,23 @@ const StyledTxt = styled.span<TxtProps>`
   ${TxtWeightCSS}
 `;
 
-interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
-  size: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'display1' | 'display2';
-  weight: 'bold' | 'medium' | 'regular';
+export interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
+  size?: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'display1' | 'display2';
+  weight?: 'bold' | 'medium' | 'regular';
   color?: string;
   marginBottom?: number;
 }
 
-export const Txt = ({ children, color = '#333', marginBottom = 0, ...props }: TxtProps) => {
+export const Txt = ({
+  size = 'typo4',
+  weight = 'medium',
+  color = '#333',
+  marginBottom = 0,
+  children,
+  ...props
+}: TxtProps) => {
   return (
-    <StyledTxt color={color} marginBottom={marginBottom} {...props}>
+    <StyledTxt size={size} weight={weight} color={color} marginBottom={marginBottom} {...props}>
       {children}
     </StyledTxt>
   );
