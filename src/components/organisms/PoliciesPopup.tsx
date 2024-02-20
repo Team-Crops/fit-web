@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { policies } from '#/entities/policy';
+import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMyAgreementsMutation } from '#/redux/features/user/api';
+import { useAppDispatch } from '#/redux/hooks';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -76,17 +78,26 @@ export const PoliciesPopup = () => {
     >
   );
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (Object.values(agreements).every((v) => v)) {
       updateAgreements({
-        policyAgreementList: signUpTermNames.map((name) => ({
-          policyType: policies[name].title,
+        agreements: signUpTermNames.map((name) => ({
+          policyType: `${name.toUpperCase()}_POLICY`,
           version: policies[name].version,
           isAgree: agreements[name],
         })),
       });
     }
   }, [agreements, updateAgreements]);
+
+  useEffect(() => {
+    console.log(agreementsResult);
+    if (agreementsResult && agreementsResult.policyAgreementList.every((a) => a.isAgree)) {
+      dispatch(updateAuth({ step: AuthStep.Policies + 1 }));
+    }
+  }, [agreementsResult, dispatch]);
 
   return (
     <Container>

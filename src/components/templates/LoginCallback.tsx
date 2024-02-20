@@ -9,7 +9,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SocialPlatform } from '#/entities/socialPlatform';
 import { useLazyAcquireTokenQuery } from '#/redux/features/auth/api';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useLazyMeQuery } from '#/redux/features/user/api';
+import { useLazyMeQuery, useLazyMyAgreementsQuery } from '#/redux/features/user/api';
 import { useAppDispatch } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
@@ -37,6 +37,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
 
   const [acquireToken, { data: tokens, error: acquireTokenError }] = useLazyAcquireTokenQuery();
   const [queryMe, { data: me, error: queryMeError }] = useLazyMeQuery();
+  const [queryAgreements, { data: myAgreements }] = useLazyMyAgreementsQuery();
 
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
@@ -54,13 +55,16 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
     if (tokens) {
       dispatch(updateAuth(tokens));
       queryMe();
+      queryAgreements();
     }
-  }, [dispatch, queryMe, tokens]);
+  }, [dispatch, queryAgreements, queryMe, tokens]);
 
   useEffect(() => {
-    if (me) {
+    if (me && myAgreements) {
       let step: AuthStep;
-      if (!me.profileImageUrl || !me.nickname) {
+      if (myAgreements.some((policy) => policy.isAgree === false)) {
+        step = AuthStep.Policies;
+      } else if (!me.profileImageUrl || !me.nickname) {
         step = AuthStep.UserInfo;
       } else if (!me.positionId) {
         step = AuthStep.PositionInfo;
@@ -83,7 +87,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
 
       router.push('/');
     }
-  }, [me, dispatch, router]);
+  }, [me, dispatch, router, myAgreements]);
 
   if (acquireTokenError || queryMeError) {
     const queryError = (acquireTokenError ?? queryMeError) as FetchBaseQueryError;

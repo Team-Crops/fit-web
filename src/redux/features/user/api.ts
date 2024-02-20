@@ -9,7 +9,7 @@ export interface PolicyAgreementResponse {
   policyAgreementList: PolicyAgreement[];
 }
 export interface PolicyAgreementUpdateRequest {
-  policyAgreementList: PolicyAgreement[];
+  agreements: PolicyAgreement[];
 }
 export interface PolicyAgreementUpdateResponse {
   policyAgreementList: PolicyAgreement[];
@@ -30,19 +30,20 @@ const userApi = api.injectEndpoints({
         body: user,
       }),
     }),
-    myAgreements: build.query<PolicyAgreementResponse, void>({
+    myAgreements: build.query<PolicyAgreement[], void>({
       query: () => ({
         url: `/v1/user/policy-agreement`,
         method: 'GET',
       }),
+      transformResponse: (response: PolicyAgreementResponse) => response.policyAgreementList,
     }),
     updateMyAgreements: build.mutation<PolicyAgreementUpdateResponse, PolicyAgreementUpdateRequest>(
       {
-        query: (agreements) => ({
+        query: ({ agreements }) => ({
           url: `/v1/user/policy-agreement`,
           method: 'PUT',
           body: {
-            policyAgreementList: agreements.policyAgreementList.map((agreement) => ({
+            policyAgreementList: agreements.map((agreement) => ({
               ...agreement,
               updatedAt: new Date().toISOString(),
             })),
@@ -57,7 +58,9 @@ export const {
   useMeQuery,
   useLazyMeQuery,
   useUpdateMeMutation,
+
   useMyAgreementsQuery,
+  useLazyMyAgreementsQuery,
   useUpdateMyAgreementsMutation,
 } = userApi;
 export default userApi;
