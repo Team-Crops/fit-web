@@ -16,12 +16,14 @@ export enum AuthStep {
 
 type AuthState = {
   step: AuthStep | null;
+  showLoginPopup: boolean;
   user: User | null;
   accessToken: string | null;
   refreshToken: string | null;
 };
 
 const initialState: AuthState = {
+  showLoginPopup: false,
   step: null,
   user: null,
   accessToken: null,
