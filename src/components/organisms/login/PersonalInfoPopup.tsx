@@ -43,7 +43,12 @@ const FormContainer = styled.div`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
+`;
+
+const InputLabel = styled(Txt)`
+  color: #9e9e9e;
 `;
 
 const CareerContainer = styled.div`
@@ -109,42 +114,61 @@ export const PersonalInfoPopup = () => {
         <Txt size="typo1" weight="bold">
           이름, 학력/경력, 이메일을 입력해주세요
         </Txt>
-        <Txt size="typo4" weight="medium">
+        <Txt size="typo4" weight="medium" color="#bdbdbd">
           필수 프로필 정보를 입력하면 서비스를 이용할 수 있어요!
         </Txt>
       </TitleContainer>
       <Spacer />
       <FormContainer>
         <InputContainer>
-          <Txt size="typo5" weight="medium">
+          <InputLabel size="typo5" weight="medium">
             이름
-          </Txt>
-          <StyledInput value={name} onChange={(e) => setName(e.target.value)} />
+          </InputLabel>
+          <StyledInput
+            variant="standard"
+            typo="typo3"
+            weight="medium"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </InputContainer>
         <InputContainer>
-          <Txt size="typo5" weight="medium">
+          <InputLabel size="typo5" weight="medium">
             이메일
-          </Txt>
-          <StyledInput value={email} onChange={(e) => setEmail(e.target.value)} />
+          </InputLabel>
+          <StyledInput
+            variant="standard"
+            typo="typo3"
+            weight="medium"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </InputContainer>
         <CareerContainer>
           <InputContainer style={{ width: '50%' }}>
-            <Txt size="typo5" weight="medium">
+            <InputLabel size="typo5" weight="medium">
               학력/경력
-            </Txt>
+            </InputLabel>
             <StyledCareerSelect value={career} onChange={(e) => setCareer(e.target.value)} />
           </InputContainer>
           {career && (
             <InputContainer style={{ width: '50%' }}>
-              <Txt size="typo5" weight="medium">
+              <InputLabel size="typo5" weight="medium">
                 {career.startsWith('highschool') || career.startsWith('university')
                   ? '학교명'
                   : '회사명'}
-              </Txt>
-              <StyledInput value={groupName} onChange={(e) => setGroupName(e.target.value)} />
+              </InputLabel>
+              <StyledInput
+                variant="standard"
+                typo="typo3"
+                weight="medium"
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+              />
             </InputContainer>
           )}
         </CareerContainer>
+        <Spacer />
       </FormContainer>
       <Spacer />
       <Spacer />
