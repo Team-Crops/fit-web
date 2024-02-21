@@ -19,15 +19,12 @@ interface CommonInputProps {
 const CommonInput = styled.input<CommonInputProps>`
   appearance: none;
 
-  padding: 10px;
-
   ${({ typo }) => TxtSizeCSS({ size: typo })}
   ${({ weight }) => TxtWeightCSS({ weight })}
 `;
 
 const FilledInput = styled(CommonInput)`
-  width: ${({ width }) => width};
-  height: 33px;
+  padding: 10px;
   border: 1px solid #eeeeee;
   border-radius: 5px;
   background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.2)' : '#eeeeee')};
@@ -44,6 +41,7 @@ const FilledInput = styled(CommonInput)`
 `;
 
 const StandardInput = styled(CommonInput)`
+  padding: 10px 0;
   border-bottom: 3px solid #ff908d;
   &:focus {
     border-bottom: 3px solid #ff706c;
