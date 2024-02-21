@@ -34,6 +34,9 @@ const ToggleTemplate = (args: Story['args']) => {
 export const Primary: Story = {
   args: {
     checked: false,
+    onChange: () => {
+      console.log('onChange');
+    },
   },
   render: ToggleTemplate,
 };
