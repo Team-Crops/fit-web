@@ -1,4 +1,5 @@
 import './globals.css';
+import { LoginGuard } from './login-guard';
 import StoreProvider from './StoreProvider';
 
 import type { Metadata } from 'next';
@@ -12,7 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <StoreProvider>
-        <body>{children}</body>
+        <body>
+          <LoginGuard>{children}</LoginGuard>
+        </body>
       </StoreProvider>
     </html>
   );
