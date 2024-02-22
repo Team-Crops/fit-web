@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { UserBackgroundStatus } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
@@ -72,11 +73,11 @@ const Spacer = styled.div`
 export const PersonalInfoPopup = () => {
   const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.auth.user);
-  const [updateMe, { error, isLoading, isSuccess, isError }] = useUpdateMeMutation();
+  const [updateMe, { isLoading, isSuccess }] = useUpdateMeMutation();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [career, setCareer] = useState('');
+  const [career, setCareer] = useState<UserBackgroundStatus>();
   const [groupName, setGroupName] = useState('');
 
   useEffect(() => {
@@ -84,11 +85,8 @@ export const PersonalInfoPopup = () => {
       if (isSuccess) {
         dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
       }
-      if (isError) {
-        throw error;
-      }
     }
-  }, [dispatch, error, isError, isLoading, isSuccess]);
+  }, [dispatch, isLoading, isSuccess]);
 
   return (
     <Container>
@@ -149,7 +147,10 @@ export const PersonalInfoPopup = () => {
             <InputLabel size="typo5" weight="medium">
               학력/경력
             </InputLabel>
-            <StyledCareerSelect value={career} onChange={(e) => setCareer(e.target.value)} />
+            <StyledCareerSelect
+              value={career}
+              onChange={(e) => setCareer(e.target.value as UserBackgroundStatus)}
+            />
           </InputContainer>
           {career && (
             <InputContainer style={{ width: '50%' }}>
