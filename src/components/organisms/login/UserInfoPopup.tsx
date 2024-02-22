@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
@@ -71,7 +72,7 @@ export const UserInfoPopup = () => {
   const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.auth.user);
   const [updateMe, { data: updatedMe, isSuccess: updateSuccess }] = useUpdateMeMutation();
-  const [getSignedUrl, { data: signedUrl }] = useLazyGetUploadSignedUrlQuery();
+  const [getUploadUrl, { data: signedUrl }] = useLazyGetUploadSignedUrlQuery();
 
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [nickname, setNickname] = useState('');
@@ -85,23 +86,8 @@ export const UserInfoPopup = () => {
   }, [me]);
 
   useEffect(() => {
-    if (me && updateSuccess) {
-      dispatch(updateAuth({ user: { id: me.id, ...updatedMe }, step: AuthStep.UserInfo + 1 }));
-    }
-  }, [dispatch, me, updateSuccess, updatedMe]);
-
-  const handleImageChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const image = e.target.files?.item(0);
-    if (image) {
-      setPreviewImage(URL.createObjectURL(image));
-    } else {
-      setPreviewImage(null);
-    }
-  };
-
-  useEffect(() => {
     setEnableContinue(nickname.length > 0);
-  }, [imageInputRef, nickname]);
+  }, [nickname]);
 
   useEffect(() => {
     if (me && signedUrl) {
@@ -109,17 +95,63 @@ export const UserInfoPopup = () => {
       if (!image) {
         return;
       }
+    }
+  }, [me, nickname, signedUrl, updateMe]);
+
+  useEffect(() => {
+    if (me && updateSuccess) {
+      dispatch(updateAuth({ user: { id: me.id, ...updatedMe }, step: AuthStep.UserInfo + 1 }));
+    }
+  }, [dispatch, me, updateSuccess, updatedMe]);
+
+  const handleImageChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      const image = e.target.files?.item(0);
+      if (image) {
+        setPreviewImage(URL.createObjectURL(image));
+      } else {
+        setPreviewImage(null);
+      }
+    },
+    [setPreviewImage]
+  );
+
+  const uploadImage = useCallback(
+    async (image: File) => {
+      const uploadUrl = await getUploadUrl({ fileDomain: 'PROFILE_IMAGE', fileName: image.name });
+      if (uploadUrl.error || !uploadUrl.data) {
+        return; //TODO: HANDLE ERROR
+      }
+
+      const { fileKey, preSignedUrl } = uploadUrl.data;
       const formData = new FormData();
       formData.append('file', image);
-      fetch(signedUrl.preSignedUrl, {
+      const response = await fetch(preSignedUrl, {
         method: 'PUT',
         body: image,
-      }).then(() => {
-        const { id, status, ...updatableMe } = me;
-        updateMe({ ...updatableMe, nickname, profileImageUrl: signedUrl.fileKey });
       });
+      if (!response.ok) {
+        return; //TODO: HANDLE ERROR
+      }
+
+      return fileKey;
+    },
+    [getUploadUrl]
+  );
+
+  const handleStartClick = useCallback(async () => {
+    if (!me) {
+      return;
     }
-  });
+
+    const image = imageInputRef.current?.files?.item(0);
+    if (image) {
+      const profileImageUrl = await uploadImage(image);
+      return updateMe({ nickname, profileImageUrl });
+    } else {
+      return updateMe({ nickname });
+    }
+  }, [me, nickname, updateMe, uploadImage]);
 
   return (
     <Container>
@@ -128,12 +160,11 @@ export const UserInfoPopup = () => {
       </Txt>
       <ProfileImage onClick={() => imageInputRef.current?.click()}>
         {previewImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={previewImage} alt="Profile Image" width="164" height="164" />
+          <Image src={previewImage} alt="Profile Image" width="164" height="164" />
         ) : (
           <>
             <Icons icon="camera" width={48} height={48} />
-            <Txt size="typo4" weight="medium">
+            <Txt size="typo4" weight="medium" color="#bdbdbd">
               이미지 추가
             </Txt>
           </>
@@ -161,21 +192,7 @@ export const UserInfoPopup = () => {
         height="70"
         variant="round"
         disabled={!enableContinue}
-        onClick={() => {
-          if (!me) {
-            return;
-          }
-          const image = imageInputRef.current?.files?.item(0);
-          if (image) {
-            return getSignedUrl({
-              fileDomain: 'PROFILE_IMAGE',
-              fileName: image.name,
-            });
-          } else {
-            const { id, ...meWithoutId } = me;
-            updateMe({ ...meWithoutId, nickname });
-          }
-        }}
+        onClick={handleStartClick}
       >
         시작하기
       </Button>
