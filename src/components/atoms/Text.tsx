@@ -74,20 +74,18 @@ const StyledTxt = styled.span<TxtProps>`
 export interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
   size?: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'display1' | 'display2';
   weight?: 'bold' | 'medium' | 'regular';
-  color?: string;
   marginBottom?: number;
 }
 
 export const Txt = ({
   size = 'typo4',
   weight = 'medium',
-  color = '#333',
   marginBottom = 0,
   children,
   ...props
 }: TxtProps) => {
   return (
-    <StyledTxt size={size} weight={weight} color={color} marginBottom={marginBottom} {...props}>
+    <StyledTxt size={size} weight={weight} marginBottom={marginBottom} {...props}>
       {children}
     </StyledTxt>
   );
