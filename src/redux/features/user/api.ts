@@ -1,4 +1,4 @@
-import { PolicyAgreement } from '#/entities/policyAgreement';
+import { PolicyAgreement } from '#/entities/policy';
 import { User } from '#/entities/user';
 import { api } from '#/redux/api';
 
@@ -26,7 +26,7 @@ const userApi = api.injectEndpoints({
     updateMe: build.mutation<UserUpdateResponse, UserUpdateRequest>({
       query: (user) => ({
         url: `/v1/user`,
-        method: 'PUT',
+        method: 'PATCH',
         body: user,
       }),
     }),

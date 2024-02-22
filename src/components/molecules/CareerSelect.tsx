@@ -1,24 +1,39 @@
+import { UserBackgroundStatusStudent, UserBackgroundStatusWorker } from '#/entities/user';
 import { Select, type SelectProps } from '#atoms/Select';
 
 export const CareerSelect = (props: SelectProps) => {
+  const careerStudentTexts: Record<UserBackgroundStatusStudent, string> = {
+    HIGH_SCHOOL_GRADUATE: '고졸',
+    UNIVERSITY_FRESHMAN: '대학교 1학년',
+    UNIVERSITY_SOPHOMORE: '대학교 2학년',
+    UNIVERSITY_JUNIOR: '대학교 3학년',
+    UNIVERSITY_SENIOR: '대학교 4학년',
+    GRADUATE_STUDENT: '대학원생',
+    LEAVE_OF_ABSENCE_STUDENT: '휴학생',
+  };
+  const careerWorkerTexts: Record<UserBackgroundStatusWorker, string> = {
+    WORKER_CONTRACT_WORKER: '인턴/계약직',
+    WORKER_LESS_THAN_ONE_YEAR: '신입 (1년 미만)',
+    WORKER_ONE_TO_THREE_YEARS: '1년 ~ 3년',
+    WORKER_FOUR_TO_SEVEN_YEARS: '4년 ~ 7년',
+    WORKER_EIGHT_TO_TEN_YEARS: '8년 ~ 9년',
+    WORKER_OVER_TEN_YEARS: ' 10년 이상',
+  };
   return (
     <Select {...props}>
       <Select.OptionGroup label="학력">
-        <Select.Option value="highschool">고졸</Select.Option>
-        <Select.Option value="university-1st-year">대학교 1학년</Select.Option>
-        <Select.Option value="university-2nd-year">대학교 2학년</Select.Option>
-        <Select.Option value="university-3rd-year">대학교 3학년</Select.Option>
-        <Select.Option value="university-4th-year">대학교 4학년</Select.Option>
-        <Select.Option value="university-graduate">대학원생</Select.Option>
-        <Select.Option value="university-leave-of-absence">휴학생</Select.Option>
+        {Object.entries(careerStudentTexts).map(([value, label]) => (
+          <Select.Option key={value} value={value}>
+            {label}
+          </Select.Option>
+        ))}
       </Select.OptionGroup>
       <Select.OptionGroup label="경력">
-        <Select.Option value="intern">인턴/계약직</Select.Option>
-        <Select.Option value="less-than-1">신입 (1년 미만)</Select.Option>
-        <Select.Option value="1-to-3-years">1년 ~ 3년</Select.Option>
-        <Select.Option value="4-to-7-years">4년 ~ 7년</Select.Option>
-        <Select.Option value="8-to-10-years">8년 ~ 10년</Select.Option>
-        <Select.Option value="more-than-10-years">10년 이상</Select.Option>
+        {Object.entries(careerWorkerTexts).map(([value, label]) => (
+          <Select.Option key={value} value={value}>
+            {label}
+          </Select.Option>
+        ))}
       </Select.OptionGroup>
     </Select>
   );
