@@ -82,6 +82,9 @@ export const UserInfoPopup = () => {
   useEffect(() => {
     if (me) {
       setNickname(me.nickname || '');
+      setPreviewImage(
+        me.profileImageUrl ? `https://${process.env.NEXT_APP_CDN_HOST}/${me.profileImageUrl}` : null
+      );
     }
   }, [me]);
 
