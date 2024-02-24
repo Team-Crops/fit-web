@@ -80,6 +80,7 @@ export interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
 export const Txt = ({
   size = 'typo4',
   weight = 'medium',
+  color = 'inherit',
   marginBottom = 0,
   children,
   ...props
