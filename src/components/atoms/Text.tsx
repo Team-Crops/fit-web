@@ -86,7 +86,7 @@ export const Txt = ({
   ...props
 }: TxtProps) => {
   return (
-    <StyledTxt size={size} weight={weight} marginBottom={marginBottom} {...props}>
+    <StyledTxt size={size} weight={weight} color={color} marginBottom={marginBottom} {...props}>
       {children}
     </StyledTxt>
   );
