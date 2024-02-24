@@ -91,9 +91,11 @@ export const Input = ({
       {variant === 'standard' && (
         <StandardInput typo={typo} weight={weight} error={error} width={width} {...props} />
       )}
-      <HelperText size="typo6" weight="regular" error={error}>
-        {helperText}
-      </HelperText>
+      {helperText && (
+        <HelperText size="typo6" weight="regular" error={error}>
+          {helperText}
+        </HelperText>
+      )}
     </InputContainer>
   );
 };
