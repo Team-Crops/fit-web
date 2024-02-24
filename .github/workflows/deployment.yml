@@ -2,7 +2,9 @@ name: Deployment
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - cicd/deployment
 
 jobs:
   build:
