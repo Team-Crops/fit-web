@@ -1,6 +1,5 @@
 import { InputHTMLAttributes } from 'react';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Txt, TxtProps, TxtSizeCSS, TxtWeightCSS } from './Text';
@@ -27,6 +26,8 @@ const CommonInput = styled.input<CommonInputProps>`
 `;
 
 const FilledInput = styled(CommonInput)`
+  width: ${({ width }) => width};
+  height: 33px;
   border: 1px solid #eeeeee;
   border-radius: 5px;
   background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.2)' : '#eeeeee')};
@@ -70,6 +71,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
   typo?: TxtProps['size'];
   weight?: TxtProps['weight'];
+  width?: string;
 }
 
 export const Input = ({
@@ -78,13 +80,16 @@ export const Input = ({
   error = false,
   typo = 'typo6',
   weight = 'medium',
+  width = '100%',
   ...props
 }: InputProps) => {
   return (
     <InputContainer>
-      {variant === 'filled' && <FilledInput typo={typo} weight={weight} error={error} {...props} />}
+      {variant === 'filled' && (
+        <FilledInput typo={typo} weight={weight} error={error} width={width} {...props} />
+      )}
       {variant === 'standard' && (
-        <StandardInput typo={typo} weight={weight} error={error} {...props} />
+        <StandardInput typo={typo} weight={weight} error={error} width={width} {...props} />
       )}
       <HelperText size="typo6" weight="regular" error={error}>
         {helperText}
