@@ -21,4 +21,4 @@ RUN yarn run build
 
 EXPOSE 3000
 
-CMD ["yarn", "start", "-p", "443"]
+CMD ["yarn", "start"]
