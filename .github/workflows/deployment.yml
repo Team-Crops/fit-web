@@ -62,7 +62,7 @@ jobs:
         env:
           FILENAME: task-def.json
         run: |
-          echo "${{ vars.TASK_DEFINITION }}" > ${{ env.TASK_DEFINITION }}
+          echo '${{ vars.TASK_DEFINITION }}' > ${{ env.TASK_DEFINITION }}
 
       - name: Render Amazon ECS task definition
         id: task-def
