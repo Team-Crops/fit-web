@@ -85,20 +85,26 @@ function getArrowCSS({ error }: SelectProps) {
   }
 }
 
-const SelectContainer = styled.div`
+const SelectContainer = styled.div<{ width: string }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: ${({ width }) => width};
 `;
 
 const SelectButton = styled.button<SelectProps>`
   appearance: none;
   border: 1px solid #9e9e9e;
   border-radius: 4px;
-  padding: 10px;
+  padding: 10px 16px 10px 10px;
 
   width: 100%;
+  height: 34px;
 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-align: left;
   font-size: 12px;
   font-style: normal;
@@ -112,8 +118,8 @@ const SelectButton = styled.button<SelectProps>`
 
 const OptionList = styled.ul`
   position: absolute;
-  top: 52.5px;
-  width: calc(100% - 36px + 2px);
+  top: 36px;
+  width: 100%;
 
   margin: 0;
   padding: 0;
@@ -196,6 +202,7 @@ const SelectContext = createContext<{
 type SelectProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
   helperText?: string;
+  width?: string;
 };
 
 export const Select = ({
@@ -205,6 +212,7 @@ export const Select = ({
   onChange,
   placeholder,
   children,
+  width = '100%',
   ...props
 }: SelectProps) => {
   const [isOpened, setOpened] = useState(true);
@@ -224,7 +232,7 @@ export const Select = ({
 
   return (
     <SelectContext.Provider value={{ value, onChange, setOpened, setLabel }}>
-      <SelectContainer ref={containerRef}>
+      <SelectContainer ref={containerRef} width={width}>
         <input type="text" value={value} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
           {label ?? placeholder}
