@@ -19,6 +19,6 @@ USER nextjs
 RUN yarn install --immutable
 RUN yarn run build
 
-EXPOSE 3000
+EXPOSE 443
 
 CMD ["yarn", "start", "-p", "443"]
