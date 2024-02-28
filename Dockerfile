@@ -10,6 +10,12 @@ COPY next.config.js tsconfig.json ./
 COPY ./public ./public
 COPY ./src ./src
 
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
 RUN yarn install --immutable
 RUN yarn run build
 
