@@ -71,59 +71,25 @@ const StyledInput = styled.input`
 export const UserInfoPopup = () => {
   const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.auth.user);
-  const [updateMe, { data: updatedMe, isSuccess: updateSuccess }] = useUpdateMeMutation();
-  const [getUploadUrl, { data: signedUrl }] = useLazyGetUploadSignedUrlQuery();
+  const [updateMe] = useUpdateMeMutation();
+  const [getUploadUrl] = useLazyGetUploadSignedUrlQuery();
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const [nickname, setNickname] = useState('');
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [enableContinue, setEnableContinue] = useState(false);
 
-  useEffect(() => {
-    if (me) {
-      setNickname(me.nickname || '');
-      setPreviewImage(
-        me.profileImageUrl ? `https://${process.env.NEXT_APP_CDN_HOST}/${me.profileImageUrl}` : null
-      );
-    }
-  }, [me]);
+  const [previewImage, setPreviewImage] = useState<string>();
+  const [nickname, setNickname] = useState<string | undefined>(me?.nickname);
 
-  useEffect(() => {
-    setEnableContinue(nickname.length > 0);
-  }, [nickname]);
-
-  useEffect(() => {
-    if (me && signedUrl) {
-      const image = imageInputRef.current?.files?.item(0);
-      if (!image) {
-        return;
-      }
-    }
-  }, [me, nickname, signedUrl, updateMe]);
-
-  useEffect(() => {
-    if (me && updateSuccess) {
-      dispatch(updateAuth({ user: { id: me.id, ...updatedMe }, step: AuthStep.UserInfo + 1 }));
-    }
-  }, [dispatch, me, updateSuccess, updatedMe]);
-
-  const handleImageChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      const image = e.target.files?.item(0);
-      if (image) {
-        setPreviewImage(URL.createObjectURL(image));
-      } else {
-        setPreviewImage(null);
-      }
-    },
-    [setPreviewImage]
-  );
+  const goForwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.UserInfo + 1 }));
+  }, [dispatch]);
 
   const uploadImage = useCallback(
     async (image: File) => {
+      setIsUploadingImage(true);
       const uploadUrl = await getUploadUrl({ fileDomain: 'PROFILE_IMAGE', fileName: image.name });
       if (uploadUrl.error || !uploadUrl.data) {
-        return; //TODO: HANDLE ERROR
+        throw new Error('Failed to get upload url');
       }
 
       const { fileKey, preSignedUrl } = uploadUrl.data;
@@ -134,27 +100,41 @@ export const UserInfoPopup = () => {
         body: image,
       });
       if (!response.ok) {
-        return; //TODO: HANDLE ERROR
+        throw new Error('Failed to upload image');
       }
+      setIsUploadingImage(false);
 
       return fileKey;
     },
     [getUploadUrl]
   );
 
+  const handleImageChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      const image = e.target.files?.item(0);
+      if (image) {
+        setPreviewImage(URL.createObjectURL(image));
+      } else {
+        setPreviewImage(undefined);
+      }
+    },
+    [setPreviewImage]
+  );
+
   const handleStartClick = useCallback(async () => {
-    if (!me) {
+    if (!me && isUploadingImage) {
       return;
     }
 
     const image = imageInputRef.current?.files?.item(0);
     if (image) {
       const profileImageUrl = await uploadImage(image);
-      return updateMe({ nickname, profileImageUrl });
+      await updateMe({ profileImageUrl });
+      return goForwardStep();
     } else {
-      return updateMe({ nickname });
+      return goForwardStep();
     }
-  }, [me, nickname, updateMe, uploadImage]);
+  }, [goForwardStep, isUploadingImage, me, updateMe, uploadImage]);
 
   return (
     <Container>
@@ -185,6 +165,9 @@ export const UserInfoPopup = () => {
           placeholder="닉네임"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
+          onBlur={(e) =>
+            e.target.value ? updateMe({ nickname: e.target.value }) : setNickname(me?.nickname)
+          }
         />
         <Txt style={{ color: '#9e9e9e' }} size="typo5" weight="regular">
           필수항목입니다
@@ -194,7 +177,7 @@ export const UserInfoPopup = () => {
         color="primary"
         height="70"
         variant="round"
-        disabled={!enableContinue}
+        disabled={isUploadingImage || !me?.nickname}
         onClick={handleStartClick}
       >
         시작하기
