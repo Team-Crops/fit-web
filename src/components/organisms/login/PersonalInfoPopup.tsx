@@ -72,41 +72,15 @@ const Spacer = styled.div`
 
 export const PersonalInfoPopup = () => {
   const dispatch = useAppDispatch();
-  const me = useAppSelector((state) => state.auth.user);
-  const [updateMeMutation, { isLoading: updateLoading, isSuccess: updateSuccess }] =
-    useUpdateMeMutation();
+  const me = useAppSelector((state) => state.user.me);
+  const [updateMe] = useUpdateMeMutation();
 
-  const updateMe = useCallback(
-    (updateMe: Partial<User>) => {
-      if (!me) {
-        return;
-      }
-      dispatch(
-        updateAuth({
-          user: {
-            ...me,
-            ...updateMe,
-          },
-        })
-      );
-    },
-    [dispatch, me]
-  );
-
-  const updateStep = useCallback(
-    (step: AuthStep) => {
-      dispatch(updateAuth({ step }));
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    if (updateLoading === false) {
-      if (updateSuccess) {
-        updateStep(AuthStep.PersonalInfo + 1);
-      }
-    }
-  }, [updateLoading, updateStep, updateSuccess]);
+  const goBackwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.PersonalInfo - 1 }));
+  }, [dispatch]);
+  const goForwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
+  }, [dispatch]);
 
   return (
     <Container>
@@ -114,18 +88,12 @@ export const PersonalInfoPopup = () => {
         currentStep={2}
         totalStep={4}
         progressName="회원정보"
-        onBackwardClick={() => updateStep(AuthStep.PersonalInfo - 1)}
+        onBackwardClick={() => goBackwardStep()}
         onForwardClick={
           [me?.username, me?.email, me?.backgroundStatus, me?.backgroundText].every(
             (v) => v !== undefined
           )
-            ? () =>
-                updateMeMutation({
-                  username: me?.username,
-                  email: me?.email,
-                  backgroundStatus: me?.backgroundStatus,
-                  backgroundText: me?.backgroundText,
-                })
+            ? () => goForwardStep()
             : undefined
         }
       />

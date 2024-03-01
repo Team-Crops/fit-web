@@ -58,7 +58,7 @@ const Spacer = styled.div``;
 
 export const ActivityInfoPopup = () => {
   const dispatch = useAppDispatch();
-  const me = useAppSelector((state) => state.auth.user);
+  const me = useAppSelector((state) => state.user.me);
   const [updateMeMutation, { isLoading, isSuccess, isError }] = useUpdateMeMutation();
 
   const goBackwardStep = useCallback(() => {

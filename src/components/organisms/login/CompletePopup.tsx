@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
 import PartyingFaceImage from '#/assets/images/partying-face.png';
-import { updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
-import { useAppDispatch, useAppSelector } from '#/redux/hooks';
+import { useAppSelector } from '#/redux/hooks';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
@@ -70,17 +69,10 @@ const ContinueButtonContainer = styled.div`
 `;
 
 export const CompletePopup = () => {
-  const dispatch = useAppDispatch();
-  const me = useAppSelector((state) => state.auth.user);
+  const me = useAppSelector((state) => state.user.me);
 
-  const [updateMe, { data: updateMeResponse }] = useUpdateMeMutation();
+  const [updateMe] = useUpdateMeMutation();
   const [showTooltip, setShowTooltip] = useState(false);
-
-  useEffect(() => {
-    if (updateMeResponse && me?.id) {
-      dispatch(updateAuth({ user: { id: me.id, ...updateMeResponse } }));
-    }
-  }, [updateMeResponse, dispatch, me]);
 
   return (
     <Container>
@@ -106,7 +98,7 @@ export const CompletePopup = () => {
         <div style={{ width: '9px' }} />
         <Toggle
           checked={me?.isOpenProfile}
-          onChange={(e) => updateMe({ ...me, isOpenProfile: e.target.checked })}
+          onChange={(e) => updateMe({ isOpenProfile: e.target.checked })}
         />
       </ProfileVisibilityToggleContainer>
       <CrossButton icon="cross" width={24} height={24} color="#bdbdbd" />

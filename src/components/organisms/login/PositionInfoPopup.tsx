@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -119,31 +119,17 @@ const images = [
 ];
 
 export const PositionInfoPopup = () => {
-  const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
-
-  const me = useAppSelector((state) => state.auth.user);
-  const [updateMe, { data: updatedMe }] = useUpdateMeMutation();
+  const dispatch = useAppDispatch();
+  const me = useAppSelector((state) => state.user.me);
+  const [updateMe] = useUpdateMeMutation();
   const { data: positions } = useGetPositionsQuery();
 
-  const dispatch = useAppDispatch();
-  const nickname = useAppSelector((state) => state.auth.user?.nickname);
-
-  useEffect(() => {
-    if (me?.positionId) {
-      setSelectedPosition(me.positionId);
-    }
-  }, [me]);
-
-  useEffect(() => {
-    if (me && updatedMe) {
-      dispatch(
-        updateAuth({
-          user: { ...updatedMe, id: me.id },
-          step: AuthStep.PositionInfo + 1,
-        })
-      );
-    }
-  }, [dispatch, me, updatedMe]);
+  const goBackwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.PositionInfo - 1 }));
+  }, [dispatch]);
+  const goForwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.PositionInfo + 1 }));
+  }, [dispatch]);
 
   return (
     <Container>
@@ -151,21 +137,11 @@ export const PositionInfoPopup = () => {
         currentStep={1}
         totalStep={4}
         progressName="포지션"
-        onForwardClick={
-          selectedPosition === null
-            ? undefined
-            : () => {
-                if (selectedPosition) {
-                  updateMe({ ...me, positionId: selectedPosition });
-                }
-              }
-        }
-        onBackwardClick={() => {
-          dispatch(updateAuth({ step: AuthStep.PositionInfo - 1 }));
-        }}
+        onBackwardClick={() => goBackwardStep()}
+        onForwardClick={me?.positionId ? () => goForwardStep() : undefined}
       />
       <Txt size="typo1" weight="bold">
-        {nickname}님의 포지션을 설정해주세요!
+        {me?.nickname}님의 포지션을 설정해주세요!
       </Txt>
       <PositionContainer>
         <PositionCards>
@@ -173,13 +149,13 @@ export const PositionInfoPopup = () => {
             positions.positionList.map(({ id, displayName }, index) => (
               <PositionCard
                 key={id}
-                selected={id === selectedPosition}
-                onClick={() => setSelectedPosition(id === selectedPosition ? null : id)}
+                selected={id === me?.positionId}
+                onClick={() => updateMe({ positionId: id })}
               >
                 <PositionImageContainer>
                   <Image src={images[index]} width={130} height={130} alt={displayName} />
                 </PositionImageContainer>
-                <Txt size="typo4" weight={id === selectedPosition ? 'bold' : 'medium'}>
+                <Txt size="typo4" weight={id === me?.positionId ? 'bold' : 'medium'}>
                   {displayName}
                 </Txt>
               </PositionCard>

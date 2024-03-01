@@ -70,7 +70,7 @@ const StyledInput = styled.input`
 
 export const UserInfoPopup = () => {
   const dispatch = useAppDispatch();
-  const me = useAppSelector((state) => state.auth.user);
+  const me = useAppSelector((state) => state.user.me);
   const [updateMe] = useUpdateMeMutation();
   const [getUploadUrl] = useLazyGetUploadSignedUrlQuery();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
