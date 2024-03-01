@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { User } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
@@ -58,11 +59,13 @@ const Spacer = styled.div``;
 export const ActivityInfoPopup = () => {
   const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.auth.user);
-  const [updateMe, { isLoading, isSuccess, isError }] = useUpdateMeMutation();
+  const [updateMeMutation, { isLoading, isSuccess, isError }] = useUpdateMeMutation();
 
-  const [projectCount, setProjectCount] = useState<number>();
-  const [regionId, setRegionId] = useState<number>();
-  const [activityHours, setActivityHours] = useState<number>();
+  const updateMe = useCallback(
+    (updatedMe: Partial<Omit<User, 'id'>>) =>
+      me && dispatch(updateAuth({ user: { ...me, ...updatedMe } })),
+    [dispatch, me]
+  );
 
   useEffect(() => {}, [isLoading, isSuccess, isError]);
 
@@ -76,8 +79,13 @@ export const ActivityInfoPopup = () => {
           dispatch(updateAuth({ step: AuthStep.ActivityInfo - 1 }));
         }}
         onForwardClick={
-          [projectCount, regionId, activityHours].every((v) => v !== undefined)
-            ? () => updateMe({ ...me, projectCount, regionId, activityHours })
+          [me?.projectCount, me?.regionId, me?.activityHour].every((v) => v !== undefined)
+            ? () =>
+                updateMeMutation({
+                  projectCount: me?.projectCount,
+                  regionId: me?.regionId,
+                  activityHour: me?.activityHour,
+                })
             : undefined
         }
       />
@@ -95,12 +103,12 @@ export const ActivityInfoPopup = () => {
             프로젝트 경험 수
           </Txt>
           <StyledSelect
-            value={projectCount ? projectCount?.toString() : ''}
-            onChange={(e) => setProjectCount(parseInt(e.target.value, 10))}
+            value={me?.projectCount?.toString()}
+            onChange={(e) => updateMe({ projectCount: parseInt(e.target.value, 10) })}
           >
-            {[...Array(4)].map((_, i) => (
+            {[...Array(4)].map((_, i, arr) => (
               <Select.Option key={i} value={i}>
-                {i === 0 ? '없음' : i === 3 ? '3회 이상' : `${i}회`}
+                {i === 0 ? '없음' : i === arr.length - 1 ? `${i}회 이상` : `${i}회`}
               </Select.Option>
             ))}
           </StyledSelect>
@@ -110,8 +118,8 @@ export const ActivityInfoPopup = () => {
             주 활동 지역
           </Txt>
           <RegionSelect
-            value={regionId}
-            onChange={(e) => setRegionId(parseInt(e.target.value, 10))}
+            value={me?.regionId}
+            onChange={(e) => updateMe({ regionId: parseInt(e.target.value, 10) })}
           />
         </InputContainer>
         <InputContainer>
@@ -119,12 +127,12 @@ export const ActivityInfoPopup = () => {
             활동 가능 시간
           </Txt>
           <StyledSelect
-            value={activityHours}
-            onChange={(e) => setActivityHours(parseInt(e.target.value, 10))}
+            value={me?.activityHour}
+            onChange={(e) => updateMe({ activityHour: parseInt(e.target.value, 10) })}
           >
-            {[...Array(4)].map((_, i) => (
-              <Select.Option key={i} value={3 * 2 ** i}>
-                {3 * 2 ** i}시간
+            {[3, 6, 12, 24].map((n) => (
+              <Select.Option key={n} value={n}>
+                {n}시간
               </Select.Option>
             ))}
           </StyledSelect>
