@@ -4,8 +4,7 @@ run-name: Build and Deploy ${{ github.ref_name }} by ${{ github.actor }} at ${{ 
 on:
   push:
     branches:
-      - main
-      - cicd/deployment
+      - dev
 
 permissions:
   id-token: write
