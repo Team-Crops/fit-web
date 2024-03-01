@@ -1,6 +1,7 @@
 import { PolicyAgreement } from '#/entities/policy';
 import { User } from '#/entities/user';
 import { api } from '#/redux/api';
+import { updateMe } from './slice';
 
 export interface UserUpdateRequest extends Partial<Omit<User, 'id' | 'status'>> {}
 export interface UserUpdateResponse extends Partial<Omit<User, 'id'>> {}
@@ -29,6 +30,10 @@ const userApi = api.injectEndpoints({
         method: 'PATCH',
         body: user,
       }),
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+        dispatch(updateMe(data));
+      },
     }),
     myAgreements: build.query<PolicyAgreement[], void>({
       query: () => ({
