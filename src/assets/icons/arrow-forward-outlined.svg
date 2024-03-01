@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="current" height="current" viewBox="0 0 39 39" fill="none">
+    <circle cx="19.5" cy="19.5" r="19" transform="matrix(1 0 0 -1 0 39)" fill="white" stroke="currentColor" />
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M15.9737 10.6038C15.534 11.0598 15.5472 11.786 16.0032 12.2257L23.5469 19.5L16.0032 26.7743C15.5472 27.214 15.534 27.9402 15.9737 28.3962C16.4134 28.8522 17.1396 28.8654 17.5956 28.4257L26.8519 19.5L17.5956 10.5743C17.1396 10.1345 16.4134 10.1478 15.9737 10.6038Z"
+        fill="currentColor" />
+</svg>
