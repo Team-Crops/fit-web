@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-import { UserBackgroundStatus } from '#/entities/user';
+import { User, UserBackgroundStatus, isUserStudent, isUserWorker } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
@@ -73,20 +73,40 @@ const Spacer = styled.div`
 export const PersonalInfoPopup = () => {
   const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.auth.user);
-  const [updateMe, { isLoading, isSuccess }] = useUpdateMeMutation();
+  const [updateMeMutation, { isLoading: updateLoading, isSuccess: updateSuccess }] =
+    useUpdateMeMutation();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [career, setCareer] = useState<UserBackgroundStatus>();
-  const [groupName, setGroupName] = useState('');
+  const updateMe = useCallback(
+    (updateMe: Partial<User>) => {
+      if (!me) {
+        return;
+      }
+      dispatch(
+        updateAuth({
+          user: {
+            ...me,
+            ...updateMe,
+          },
+        })
+      );
+    },
+    [dispatch, me]
+  );
+
+  const updateStep = useCallback(
+    (step: AuthStep) => {
+      dispatch(updateAuth({ step }));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
-    if (isLoading === false) {
-      if (isSuccess) {
-        dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
+    if (updateLoading === false) {
+      if (updateSuccess) {
+        updateStep(AuthStep.PersonalInfo + 1);
       }
     }
-  }, [dispatch, isLoading, isSuccess]);
+  }, [updateLoading, updateStep, updateSuccess]);
 
   return (
     <Container>
@@ -94,16 +114,17 @@ export const PersonalInfoPopup = () => {
         currentStep={2}
         totalStep={4}
         progressName="회원정보"
-        onBackwardClick={() => dispatch(updateAuth({ step: AuthStep.PersonalInfo - 1 }))}
+        onBackwardClick={() => updateStep(AuthStep.PersonalInfo - 1)}
         onForwardClick={
-          [name, email, career, groupName].every((v) => v !== undefined)
+          [me?.username, me?.email, me?.backgroundStatus, me?.backgroundText].every(
+            (v) => v !== undefined
+          )
             ? () =>
-                updateMe({
-                  ...me,
-                  username: name,
-                  email,
-                  backgroundStatus: career,
-                  backgroundText: groupName,
+                updateMeMutation({
+                  username: me?.username,
+                  email: me?.email,
+                  backgroundStatus: me?.backgroundStatus,
+                  backgroundText: me?.backgroundText,
                 })
             : undefined
         }
@@ -126,8 +147,8 @@ export const PersonalInfoPopup = () => {
             variant="standard"
             typo="typo3"
             weight="medium"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={me?.username}
+            onChange={(e) => updateMe({ username: e.target.value })}
           />
         </InputContainer>
         <InputContainer>
@@ -138,8 +159,8 @@ export const PersonalInfoPopup = () => {
             variant="standard"
             typo="typo3"
             weight="medium"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={me?.email}
+            onChange={(e) => updateMe({ email: e.target.value })}
           />
         </InputContainer>
         <CareerContainer>
@@ -148,23 +169,27 @@ export const PersonalInfoPopup = () => {
               학력/경력
             </InputLabel>
             <StyledCareerSelect
-              value={career}
-              onChange={(e) => setCareer(e.target.value as UserBackgroundStatus)}
+              value={me?.backgroundStatus}
+              onChange={(e) =>
+                updateMe({ backgroundStatus: e.target.value as UserBackgroundStatus })
+              }
             />
           </InputContainer>
-          {career && (
+          {me?.backgroundStatus && (
             <InputContainer style={{ width: '50%' }}>
               <InputLabel size="typo5" weight="medium">
-                {career.startsWith('highschool') || career.startsWith('university')
+                {isUserStudent(me.backgroundStatus)
                   ? '학교명'
-                  : '회사명'}
+                  : isUserWorker(me.backgroundStatus)
+                    ? '회사명'
+                    : '그룹명'}
               </InputLabel>
               <StyledInput
                 variant="standard"
                 typo="typo3"
                 weight="medium"
-                value={groupName}
-                onChange={(e) => setGroupName(e.target.value)}
+                value={me?.backgroundText}
+                onChange={(e) => updateMe({ backgroundText: e.target.value })}
               />
             </InputContainer>
           )}
