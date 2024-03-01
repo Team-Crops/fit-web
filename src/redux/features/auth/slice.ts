@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { User } from '#/entities/user';
-
 export enum AuthStep {
   Entrance,
   Policies,
@@ -17,7 +15,6 @@ export enum AuthStep {
 type AuthState = {
   step: AuthStep | null;
   showLoginPopup: boolean;
-  user: User | null;
   accessToken: string | null;
   refreshToken: string | null;
 };
@@ -25,7 +22,6 @@ type AuthState = {
 const initialState: AuthState = {
   showLoginPopup: false,
   step: null,
-  user: null,
   accessToken: null,
   refreshToken: null,
 };
