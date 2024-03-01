@@ -61,11 +61,12 @@ export const ActivityInfoPopup = () => {
   const me = useAppSelector((state) => state.auth.user);
   const [updateMeMutation, { isLoading, isSuccess, isError }] = useUpdateMeMutation();
 
-  const updateMe = useCallback(
-    (updatedMe: Partial<Omit<User, 'id'>>) =>
-      me && dispatch(updateAuth({ user: { ...me, ...updatedMe } })),
-    [dispatch, me]
-  );
+  const goBackwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.ActivityInfo - 1 }));
+  }, [dispatch]);
+  const goForwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.ActivityInfo + 1 }));
+  }, [dispatch]);
 
   useEffect(() => {}, [isLoading, isSuccess, isError]);
 
@@ -75,17 +76,10 @@ export const ActivityInfoPopup = () => {
         currentStep={3}
         totalStep={4}
         progressName="활동정보"
-        onBackwardClick={() => {
-          dispatch(updateAuth({ step: AuthStep.ActivityInfo - 1 }));
-        }}
+        onBackwardClick={() => goBackwardStep()}
         onForwardClick={
           [me?.projectCount, me?.regionId, me?.activityHour].every((v) => v !== undefined)
-            ? () =>
-                updateMeMutation({
-                  projectCount: me?.projectCount,
-                  regionId: me?.regionId,
-                  activityHour: me?.activityHour,
-                })
+            ? () => goForwardStep()
             : undefined
         }
       />
@@ -104,7 +98,7 @@ export const ActivityInfoPopup = () => {
           </Txt>
           <StyledSelect
             value={me?.projectCount?.toString()}
-            onChange={(e) => updateMe({ projectCount: parseInt(e.target.value, 10) })}
+            onChange={(e) => updateMeMutation({ projectCount: parseInt(e.target.value, 10) })}
           >
             {[...Array(4)].map((_, i, arr) => (
               <Select.Option key={i} value={i}>
@@ -119,7 +113,7 @@ export const ActivityInfoPopup = () => {
           </Txt>
           <RegionSelect
             value={me?.regionId}
-            onChange={(e) => updateMe({ regionId: parseInt(e.target.value, 10) })}
+            onChange={(e) => updateMeMutation({ regionId: parseInt(e.target.value, 10) })}
           />
         </InputContainer>
         <InputContainer>
@@ -128,7 +122,7 @@ export const ActivityInfoPopup = () => {
           </Txt>
           <StyledSelect
             value={me?.activityHour}
-            onChange={(e) => updateMe({ activityHour: parseInt(e.target.value, 10) })}
+            onChange={(e) => updateMeMutation({ activityHour: parseInt(e.target.value, 10) })}
           >
             {[3, 6, 12, 24].map((n) => (
               <Select.Option key={n} value={n}>
