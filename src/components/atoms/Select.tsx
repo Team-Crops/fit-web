@@ -259,6 +259,7 @@ type OptionProps = {
 const Option = ({ value, children }: OptionProps) => {
   const { value: currentValue, onChange, setLabel } = useContext(SelectContext);
 
+  const selected = useMemo(() => value == currentValue, [currentValue, value]);
   const label = useMemo(() => {
     let label = '';
     Children.map(children, (child) => {
@@ -270,15 +271,15 @@ const Option = ({ value, children }: OptionProps) => {
   }, [children]);
 
   useEffect(() => {
-    if (currentValue === value && setLabel) {
+    if (selected && setLabel) {
       setLabel(label);
     }
-  }, [currentValue, label, setLabel, value]);
+  }, [label, selected, setLabel]);
 
   return (
     <OptionItem
-      value={currentValue}
-      selected={currentValue === value}
+      value={value}
+      selected={selected}
       onClick={() => {
         if (onChange) {
           onChange({ target: { value } } as ChangeEvent<HTMLInputElement>);
@@ -288,7 +289,7 @@ const Option = ({ value, children }: OptionProps) => {
         }
       }}
     >
-      {currentValue === value && <OptionItemCheckIcon icon="check" />}
+      {selected && <OptionItemCheckIcon icon="check" />}
       {children}
     </OptionItem>
   );
