@@ -70,13 +70,15 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
         step = AuthStep.PositionInfo;
       } else if (!me.username || !me.email) {
         step = AuthStep.PersonalInfo;
-      } else if (!me.projectCount || !me.regionId || !me.activityHours) {
+      } else if (!me.projectCount || !me.regionId || !me.activityHour) {
         step = AuthStep.ActivityInfo;
       } else if (!me.skillIdList) {
         step = AuthStep.SkillInfo;
       } else {
         step = AuthStep.Complete;
       }
+
+      step = AuthStep.ActivityInfo;
 
       dispatch(
         updateAuth({

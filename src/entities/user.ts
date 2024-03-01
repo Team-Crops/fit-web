@@ -25,7 +25,7 @@ export interface User {
   id: number;
 
   projectCount?: number;
-  activityHours?: number;
+  activityHour?: number;
   introduce?: string;
   portfolioUrl?: string;
   backgroundText?: string;
