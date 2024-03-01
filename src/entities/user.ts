@@ -1,21 +1,23 @@
 import { Link } from './link';
 
-export type UserBackgroundStatusStudent =
-  | 'HIGH_SCHOOL_GRADUATE'
-  | 'UNIVERSITY_FRESHMAN'
-  | 'UNIVERSITY_SOPHOMORE'
-  | 'UNIVERSITY_JUNIOR'
-  | 'UNIVERSITY_SENIOR'
-  | 'GRADUATE_STUDENT'
-  | 'LEAVE_OF_ABSENCE_STUDENT';
+export enum UserBackgroundStatusStudent {
+  HIGH_SCHOOL_GRADUATE = 'HIGH_SCHOOL_GRADUATE',
+  UNIVERSITY_FRESHMAN = 'UNIVERSITY_FRESHMAN',
+  UNIVERSITY_SOPHOMORE = 'UNIVERSITY_SOPHOMORE',
+  UNIVERSITY_JUNIOR = 'UNIVERSITY_JUNIOR',
+  UNIVERSITY_SENIOR = 'UNIVERSITY_SENIOR',
+  GRADUATE_STUDENT = 'GRADUATE_STUDENT',
+  LEAVE_OF_ABSENCE_STUDENT = 'LEAVE_OF_ABSENCE_STUDENT',
+}
 
-export type UserBackgroundStatusWorker =
-  | 'WORKER_CONTRACT_WORKER'
-  | 'WORKER_LESS_THAN_ONE_YEAR'
-  | 'WORKER_ONE_TO_THREE_YEARS'
-  | 'WORKER_FOUR_TO_SEVEN_YEARS'
-  | 'WORKER_EIGHT_TO_TEN_YEARS'
-  | 'WORKER_OVER_TEN_YEARS';
+export enum UserBackgroundStatusWorker {
+  WORKER_CONTRACT_WORKER = 'WORKER_CONTRACT_WORKER',
+  WORKER_LESS_THAN_ONE_YEAR = 'WORKER_LESS_THAN_ONE_YEAR',
+  WORKER_ONE_TO_THREE_YEARS = 'WORKER_ONE_TO_THREE_YEARS',
+  WORKER_FOUR_TO_SEVEN_YEARS = 'WORKER_FOUR_TO_SEVEN_YEARS',
+  WORKER_EIGHT_TO_TEN_YEARS = 'WORKER_EIGHT_TO_TEN_YEARS',
+  WORKER_OVER_TEN_YEARS = 'WORKER_OVER_TEN_YEARS',
+}
 
 export type UserBackgroundStatus = UserBackgroundStatusStudent | UserBackgroundStatusWorker;
 
@@ -42,29 +44,10 @@ export interface User {
   username?: string;
 }
 
-const studentStatuses: UserBackgroundStatusStudent[] = [
-  'HIGH_SCHOOL_GRADUATE',
-  'UNIVERSITY_FRESHMAN',
-  'UNIVERSITY_SOPHOMORE',
-  'UNIVERSITY_JUNIOR',
-  'UNIVERSITY_SENIOR',
-  'GRADUATE_STUDENT',
-  'LEAVE_OF_ABSENCE_STUDENT',
-];
-
-const workerStatuses: UserBackgroundStatusWorker[] = [
-  'WORKER_CONTRACT_WORKER',
-  'WORKER_LESS_THAN_ONE_YEAR',
-  'WORKER_ONE_TO_THREE_YEARS',
-  'WORKER_FOUR_TO_SEVEN_YEARS',
-  'WORKER_EIGHT_TO_TEN_YEARS',
-  'WORKER_OVER_TEN_YEARS',
-];
-
-export function isStudent(status: UserBackgroundStatus): status is UserBackgroundStatusStudent {
-  return studentStatuses.includes(status as UserBackgroundStatusStudent);
+export function isUserStudent(status: UserBackgroundStatus): status is UserBackgroundStatusStudent {
+  return Object.values(UserBackgroundStatusStudent).includes(status as UserBackgroundStatusStudent);
 }
 
-export function isWorker(status: UserBackgroundStatus): status is UserBackgroundStatusWorker {
-  return workerStatuses.includes(status as UserBackgroundStatusWorker);
+export function isUserWorker(status: UserBackgroundStatus): status is UserBackgroundStatusWorker {
+  return Object.values(UserBackgroundStatusWorker).includes(status as UserBackgroundStatusWorker);
 }
