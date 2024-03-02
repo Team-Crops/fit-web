@@ -5,16 +5,21 @@ import AwayIcon from 'src/assets/icons/away.svg';
 import BellIcon from 'src/assets/icons/bell.svg';
 import CheckIcon from 'src/assets/icons/check.svg';
 import ClickIcon from 'src/assets/icons/click.svg';
+import ClipIcon from 'src/assets/icons/clip.svg';
 import CrossIcon from 'src/assets/icons/cross.svg';
 import GoogleIcon from 'src/assets/icons/google.svg';
 import InstagramIcon from 'src/assets/icons/instagram.svg';
 import KakaoIcon from 'src/assets/icons/kakao.svg';
+import LinkIcon from 'src/assets/icons/link.svg';
 import LogoIcon from 'src/assets/icons/logo.svg';
 import MegaphoneIcon from 'src/assets/icons/megaphone.svg';
+import PenCilIcon from 'src/assets/icons/pencil.svg';
+import PlusIcon from 'src/assets/icons/plus.svg';
 import RunIcon from 'src/assets/icons/run.svg';
+import Upload from 'src/assets/icons/upload.svg';
 import UserIcon from 'src/assets/icons/user.svg';
 
-type IconName =
+export type IconName =
   | 'account'
   | 'arrowForward'
   | 'arrowRight'
@@ -22,14 +27,19 @@ type IconName =
   | 'bell'
   | 'check'
   | 'click'
+  | 'clip'
   | 'cross'
   | 'google'
   | 'instagram'
   | 'kakao'
+  | 'link'
   | 'logo'
   | 'megaphone'
+  | 'pencil'
+  | 'plus'
   | 'run'
-  | 'user';
+  | 'user'
+  | 'upload';
 
 interface Icon {
   SVGR: any;
@@ -64,6 +74,9 @@ const icons: Record<IconName, Icon> = {
     SVGR: ClickIcon,
     color: '#212121',
   },
+  clip: {
+    SVGR: ClipIcon,
+  },
   cross: {
     SVGR: CrossIcon,
     color: '#212121',
@@ -77,6 +90,9 @@ const icons: Record<IconName, Icon> = {
   kakao: {
     SVGR: KakaoIcon,
   },
+  link: {
+    SVGR: LinkIcon,
+  },
   logo: {
     SVGR: LogoIcon,
     color: '#FF706C',
@@ -84,12 +100,21 @@ const icons: Record<IconName, Icon> = {
   megaphone: {
     SVGR: MegaphoneIcon,
   },
+  pencil: {
+    SVGR: PenCilIcon,
+  },
+  plus: {
+    SVGR: PlusIcon,
+  },
   run: {
     SVGR: RunIcon,
     color: '#212121',
   },
   user: {
     SVGR: UserIcon,
+  },
+  upload: {
+    SVGR: Upload,
   },
 };
 
