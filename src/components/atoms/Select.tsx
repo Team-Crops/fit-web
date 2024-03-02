@@ -100,7 +100,7 @@ const SelectButton = styled.button<SelectProps>`
   padding: 10px 16px 10px 10px;
 
   width: 100%;
-  height: 34px;
+  height: 32px;
 
   white-space: nowrap;
   overflow: hidden;
@@ -128,6 +128,7 @@ const OptionList = styled.ul`
   border: 1px solid #eeeeee;
   background-color: #f5f5f5;
   box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15);
+  z-index: 10;
 `;
 
 const HelperText = styled.div<{ error?: boolean }>`
@@ -215,7 +216,7 @@ export const Select = ({
   width = '100%',
   ...props
 }: SelectProps) => {
-  const [isOpened, setOpened] = useState(true);
+  const [isOpened, setOpened] = useState(false);
   const [label, setLabel] = useState<string | undefined>();
   const containerRef = useRef<HTMLDivElement>(null);
 
