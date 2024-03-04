@@ -25,8 +25,9 @@ const authApi = api.injectEndpoints({
     }),
     acquireToken: build.query<AcquireTokenResponse, AcquireTokenProps>({
       query: ({ platform, code }) => ({
-        url: `/v1/auth/social/${platform}/login?code=${code}`,
-        method: 'GET',
+        url: `/v1/auth/social/${platform}/login`,
+        method: 'POST',
+        body: { code },
       }),
     }),
   }),

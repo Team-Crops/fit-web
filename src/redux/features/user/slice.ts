@@ -16,13 +16,14 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setMe(state, action: PayloadAction<User | null>) {
-      return { ...state, me: action.payload };
+      state.me = action.payload;
     },
     updateMe(state, action: PayloadAction<Partial<Omit<User, 'id'>>>) {
-      if (!state.me) {
+      const id = state.me?.id;
+      if (!id) {
         return state;
       }
-      return { ...state, me: { ...state.me, ...action.payload, id: state.me.id } };
+      state.me = { ...state.me, ...action.payload, id };
     },
   },
 });
