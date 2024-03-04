@@ -79,8 +79,6 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
         step = AuthStep.Complete;
       }
 
-      step = AuthStep.PersonalInfo;
-
       dispatch(updateAuth({ step }));
       dispatch(setMe(me));
 
