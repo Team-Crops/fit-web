@@ -10,6 +10,7 @@ import { SocialPlatform } from '#/entities/socialPlatform';
 import { useLazyAcquireTokenQuery } from '#/redux/features/auth/api';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useLazyMeQuery, useLazyMyAgreementsQuery } from '#/redux/features/user/api';
+import { setMe } from '#/redux/features/user/slice';
 import { useAppDispatch } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
@@ -78,14 +79,10 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
         step = AuthStep.Complete;
       }
 
-      step = AuthStep.ActivityInfo;
+      step = AuthStep.PersonalInfo;
 
-      dispatch(
-        updateAuth({
-          step,
-          user: me,
-        })
-      );
+      dispatch(updateAuth({ step }));
+      dispatch(setMe(me));
 
       router.push('/');
     }
