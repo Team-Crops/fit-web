@@ -3797,7 +3797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.167":
+"@types/lodash@npm:^4, @types/lodash@npm:^4.14.167":
   version: 4.14.202
   resolution: "@types/lodash@npm:4.14.202"
   checksum: 10c0/6064d43c8f454170841bd67c8266cc9069d9e570a72ca63f06bceb484cb4a3ee60c9c1f305c1b9e3a87826049fd41124b8ef265c4dd08b00f6766609c7fe9973
@@ -7569,6 +7569,7 @@ __metadata:
     "@storybook/react": "npm:^8.0.0-alpha.8"
     "@storybook/test": "npm:^8.0.0-alpha.8"
     "@svgr/webpack": "npm:^8.1.0"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -7580,6 +7581,7 @@ __metadata:
     eslint-plugin-storybook: "npm:^0.6.15"
     husky: "npm:>=7"
     lint-staged: "npm:>=10"
+    lodash: "npm:^4.17.21"
     next: "npm:^14.1.0"
     prettier: "npm:^3.1.1"
     react: "npm:^18"

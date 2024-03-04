@@ -41,6 +41,7 @@ const RAW_RUNTIME_STATE =
           ["@storybook/react", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:8.0.0-beta.3"],\
           ["@storybook/test", "npm:8.0.0-beta.3"],\
           ["@svgr/webpack", "npm:8.1.0"],\
+          ["@types/lodash", "npm:4.14.202"],\
           ["@types/node", "npm:20.11.19"],\
           ["@types/react", "npm:18.2.57"],\
           ["@types/react-dom", "npm:18.2.19"],\
@@ -52,6 +53,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-storybook", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:0.6.15"],\
           ["husky", "npm:9.0.11"],\
           ["lint-staged", "npm:15.2.2"],\
+          ["lodash", "npm:4.17.21"],\
           ["next", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:14.1.0"],\
           ["prettier", "npm:3.2.5"],\
           ["react", "npm:18.2.0"],\
@@ -10439,6 +10441,7 @@ const RAW_RUNTIME_STATE =
           ["@storybook/react", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:8.0.0-beta.3"],\
           ["@storybook/test", "npm:8.0.0-beta.3"],\
           ["@svgr/webpack", "npm:8.1.0"],\
+          ["@types/lodash", "npm:4.14.202"],\
           ["@types/node", "npm:20.11.19"],\
           ["@types/react", "npm:18.2.57"],\
           ["@types/react-dom", "npm:18.2.19"],\
@@ -10450,6 +10453,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-storybook", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:0.6.15"],\
           ["husky", "npm:9.0.11"],\
           ["lint-staged", "npm:15.2.2"],\
+          ["lodash", "npm:4.17.21"],\
           ["next", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:14.1.0"],\
           ["prettier", "npm:3.2.5"],\
           ["react", "npm:18.2.0"],\
