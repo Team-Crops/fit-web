@@ -1,8 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
-import { User, UserBackgroundStatus, isUserStudent, isUserWorker } from '#/entities/user';
+import _ from 'lodash';
+
+import { UserBackgroundStatus, isUserStudent, isUserWorker } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
@@ -82,6 +84,10 @@ export const PersonalInfoPopup = () => {
     dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
   }, [dispatch]);
 
+  const updateBackgroundText = _.debounce((text: string) => {
+    updateMe({ backgroundStatus: me?.backgroundStatus, backgroundText: text });
+  }, 500);
+
   return (
     <Container>
       <SignupProgressBar
@@ -157,7 +163,7 @@ export const PersonalInfoPopup = () => {
                 typo="typo3"
                 weight="medium"
                 value={me?.backgroundText}
-                onChange={(e) => updateMe({ backgroundText: e.target.value })}
+                onChange={(e) => updateBackgroundText(e.target.value)}
               />
             </InputContainer>
           )}
