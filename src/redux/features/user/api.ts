@@ -48,10 +48,7 @@ const userApi = api.injectEndpoints({
           url: `/v1/user/policy-agreement`,
           method: 'PUT',
           body: {
-            policyAgreementList: agreements.map((agreement) => ({
-              ...agreement,
-              updatedAt: new Date().toISOString(),
-            })),
+            policyAgreementList: agreements,
           },
         }),
       }
