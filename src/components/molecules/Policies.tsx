@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { ChangeEvent, ChangeEventHandler, HTMLAttributes } from 'react';
+import type { ChangeEventHandler, HTMLAttributes } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -50,7 +50,7 @@ const ExpandButtonContainer = styled.div`
 
 interface PoliciesBoxProps extends HTMLAttributes<HTMLDivElement> {
   allChecked?: boolean;
-  toggleAll?: (e: ChangeEvent<HTMLInputElement>) => void;
+  toggleAll?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const PoliciesBox = ({ children, allChecked, toggleAll, ...props }: PoliciesBoxProps) => {
