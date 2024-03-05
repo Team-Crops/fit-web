@@ -1,6 +1,13 @@
+'use client';
+
+import { useCallback } from 'react';
+
 import styled from '@emotion/styled';
 
+import { useDispatch } from 'react-redux';
+
 import { SocialLogin } from '#/components/molecules/SocialLogin';
+import { updateAuth } from '#/redux/features/auth/slice';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 
@@ -50,29 +57,33 @@ const CrossButton = styled.div`
   }
 `;
 
-interface LoginPopupProps {
-  onCancel: () => void;
-}
+export const LoginPopup = () => {
+  const dispatch = useDispatch();
 
-export const LoginPopup = ({ onCancel }: LoginPopupProps) => (
-  <Container>
-    <CrossButton onClick={onCancel}>
-      <Icons icon="cross" width={20} height={20} color="#BDBDBD" />
-    </CrossButton>
-    <Txt size="typo1" weight="bold">
-      로그인
-    </Txt>
-    <div style={{ height: '30px' }} />
-    <Txt size="typo4" weight="regular" style={{ color: '#BDBDBD' }}>
-      F-it에 오신 것을 환영해요!
-    </Txt>
-    <Txt size="typo4" weight="regular" style={{ color: '#BDBDBD' }}>
-      간편 로그인으로 서비스를 이용해보세요 😉
-    </Txt>
-    <div style={{ height: '65px' }} />
-    <SocialLogin>
-      <SocialLogin.Button loginServer="kakao" />
-      <SocialLogin.Button loginServer="google" />
-    </SocialLogin>
-  </Container>
-);
+  const closePopup = useCallback(() => {
+    dispatch(updateAuth({ showLoginPopup: false }));
+  }, [dispatch]);
+
+  return (
+    <Container>
+      <CrossButton onClick={() => closePopup()}>
+        <Icons icon="cross" width={20} height={20} color="#BDBDBD" />
+      </CrossButton>
+      <Txt size="typo1" weight="bold">
+        로그인
+      </Txt>
+      <div style={{ height: '30px' }} />
+      <Txt size="typo4" weight="regular" style={{ color: '#BDBDBD' }}>
+        F-it에 오신 것을 환영해요!
+      </Txt>
+      <Txt size="typo4" weight="regular" style={{ color: '#BDBDBD' }}>
+        간편 로그인으로 서비스를 이용해보세요 😉
+      </Txt>
+      <div style={{ height: '65px' }} />
+      <SocialLogin>
+        <SocialLogin.Button loginServer="kakao" />
+        <SocialLogin.Button loginServer="google" />
+      </SocialLogin>
+    </Container>
+  );
+};
