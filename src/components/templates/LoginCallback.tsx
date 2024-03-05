@@ -47,7 +47,6 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
     if (code) {
       acquireToken({ platform, code });
     } else {
-      console.log(code);
       notFound();
     }
   }, [acquireToken, code, platform]);
