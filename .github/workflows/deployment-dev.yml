@@ -94,7 +94,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: |
-            http://dev-f-it.team
+            http://dev.f-it.team
           budgetPath: ${{ env.PERFORMANCE_BUDGET }}
           uploadArtifacts: true
           temporaryPublicStorage: true
