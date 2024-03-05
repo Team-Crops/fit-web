@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -66,42 +66,28 @@ const HelperTextContainer = styled.div`
   color: #9e9e9e;
 `;
 
-type PolicyName = keyof typeof policies;
-const policyNames: PolicyName[] = ['SERVICE_POLICY', 'PRIVACY_POLICY'];
+type PolicyType = keyof typeof policies;
+const policyTypes: PolicyType[] = ['SERVICE_POLICY', 'PRIVACY_POLICY'];
 
 export const PoliciesPopup = () => {
   const dispatch = useAppDispatch();
-  const { data: myAgreements, isLoading: isLoadingAgreements } = useMyAgreementsQuery();
-  const [updateAgreements, { data: agreementsResult }] = useUpdateMyAgreementsMutation();
+  const { data: fetchedAgreements, isLoading: isLoadingAgreements } = useMyAgreementsQuery();
+  const [updateAgreements, { data: updatedAgreements }] = useUpdateMyAgreementsMutation();
 
-  const [agreements, setAgreements] = useState<Record<PolicyName, boolean>>(
-    policyNames.reduce((acc, name) => ({ ...acc, [name]: false }), {}) as Record<
-      PolicyName,
-      boolean
-    >
-  );
+  const agreements = useMemo(() => {
+    if (!fetchedAgreements) return {};
+    return _.keyBy(fetchedAgreements, 'policyType');
+  }, [fetchedAgreements]);
 
   const goForwardStep = useCallback(() => {
     dispatch(updateAuth({ step: AuthStep.Policies + 1 }));
   }, [dispatch]);
 
   useEffect(() => {
-    if (Object.values(agreements).every((v) => v)) {
-      updateAgreements({
-        agreements: policyNames.map((name) => ({
-          policyType: name,
-          version: policies[name].version,
-          isAgree: agreements[name],
-        })),
-      });
-    }
-  }, [agreements, updateAgreements]);
-
-  useEffect(() => {
-    if (agreementsResult && agreementsResult.policyAgreementList.every((a) => a.isAgree)) {
+    if (updatedAgreements && updatedAgreements.policyAgreementList.every((a) => a.isAgree)) {
       goForwardStep();
     }
-  }, [agreementsResult, goForwardStep]);
+  }, [updatedAgreements, goForwardStep]);
 
   return (
     <Container>
@@ -115,24 +101,32 @@ export const PoliciesPopup = () => {
       <Divider />
       <Body>
         <PoliciesBox
-          allChecked={Object.values(agreements).every((v) => v)}
+          allChecked={policyTypes.every((name) => agreements[name]?.isAgree)}
           disabled={isLoadingAgreements}
           toggleAll={(e) => {
-            const newAgreements = agreements;
-            for (const key in newAgreements) {
-              newAgreements[key as PolicyName] = e.target.checked;
-            }
-            setAgreements(newAgreements);
+            updateAgreements({
+              agreements: policyTypes.map((type) => ({
+                policyType: type,
+                isAgree: e.target.checked,
+              })),
+            });
           }}
         >
-          {policyNames.map((name) => (
+          {policyTypes.map((name) => (
             <PoliciesBox.Policy
               key={name}
               title={policies[name].title}
               text={policies[name].text}
-              value={agreements[name]}
+              value={agreements[name]?.isAgree}
               disabled={isLoadingAgreements}
-              onChange={(e) => setAgreements({ ...agreements, [name]: e.target.checked })}
+              onChange={(e) =>
+                updateAgreements({
+                  agreements: policyTypes.map((type) => ({
+                    policyType: type,
+                    isAgree: type === name ? e.target.checked : agreements[type]?.isAgree ?? false,
+                  })),
+                })
+              }
             />
           ))}
         </PoliciesBox>
