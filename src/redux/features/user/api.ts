@@ -1,4 +1,4 @@
-import { PolicyAgreement } from '#/entities/policy';
+import { PolicyAgreement, PolicyType, policies } from '#/entities/policy';
 import { User } from '#/entities/user';
 import { api } from '#/redux/api';
 import { updateMe } from './slice';
@@ -10,7 +10,10 @@ export interface PolicyAgreementResponse {
   policyAgreementList: PolicyAgreement[];
 }
 export interface PolicyAgreementUpdateRequest {
-  agreements: PolicyAgreement[];
+  agreements: {
+    policyType: string;
+    isAgree: boolean;
+  }[];
 }
 export interface PolicyAgreementUpdateResponse {
   policyAgreementList: PolicyAgreement[];
@@ -48,9 +51,21 @@ const userApi = api.injectEndpoints({
           url: `/v1/user/policy-agreement`,
           method: 'PUT',
           body: {
-            policyAgreementList: agreements,
+            policyAgreementList: Object.keys(policies).map((policyType) => ({
+              policyType,
+              version: policies[policyType as PolicyType].version,
+              isAgree:
+                agreements.find((agreement) => agreement.policyType === policyType)?.isAgree ??
+                false,
+            })),
           },
         }),
+        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+          const { data } = await queryFulfilled;
+          dispatch(
+            userApi.util.updateQueryData('myAgreements', undefined, () => data.policyAgreementList)
+          );
+        },
       }
     ),
   }),
