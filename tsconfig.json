@@ -20,6 +20,7 @@
       }
     ],
     "paths": {
+      "#/*": ["./src/*"],
       "#app/*": ["./src/app/*"],
       "#atoms/*": ["./src/components/atoms/*"],
       "#molecules/*": ["./src/components/molecules/*"],

@@ -1,5 +1,5 @@
-import React from 'react';
 import type { HTMLAttributes } from 'react';
+import React from 'react';
 
 import {
   AccountIcon,
@@ -12,6 +12,7 @@ import {
   CameraIcon,
   CheckIcon,
   ClickIcon,
+  ClipIcon,
   CrossIcon,
   EmojiFire,
   EmojiHoldingBackTears,
@@ -19,9 +20,13 @@ import {
   InfoIcon,
   InstagramIcon,
   KakaoIcon,
+  LinkIcon,
   LogoIcon,
   MegaphoneIcon,
+  PencilIcon,
+  PlusIcon,
   RunIcon,
+  Upload,
   UserIcon,
 } from '#/assets/icons';
 
@@ -164,7 +169,7 @@ const icons: Record<IconName, Icon> = {
     SVGR: MegaphoneIcon,
   },
   pencil: {
-    SVGR: PenCilIcon,
+    SVGR: PencilIcon,
   },
   plus: {
     SVGR: PlusIcon,
