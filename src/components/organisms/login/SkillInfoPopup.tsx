@@ -103,7 +103,7 @@ export const SkillInfoPopup = () => {
   const dispatch = useAppDispatch();
 
   const { data: positions, isLoading: isLoadingPositions } = useGetPositionsQuery();
-  const [getPositionSkills, { data: skills, isLoading: isLoadingSkills }] =
+  const [getPositionSkills, { data: skills, isFetching: isFetchingSkills }] =
     useLazyGetPositionSkillsQuery();
 
   const [selectedPosition, setSelectedPosition] = useState<number>();
@@ -176,7 +176,7 @@ export const SkillInfoPopup = () => {
           </PositionTabs>
           <Divider style={{ margin: '0 10px', width: 'calc(100% - 20px)' }} />
           <SkillsContainer>
-            {isLoadingSkills
+            {isFetchingSkills
               ? Array.from({ length: 5 }).map((_, index) => (
                   <SkillButton
                     key={index}
