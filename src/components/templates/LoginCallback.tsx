@@ -62,7 +62,6 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   useEffect(() => {
     if (me && myAgreements) {
       let step: AuthStep;
-      console.log(myAgreements);
 
       if (myAgreements.some((policy) => policy.isAgree === false) || myAgreements.length === 0) {
         step = AuthStep.Policies;
