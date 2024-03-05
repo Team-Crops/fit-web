@@ -1,8 +1,12 @@
+'use client';
+
 import React, { useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
-import { AuthStep } from '#/redux/features/auth/slice';
+import { useDispatch } from 'react-redux';
+
+import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useAppSelector } from '#/redux/hooks';
 import {
   LoginPopup,
@@ -31,37 +35,35 @@ export const Backdrop = styled.div`
   z-index: 100;
 `;
 
-interface LoginProps {
-  onCancel: () => void;
-}
-
-export const Login: React.FC<LoginProps> = ({ onCancel }: LoginProps) => {
+export const Login: React.FC = () => {
+  const dispatch = useDispatch();
   const step = useAppSelector((state) => state.auth.step);
 
+  const closePopup = useCallback(() => {
+    dispatch(updateAuth({ showLoginPopup: false }));
+  }, [dispatch]);
+
   const LoginStepComponent: Record<AuthStep, React.ReactElement> = {
-    [AuthStep.Entrance]: <LoginPopup onCancel={onCancel} />,
+    [AuthStep.Entrance]: <LoginPopup />,
     [AuthStep.Policies]: <PoliciesPopup />,
     [AuthStep.UserInfo]: <UserInfoPopup />,
     [AuthStep.PositionInfo]: <PositionInfoPopup />,
     [AuthStep.PersonalInfo]: <PersonalInfoPopup />,
     [AuthStep.ActivityInfo]: <ActivityInfoPopup />,
     [AuthStep.SkillInfo]: <SkillInfoPopup />,
-    [AuthStep.Complete]: <CompletePopup onCancel={onCancel} />,
+    [AuthStep.Complete]: <CompletePopup />,
   };
 
-  const handleBackdropClick = useCallback<React.MouseEventHandler<HTMLDivElement>>(
-    (e) => {
-      const isCancelable =
-        step === null || step === AuthStep.Entrance || step === AuthStep.Complete;
-      if (e.target === e.currentTarget && isCancelable) {
-        onCancel();
-      }
-    },
-    [onCancel, step]
-  );
-
   return (
-    <Backdrop onClick={handleBackdropClick}>
+    <Backdrop
+      onClick={(e) => {
+        const isCancelable =
+          step === null || step === AuthStep.Entrance || step === AuthStep.Complete;
+        if (isCancelable && e.target === e.currentTarget) {
+          closePopup();
+        }
+      }}
+    >
       {LoginStepComponent[step ?? AuthStep.Entrance]}
     </Backdrop>
   );
