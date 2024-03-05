@@ -18,14 +18,19 @@ const skillSetApi = api.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getSkills: build.query<SkillsResponse, void>({
-      query: () => ({
-        url: '/v1/skill-set/skill',
+    getPositionSkills: build.query<SkillsResponse, { positionId: number }>({
+      query: ({ positionId }) => ({
+        url: `/v1/skill-set/position/${positionId}/skill`,
         method: 'GET',
       }),
     }),
   }),
 });
 
-export const { useGetPositionsQuery, useGetSkillsQuery } = skillSetApi;
+export const {
+  useGetPositionsQuery,
+  useLazyGetPositionsQuery,
+  useGetPositionSkillsQuery,
+  useLazyGetPositionSkillsQuery,
+} = skillSetApi;
 export default skillSetApi;

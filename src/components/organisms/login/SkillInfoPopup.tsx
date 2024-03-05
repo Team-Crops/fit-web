@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useGetPositionsQuery, useGetSkillsQuery } from '#/redux/features/skill-set/api';
+import {
+  useGetPositionsQuery,
+  useLazyGetPositionSkillsQuery,
+} from '#/redux/features/skill-set/api';
 import { useAppDispatch } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Divider } from '#atoms/Divider';
@@ -100,7 +103,9 @@ export const SkillInfoPopup = () => {
   const dispatch = useAppDispatch();
 
   const { data: positions, isLoading: isLoadingPositions } = useGetPositionsQuery();
-  const { data: skills, isLoading: isLoadingSkills } = useGetSkillsQuery();
+  const [getPositionSkills, { data: skills, isLoading: isLoadingSkills }] =
+    useLazyGetPositionSkillsQuery();
+
   const [selectedPosition, setSelectedPosition] = useState<number>();
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
 
@@ -111,6 +116,12 @@ export const SkillInfoPopup = () => {
       setSelectedSkills([...selectedSkills, skillId]);
     }
   };
+
+  useEffect(() => {
+    if (selectedPosition) {
+      getPositionSkills({ positionId: selectedPosition });
+    }
+  }, [getPositionSkills, selectedPosition]);
 
   return (
     <Container>
