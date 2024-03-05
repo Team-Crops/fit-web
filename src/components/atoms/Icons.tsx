@@ -1,29 +1,48 @@
-import AccountIcon from 'src/assets/icons/account.svg';
-import ArrowForward from 'src/assets/icons/arrow-forward.svg';
-import ArrowRightIcon from 'src/assets/icons/arrow-right.svg';
-import AwayIcon from 'src/assets/icons/away.svg';
-import BellIcon from 'src/assets/icons/bell.svg';
-import CheckIcon from 'src/assets/icons/check.svg';
-import ClickIcon from 'src/assets/icons/click.svg';
-import CrossIcon from 'src/assets/icons/cross.svg';
-import GoogleIcon from 'src/assets/icons/google.svg';
-import InstagramIcon from 'src/assets/icons/instagram.svg';
-import KakaoIcon from 'src/assets/icons/kakao.svg';
-import LogoIcon from 'src/assets/icons/logo.svg';
-import MegaphoneIcon from 'src/assets/icons/megaphone.svg';
-import RunIcon from 'src/assets/icons/run.svg';
-import UserIcon from 'src/assets/icons/user.svg';
+import React from 'react';
+import type { HTMLAttributes } from 'react';
+
+import {
+  AccountIcon,
+  ArrowDown,
+  ArrowForward,
+  ArrowForwardOutlined,
+  ArrowRightIcon,
+  AwayIcon,
+  BellIcon,
+  CameraIcon,
+  CheckIcon,
+  ClickIcon,
+  CrossIcon,
+  EmojiFire,
+  EmojiHoldingBackTears,
+  GoogleIcon,
+  InfoIcon,
+  InstagramIcon,
+  KakaoIcon,
+  LogoIcon,
+  MegaphoneIcon,
+  RunIcon,
+  UserIcon,
+} from '#/assets/icons';
 
 type IconName =
   | 'account'
+  | 'arrowDown'
   | 'arrowForward'
+  | 'arrowForwardOutlined'
+  | 'arrowBackward'
+  | 'arrowBackwardOutlined'
   | 'arrowRight'
   | 'away'
   | 'bell'
+  | 'camera'
   | 'check'
   | 'click'
   | 'cross'
+  | 'emojiFire'
+  | 'emojiHoldingBackTears'
   | 'google'
+  | 'info'
   | 'instagram'
   | 'kakao'
   | 'logo'
@@ -34,6 +53,7 @@ type IconName =
 interface Icon {
   SVGR: any;
   color?: string;
+  style?: React.CSSProperties;
 }
 
 const icons: Record<IconName, Icon> = {
@@ -41,9 +61,43 @@ const icons: Record<IconName, Icon> = {
     SVGR: AccountIcon,
     color: '#212121',
   },
+  arrowDown: {
+    SVGR: ArrowDown,
+    color: '#bdbdbd',
+  },
   arrowForward: {
     SVGR: ArrowForward,
-    color: '#919191',
+    color: 'rgba(0, 0, 0, 0.57)',
+    style: {
+      boxShadow: '0px 0px 40px 0px rgba(0, 0, 0, 0.15)',
+      borderRadius: '50%',
+    },
+  },
+  arrowForwardOutlined: {
+    SVGR: ArrowForwardOutlined,
+    color: '#FF706C',
+    style: {
+      boxShadow: '0px 0px 40px 0px rgba(0, 0, 0, 0.15)',
+      borderRadius: '50%',
+    },
+  },
+  arrowBackward: {
+    SVGR: ArrowForward,
+    color: 'rgba(0, 0, 0, 0.57)',
+    style: {
+      boxShadow: '0px 0px 40px 0px rgba(0, 0, 0, 0.15)',
+      borderRadius: '50%',
+      transform: 'rotate(180deg)',
+    },
+  },
+  arrowBackwardOutlined: {
+    SVGR: ArrowForwardOutlined,
+    color: '#FF706C',
+    style: {
+      boxShadow: '0px 0px 40px 0px rgba(0, 0, 0, 0.15)',
+      borderRadius: '50%',
+      transform: 'rotate(180deg)',
+    },
   },
   arrowRight: {
     SVGR: ArrowRightIcon,
@@ -55,6 +109,10 @@ const icons: Record<IconName, Icon> = {
   },
   bell: {
     SVGR: BellIcon,
+  },
+  camera: {
+    SVGR: CameraIcon,
+    color: '#bdbdbd',
   },
   check: {
     SVGR: CheckIcon,
@@ -68,11 +126,21 @@ const icons: Record<IconName, Icon> = {
     SVGR: CrossIcon,
     color: '#212121',
   },
+  emojiFire: {
+    SVGR: EmojiFire,
+  },
+  emojiHoldingBackTears: {
+    SVGR: EmojiHoldingBackTears,
+  },
   google: {
     SVGR: GoogleIcon,
   },
   instagram: {
     SVGR: InstagramIcon,
+  },
+  info: {
+    SVGR: InfoIcon,
+    color: '#BDBDBD',
   },
   kakao: {
     SVGR: KakaoIcon,
@@ -93,14 +161,13 @@ const icons: Record<IconName, Icon> = {
   },
 };
 
-interface IconsProps {
+interface IconsProps extends HTMLAttributes<SVGElement> {
   icon: IconName;
-  color?: string;
   width?: number;
   height?: number;
 }
 
-export const Icons = ({ icon, color, width, height }: IconsProps) => {
-  const { SVGR, color: defaultColor } = icons[icon];
-  return <SVGR width={width} height={height} color={color || defaultColor} />;
+export const Icons = ({ icon, width, height, ...props }: IconsProps) => {
+  const { SVGR, color: defaultColor, style } = icons[icon];
+  return <SVGR color={defaultColor} width={width} height={height} style={style} {...props} />;
 };

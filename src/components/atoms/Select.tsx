@@ -8,26 +8,11 @@ import type {
   ReactNode,
   SetStateAction,
 } from 'react';
-import { Children, createContext, useContext, useEffect, useRef, useState } from 'react';
+import { Children, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
+import { Icons } from '#atoms/Icons';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-
-function getArrowSvg(color: string) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">
-  <path d="M6.4147 8.38433C6.21651 8.67856 5.78348 8.67856 5.5853 8.38433L0.462761 0.779331C0.239057 0.447218 0.47703 4.85377e-09 0.877459 3.51928e-08L11.1225 8.11426e-07C11.523 8.41765e-07 11.7609 0.447218 11.5372 0.779331L6.4147 8.38433Z" fill="${color}"/>
-</svg>`;
-}
-
-function getArrowImage({ color }: { color: string }) {
-  return `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(getArrowSvg(color))}')`;
-}
-
-const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 11" fill="none">
-<path d="M1 5L5 8.66667L9 1" stroke="#FF706C" stroke-width="2" stroke-linecap="round"/>
-</svg>`;
-
-const checkImage = `url('data:image/svg+xml;charset=US-ASCII,${encodeURIComponent(checkSvg)}')`;
 
 function getColorCSS({ error, value }: SelectProps) {
   if (error) {
@@ -61,50 +46,48 @@ function getColorCSS({ error, value }: SelectProps) {
   }
 }
 
-function getArrowCSS({ error }: SelectProps) {
-  if (error) {
-    return css`
-      background-image: ${getArrowImage({ color: '#bdbdbd' })};
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-
-      &:focus {
-        background-image: ${getArrowImage({ color: '#ff0800' })};
-      }
-    `;
-  } else {
-    return css`
-      background-image: ${getArrowImage({ color: '#9e9e9e' })};
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-
-      &:focus {
-        background-image: ${getArrowImage({ color: '#ff908d' })};
-      }
-    `;
-  }
-}
-
-const SelectContainer = styled.div<{ width: string }>`
-  position: relative;
+const SelectContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: ${({ width }) => width};
+`;
+
+const ArrowIcon = styled(Icons)<{ error: boolean; opened: boolean }>`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+
+  width: 12px;
+  height: 12px;
+
+  ${({ error, opened }) =>
+    error
+      ? css`
+          color: ${opened ? '#ff0800' : '#bdbdbd'};
+        `
+      : css`
+          color: ${opened ? '#ff706c' : '#bdbdbd'};
+        `}
+
+  ${({ opened }) =>
+    opened &&
+    css`
+      transform: translateY(-50%) rotate(-180deg);
+    `}
+
+  transition: 0.25s;
 `;
 
 const SelectButton = styled.button<SelectProps>`
   appearance: none;
   border: 1px solid #9e9e9e;
   border-radius: 4px;
-  padding: 10px 16px 10px 10px;
+  padding: 10px;
 
   width: 100%;
-  height: 34px;
+  height: 30px;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-align: left;
   font-size: 12px;
   font-style: normal;
@@ -112,13 +95,17 @@ const SelectButton = styled.button<SelectProps>`
   line-height: normal;
   letter-spacing: -0.6px;
 
-  ${(props) => getColorCSS(props)}
-  ${(props) => getArrowCSS(props)}
+  position: relative;
+
+  ${(props) => getColorCSS(props)};
 `;
 
 const OptionList = styled.ul`
+  z-index: 999;
+
   position: absolute;
-  top: 36px;
+  top: calc(100%);
+  left: 0;
   width: 100%;
 
   margin: 0;
@@ -165,57 +152,60 @@ const OptionGroupHr = styled.hr`
   border: 1px solid #eeeeee;
 `;
 
-const OptionItem = styled.li<{ isSelected: boolean }>`
+const OptionItem = styled.li<{ selected: boolean }>`
   cursor: pointer;
   list-style-type: none;
 
   padding: 10px;
 
   background-color: #ffffff;
-  color: #616161;
+  color: ${({ selected }) => (selected ? '#ff706c' : '#616161')};
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.6px;
 
-  ${({ isSelected }) =>
-    isSelected &&
-    css`
-      background-image: ${checkImage};
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-    `}
-
   &:hover {
     background-color: #eeeeee;
   }
+
+  position: relative;
+`;
+
+const OptionItemCheckIcon = styled(Icons)`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+
+  width: 8px;
+  height: 8px;
+  color: #ff706c;
 `;
 
 const SelectContext = createContext<{
   value?: string | number | readonly string[];
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  setOpened?: Dispatch<SetStateAction<boolean>>;
   setLabel?: Dispatch<SetStateAction<string | undefined>>;
 }>({});
 
-type SelectProps = InputHTMLAttributes<HTMLInputElement> & {
+export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   helperText?: string;
-  width?: string;
-};
+}
 
 export const Select = ({
-  error,
+  className,
+  error = false,
   helperText,
   value,
   onChange,
   placeholder,
   children,
-  width = '100%',
   ...props
 }: SelectProps) => {
-  const [isOpened, setOpened] = useState(true);
+  const [isOpened, setOpened] = useState(false);
   const [label, setLabel] = useState<string | undefined>();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -231,13 +221,14 @@ export const Select = ({
   });
 
   return (
-    <SelectContext.Provider value={{ value, onChange, setOpened, setLabel }}>
-      <SelectContainer ref={containerRef} width={width}>
-        <input type="text" value={value} style={{ display: 'none' }} {...props} />
+    <SelectContext.Provider value={{ value, onChange, setLabel }}>
+      <SelectContainer className={className} ref={containerRef}>
+        <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
           {label ?? placeholder}
+          <ArrowIcon icon="arrowDown" error={error} opened={isOpened} />
+          <OptionList hidden={!isOpened}>{children}</OptionList>
         </SelectButton>
-        {isOpened && <OptionList>{children}</OptionList>}
         {helperText && <HelperText error={error}>{helperText}</HelperText>}
       </SelectContainer>
     </SelectContext.Provider>
@@ -260,33 +251,44 @@ const OptionGroup = ({ label, children }: OptionGroupProps) => (
 Select.OptionGroup = OptionGroup;
 
 type OptionProps = {
-  value: string;
+  value: string | number | readonly string[];
   children?: ReactNode;
 };
 
 const Option = ({ value, children }: OptionProps) => {
-  const { value: currentValue, onChange, setOpened, setLabel } = useContext(SelectContext);
+  const { value: currentValue, onChange, setLabel } = useContext(SelectContext);
+
+  const selected = useMemo(() => value == currentValue, [currentValue, value]);
+  const label = useMemo(() => {
+    let label = '';
+    Children.map(children, (child) => {
+      if (typeof child === 'string' || typeof child === 'number') {
+        label += child.toString();
+      }
+    });
+    return label;
+  }, [children]);
+
+  useEffect(() => {
+    if (selected && setLabel) {
+      setLabel(label);
+    }
+  }, [label, selected, setLabel]);
+
   return (
     <OptionItem
-      isSelected={currentValue === value}
+      value={value}
+      selected={selected}
       onClick={() => {
         if (onChange) {
           onChange({ target: { value } } as ChangeEvent<HTMLInputElement>);
         }
         if (setLabel) {
-          let label = '';
-          Children.map(children, (child) => {
-            if (typeof child === 'string' || typeof child === 'number') {
-              label += child.toString();
-            }
-          });
           setLabel(label);
-        }
-        if (setOpened) {
-          setOpened(false);
         }
       }}
     >
+      {selected && <OptionItemCheckIcon icon="check" />}
       {children}
     </OptionItem>
   );
