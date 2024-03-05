@@ -84,7 +84,7 @@ export const PoliciesBox = ({
 interface PolicyProps {
   title: string;
   text: string;
-  value: boolean;
+  value?: boolean;
   disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
