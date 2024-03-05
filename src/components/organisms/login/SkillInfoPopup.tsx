@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -109,13 +109,16 @@ export const SkillInfoPopup = () => {
   const [selectedPosition, setSelectedPosition] = useState<number>();
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
 
-  const skillClickHandler = (skillId: number) => {
-    if (selectedSkills.includes(skillId)) {
-      setSelectedSkills(selectedSkills.filter((id) => id !== skillId));
-    } else {
-      setSelectedSkills([...selectedSkills, skillId]);
-    }
-  };
+  const skillClickHandler = useCallback(
+    (skillId: number) => {
+      if (selectedSkills.includes(skillId)) {
+        setSelectedSkills(selectedSkills.filter((id) => id !== skillId));
+      } else {
+        setSelectedSkills([...selectedSkills, skillId]);
+      }
+    },
+    [selectedSkills]
+  );
 
   useEffect(() => {
     if (selectedPosition) {
