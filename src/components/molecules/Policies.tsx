@@ -50,17 +50,24 @@ const ExpandButtonContainer = styled.div`
 
 interface PoliciesBoxProps extends HTMLAttributes<HTMLDivElement> {
   allChecked?: boolean;
+  disabled?: boolean;
   toggleAll?: ChangeEventHandler<HTMLInputElement>;
 }
 
-export const PoliciesBox = ({ children, allChecked, toggleAll, ...props }: PoliciesBoxProps) => {
+export const PoliciesBox = ({
+  children,
+  allChecked,
+  disabled,
+  toggleAll,
+  ...props
+}: PoliciesBoxProps) => {
   return (
     <Container {...props}>
       {allChecked !== undefined && toggleAll && (
         <>
           <PolicyContainer>
             <CheckBoxContainer>
-              <CheckBox checked={allChecked} onChange={toggleAll} />
+              <CheckBox checked={allChecked} onChange={toggleAll} disabled={disabled} />
               <Txt size="typo4" weight="bold">
                 모두 동의합니다
               </Txt>
@@ -78,16 +85,17 @@ interface PolicyProps {
   title: string;
   text: string;
   value: boolean;
+  disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Policy = ({ title, text, value, onChange }: PolicyProps) => {
+const Policy = ({ title, text, value, disabled, onChange }: PolicyProps) => {
   const [isExpanded, setExpanded] = useState(false);
   return (
     <PolicyContainer>
       <PolicyHeader>
         <CheckBoxContainer>
-          <CheckBox checked={value} onChange={onChange} />
+          <CheckBox checked={value} onChange={onChange} disabled={disabled} />
           <Txt size="typo4" weight="bold">
             {title}
           </Txt>

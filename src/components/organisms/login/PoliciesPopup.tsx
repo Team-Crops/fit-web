@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import { policies } from '#/entities/policy';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useUpdateMyAgreementsMutation } from '#/redux/features/user/api';
+import { useMyAgreementsQuery, useUpdateMyAgreementsMutation } from '#/redux/features/user/api';
 import { useAppDispatch } from '#/redux/hooks';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
@@ -71,6 +71,7 @@ const policyNames: PolicyName[] = ['SERVICE_POLICY', 'PRIVACY_POLICY'];
 
 export const PoliciesPopup = () => {
   const dispatch = useAppDispatch();
+  const { data: myAgreements, isLoading: isLoadingAgreements } = useMyAgreementsQuery();
   const [updateAgreements, { data: agreementsResult }] = useUpdateMyAgreementsMutation();
 
   const [agreements, setAgreements] = useState<Record<PolicyName, boolean>>(
@@ -115,6 +116,7 @@ export const PoliciesPopup = () => {
       <Body>
         <PoliciesBox
           allChecked={Object.values(agreements).every((v) => v)}
+          disabled={isLoadingAgreements}
           toggleAll={(e) => {
             const newAgreements = agreements;
             for (const key in newAgreements) {
@@ -129,6 +131,7 @@ export const PoliciesPopup = () => {
               title={policies[name].title}
               text={policies[name].text}
               value={agreements[name]}
+              disabled={isLoadingAgreements}
               onChange={(e) => setAgreements({ ...agreements, [name]: e.target.checked })}
             />
           ))}
