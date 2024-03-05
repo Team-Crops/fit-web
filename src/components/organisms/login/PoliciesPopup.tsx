@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
+
+import _ from 'lodash';
 
 import { policies } from '#/entities/policy';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
@@ -12,8 +14,6 @@ import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { PoliciesBox } from '#molecules/Policies';
-
-import type { PolicyName } from 'src/entities/policy';
 
 const Container = styled.div`
   position: relative;
@@ -66,25 +66,29 @@ const HelperTextContainer = styled.div`
   color: #9e9e9e;
 `;
 
-const signUpTermNames: PolicyName[] = ['service', 'privacy'];
+type PolicyName = keyof typeof policies;
+const policyNames: PolicyName[] = ['SERVICE_POLICY', 'PRIVACY_POLICY'];
 
 export const PoliciesPopup = () => {
+  const dispatch = useAppDispatch();
   const [updateAgreements, { data: agreementsResult }] = useUpdateMyAgreementsMutation();
 
   const [agreements, setAgreements] = useState<Record<PolicyName, boolean>>(
-    signUpTermNames.reduce((acc, name) => ({ ...acc, [name]: false }), {}) as Record<
+    policyNames.reduce((acc, name) => ({ ...acc, [name]: false }), {}) as Record<
       PolicyName,
       boolean
     >
   );
 
-  const dispatch = useAppDispatch();
+  const goForwardStep = useCallback(() => {
+    dispatch(updateAuth({ step: AuthStep.Policies + 1 }));
+  }, [dispatch]);
 
   useEffect(() => {
     if (Object.values(agreements).every((v) => v)) {
       updateAgreements({
-        agreements: signUpTermNames.map((name) => ({
-          policyType: `${name.toUpperCase()}_POLICY`,
+        agreements: policyNames.map((name) => ({
+          policyType: name,
           version: policies[name].version,
           isAgree: agreements[name],
         })),
@@ -93,11 +97,10 @@ export const PoliciesPopup = () => {
   }, [agreements, updateAgreements]);
 
   useEffect(() => {
-    console.log(agreementsResult);
     if (agreementsResult && agreementsResult.policyAgreementList.every((a) => a.isAgree)) {
-      dispatch(updateAuth({ step: AuthStep.Policies + 1 }));
+      goForwardStep();
     }
-  }, [agreementsResult, dispatch]);
+  }, [agreementsResult, goForwardStep]);
 
   return (
     <Container>
@@ -112,9 +115,15 @@ export const PoliciesPopup = () => {
       <Body>
         <PoliciesBox
           allChecked={Object.values(agreements).every((v) => v)}
-          toggleAll={(e) => setAgreements(getAgreements(e.target.checked))}
+          toggleAll={(e) => {
+            const newAgreements = agreements;
+            for (const key in newAgreements) {
+              newAgreements[key as PolicyName] = e.target.checked;
+            }
+            setAgreements(newAgreements);
+          }}
         >
-          {signUpTermNames.map((name) => (
+          {policyNames.map((name) => (
             <PoliciesBox.Policy
               key={name}
               title={policies[name].title}
@@ -133,10 +142,3 @@ export const PoliciesPopup = () => {
     </Container>
   );
 };
-
-function getAgreements(value: boolean = false): Record<PolicyName, boolean> {
-  return signUpTermNames.reduce((acc, name) => ({ ...acc, [name]: value }), {}) as Record<
-    PolicyName,
-    boolean
-  >;
-}
