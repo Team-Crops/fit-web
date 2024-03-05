@@ -25,7 +25,7 @@ import {
   UserIcon,
 } from '#/assets/icons';
 
-type IconName =
+export type IconName =
   | 'account'
   | 'arrowDown'
   | 'arrowForward'
@@ -38,6 +38,7 @@ type IconName =
   | 'camera'
   | 'check'
   | 'click'
+  | 'clip'
   | 'cross'
   | 'emojiFire'
   | 'emojiHoldingBackTears'
@@ -45,10 +46,14 @@ type IconName =
   | 'info'
   | 'instagram'
   | 'kakao'
+  | 'link'
   | 'logo'
   | 'megaphone'
+  | 'pencil'
+  | 'plus'
   | 'run'
-  | 'user';
+  | 'user'
+  | 'upload';
 
 interface Icon {
   SVGR: any;
@@ -122,6 +127,9 @@ const icons: Record<IconName, Icon> = {
     SVGR: ClickIcon,
     color: '#212121',
   },
+  clip: {
+    SVGR: ClipIcon,
+  },
   cross: {
     SVGR: CrossIcon,
     color: '#212121',
@@ -145,6 +153,9 @@ const icons: Record<IconName, Icon> = {
   kakao: {
     SVGR: KakaoIcon,
   },
+  link: {
+    SVGR: LinkIcon,
+  },
   logo: {
     SVGR: LogoIcon,
     color: '#FF706C',
@@ -152,12 +163,21 @@ const icons: Record<IconName, Icon> = {
   megaphone: {
     SVGR: MegaphoneIcon,
   },
+  pencil: {
+    SVGR: PenCilIcon,
+  },
+  plus: {
+    SVGR: PlusIcon,
+  },
   run: {
     SVGR: RunIcon,
     color: '#212121',
   },
   user: {
     SVGR: UserIcon,
+  },
+  upload: {
+    SVGR: Upload,
   },
 };
 
