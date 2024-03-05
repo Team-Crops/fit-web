@@ -14,6 +14,7 @@ env:
   ECR_IMAGE_LATEST: ${{ secrets.ECR_REGISTRY_URI }}:latest
   ECR_IMAGE_SHA: ${{ secrets.ECR_REGISTRY_URI }}:${{ github.sha }}
   TASK_DEFINITION: task-def.json
+  PERFORMANCE_BUDGET: budget.json
 
 jobs:
   build:
@@ -58,8 +59,6 @@ jobs:
           role-session-name: GHA-ECS-Deploy
 
       - name: Add task definition
-        env:
-          FILENAME: task-def.json
         run: |
           echo '${{ vars.TASK_DEFINITION }}' > ${{ env.TASK_DEFINITION }}
 
@@ -78,3 +77,24 @@ jobs:
           service: ${{ vars.ECS_SERVICE_NAME }}
           cluster: ${{ vars.ECS_CLUSTER_NAME }}
           wait-for-service-stability: true
+
+  test-performance:
+    name: Performance Test
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write performance budget
+        run: |
+          echo '${{ vars.PERFORMANCE_BUDGET }}' > ${{ env.PERFORMANCE_BUDGET }}
+
+      - name: Lighthouse CI Action
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://dev-f-it.team
+          budgetPath: ${{ env.PERFORMANCE_BUDGET }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
