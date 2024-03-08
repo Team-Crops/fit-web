@@ -116,6 +116,7 @@ const OptionList = styled.ul`
   border: 1px solid #eeeeee;
   background-color: #f5f5f5;
   box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15);
+  z-index: 10;
 `;
 
 const HelperText = styled.div<{ error?: boolean }>`

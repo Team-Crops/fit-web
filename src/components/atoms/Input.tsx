@@ -4,10 +4,12 @@ import styled from '@emotion/styled';
 
 import { Txt, TxtProps, TxtSizeCSS, TxtWeightCSS } from './Text';
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   gap: 5px;
+
+  width: ${({ width }) => width};
 `;
 
 interface CommonInputProps {
@@ -18,6 +20,9 @@ interface CommonInputProps {
 
 const CommonInput = styled.input<CommonInputProps>`
   appearance: none;
+
+  width: 100%;
+  padding: 10px;
 
   ${({ typo }) => TxtSizeCSS({ size: typo })}
   ${({ weight }) => TxtWeightCSS({ weight })}
@@ -82,12 +87,10 @@ export const Input = ({
   ...props
 }: InputProps) => {
   return (
-    <InputContainer>
-      {variant === 'filled' && (
-        <FilledInput typo={typo} weight={weight} error={error} width={width} {...props} />
-      )}
+    <InputContainer width={width}>
+      {variant === 'filled' && <FilledInput typo={typo} weight={weight} error={error} {...props} />}
       {variant === 'standard' && (
-        <StandardInput typo={typo} weight={weight} error={error} width={width} {...props} />
+        <StandardInput typo={typo} weight={weight} error={error} {...props} />
       )}
       {helperText && (
         <HelperText size="typo6" weight="regular" error={error}>
