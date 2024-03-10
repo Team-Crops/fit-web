@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { UserBackgroundStatus, isUserStudent, isUserWorker } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { type UserUpdateRequest, useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Input } from '#atoms/Input';
 import { Txt } from '#atoms/Text';
@@ -77,6 +77,10 @@ export const PersonalInfoPopup = () => {
   const me = useAppSelector((state) => state.user.me);
   const [updateMe] = useUpdateMeMutation();
 
+  const [username, setUsername] = useState(me?.username);
+  const [email, setEmail] = useState(me?.email);
+  const [backgroundText, setBackgroundText] = useState(me?.backgroundText);
+
   const goBackwardStep = useCallback(() => {
     dispatch(updateAuth({ step: AuthStep.PersonalInfo - 1 }));
   }, [dispatch]);
@@ -84,9 +88,13 @@ export const PersonalInfoPopup = () => {
     dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
   }, [dispatch]);
 
-  const updateBackgroundText = _.debounce((text: string) => {
-    updateMe({ backgroundStatus: me?.backgroundStatus, backgroundText: text });
-  }, 500);
+  const debouncedUpdateMe = useMemo(
+    () =>
+      _.debounce((arg: UserUpdateRequest) => {
+        updateMe(arg);
+      }, 500),
+    [updateMe]
+  );
 
   return (
     <Container>
@@ -121,8 +129,11 @@ export const PersonalInfoPopup = () => {
             variant="standard"
             typo="typo3"
             weight="medium"
-            value={me?.username}
-            onChange={(e) => updateMe({ username: e.target.value })}
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              debouncedUpdateMe({ username: e.target.value });
+            }}
           />
         </InputContainer>
         <InputContainer>
@@ -133,8 +144,11 @@ export const PersonalInfoPopup = () => {
             variant="standard"
             typo="typo3"
             weight="medium"
-            value={me?.email}
-            onChange={(e) => updateMe({ email: e.target.value })}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              debouncedUpdateMe({ email: e.target.value });
+            }}
           />
         </InputContainer>
         <CareerContainer>
@@ -162,8 +176,14 @@ export const PersonalInfoPopup = () => {
                 variant="standard"
                 typo="typo3"
                 weight="medium"
-                value={me?.backgroundText}
-                onChange={(e) => updateBackgroundText(e.target.value)}
+                value={backgroundText}
+                onChange={(e) => {
+                  setBackgroundText(e.target.value);
+                  debouncedUpdateMe({
+                    backgroundStatus: me?.backgroundStatus,
+                    backgroundText: e.target.value,
+                  });
+                }}
               />
             </InputContainer>
           )}
