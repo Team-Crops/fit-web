@@ -11,7 +11,7 @@ import {
   useLazyGetPositionSkillsQuery,
 } from '#/redux/features/skill-set/api';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
-import { useAppDispatch } from '#/redux/hooks';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
@@ -103,13 +103,15 @@ const SkillButton = styled(Button)<{ loading?: boolean }>`
 export const SkillInfoPopup = () => {
   const dispatch = useAppDispatch();
 
+  const mySkills = useAppSelector((state) => state.user.me?.skillIdList);
+
   const { data: positions, isLoading: isLoadingPositions } = useGetPositionsQuery();
   const [getPositionSkills, { data: skills, isFetching: isFetchingSkills }] =
     useLazyGetPositionSkillsQuery();
   const [updateMeMutation, { isSuccess: successUpdateMe }] = useUpdateMeMutation();
 
   const [selectedPosition, setSelectedPosition] = useState<number>();
-  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<number[]>(mySkills ?? []);
 
   const skillClickHandler = useCallback(
     (skillId: number) => {
