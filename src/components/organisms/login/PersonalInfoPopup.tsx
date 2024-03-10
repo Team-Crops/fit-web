@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { UserBackgroundStatus, isUserStudent, isUserWorker } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { type UserUpdateRequest, useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Input } from '#atoms/Input';
 import { Txt } from '#atoms/Text';
@@ -84,8 +84,8 @@ export const PersonalInfoPopup = () => {
     dispatch(updateAuth({ step: AuthStep.PersonalInfo + 1 }));
   }, [dispatch]);
 
-  const updateBackgroundText = _.debounce((text: string) => {
-    updateMe({ backgroundStatus: me?.backgroundStatus, backgroundText: text });
+  const updateMeDebounce = _.debounce((arg: UserUpdateRequest) => {
+    updateMe(arg);
   }, 500);
 
   return (
@@ -122,7 +122,7 @@ export const PersonalInfoPopup = () => {
             typo="typo3"
             weight="medium"
             value={me?.username}
-            onChange={(e) => updateMe({ username: e.target.value })}
+            onChange={(e) => updateMeDebounce({ username: e.target.value })}
           />
         </InputContainer>
         <InputContainer>
@@ -134,7 +134,7 @@ export const PersonalInfoPopup = () => {
             typo="typo3"
             weight="medium"
             value={me?.email}
-            onChange={(e) => updateMe({ email: e.target.value })}
+            onChange={(e) => updateMeDebounce({ email: e.target.value })}
           />
         </InputContainer>
         <CareerContainer>
@@ -145,7 +145,7 @@ export const PersonalInfoPopup = () => {
             <StyledCareerSelect
               value={me?.backgroundStatus}
               onChange={(e) =>
-                updateMe({ backgroundStatus: e.target.value as UserBackgroundStatus })
+                updateMeDebounce({ backgroundStatus: e.target.value as UserBackgroundStatus })
               }
             />
           </InputContainer>
@@ -163,7 +163,7 @@ export const PersonalInfoPopup = () => {
                 typo="typo3"
                 weight="medium"
                 value={me?.backgroundText}
-                onChange={(e) => updateBackgroundText(e.target.value)}
+                onChange={(e) => updateMeDebounce({ backgroundText: e.target.value })}
               />
             </InputContainer>
           )}
