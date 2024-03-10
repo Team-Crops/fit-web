@@ -145,7 +145,7 @@ export const PersonalInfoPopup = () => {
             <StyledCareerSelect
               value={me?.backgroundStatus}
               onChange={(e) =>
-                updateMeDebounce({ backgroundStatus: e.target.value as UserBackgroundStatus })
+                updateMe({ backgroundStatus: e.target.value as UserBackgroundStatus })
               }
             />
           </InputContainer>
