@@ -19,21 +19,29 @@ export function LoginGuard({ children }: LoginGuardProps) {
   const dispatch = useAppDispatch();
 
   const showLoginPopup = useAppSelector((state) => state.auth.showLoginPopup);
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
+  const refreshToken = useAppSelector((state) => state.auth.refreshToken);
 
-  const [queryMe, { data: me, isSuccess: queryMeSuccess, isError: queryMeError }] =
-    useLazyMeQuery();
+  const [queryMe, { data: me, isError: queryMeError }] = useLazyMeQuery();
   const [queryAgreements, { data: agreements }] = useLazyMyAgreementsQuery();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
-    dispatch(updateAuth({ accessToken, refreshToken }));
-    queryMe();
-    queryAgreements();
-  }, [dispatch, queryAgreements, queryMe]);
+    const storageAccessToken = localStorage.getItem('accessToken');
+    const storageRefreshToken = localStorage.getItem('refreshToken');
+    if (storageAccessToken && storageRefreshToken) {
+      dispatch(updateAuth({ accessToken: storageAccessToken, refreshToken: storageRefreshToken }));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-    if (queryMeSuccess && me && agreements) {
+    if (accessToken && refreshToken) {
+      queryMe();
+      queryAgreements();
+    }
+  }, [accessToken, queryAgreements, queryMe, refreshToken]);
+
+  useEffect(() => {
+    if (me && agreements) {
       let step: AuthStep;
 
       if (
@@ -60,7 +68,7 @@ export function LoginGuard({ children }: LoginGuardProps) {
       dispatch(setMe(me));
       dispatch(updateAuth({ step, showLoginPopup: me.status === 'INCOMPLETE' }));
     }
-  }, [agreements, dispatch, me, queryMeSuccess]);
+  }, [agreements, dispatch, me]);
 
   useEffect(() => {
     if (queryMeError) {
