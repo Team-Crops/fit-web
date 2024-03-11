@@ -101,7 +101,7 @@ export const PoliciesPopup = () => {
       <Divider />
       <Body>
         <PoliciesBox
-          allChecked={policyTypes.every((name) => agreements[name]?.isAgree)}
+          allChecked={policyTypes.every((name) => agreements[name])}
           disabled={isLoadingAgreements}
           toggleAll={(e) => {
             updateAgreements({
@@ -117,13 +117,13 @@ export const PoliciesPopup = () => {
               key={name}
               title={policies[name].title}
               text={policies[name].text}
-              value={agreements[name]?.isAgree}
+              value={agreements[name]}
               disabled={isLoadingAgreements}
               onChange={(e) =>
                 updateAgreements({
                   agreements: policyTypes.map((type) => ({
                     policyType: type,
-                    isAgree: type === name ? e.target.checked : agreements[type]?.isAgree ?? false,
+                    isAgree: type === name ? e.target.checked : agreements[type] ?? false,
                   })),
                 })
               }

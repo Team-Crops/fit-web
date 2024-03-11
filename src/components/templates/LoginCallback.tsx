@@ -8,9 +8,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 import { SocialPlatform } from '#/entities/socialPlatform';
 import { useLazyAcquireTokenQuery } from '#/redux/features/auth/api';
-import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
-import { useLazyMeQuery, useLazyMyAgreementsQuery } from '#/redux/features/user/api';
-import { setMe } from '#/redux/features/user/slice';
+import { updateAuth } from '#/redux/features/auth/slice';
 import { useAppDispatch } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
@@ -37,8 +35,6 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   const router = useRouter();
 
   const [acquireToken, { data: tokens, error: acquireTokenError }] = useLazyAcquireTokenQuery();
-  const [queryMe, { data: me, error: queryMeError }] = useLazyMeQuery();
-  const [queryAgreements, { data: myAgreements }] = useLazyMyAgreementsQuery();
 
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
@@ -54,40 +50,12 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   useEffect(() => {
     if (tokens) {
       dispatch(updateAuth(tokens));
-      queryMe();
-      queryAgreements();
-    }
-  }, [dispatch, queryAgreements, queryMe, tokens]);
-
-  useEffect(() => {
-    if (me && myAgreements) {
-      let step: AuthStep;
-
-      if (myAgreements.some((policy) => policy.isAgree === false) || myAgreements.length === 0) {
-        step = AuthStep.Policies;
-      } else if (!me.nickname) {
-        step = AuthStep.UserInfo;
-      } else if (!me.positionId) {
-        step = AuthStep.PositionInfo;
-      } else if (!me.username || !me.email) {
-        step = AuthStep.PersonalInfo;
-      } else if (!me.projectCount || !me.regionId || !me.activityHour) {
-        step = AuthStep.ActivityInfo;
-      } else if (!me.skillIdList) {
-        step = AuthStep.SkillInfo;
-      } else {
-        step = AuthStep.Complete;
-      }
-
-      dispatch(updateAuth({ step }));
-      dispatch(setMe(me));
-
       router.push('/');
     }
-  }, [me, dispatch, router, myAgreements]);
+  }, [dispatch, router, tokens]);
 
-  if (acquireTokenError || queryMeError) {
-    const queryError = (acquireTokenError ?? queryMeError) as FetchBaseQueryError;
+  if (acquireTokenError) {
+    const queryError = acquireTokenError as FetchBaseQueryError;
     return (
       <>
         <h1>{queryError.status}</h1>
@@ -97,6 +65,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
       </>
     );
   }
+
   return (
     <Container>
       <Txt size="typo2" weight="bold">

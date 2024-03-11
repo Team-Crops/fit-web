@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { PolicyAgreement, PolicyType, policies } from '#/entities/policy';
 import { User } from '#/entities/user';
 import { api } from '#/redux/api';
@@ -38,12 +40,23 @@ const userApi = api.injectEndpoints({
         dispatch(updateMe(data));
       },
     }),
-    myAgreements: build.query<PolicyAgreement[], void>({
+    myAgreements: build.query<Record<PolicyType, boolean>, void>({
       query: () => ({
         url: `/v1/user/policy-agreement`,
         method: 'GET',
       }),
-      transformResponse: (response: PolicyAgreementResponse) => response.policyAgreementList,
+      transformResponse: (response: PolicyAgreementResponse) => {
+        return _.reduce(
+          policies,
+          (acc, policy, policyType) => {
+            acc[policyType as PolicyType] =
+              response.policyAgreementList.find((p) => p.policyType === policyType)?.isAgree ??
+              false;
+            return acc;
+          },
+          {} as Record<PolicyType, boolean>
+        );
+      },
     }),
     updateMyAgreements: build.mutation<PolicyAgreementUpdateResponse, PolicyAgreementUpdateRequest>(
       {
@@ -60,10 +73,21 @@ const userApi = api.injectEndpoints({
             })),
           },
         }),
-        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        onQueryStarted: async (__, { dispatch, queryFulfilled }) => {
           const { data } = await queryFulfilled;
           dispatch(
-            userApi.util.updateQueryData('myAgreements', undefined, () => data.policyAgreementList)
+            userApi.util.updateQueryData('myAgreements', undefined, () => {
+              return _.reduce(
+                policies,
+                (acc, policy, policyType) => {
+                  acc[policyType as PolicyType] =
+                    data.policyAgreementList.find((p) => p.policyType === policyType)?.isAgree ??
+                    false;
+                  return acc;
+                },
+                {} as Record<PolicyType, boolean>
+              );
+            })
           );
         },
       }

@@ -31,9 +31,16 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     updateAuth(state, action: PayloadAction<Partial<AuthState>>) {
+      const { accessToken, refreshToken } = action.payload;
+      if (accessToken && refreshToken) {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+      }
       return { ...state, ...action.payload };
     },
     deleteAuth() {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       return initialState;
     },
   },

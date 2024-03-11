@@ -42,6 +42,27 @@ const CrossButton = styled(Icons)`
   position: absolute;
   top: 40px;
   right: 50px;
+
+  @media (max-width: 768px) {
+    top: 15px;
+    right: 10px;
+  }
+
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -51,8 +72,20 @@ const ContentContainer = styled.div`
   justify-content: center;
 `;
 
-const Tooltip = styled.div`
+const Tooltip = styled.div<{ show: boolean }>`
   position: absolute;
+  top: 30px;
+
+  padding: 8px;
+
+  border-radius: 5px;
+  background-color: #212121b2;
+  color: #ffffff;
+  opacity: ${({ show }) => (show ? 1 : 0)};
+
+  transition: opacity 0.2s ease-in-out;
+
+  white-space: nowrap;
 `;
 
 const HeaderText = styled(Txt)`
@@ -83,13 +116,11 @@ export const CompletePopup = () => {
   return (
     <Container>
       <ProfileVisibilityToggleContainer>
-        {showTooltip && (
-          <Tooltip>
-            <Txt size="typo6" weight="regular">
-              다른 사용자들의 추천 목록에 프로필이 공개됩니다.
-            </Txt>
-          </Tooltip>
-        )}
+        <Tooltip show={showTooltip}>
+          <Txt size="typo6" weight="regular">
+            다른 사용자들의 추천 목록에 프로필이 공개됩니다.
+          </Txt>
+        </Tooltip>
         <Icons
           icon="info"
           width={13}

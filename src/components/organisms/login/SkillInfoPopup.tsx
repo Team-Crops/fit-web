@@ -10,7 +10,8 @@ import {
   useGetPositionsQuery,
   useLazyGetPositionSkillsQuery,
 } from '#/redux/features/skill-set/api';
-import { useAppDispatch } from '#/redux/hooks';
+import { useUpdateMeMutation } from '#/redux/features/user/api';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
@@ -102,12 +103,15 @@ const SkillButton = styled(Button)<{ loading?: boolean }>`
 export const SkillInfoPopup = () => {
   const dispatch = useAppDispatch();
 
+  const mySkills = useAppSelector((state) => state.user.me?.skillIdList);
+
   const { data: positions, isLoading: isLoadingPositions } = useGetPositionsQuery();
   const [getPositionSkills, { data: skills, isFetching: isFetchingSkills }] =
     useLazyGetPositionSkillsQuery();
+  const [updateMeMutation, { isSuccess: successUpdateMe }] = useUpdateMeMutation();
 
   const [selectedPosition, setSelectedPosition] = useState<number>();
-  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<number[]>(mySkills ?? []);
 
   const skillClickHandler = useCallback(
     (skillId: number) => {
@@ -120,11 +124,22 @@ export const SkillInfoPopup = () => {
     [selectedSkills]
   );
 
+  const updateMySkills = useCallback(
+    (skillIds: number[]) => updateMeMutation({ skillIdList: skillIds }),
+    [updateMeMutation]
+  );
+
   useEffect(() => {
     if (selectedPosition) {
       getPositionSkills({ positionId: selectedPosition });
     }
   }, [getPositionSkills, selectedPosition]);
+
+  useEffect(() => {
+    if (successUpdateMe) {
+      dispatch(updateAuth({ step: AuthStep.SkillInfo + 1 }));
+    }
+  }, [dispatch, successUpdateMe]);
 
   return (
     <Container>
@@ -132,9 +147,7 @@ export const SkillInfoPopup = () => {
         currentStep={4}
         totalStep={4}
         progressName="활동정보"
-        onForwardClick={() => {
-          dispatch(updateAuth({ step: AuthStep.SkillInfo + 1 }));
-        }}
+        onForwardClick={() => updateMySkills(selectedSkills)}
         onBackwardClick={() => dispatch(updateAuth({ step: AuthStep.SkillInfo - 1 }))}
       />
       <HeaderContainer>
