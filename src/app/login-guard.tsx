@@ -66,7 +66,7 @@ export function LoginGuard({ children }: LoginGuardProps) {
       }
 
       dispatch(setMe(me));
-      dispatch(updateAuth({ step, showLoginPopup: me.status === 'INCOMPLETE' }));
+      dispatch(updateAuth({ step, showLoginPopup: step !== AuthStep.Complete }));
     }
   }, [agreements, dispatch, me]);
 
