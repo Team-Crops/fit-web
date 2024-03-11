@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { MatchingProgressBar } from '#molecules/matching/MatchingProgressBar';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
+import { MatchingProfile } from '#organisms/matching/MatchingProfile';
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ export function MatchingTemplate() {
       <MatchingTitle />
       <div style={{ height: '35px' }} />
       <MatchingProgressBar />
+      <MatchingProfile />
     </Container>
   );
 }
