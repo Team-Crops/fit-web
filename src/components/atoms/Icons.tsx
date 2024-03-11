@@ -25,6 +25,7 @@ import {
   MegaphoneIcon,
   PencilIcon,
   PlusIcon,
+  ProgressIcon,
   RunIcon,
   Upload,
   UserIcon,
@@ -56,6 +57,7 @@ export type IconName =
   | 'megaphone'
   | 'pencil'
   | 'plus'
+  | 'progress'
   | 'run'
   | 'user'
   | 'upload';
@@ -173,6 +175,10 @@ const icons: Record<IconName, Icon> = {
   },
   plus: {
     SVGR: PlusIcon,
+  },
+  progress: {
+    SVGR: ProgressIcon,
+    color: '#FF706C',
   },
   run: {
     SVGR: RunIcon,

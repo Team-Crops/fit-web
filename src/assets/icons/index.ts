@@ -21,6 +21,7 @@ export { default as LogoIcon } from './logo.svg';
 export { default as MegaphoneIcon } from './megaphone.svg';
 export { default as PencilIcon } from './pencil.svg';
 export { default as PlusIcon } from './plus.svg';
+export { default as ProgressIcon } from './progress.svg';
 export { default as RunIcon } from './run.svg';
 export { default as Upload } from './upload.svg';
 export { default as UserIcon } from './user.svg';
