@@ -42,6 +42,27 @@ const CrossButton = styled(Icons)`
   position: absolute;
   top: 40px;
   right: 50px;
+
+  @media (max-width: 768px) {
+    top: 15px;
+    right: 10px;
+  }
+
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
 `;
 
 const ContentContainer = styled.div`
