@@ -31,6 +31,7 @@ const ProfileContainer = styled.div`
 const ProfileImage = styled.div`
   width: 128px;
   height: 128px;
+  border-radius: 128px;
   background: #f5f5f5;
 `;
 
