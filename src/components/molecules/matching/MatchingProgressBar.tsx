@@ -8,6 +8,9 @@ const StyledProgressBar = styled(ProgressBar)`
 `;
 
 const TooltipContainer = styled.div`
+  display: flex;
+  gap: 4px;
+
   position: relative;
   width: fit-content;
   left: 33%;
@@ -26,7 +29,10 @@ export function MatchingProgressBar() {
       <div style={{ height: '10px' }} />
       <TooltipContainer>
         <Txt size="typo6" weight="bold">
-          1/3 포지션 확인
+          1/3
+        </Txt>
+        <Txt size="typo6" weight="medium">
+          포지션 확인
         </Txt>
       </TooltipContainer>
     </>
