@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-import { Badge } from '#/components/atoms/Badge';
-import { Txt } from '#/components/atoms/Text';
+import { Txt } from '#atoms/Text';
+import { MatchingProfileCard } from '#molecules/matching/MatchingProfileCard';
 
 const Container = styled.div`
   display: flex;
@@ -16,37 +16,6 @@ const Container = styled.div`
 
   width: 100%;
   max-width: 760px;
-`;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-  max-width: 490px;
-  border-radius: 5px;
-`;
-
-const ProfileImage = styled.div`
-  width: 128px;
-  height: 128px;
-  border-radius: 128px;
-  background: #f5f5f5;
-`;
-
-const ProfileInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 12px;
-`;
-
-const ProfileNameContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
 `;
 
 const Details = styled.div`
@@ -65,7 +34,7 @@ const DetailsContainer = styled.div`
   gap: 20px;
 
   width: 100%;
-  max-width: 490px;
+  max-width: 540px;
   padding: 25px 30px;
 `;
 
@@ -77,20 +46,7 @@ const DetailContainer = styled.div`
 export function MatchingProfile() {
   return (
     <Container>
-      <ProfileContainer>
-        <ProfileImage />
-        <ProfileInfoContainer>
-          <ProfileNameContainer>
-            <Txt size="typo3" weight="bold">
-              EZ안
-            </Txt>
-            <Badge>Designer</Badge>
-          </ProfileNameContainer>
-          <Txt size="typo5" weight="medium" color="#616161">
-            “좋은 분들과 함께 멋진 프로덕트를 만들고 싶어요 :)”
-          </Txt>
-        </ProfileInfoContainer>
-      </ProfileContainer>
+      <MatchingProfileCard />
       <Details>
         <DetailsContainer>
           <DetailContainer>
