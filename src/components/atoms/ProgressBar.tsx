@@ -6,6 +6,7 @@ const Container = styled.div`
   width: 100%;
   height: 15px;
 
+  border-radius: 100px;
   background-color: #ffeae9;
 `;
 
@@ -13,18 +14,19 @@ const Bar = styled.div<{ value: number }>`
   width: ${({ value }) => `${value}%`};
   height: 100%;
 
-  border-radius: 0 10px 10px 0;
+  border-radius: 100px;
   background-color: #ff706c;
 `;
 
 export interface ProgressBarProps extends HTMLAttributes<HTMLDivElement> {
-  value: number;
+  current: number;
+  total: number;
 }
 
-export const ProgressBar = ({ value, ...props }: ProgressBarProps) => {
+export const ProgressBar = ({ current, total, ...props }: ProgressBarProps) => {
   return (
     <Container {...props}>
-      <Bar value={value} />
+      <Bar value={(100 / total) * current} />
     </Container>
   );
 };

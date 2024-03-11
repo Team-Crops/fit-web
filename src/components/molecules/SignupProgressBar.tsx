@@ -67,7 +67,7 @@ export const SignupProgressBar = ({
   const enabledBackward = onBackwardClick !== undefined;
   return (
     <Container {...props}>
-      <StyledProgressBar value={(currentStep / totalStep) * 100} />
+      <StyledProgressBar current={currentStep} total={totalStep} />
       <ButtonsContainer>
         <IconButton
           icon={enabledBackward ? 'arrowBackwardOutlined' : 'arrowBackward'}
