@@ -1,8 +1,9 @@
 import Link from 'next/link';
 
+import styled from '@emotion/styled';
+
 import { Txt } from '#atoms/Text';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
-import styled from '@emotion/styled';
 
 const TxtBlock = styled.div`
   display: flex;

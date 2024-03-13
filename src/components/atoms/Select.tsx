@@ -10,9 +10,10 @@ import type {
 } from 'react';
 import { Children, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Icons } from '#atoms/Icons';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { Icons } from '#atoms/Icons';
 
 function getColorCSS({ error, value }: SelectProps) {
   if (error) {

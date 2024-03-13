@@ -1,9 +1,10 @@
+import styled from '@emotion/styled';
+
 import { Icons } from '#atoms/Icons';
 import { PortfolioTicket } from '#atoms/MyPage/PortfolioTicket';
 import { Txt } from '#atoms/Text';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
 import { MyPageGridBlock } from '#molecules/MyPage/MyPageGridBlock';
-import styled from '@emotion/styled';
 
 const FlexBlock = styled.div`
   display: flex;

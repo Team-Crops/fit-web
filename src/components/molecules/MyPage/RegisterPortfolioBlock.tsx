@@ -1,8 +1,9 @@
+import styled from '@emotion/styled';
+
 import { Icons } from '#atoms/Icons';
 import { PortfolioFileBlock } from '#atoms/MyPage/PortfolioFileBlock';
 import { PortfolioTicket } from '#atoms/MyPage/PortfolioTicket';
 import { Select } from '#atoms/Select';
-import styled from '@emotion/styled';
 
 const RegisterPortfolioContainer = styled.div`
   display: flex;

@@ -1,5 +1,6 @@
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
+
+import { Txt } from '#atoms/Text';
 
 const InfoContainer = styled.div`
   display: flex;

@@ -1,9 +1,8 @@
-import type { Metadata } from 'next';
-
-import { Inter } from 'next/font/google';
 import './globals.css';
+import { LoginGuard } from './login-guard';
+import StoreProvider from './StoreProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +12,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <StoreProvider>
+        <body>
+          <LoginGuard>{children}</LoginGuard>
+        </body>
+      </StoreProvider>
     </html>
   );
 }

@@ -1,10 +1,11 @@
 import Link from 'next/link';
 
+import styled from '@emotion/styled';
+
 import { Divider } from '#atoms/Divider';
 import { FitLogo } from '#atoms/FitLogo';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
-import styled from '@emotion/styled';
 
 const ContentBlock = styled.div`
   width: 1200px;

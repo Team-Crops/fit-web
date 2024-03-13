@@ -1,6 +1,7 @@
+import styled from '@emotion/styled';
+
 import { IconName, Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
-import styled from '@emotion/styled';
 
 const Portfolio = styled.div`
   position: relative;

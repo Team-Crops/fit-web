@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-
 import Image from 'next/image';
+
+import styled from '@emotion/styled';
 
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
 import { ProfileBlock } from '#organisms/ProfileBlock';
-import styled from '@emotion/styled';
 
 const StyledSection = styled.section`
   display: flex;

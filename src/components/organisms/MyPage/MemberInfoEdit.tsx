@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 
+import styled from '@emotion/styled';
+
 import { CheckBox } from '#atoms/CheckBox';
 import { Input } from '#atoms/Input';
 import { Select } from '#atoms/Select';
@@ -7,7 +9,6 @@ import { Txt } from '#atoms/Text';
 import { BasicInfoEdit } from '#molecules/MyPage/BasicInfoEdit';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
 import { MyPageGridBlock } from '#molecules/MyPage/MyPageGridBlock';
-import styled from '@emotion/styled';
 
 const StyledTextarea = styled.textarea`
   width: 100%;

@@ -1,6 +1,6 @@
-import { Txt } from '#atoms/Text';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Txt } from '#atoms/Text';
 
 const meta = {
   title: 'Atoms/Txt',

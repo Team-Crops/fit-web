@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 
-import { useRouter } from 'next/navigation';
+import styled from '@emotion/styled';
 
+import { updateAuth } from '#/redux/features/auth/slice';
+import { useAppDispatch } from '#/redux/hooks';
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
-import styled from '@emotion/styled';
 
 const LoginButton = styled(Button)`
   display: flex;
@@ -17,11 +18,11 @@ const LoginButton = styled(Button)`
   font-family: 'SpoqaHanSansNeo';
 `;
 export const HeaderLoginBlock = () => {
-  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const onClickLoginButton = useCallback(() => {
-    router.push('/login');
-  }, [router]);
+    dispatch(updateAuth({ showLoginPopup: true }));
+  }, [dispatch]);
 
   return (
     <div>

@@ -1,8 +1,8 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 
-import { Input } from '#atoms/Input';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Input } from '#atoms/Input';
 
 const meta = {
   title: 'Atoms/Input',

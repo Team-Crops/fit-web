@@ -1,9 +1,10 @@
+import styled from '@emotion/styled';
+
 import { Button } from '#atoms/Button';
 import { ActivityInformation } from '#organisms/MyPage/ActivityInformation';
 import { MemberInformation } from '#organisms/MyPage/MemberInformation';
 import { PolicyInformation } from '#organisms/MyPage/PolicyInformation';
 import { PortfolioInformation } from '#organisms/MyPage/PortfolioInformation';
-import styled from '@emotion/styled';
 
 const StyledSection = styled.section`
   display: flex;

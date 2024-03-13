@@ -1,7 +1,8 @@
 'use client';
 
-import { FooterContent } from '#organisms/FooterContent';
 import styled from '@emotion/styled';
+
+import { FooterContent } from '#organisms/FooterContent';
 
 const StyledFooter = styled.footer`
   display: flex;

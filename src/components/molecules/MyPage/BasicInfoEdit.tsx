@@ -1,6 +1,7 @@
-import { Txt } from '#atoms/Text';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { Txt } from '#atoms/Text';
 
 const BasicInfoBlock = styled.div<Pick<BasicInfoProps, 'direction'>>`
   display: flex;

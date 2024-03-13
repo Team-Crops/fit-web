@@ -1,5 +1,5 @@
-<svg width="current" height="current" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="check">
-        <path id="Vector 5" d="M1 7L7 12.5L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-    </g>
+<svg width="current" height="current" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M9.43904 0.831614C9.71614 1.07407 9.74421 1.49524 9.50176 1.77234L4.83509 7.10567C4.71359 7.24453 4.53997 7.32682 4.35556 7.33296C4.17115 7.3391 3.99244 7.26854 3.86197 7.13807L0.528636 3.80474C0.268287 3.54439 0.268287 3.12228 0.528636 2.86193C0.788986 2.60158 1.2111 2.60158 1.47145 2.86193L4.3009 5.69138L8.49832 0.894329C8.74078 0.617238 9.16195 0.58916 9.43904 0.831614Z"
+        fill="currentColor" />
 </svg>

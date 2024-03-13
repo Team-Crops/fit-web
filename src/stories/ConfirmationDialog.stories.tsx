@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { ConfirmationDialog } from '#atoms/ConfirmationDialog';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { ConfirmationDialog } from '#atoms/ConfirmationDialog';
 
 const meta = {
   title: 'Atoms/ConfirmationDialog',

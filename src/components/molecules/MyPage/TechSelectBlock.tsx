@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
 
+import { Txt } from '#atoms/Text';
 import { PositionBadge } from './PositionBadge';
 
 const TechContainer = styled.div`

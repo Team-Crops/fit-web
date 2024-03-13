@@ -1,9 +1,10 @@
 'use client';
 
+import styled from '@emotion/styled';
+
 import { InfoMatchingBlock } from '#organisms/main/InfoMatchingBlock';
 import { MyProjectBlock } from '#organisms/main/MyProjectBlock';
 import { RecommendBlock } from '#organisms/main/RecommendBlock';
-import styled from '@emotion/styled';
 
 const StyledSection = styled.section`
   display: flex;

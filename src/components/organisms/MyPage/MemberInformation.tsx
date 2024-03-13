@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 
+import styled from '@emotion/styled';
+
 import { CheckBox } from '#atoms/CheckBox';
 import { Txt } from '#atoms/Text';
 import { BasicInfo } from '#molecules/MyPage/BasicInfo';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
 import { MyPageGridBlock } from '#molecules/MyPage/MyPageGridBlock';
-import styled from '@emotion/styled';
 
 const Introduction = styled.div`
   display: flex;

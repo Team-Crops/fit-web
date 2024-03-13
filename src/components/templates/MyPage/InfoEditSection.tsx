@@ -1,8 +1,9 @@
+import styled from '@emotion/styled';
+
 import { Button } from '#atoms/Button';
 import { ActivityEdit } from '#organisms/MyPage/ActivityEdit';
 import { MemberInfoEdit } from '#organisms/MyPage/MemberInfoEdit';
 import { PortfolioEdit } from '#organisms/MyPage/PortfolioEdit';
-import styled from '@emotion/styled';
 
 const StyledSection = styled.section`
   display: flex;

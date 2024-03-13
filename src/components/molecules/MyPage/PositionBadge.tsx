@@ -1,7 +1,8 @@
 import { MouseEventHandler } from 'react';
 
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
+
+import { Txt } from '#atoms/Text';
 
 const BadgeBlock = styled.div<{ selected: boolean }>`
   display: flex;

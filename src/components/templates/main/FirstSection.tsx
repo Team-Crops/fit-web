@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
+
+import { Txt } from '#atoms/Text';
 
 const StyledSection = styled.section`
   position: relative;

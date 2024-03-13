@@ -22,6 +22,12 @@ const config: StorybookConfig = {
     name: getAbsolutePath('@storybook/nextjs'),
     options: {},
   },
+  babel: async (config) => {
+    return {
+      ...config,
+      plugins: [...config.plugins, '@emotion'],
+    };
+  },
   docs: {
     autodocs: 'tag',
   },

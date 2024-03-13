@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 
+import styled from '@emotion/styled';
+
 import { Select } from '#atoms/Select';
 import { BasicInfoEdit } from '#molecules/MyPage/BasicInfoEdit';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
 import { MyPageGridBlock } from '#molecules/MyPage/MyPageGridBlock';
 import { PositionBadge } from '#molecules/MyPage/PositionBadge';
-import styled from '@emotion/styled';
 
 const PositionBlock = styled.div`
   display: flex;
