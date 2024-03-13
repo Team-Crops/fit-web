@@ -6,3 +6,5 @@ export { default as positionWebDeveloperPic } from './position-web-developer.png
 
 export { default as positionPageBackground1 } from './position-page-background-1.png';
 export { default as positionPageBackground2 } from './position-page-background-2.png';
+
+export { default as matchingPageBackground1 } from './matching-page-background-1.png';
