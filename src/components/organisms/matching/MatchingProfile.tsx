@@ -1,7 +1,12 @@
+'use client';
+
+import { HTMLAttributes } from 'react';
+
 import styled from '@emotion/styled';
 
+import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { useAppSelector } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
-import { MatchingProfileCard } from '#molecules/matching/MatchingProfileCard';
 
 const Container = styled.div`
   display: flex;
@@ -43,10 +48,14 @@ const DetailContainer = styled.div`
   justify-content: space-between;
 `;
 
-export function MatchingProfile() {
+interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function MatchingProfile({ ...props }: MatchingProfileProps) {
+  const me = useAppSelector((state) => state.user.me);
+
   return (
-    <Container>
-      <MatchingProfileCard />
+    <Container {...props}>
+      {me && <ProfileCard user={me} size="large" />}
       <Details>
         <DetailsContainer>
           <DetailContainer>
