@@ -45,7 +45,7 @@ const LinkList = [
   { name: '랜덤 팀 매칭', href: '/matchingInfo' },
   { name: '팀원 추천', href: '/teamRecommend' },
   { name: '프로젝트', href: '/project' },
-  { name: '마이페이지', href: '/myPage' },
+  { name: '마이페이지', href: '/mypage' },
 ];
 
 export const HeaderNav = () => {
