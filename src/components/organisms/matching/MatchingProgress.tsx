@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { matchingPageBackground1 } from '#/assets/images';
@@ -42,11 +42,7 @@ const ProgressIcon = styled(Icons)`
 
 const ProfileCardsSwiper = styled(Swiper)`
   position: absolute;
-  bottom: 300px;
-  right: 300px;
-  height: 400px;
-
-  transform: translate(50%, 50%);
+  height: 380px;
 
   mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent);
 
@@ -65,7 +61,6 @@ const StyledProfileCard = styled(ProfileCard)`
   background: #fff;
 
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
-  margin: 40px;
 `;
 
 const BackgroundImage1 = styled(Image)`
@@ -100,8 +95,7 @@ export function MatchingProgress() {
         }}
         direction={'vertical'}
         loop
-        navigation
-        modules={[Autoplay, Pagination, Navigation]}
+        modules={[Autoplay, Pagination]}
       >
         {exampleUsers.map((user, index) => (
           <SwiperSlide key={index}>
