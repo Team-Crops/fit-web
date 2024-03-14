@@ -18,11 +18,6 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
   width: 100%;
   padding: 16px 40px;
 
-  border-radius: 11px;
-  border: 1px solid #eee;
-  background: #fff;
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
-
   ${({ size }) => {
     switch (size) {
       case 'small':
@@ -74,12 +69,12 @@ const NameContainer = styled.div`
   gap: 10px;
 `;
 
-interface ProfileCardProps {
+interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User;
   size: 'small' | 'large';
 }
 
-export function ProfileCard({ user, size }: ProfileCardProps) {
+export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
   const { data: positions } = useGetPositionsQuery();
 
   const positionName = useMemo(() => {
@@ -88,7 +83,7 @@ export function ProfileCard({ user, size }: ProfileCardProps) {
   }, [positions, user.positionId]);
 
   return (
-    <Container size={size}>
+    <Container size={size} {...props}>
       <ProfileImage
         src={user.profileImageUrl ?? ''}
         alt={`${user.nickname}'s profile image`}
@@ -103,7 +98,11 @@ export function ProfileCard({ user, size }: ProfileCardProps) {
           </Txt>
           <Badge>{positionName}</Badge>
         </NameContainer>
-        <Txt size={size === 'small' ? 'typo6' : 'typo5'} weight="medium" color="#616161">
+        <Txt
+          size={size === 'small' ? 'typo6' : 'typo5'}
+          weight="medium"
+          color={size === 'small' ? '#757575' : '#616161'}
+        >
           &quot;{user.introduce}&quot;
         </Txt>
       </InfoContainer>

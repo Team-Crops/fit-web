@@ -44,8 +44,7 @@ const ProfileCardsSwiper = styled(Swiper)`
   position: absolute;
   bottom: 300px;
   right: 300px;
-  width: 100%;
-  height: 600px;
+  height: 400px;
 
   transform: translate(50%, 50%);
 
@@ -58,6 +57,15 @@ const ProfileCardsSwiper = styled(Swiper)`
   .swiper-slide :not(.swiper-slide-pref, .swiper-slide-active, .swiper-slide-next) {
     filter: blur(1px);
   }
+`;
+
+const StyledProfileCard = styled(ProfileCard)`
+  border-radius: 11px;
+  border: 1px solid #eee;
+  background: #fff;
+
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
+  margin: 40px;
 `;
 
 const BackgroundImage1 = styled(Image)`
@@ -97,7 +105,7 @@ export function MatchingProgress() {
       >
         {exampleUsers.map((user, index) => (
           <SwiperSlide key={index}>
-            <ProfileCard user={user} size="small" />
+            <StyledProfileCard user={user} size="small" />
           </SwiperSlide>
         ))}
       </ProfileCardsSwiper>
