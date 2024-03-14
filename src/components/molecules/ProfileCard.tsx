@@ -43,11 +43,13 @@ const ProfileImage = styled(Image)<{ size: ProfileCardProps['size'] }>`
     switch (size) {
       case 'small':
         return css`
+          min-width: 90px;
           width: 90px;
           height: 90px;
         `;
       case 'large':
         return css`
+          min-width: 120px;
           width: 120px;
           height: 120px;
         `;
@@ -107,11 +109,7 @@ export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
           </Txt>
           <Badge>{positionName}</Badge>
         </NameContainer>
-        <IntroduceText
-          size={size === 'small' ? 'typo6' : 'typo5'}
-          weight="medium"
-          color={size === 'small' ? '#757575' : '#616161'}
-        >
+        <IntroduceText size={size === 'small' ? 'typo6' : 'typo5'} weight="medium" color="#616161">
           &quot;{user.introduce}&quot;
         </IntroduceText>
       </InfoContainer>
