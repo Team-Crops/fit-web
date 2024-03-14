@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { notFound } from 'next/navigation';
 
 import { LoginCallback } from '#/components/templates/LoginCallback';
