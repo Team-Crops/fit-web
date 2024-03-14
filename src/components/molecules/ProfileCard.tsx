@@ -23,7 +23,7 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
       case 'small':
         return css`
           max-width: 360px;
-          min-height: 120px;
+          height: 120px;
           gap: 30px;
         `;
       case 'large':
@@ -59,7 +59,7 @@ const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 12px;
+  gap: 6px;
 `;
 
 const NameContainer = styled.div`
@@ -67,6 +67,15 @@ const NameContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
+`;
+
+const IntroduceText = styled(Txt)`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  line-height: 170%;
 `;
 
 interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -98,13 +107,13 @@ export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
           </Txt>
           <Badge>{positionName}</Badge>
         </NameContainer>
-        <Txt
+        <IntroduceText
           size={size === 'small' ? 'typo6' : 'typo5'}
           weight="medium"
           color={size === 'small' ? '#757575' : '#616161'}
         >
           &quot;{user.introduce}&quot;
-        </Txt>
+        </IntroduceText>
       </InfoContainer>
     </Container>
   );
