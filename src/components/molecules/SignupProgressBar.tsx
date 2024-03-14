@@ -3,8 +3,8 @@
 import styled from '@emotion/styled';
 
 import { Icons } from '#/components/atoms/Icons';
-import { ProgressBar, ProgressBarProps } from '#/components/atoms/ProgressBar';
 import { Txt } from '#/components/atoms/Text';
+import { ProgressBar, ProgressBarProps } from '#molecules/ProgressBar';
 
 const StyledProgressBar = styled(ProgressBar)`
   border-radius: 15px 15px 0 0;

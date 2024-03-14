@@ -1,40 +1,35 @@
+'use client';
+
+import { useMemo } from 'react';
+
 import styled from '@emotion/styled';
 
-import { ProgressBar } from '#/components/atoms/ProgressBar';
-import { Txt } from '#/components/atoms/Text';
+import { MatchingStep } from '#/redux/features/matching/slice';
+import { useAppSelector } from '#/redux/hooks';
+import { ProgressBar } from '#molecules/ProgressBar';
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
 `;
 
-const TooltipContainer = styled.div`
-  display: flex;
-  gap: 4px;
-
-  position: relative;
-  width: fit-content;
-  left: 33%;
-  transform: translateX(-50%);
-
-  border-radius: 100px;
-  padding: 9px 16px;
-  background-color: #ffa7a5;
-  color: #ffffff;
-`;
-
 export function MatchingProgressBar() {
+  const matchingStep = useAppSelector((state) => state.matching.step);
+
+  const currentStep = useMemo(() => matchingStep + 1, [matchingStep]);
+  const totalStep = useMemo(() => Object.values(MatchingStep).length / 2, []);
+  const tooltipText = useMemo(
+    () => ['포지션 확인', '매칭 대기', '매칭 완료'][matchingStep],
+    [matchingStep]
+  );
+
   return (
     <>
-      <StyledProgressBar current={1} total={3} />
-      <div style={{ height: '10px' }} />
-      <TooltipContainer>
-        <Txt size="typo6" weight="bold">
-          1/3
-        </Txt>
-        <Txt size="typo6" weight="medium">
-          포지션 확인
-        </Txt>
-      </TooltipContainer>
+      <StyledProgressBar
+        current={currentStep}
+        total={totalStep}
+        tooltipGap="10px"
+        tooltipText={tooltipText}
+      />
     </>
   );
 }
