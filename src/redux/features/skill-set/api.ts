@@ -30,6 +30,7 @@ const skillSetApi = api.injectEndpoints({
         url: '/v1/skill-set/skill',
         method: 'GET',
       }),
+      transformResponse: (response: SkillsResponse) => response.skillList,
     }),
   }),
 });
