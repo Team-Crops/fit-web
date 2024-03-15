@@ -51,7 +51,7 @@ export const RegionSelect = (props: RegionSelectProps) => {
   return regions ? (
     <div ref={containerRef}>
       <Select {...props}>
-        {regions.regionList.map((region, index) => (
+        {regions.map((region, index) => (
           <Select.Option key={index} value={region.id}>
             {region.displayName}
           </Select.Option>
