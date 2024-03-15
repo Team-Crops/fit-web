@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 
 import _ from 'lodash';
 
-import { Button } from '#/components/atoms/Button';
+import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { MatchingStep, updateMatchingStep } from '#/redux/features/matching/slice';
 import { useGetRegionsQuery } from '#/redux/features/region/api';
@@ -59,12 +59,6 @@ const DetailsContainer = styled.div`
 const DetailContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
 `;
 
 interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
@@ -125,14 +119,12 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
           </DetailsContainer>
         </Details>
       </ProfileContainer>
-      <ButtonsContainer>
-        <Button variant="round" height="70" color="secondary" onClick={editButtonClickHandler}>
+      <MatchingButtons>
+        <MatchingButtons.Button color="secondary" onClick={editButtonClickHandler}>
           수정하기
-        </Button>
-        <Button variant="round" height="70" color="primary" onClick={okButtonClickHandler}>
-          확인
-        </Button>
-      </ButtonsContainer>
+        </MatchingButtons.Button>
+        <MatchingButtons.Button onClick={okButtonClickHandler}>확인</MatchingButtons.Button>
+      </MatchingButtons>
     </Container>
   );
 }
