@@ -1,10 +1,13 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
+import _ from 'lodash';
+
 import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { useGetSkillsQuery } from '#/redux/features/skill-set/api';
 import { useAppSelector } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
@@ -52,6 +55,11 @@ interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function MatchingProfile({ ...props }: MatchingProfileProps) {
   const me = useAppSelector((state) => state.user.me);
+  const { data: skills } = useGetSkillsQuery();
+  const mySkills = useMemo(() => {
+    const mySkillIds = _.uniq(me?.skillIdList);
+    return mySkillIds.map((id) => skills?.find((s) => s.id === id));
+  }, [me?.skillIdList, skills]);
 
   return (
     <Container {...props}>
@@ -63,7 +71,7 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
               학력/경력
             </Txt>
             <Txt size="typo5" weight="medium">
-              휴학생
+              {me?.backgroundStatus}
             </Txt>
           </DetailContainer>
           <DetailContainer>
@@ -71,7 +79,7 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
               학교명
             </Txt>
             <Txt size="typo5" weight="medium">
-              서울과학기술대학교
+              {me?.backgroundText}
             </Txt>
           </DetailContainer>
           <DetailContainer>
@@ -79,7 +87,7 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
               사용가능한 기술/툴
             </Txt>
             <Txt size="typo5" weight="medium">
-              Figma, Photoshop
+              {mySkills?.map((s) => s?.displayName).join(', ')}
             </Txt>
           </DetailContainer>
           <DetailContainer>
