@@ -1,6 +1,8 @@
 'use client';
 
+import { useCallback } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
@@ -12,10 +14,19 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { matchingPageBackground1 } from '#/assets/images';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
+import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { exampleUsers } from '#/entities/user';
+import { MatchingStep, updateMatchingStep } from '#/redux/features/matching/slice';
+import { useAppDispatch } from '#/redux/hooks';
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+const QueuingContainer = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -74,41 +85,62 @@ const BackgroundImage1 = styled(Image)`
 `;
 
 export function MatchingProgress() {
+  const dispatch = useAppDispatch();
+
+  const router = useRouter();
+
+  const stopQueuing = useCallback(() => {
+    dispatch(updateMatchingStep(MatchingStep.QUEUING - 1));
+  }, [dispatch]);
+
+  const goHome = useCallback(() => {
+    router.push('/');
+  }, [router]);
+
   return (
     <Container>
-      <ProgressIcon icon="progress" width={40} height={40} />
-      <Txt size="typo2" weight="bold">
-        현재 매칭이 진행 중입니다.
-      </Txt>
-      <div style={{ height: '8px' }} />
-      <Txt size="typo5" weight="bold" color="#616161">
-        최소인원 : 기획(1), 디자인(1), 서버(1), 클라이언트(1)
-      </Txt>
-      <Txt size="typo5" weight="bold" color="#4960D9">
-        매칭 종료까지 남은 시간 : 1일 22시간
-      </Txt>
-      <ProfileCardsSwiper
-        slidesPerView={3}
-        autoplay={{
-          delay: 500,
-          disableOnInteraction: false,
-        }}
-        direction={'vertical'}
-        loop
-        modules={[Autoplay, Pagination]}
-      >
-        {exampleUsers.map((user, index) => (
-          <SwiperSlide key={index}>
-            <StyledProfileCard user={user} size="small" />
-          </SwiperSlide>
-        ))}
-      </ProfileCardsSwiper>
-      <BackgroundImage1
-        src={matchingPageBackground1}
-        alt="Background Asset 1"
-        width={400}
-        height={400}
-      />
+      <QueuingContainer>
+        <ProgressIcon icon="progress" width={40} height={40} />
+        <Txt size="typo2" weight="bold">
+          현재 매칭이 진행 중입니다.
+        </Txt>
+        <div style={{ height: '8px' }} />
+        <Txt size="typo5" weight="bold" color="#616161">
+          최소인원 : 기획(1), 디자인(1), 서버(1), 클라이언트(1)
+        </Txt>
+        <Txt size="typo5" weight="bold" color="#4960D9">
+          매칭 종료까지 남은 시간 : 1일 22시간
+        </Txt>
+
+        <ProfileCardsSwiper
+          slidesPerView={3}
+          autoplay={{
+            delay: 500,
+            disableOnInteraction: false,
+          }}
+          direction={'vertical'}
+          loop
+          modules={[Autoplay, Pagination]}
+        >
+          {exampleUsers.map((user, index) => (
+            <SwiperSlide key={index}>
+              <StyledProfileCard user={user} size="small" />
+            </SwiperSlide>
+          ))}
+        </ProfileCardsSwiper>
+        <BackgroundImage1
+          src={matchingPageBackground1}
+          alt="Background Asset 1"
+          width={400}
+          height={400}
+        />
+      </QueuingContainer>
+      <MatchingButtons>
+        <MatchingButtons.Button color="secondary" onClick={() => stopQueuing()}>
+          매칭 중단하기
+        </MatchingButtons.Button>
+        <MatchingButtons.Button onClick={() => goHome()}>홈으로 이동</MatchingButtons.Button>
+      </MatchingButtons>
     </Container>
   );
 }
