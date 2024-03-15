@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 import { MatchingStep } from '#/redux/features/matching/slice';
 import { useAppSelector } from '#/redux/hooks';
-import { MatchingProgressBar } from '#molecules/matching/MatchingProgressBar';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
 import { MatchingProfile } from '#organisms/matching/MatchingProfile';
 import { MatchingProgress } from '#organisms/matching/MatchingProgress';
@@ -10,7 +9,7 @@ import { MatchingProgress } from '#organisms/matching/MatchingProgress';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
 
   width: 100%;
   max-width: 1200px;
@@ -23,9 +22,6 @@ export function MatchingTemplate() {
   return (
     <Container>
       <MatchingTitle />
-      <div style={{ height: '35px' }} />
-      <MatchingProgressBar />
-      <div style={{ height: '35px' }} />
       {matchingStep === MatchingStep.POSITION_CHECKING && <MatchingProfile />}
       {matchingStep === MatchingStep.QUEUING && <MatchingProgress />}
       {matchingStep === MatchingStep.MATCHED && <div>Success</div>}
