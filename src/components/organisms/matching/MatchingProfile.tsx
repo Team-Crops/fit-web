@@ -1,6 +1,7 @@
 'use client';
 
-import { HTMLAttributes, useMemo } from 'react';
+import { type HTMLAttributes, type MouseEventHandler, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
@@ -8,9 +9,10 @@ import _ from 'lodash';
 
 import { Button } from '#/components/atoms/Button';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { MatchingStep, updateMatchingStep } from '#/redux/features/matching/slice';
 import { useGetRegionsQuery } from '#/redux/features/region/api';
 import { useGetSkillsQuery } from '#/redux/features/skill-set/api';
-import { useAppSelector } from '#/redux/hooks';
+import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
@@ -68,9 +70,12 @@ const ButtonsContainer = styled.div`
 interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function MatchingProfile({ ...props }: MatchingProfileProps) {
+  const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.user.me);
   const { data: skills } = useGetSkillsQuery();
   const { data: regions } = useGetRegionsQuery();
+
+  const router = useRouter();
 
   const mySkillNames = useMemo(
     () => _.uniq(me?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
@@ -93,6 +98,14 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
     [me, mySkillNames, regions]
   );
 
+  const editButtonClickHandler = useCallback<MouseEventHandler>(() => {
+    router.push('/mypage');
+  }, [router]);
+
+  const okButtonClickHandler = useCallback<MouseEventHandler>(() => {
+    dispatch(updateMatchingStep(MatchingStep.QUEUING));
+  }, [dispatch]);
+
   return (
     <Container>
       <ProfileContainer {...props}>
@@ -113,10 +126,10 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
         </Details>
       </ProfileContainer>
       <ButtonsContainer>
-        <Button variant="round" height="70" color="secondary">
+        <Button variant="round" height="70" color="secondary" onClick={editButtonClickHandler}>
           수정하기
         </Button>
-        <Button variant="round" height="70" color="primary">
+        <Button variant="round" height="70" color="primary" onClick={okButtonClickHandler}>
           확인
         </Button>
       </ButtonsContainer>
