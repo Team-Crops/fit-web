@@ -11,10 +11,12 @@ import { MatchingProgress } from '#organisms/matching/MatchingProgress';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   width: 100%;
   max-width: 1200px;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 100px - 393px); // 100px: Header, 393px: Footer
+  padding: 35px 0;
 `;
 
 const ButtonsContainer = styled.div`
