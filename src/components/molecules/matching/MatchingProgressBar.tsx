@@ -23,13 +23,11 @@ export function MatchingProgressBar() {
   );
 
   return (
-    <>
-      <StyledProgressBar
-        current={currentStep}
-        total={totalStep}
-        tooltipGap="10px"
-        tooltipText={tooltipText}
-      />
-    </>
+    <StyledProgressBar
+      current={currentStep}
+      total={totalStep}
+      tooltipGap="10px"
+      tooltipText={tooltipText}
+    />
   );
 }
