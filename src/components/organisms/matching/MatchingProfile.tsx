@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 
 import _ from 'lodash';
 
+import { Button } from '#/components/atoms/Button';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { useGetRegionsQuery } from '#/redux/features/region/api';
 import { useGetSkillsQuery } from '#/redux/features/skill-set/api';
@@ -16,12 +17,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 32px;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 18px;
 
   border-radius: 10px;
   border: 1px solid #bdbdbd;
-  padding: 32px 35px;
-  margin: 40px auto;
+  padding: 32px;
 
   width: 100%;
   max-width: 760px;
@@ -50,6 +57,12 @@ const DetailsContainer = styled.div`
 const DetailContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 `;
 
 interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
@@ -81,8 +94,8 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
   );
 
   return (
-    <>
-      <Container {...props}>
+    <Container>
+      <ProfileContainer {...props}>
         {me && <ProfileCard user={me} size="large" />}
         <Details>
           <DetailsContainer>
@@ -98,7 +111,15 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
             ))}
           </DetailsContainer>
         </Details>
-      </Container>
-    </>
+      </ProfileContainer>
+      <ButtonsContainer>
+        <Button variant="round" height="70" color="secondary">
+          수정하기
+        </Button>
+        <Button variant="round" height="70" color="primary">
+          확인
+        </Button>
+      </ButtonsContainer>
+    </Container>
   );
 }
