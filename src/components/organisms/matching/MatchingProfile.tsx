@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import _ from 'lodash';
 
 import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { useGetRegionsQuery } from '#/redux/features/region/api';
 import { useGetSkillsQuery } from '#/redux/features/skill-set/api';
 import { useAppSelector } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
@@ -56,50 +57,48 @@ interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 export function MatchingProfile({ ...props }: MatchingProfileProps) {
   const me = useAppSelector((state) => state.user.me);
   const { data: skills } = useGetSkillsQuery();
-  const mySkills = useMemo(() => {
-    const mySkillIds = _.uniq(me?.skillIdList);
-    return mySkillIds.map((id) => skills?.find((s) => s.id === id));
-  }, [me?.skillIdList, skills]);
+  const { data: regions } = useGetRegionsQuery();
+
+  const mySkillNames = useMemo(
+    () => _.uniq(me?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
+    [me?.skillIdList, skills]
+  );
+
+  const details: { name: string; value: string }[] = useMemo(
+    () => [
+      { name: '학력/경력', value: me?.backgroundStatus ?? '' },
+      { name: '학교명', value: me?.backgroundText ?? '' },
+      { name: '사용가능한 기술/툴', value: mySkillNames.join(', ') },
+      { name: '프로젝트 경험 수', value: `${me?.projectCount ?? 0}번` },
+      {
+        name: '주 활동지역',
+        value: regions?.find((r) => r.id === me?.regionId)?.displayName ?? '',
+      },
+      { name: '활동 가능 시간', value: `${me?.activityHour ?? 0}시간` },
+      { name: '포트폴리오', value: me?.portfolioUrl ?? '' },
+    ],
+    [me, mySkillNames, regions]
+  );
 
   return (
-    <Container {...props}>
-      {me && <ProfileCard user={me} size="large" />}
-      <Details>
-        <DetailsContainer>
-          <DetailContainer>
-            <Txt size="typo5" weight="regular" color="#616161">
-              학력/경력
-            </Txt>
-            <Txt size="typo5" weight="medium">
-              {me?.backgroundStatus}
-            </Txt>
-          </DetailContainer>
-          <DetailContainer>
-            <Txt size="typo5" weight="regular" color="#616161">
-              학교명
-            </Txt>
-            <Txt size="typo5" weight="medium">
-              {me?.backgroundText}
-            </Txt>
-          </DetailContainer>
-          <DetailContainer>
-            <Txt size="typo5" weight="regular" color="#616161">
-              사용가능한 기술/툴
-            </Txt>
-            <Txt size="typo5" weight="medium">
-              {mySkills?.map((s) => s?.displayName).join(', ')}
-            </Txt>
-          </DetailContainer>
-          <DetailContainer>
-            <Txt size="typo5" weight="regular" color="#616161">
-              프로젝트 경험 수
-            </Txt>
-            <Txt size="typo5" weight="medium">
-              3번
-            </Txt>
-          </DetailContainer>
-        </DetailsContainer>
-      </Details>
-    </Container>
+    <>
+      <Container {...props}>
+        {me && <ProfileCard user={me} size="large" />}
+        <Details>
+          <DetailsContainer>
+            {details.map((detail, index) => (
+              <DetailContainer key={index}>
+                <Txt size="typo5" weight="regular" color="#616161">
+                  {detail.name}
+                </Txt>
+                <Txt size="typo5" weight="medium">
+                  {detail.value}
+                </Txt>
+              </DetailContainer>
+            ))}
+          </DetailsContainer>
+        </Details>
+      </Container>
+    </>
   );
 }
