@@ -2,9 +2,9 @@
 
 import styled from '@emotion/styled';
 
+import { Matching } from '#/components/templates/Matching';
 import { Footer } from '#templates/Footer';
 import { Header } from '#templates/Header';
-import { MatchingTemplate } from '#templates/MatchingTemplate';
 
 const Container = styled.div`
   display: flex;
@@ -14,11 +14,11 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export default function Matching() {
+export default function MatchingPage() {
   return (
     <Container>
       <Header />
-      <MatchingTemplate />
+      <Matching />
       <Footer />
     </Container>
   );

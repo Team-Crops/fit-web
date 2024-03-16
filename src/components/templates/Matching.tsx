@@ -17,7 +17,7 @@ const Container = styled.div`
   padding: 35px 0;
 `;
 
-export function MatchingTemplate() {
+export function Matching() {
   const matchingStep = useAppSelector((state) => state.matching.step);
   return (
     <Container>
