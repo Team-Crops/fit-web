@@ -200,5 +200,13 @@ interface IconsProps extends HTMLAttributes<SVGElement> {
 
 export const Icons = ({ icon, width, height, ...props }: IconsProps) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
-  return <SVGR color={defaultColor} width={width} height={height} style={style} {...props} />;
+  return (
+    <SVGR
+      color={defaultColor}
+      width={width}
+      height={height}
+      style={{ ...style, flexShrink: 0 }}
+      {...props}
+    />
+  );
 };

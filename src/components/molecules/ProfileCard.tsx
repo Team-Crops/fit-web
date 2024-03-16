@@ -36,26 +36,10 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
   }}
 `;
 
-const ProfileImage = styled(Image)<{ size: ProfileCardProps['size'] }>`
+const ProfileImage = styled(Image)`
   border-radius: 120px;
   background: #f5f5f5;
-
-  ${({ size }) => {
-    switch (size) {
-      case 'small':
-        return css`
-          min-width: 90px;
-          width: 90px;
-          height: 90px;
-        `;
-      case 'large':
-        return css`
-          min-width: 120px;
-          width: 120px;
-          height: 120px;
-        `;
-    }
-  }}
+  flex-shrink: 0;
 `;
 
 const InfoContainer = styled.div`
@@ -116,12 +100,15 @@ export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
 
   return (
     <Container size={size} {...props}>
-      <ProfileImage
-        src={user.profileImageUrl ?? ''}
-        alt={`${user.nickname}'s profile image`}
-        size={size}
-        {...profileImageSize}
-      />
+      {user.profileImageUrl ? (
+        <ProfileImage
+          src={user.profileImageUrl}
+          alt={`${user.nickname}'s profile image`}
+          {...profileImageSize}
+        />
+      ) : (
+        <Icons icon="account" {...profileImageSize} />
+      )}
       <InfoContainer>
         <NameContainer>
           <Txt size={size === 'small' ? 'typo5' : 'typo3'} weight="bold">
