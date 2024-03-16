@@ -30,9 +30,9 @@ export function MatchingTitle() {
         <Txt key={1} size="typo1" weight="bold">
           {nickname} 님을 위한 매칭이 시작되었어요!
         </Txt>,
-        <div key={2} style={{ display: 'flex' }}>
+        <div key={2} style={{ display: 'flex', gap: '0.5em' }}>
           <Txt size="typo1" weight="bold">
-            매칭이 완료되어{' '}
+            매칭이 완료되어
           </Txt>
           <Txt size="typo1" weight="bold" color="#ff706c">
             대기방이 생성되었어요
