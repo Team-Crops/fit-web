@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 
-import { MatchingQueued } from '#/components/organisms/matching/MatchingQueued';
 import { MatchingStep } from '#/redux/features/matching/slice';
 import { useAppSelector } from '#/redux/hooks';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
 import { MatchingProfile } from '#organisms/matching/MatchingProfile';
+import { MatchingQueued } from '#organisms/matching/MatchingQueued';
+import { MatchingTalk } from '#organisms/matching/MatchingTalk';
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ export function Matching() {
       <MatchingTitle />
       {matchingStep === MatchingStep.POSITION_CHECKING && <MatchingProfile />}
       {matchingStep === MatchingStep.QUEUING && <MatchingQueued />}
-      {matchingStep === MatchingStep.MATCHED && <div>Success</div>}
+      {matchingStep === MatchingStep.MATCHED && <MatchingTalk />}
     </Container>
   );
 }
