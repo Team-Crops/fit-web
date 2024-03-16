@@ -106,7 +106,7 @@ const BackgroundImage1 = styled(Image)`
 
   z-index: -1;
 
-  animation: bounce 2s linear infinite;
+  animation: float 4s ease-in-out infinite;
 `;
 
 const BackgroundDoughnut = styled(Image)`
@@ -114,7 +114,7 @@ const BackgroundDoughnut = styled(Image)`
   left: 35%;
   bottom: 100px;
 
-  animation: bounce 1s linear infinite;
+  animation: float 2s ease-in-out infinite;
 `;
 
 export function MatchingQueued() {
@@ -151,7 +151,7 @@ export function MatchingQueued() {
         <ProfileCardsSwiper
           slidesPerView={3}
           autoplay={{
-            delay: 500,
+            delay: 1000,
             disableOnInteraction: false,
           }}
           direction={'vertical'}
@@ -182,6 +182,12 @@ export function MatchingQueued() {
           매칭 중단하기
         </MatchingButtons.Button>
         <MatchingButtons.Button onClick={() => goHome()}>홈으로 이동</MatchingButtons.Button>
+        <MatchingButtons.Button
+          color="secondary"
+          onClick={() => dispatch(updateMatchingStep(MatchingStep.MATCHED))}
+        >
+          FOR DEBUG: 매칭 완료
+        </MatchingButtons.Button>
       </MatchingButtons>
     </Container>
   );
