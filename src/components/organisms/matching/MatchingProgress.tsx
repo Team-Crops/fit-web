@@ -11,10 +11,11 @@ import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { matchingPageBackground1 } from '#/assets/images';
+import { matchingPageBackground1, matchingPageDoughnut } from '#/assets/images';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
+import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { exampleUsers } from '#/entities/user';
 import { MatchingStep, updateMatchingStep } from '#/redux/features/matching/slice';
@@ -28,10 +29,10 @@ const Container = styled.div`
 
 const QueuingContainer = styled.div`
   display: flex;
-  position: relative;
   flex-direction: column;
   gap: 8px;
 
+  position: relative;
   height: 600px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
@@ -44,6 +45,28 @@ const QueuingContainer = styled.div`
   padding: 60px 100px;
 `;
 
+const BackgroundBubble1 = styled(MatchingTalkBackground)`
+  position: absolute;
+  left: 13%;
+  top: 40%;
+`;
+
+const BackgroundBubble2 = styled(MatchingTalkBackground)`
+  position: absolute;
+  left: calc(13% + 135px);
+  top: calc(40% + 65px);
+
+  filter: blur(1px);
+`;
+
+const BackgroundBubble3 = styled(MatchingTalkBackground)`
+  position: absolute;
+  left: calc(13% + 60px);
+  top: calc(40% + 115px);
+
+  filter: blur(1.5px);
+`;
+
 const ProgressIcon = styled(Icons)`
   position: absolute;
   top: 55px;
@@ -54,8 +77,10 @@ const ProgressIcon = styled(Icons)`
 const ProfileCardsSwiper = styled(Swiper)`
   position: absolute;
   height: 380px;
+  left: 520px;
+  top: 160px;
 
-  mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
 
   .swiper-slide-active {
     filter: blur(1px);
@@ -81,7 +106,15 @@ const BackgroundImage1 = styled(Image)`
 
   z-index: -1;
 
-  animation: spin 12s linear infinite;
+  animation: bounce 2s linear infinite;
+`;
+
+const BackgroundDoughnut = styled(Image)`
+  position: absolute;
+  left: 35%;
+  bottom: 100px;
+
+  animation: bounce 1s linear infinite;
 `;
 
 export function MatchingProgress() {
@@ -112,6 +145,9 @@ export function MatchingProgress() {
           매칭 종료까지 남은 시간 : 1일 22시간
         </Txt>
 
+        <BackgroundBubble1 profilePosition="left" />
+        <BackgroundBubble2 profilePosition="right" size="small" />
+        <BackgroundBubble3 profilePosition="left" size="small" />
         <ProfileCardsSwiper
           slidesPerView={3}
           autoplay={{
@@ -133,6 +169,12 @@ export function MatchingProgress() {
           alt="Background Asset 1"
           width={400}
           height={400}
+        />
+        <BackgroundDoughnut
+          src={matchingPageDoughnut}
+          alt="Background Asset 2"
+          width={70}
+          height={70}
         />
       </QueuingContainer>
       <MatchingButtons>
