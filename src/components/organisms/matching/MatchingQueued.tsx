@@ -107,6 +107,8 @@ const BackgroundImage1 = styled(Image)`
   z-index: -1;
 
   animation: float 4s ease-in-out infinite;
+
+  transform: translateY(-10%);
 `;
 
 const BackgroundDoughnut = styled(Image)`
