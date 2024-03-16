@@ -112,10 +112,13 @@ const BackgroundImage1 = styled(Image)`
 `;
 
 const BackgroundDoughnut = styled(Image)`
+  animation: spin 4s linear infinite;
+`;
+
+const BackgroundDoughnutFloater = styled.div`
   position: absolute;
   left: 35%;
   bottom: 100px;
-
   animation: float 2s ease-in-out infinite;
 `;
 
@@ -172,12 +175,14 @@ export function MatchingQueued() {
           width={400}
           height={400}
         />
-        <BackgroundDoughnut
-          src={matchingPageDoughnut}
-          alt="Background Asset 2"
-          width={70}
-          height={70}
-        />
+        <BackgroundDoughnutFloater>
+          <BackgroundDoughnut
+            src={matchingPageDoughnut}
+            alt="Background Asset 2"
+            width={70}
+            height={70}
+          />
+        </BackgroundDoughnutFloater>
       </QueuingContainer>
       <MatchingButtons>
         <MatchingButtons.Button color="secondary" onClick={() => stopQueuing()}>
