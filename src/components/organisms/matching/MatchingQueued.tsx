@@ -117,7 +117,7 @@ const BackgroundDoughnut = styled(Image)`
   animation: bounce 1s linear infinite;
 `;
 
-export function MatchingProgress() {
+export function MatchingQueued() {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
