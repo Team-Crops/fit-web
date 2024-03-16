@@ -103,7 +103,7 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
   return (
     <Container>
       <ProfileContainer {...props}>
-        {me && <ProfileCard user={me} size="large" />}
+        <ProfileCard user={me} size="large" />
         <Details>
           <DetailsContainer>
             {details.map((detail, index) => (

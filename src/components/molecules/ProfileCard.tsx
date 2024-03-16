@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import { User } from '#/entities/user';
 import { useGetPositionsQuery } from '#/redux/features/skill-set/api';
 import { Badge } from '#atoms/Badge';
+import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div<{ size: ProfileCardProps['size'] }>`
@@ -16,6 +17,7 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
   align-items: center;
 
   width: 100%;
+  height: 120px;
   padding: 16px 40px;
 
   ${({ size }) => {
@@ -23,7 +25,6 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
       case 'small':
         return css`
           max-width: 360px;
-          height: 120px;
           gap: 30px;
         `;
       case 'large':
@@ -81,7 +82,7 @@ const IntroduceText = styled(Txt)`
 `;
 
 interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  user: User;
+  user: User | null;
   size: 'small' | 'large';
 }
 
@@ -89,9 +90,29 @@ export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
   const { data: positions } = useGetPositionsQuery();
 
   const positionName = useMemo(() => {
-    const position = positions?.find((v) => v.id === user.positionId);
+    const position = positions?.find((v) => v.id === user?.positionId);
     return position?.displayName;
-  }, [positions, user.positionId]);
+  }, [positions, user?.positionId]);
+
+  const profileImageSize = useMemo(
+    () => (size === 'small' ? { width: 90, height: 90 } : { width: 120, height: 120 }),
+    [size]
+  );
+
+  if (user === null) {
+    return (
+      <Container size={size} {...props}>
+        <Icons
+          icon="progress"
+          style={{ animation: 'spin 2s linear infinite' }}
+          {...profileImageSize}
+        />
+        <Txt size="typo3" weight="regular" color="#616161">
+          유저 정보를 불러오는 중입니다.
+        </Txt>
+      </Container>
+    );
+  }
 
   return (
     <Container size={size} {...props}>
@@ -99,8 +120,7 @@ export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
         src={user.profileImageUrl ?? ''}
         alt={`${user.nickname}'s profile image`}
         size={size}
-        width={size === 'small' ? 90 : 120}
-        height={size === 'small' ? 90 : 120}
+        {...profileImageSize}
       />
       <InfoContainer>
         <NameContainer>
