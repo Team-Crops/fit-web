@@ -7,7 +7,9 @@ import { MatchingStep } from '#/redux/features/matching/slice';
 import { useAppSelector } from '#/redux/hooks';
 import { ProgressBar } from '#molecules/ProgressBar';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 80px;
+`;
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
