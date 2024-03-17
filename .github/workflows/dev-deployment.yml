@@ -65,7 +65,7 @@ jobs:
             const deployment = await github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: ${{ github.ref }},
+              ref: '${{ github.ref }}',
               environment: 'development',
               description: `Deployed ${{ github.ref_name }} by ${{ github.actor }}`,
             });
@@ -78,10 +78,10 @@ jobs:
             github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              deployment_id: ${{ steps.create-deployment.outputs.result }},
+              deployment_id: '${{ steps.create-deployment.outputs.result }}',
               state: 'in_progress',
               environment: 'development',
-              description: `Deployed ${{ github.ref_name }} by ${{ github.actor }}`,
+              description: 'Deployed ${{ github.ref_name }} by ${{ github.actor }}',
             })
 
   deploy:
@@ -132,8 +132,8 @@ jobs:
             github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              deployment_id: ${{ needs.create-github-deployment.outputs.DEPLOYMENT_ID }},
+              deployment_id: '${{ needs.create-github-deployment.outputs.DEPLOYMENT_ID }}',
               state: 'success',
               environment: 'development',
-              description: `Deployed ${{ github.ref_name }} by ${{ github.actor }}`,
+              description: 'Deployed ${{ github.ref_name }} by ${{ github.actor }}',
             })
