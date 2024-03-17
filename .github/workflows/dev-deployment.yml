@@ -123,6 +123,7 @@ jobs:
     needs:
       - create-github-deployment
       - deploy
+    if: ${{ needs.create-github-deployment.result == 'success' }}
     environment: development
     steps:
       - name: Update GitHub Deployment Status
@@ -133,7 +134,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               deployment_id: '${{ needs.create-github-deployment.outputs.DEPLOYMENT_ID }}',
-              state: 'success',
+              state: '${{ needs.deploy.result }}' === 'success' ? 'success' : 'failure',
               environment: 'development',
               description: 'Deployed ${{ github.ref_name }} by ${{ github.actor }}',
             })
