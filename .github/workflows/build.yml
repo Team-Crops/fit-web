@@ -2,8 +2,6 @@ name: Build test
 run-name: Build ${{ github.ref_name }} by ${{ github.actor }} at ${{ github.ref }}
 
 on:
-  push:
-    branches: ['main', 'dev']
   pull_request:
     branches: ['main', 'dev']
 
