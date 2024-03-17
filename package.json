@@ -50,7 +50,7 @@
     "lint-staged": ">=10",
     "prettier": "^3.1.1",
     "storybook": "^8.0.0-alpha.8",
-    "typescript": "^5",
+    "typescript": "5.3.2",
     "webpack": "^5.89.0"
   },
   "packageManager": "yarn@4.1.0",

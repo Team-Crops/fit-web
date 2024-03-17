@@ -56,7 +56,7 @@ export const HeaderNav = () => {
         return (
           <NavLink key={link.name} isCurrent={pathName === link.href}>
             <Link href={link.href}>
-              <Txt size={'typo5'} weight={'bold'}>
+              <Txt size={'typo5'} weight={'bold'} color="#212121">
                 {link.name}
               </Txt>
             </Link>
