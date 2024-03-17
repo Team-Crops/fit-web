@@ -49,45 +49,9 @@ jobs:
           push: true
           tags: ${{ env.ECR_IMAGE_LATEST }}, ${{ env.ECR_IMAGE_SHA }}
 
-  create-github-deployment:
-    name: Create GitHub Deployment
-    runs-on: ubuntu-latest
-    needs: build
-    environment: development
-    outputs:
-      DEPLOYMENT_ID: ${{ steps.create-deployment.outputs.result }}
-    steps:
-      - name: Create GitHub Deployment
-        uses: actions/github-script@v7
-        id: create-deployment
-        with:
-          script: |
-            const deployment = await github.rest.repos.createDeployment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: '${{ github.ref }}',
-              environment: 'development',
-              description: `Deployed ${{ github.ref_name }} by ${{ github.actor }}`,
-            });
-            return deployment.data.id;
-
-      - name: Update GitHub Deployment Status
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: '${{ steps.create-deployment.outputs.result }}',
-              state: 'in_progress',
-              environment: 'development',
-              description: 'Deployed ${{ github.ref_name }} by ${{ github.actor }}',
-            })
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: create-github-deployment
     environment: development
     steps:
       - name: Configure AWS Credentials
@@ -116,25 +80,3 @@ jobs:
           service: ${{ vars.ECS_SERVICE_NAME }}
           cluster: ${{ vars.ECS_CLUSTER_NAME }}
           wait-for-service-stability: true
-
-  update-github-deployment-status:
-    name: Update GitHub Deployment Status
-    runs-on: ubuntu-latest
-    needs:
-      - create-github-deployment
-      - deploy
-    if: ${{ needs.create-github-deployment.result == 'success' }}
-    environment: development
-    steps:
-      - name: Update GitHub Deployment Status
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: '${{ needs.create-github-deployment.outputs.DEPLOYMENT_ID }}',
-              state: '${{ needs.deploy.result }}' === 'success' ? 'success' : 'failure',
-              environment: 'development',
-              description: 'Deployed ${{ github.ref_name }} by ${{ github.actor }}',
-            })
