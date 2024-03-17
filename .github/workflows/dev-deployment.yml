@@ -62,7 +62,7 @@ jobs:
         id: create-deployment
         with:
           script: |
-            const deployment = await github.deployments.create({
+            const deployment = await github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: ${{ github.ref }},
@@ -75,7 +75,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.deployments.createStatus({
+            github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               deployment_id: ${{ steps.create-deployment.outputs.result }},
@@ -129,7 +129,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.deployments.createStatus({
+            github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               deployment_id: ${{ needs.create-github-deployment.outputs.DEPLOYMENT_ID }},
