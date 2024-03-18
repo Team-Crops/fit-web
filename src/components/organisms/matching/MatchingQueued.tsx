@@ -83,10 +83,12 @@ const ProfileCardsSwiper = styled(Swiper)`
   mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
 
   .swiper-slide-active {
+    transition: filter 750ms;
     filter: blur(1px);
   }
 
   .swiper-slide :not(.swiper-slide-pref, .swiper-slide-active, .swiper-slide-next) {
+    transition: filter 750ms;
     filter: blur(1px);
   }
 `;
@@ -112,10 +114,6 @@ const BackgroundImage1 = styled(Image)`
 `;
 
 const BackgroundDoughnut = styled(Image)`
-  animation: spin 4s linear infinite;
-`;
-
-const BackgroundDoughnutFloater = styled.div`
   position: absolute;
   left: 35%;
   bottom: 100px;
@@ -156,9 +154,10 @@ export function MatchingQueued() {
         <ProfileCardsSwiper
           slidesPerView={3}
           autoplay={{
-            delay: 1000,
+            delay: 500,
             disableOnInteraction: false,
           }}
+          speed={750}
           direction={'vertical'}
           loop
           modules={[Autoplay, Pagination]}
@@ -175,14 +174,12 @@ export function MatchingQueued() {
           width={400}
           height={400}
         />
-        <BackgroundDoughnutFloater>
-          <BackgroundDoughnut
-            src={matchingPageDoughnut}
-            alt="Background Asset 2"
-            width={70}
-            height={70}
-          />
-        </BackgroundDoughnutFloater>
+        <BackgroundDoughnut
+          src={matchingPageDoughnut}
+          alt="Background Asset 2"
+          width={70}
+          height={70}
+        />
       </QueuingContainer>
       <MatchingButtons>
         <MatchingButtons.Button color="secondary" onClick={() => stopQueuing()}>
@@ -193,7 +190,7 @@ export function MatchingQueued() {
           color="secondary"
           onClick={() => dispatch(updateMatchingStep(MatchingStep.MATCHED))}
         >
-          FOR DEBUG: 매칭 완료
+          [FOR TEST] 매칭 완료
         </MatchingButtons.Button>
       </MatchingButtons>
     </Container>
