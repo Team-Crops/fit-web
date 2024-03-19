@@ -144,8 +144,8 @@ export const SkillInfoPopup = () => {
   return (
     <Container>
       <SignupProgressBar
-        currentStep={4}
-        totalStep={4}
+        current={4}
+        total={4}
         progressName="활동정보"
         onForwardClick={() => updateMySkills(selectedSkills)}
         onBackwardClick={() => dispatch(updateAuth({ step: AuthStep.SkillInfo - 1 }))}
@@ -172,7 +172,7 @@ export const SkillInfoPopup = () => {
                     loading
                   />
                 ))
-              : positions?.positionList.map((position) => (
+              : positions?.map((position) => (
                   <PositionTab
                     key={position.id}
                     variant="angular"

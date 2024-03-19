@@ -48,16 +48,14 @@ const TextContainer = styled.div`
 `;
 
 interface SignupProgressBarProps extends Omit<ProgressBarProps, 'value'> {
-  currentStep: number;
-  totalStep: number;
   progressName: string;
   onForwardClick?: () => void;
   onBackwardClick?: () => void;
 }
 
 export const SignupProgressBar = ({
-  currentStep,
-  totalStep,
+  current,
+  total,
   progressName,
   onForwardClick,
   onBackwardClick,
@@ -67,7 +65,7 @@ export const SignupProgressBar = ({
   const enabledBackward = onBackwardClick !== undefined;
   return (
     <Container {...props}>
-      <StyledProgressBar current={currentStep} total={totalStep} />
+      <StyledProgressBar current={current} total={total} />
       <ButtonsContainer>
         <IconButton
           icon={enabledBackward ? 'arrowBackwardOutlined' : 'arrowBackward'}
@@ -78,7 +76,7 @@ export const SignupProgressBar = ({
         />
         <TextContainer>
           <Txt size="typo6" weight="bold">
-            {currentStep}/{totalStep}
+            {current}/{total}
           </Txt>
           <Txt size="typo6" weight="medium">
             {progressName}
