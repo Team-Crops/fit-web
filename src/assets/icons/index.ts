@@ -13,6 +13,7 @@ export { default as CrossIcon } from './cross.svg';
 export { default as EmojiFire } from './emoji-fire.svg';
 export { default as EmojiHoldingBackTears } from './emoji-holding-back-tears.svg';
 export { default as GoogleIcon } from './google.svg';
+export { default as ImageIcon } from './image.svg';
 export { default as InfoIcon } from './info.svg';
 export { default as InstagramIcon } from './instagram.svg';
 export { default as KakaoIcon } from './kakao.svg';

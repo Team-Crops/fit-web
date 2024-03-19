@@ -17,6 +17,7 @@ import {
   EmojiFire,
   EmojiHoldingBackTears,
   GoogleIcon,
+  ImageIcon,
   InfoIcon,
   InstagramIcon,
   KakaoIcon,
@@ -49,6 +50,7 @@ export type IconName =
   | 'emojiFire'
   | 'emojiHoldingBackTears'
   | 'google'
+  | 'image'
   | 'info'
   | 'instagram'
   | 'kakao'
@@ -149,6 +151,10 @@ const icons: Record<IconName, Icon> = {
   },
   google: {
     SVGR: GoogleIcon,
+  },
+  image: {
+    SVGR: ImageIcon,
+    color: '#FF908D',
   },
   instagram: {
     SVGR: InstagramIcon,
