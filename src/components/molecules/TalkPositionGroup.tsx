@@ -3,8 +3,8 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import { User } from '#/entities/user';
-import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
+import { UserProfile } from '#atoms/UserProfile';
 
 const Container = styled.div`
   display: flex;
@@ -36,7 +36,8 @@ const UsersContainer = styled.ul`
 const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 18px;
 `;
 
 const EmptyUserProfile = styled.div`
@@ -55,7 +56,6 @@ interface TalkGroupProps {
 }
 
 export function TalkPositionGroup({ groupName, users }: TalkGroupProps) {
-  const profileSize = { width: 80, height: 80 };
   return (
     <Container>
       <GroupNameContainer>
@@ -67,15 +67,15 @@ export function TalkPositionGroup({ groupName, users }: TalkGroupProps) {
         {users.map((user, index) =>
           user ? (
             <UserContainer key={user.id}>
-              {user.profileImageUrl ? (
-                <Image
-                  src={user.profileImageUrl}
-                  alt={`${user.nickname}'s profile image`}
-                  {...profileSize}
-                />
-              ) : (
-                <Icons icon="account" {...profileSize} />
-              )}
+              <UserProfile
+                imageUrl={user.profileImageUrl}
+                nickname={user.nickname}
+                width={80}
+                height={80}
+              />
+              <Txt size="typo5" weight="medium">
+                {user.nickname}
+              </Txt>
             </UserContainer>
           ) : (
             <EmptyUserProfile key={index} />
