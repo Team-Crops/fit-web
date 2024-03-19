@@ -4,64 +4,62 @@ import styled from '@emotion/styled';
 
 import { User } from '#/entities/user';
 import { Txt } from '#atoms/Text';
-import { Icons } from '../atoms/Icons';
+import { UserProfile } from '#atoms/UserProfile';
 
 const Container = styled.div`
   display: flex;
   gap: 10px;
 `;
 
-const BubbleContainer = styled.div`
+const BubbleContainer = styled.div<{ myBubble: TalkBubbleProps['myBubble'] }>`
   display: flex;
   flex-direction: column;
+  align-items: ${({ myBubble }) => (myBubble ? 'flex-end' : 'flex-start')};
   gap: 10px;
-`;
-
-const ProfileImage = styled(Image)`
-  border-radius: 50%;
 `;
 
 const UserName = styled(Txt)``;
 
-const TextBubble = styled(Txt)<{ tailPosition: TalkBubbleProps['tailPosition'] }>`
+const TextBubble = styled(Txt)<{ myBubble: TalkBubbleProps['myBubble'] }>`
   background: #fff;
   padding: 20px 35px 20px 25px;
-  border-radius: ${({ tailPosition }) =>
-    tailPosition === 'left' ? '0 40px 40px 40px' : '40px 0 40px 40px'};
+  border: ${({ myBubble }) => (myBubble ? '1px solid #FFA7A5' : 'none')};
+  border-radius: ${({ myBubble }) => (myBubble ? '40px 0 40px 40px' : '0 40px 40px 40px')};
   filter: drop-shadow(0px 0px 40px rgba(0, 0, 0, 0.08));
   line-height: 2;
 `;
 
+const BubbleTime = styled(Txt)`
+  margin-top: auto;
+  white-space: nowrap;
+`;
+
 interface TalkBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
-  tailPosition?: 'left' | 'right';
+  myBubble?: boolean;
   user: User;
 }
 
-export function TalkBubble({ tailPosition = 'left', user, ...props }: TalkBubbleProps) {
+export function TalkBubble({ myBubble = false, user, ...props }: TalkBubbleProps) {
   return (
     <Container>
-      {user.profileImageUrl ? (
-        <ProfileImage
-          src={user.profileImageUrl}
-          alt={`${user.nickname}'s profile image`}
-          width={48}
-          height={48}
-        />
-      ) : (
-        <Icons icon="account" />
+      {myBubble && (
+        <BubbleTime size="typo6" weight="medium" color="#9E9E9E">
+          12:24 PM
+        </BubbleTime>
       )}
-      <BubbleContainer>
+      {!myBubble && <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />}
+      <BubbleContainer myBubble={myBubble}>
         <UserName size="typo5" weight="bold" color="#757575">
           {user.nickname}
         </UserName>
-        <TextBubble
-          tailPosition={tailPosition}
-          size="typo4"
-          weight="regular"
-          color="#424242"
-          {...props}
-        />
+        <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props} />
       </BubbleContainer>
+      {myBubble && <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />}
+      {!myBubble && (
+        <BubbleTime size="typo6" weight="medium" color="#9E9E9E">
+          12:24 PM
+        </BubbleTime>
+      )}
     </Container>
   );
 }
