@@ -9,7 +9,7 @@ const Card = styled.div<{ width: number; height: number }>`
   gap: 30px;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  padding: 40px;
+  padding: 46px;
   border-radius: 40px;
   background: #fff;
   box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
@@ -22,14 +22,18 @@ const ContentBlock = styled.div`
   width: 100%;
   gap: 20px;
   text-align: left;
+  white-space: pre-wrap;
 `;
-const ImageBlock = styled.div<{ imgIsCenter?: boolean }>`
+const ImageBlock = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  ${({ imgIsCenter }) => imgIsCenter && 'justify-content: center;'};
   width: 100%;
   height: 100%;
+`;
+const CardImage = styled(Image)<{ imgLeftPx?: number }>`
+  position: absolute;
+  left: ${({ imgLeftPx }) => imgLeftPx}px;
 `;
 
 interface MainDescriptionCardProps {
@@ -41,7 +45,7 @@ interface MainDescriptionCardProps {
   imgUrl: string;
   imgWidth: number;
   imgHeight: number;
-  imgIsCenter?: boolean;
+  imgLeftPx?: number;
 }
 export const MainDescriptionCard = ({
   width,
@@ -52,7 +56,7 @@ export const MainDescriptionCard = ({
   imgUrl,
   imgWidth,
   imgHeight,
-  imgIsCenter,
+  imgLeftPx,
 }: MainDescriptionCardProps) => {
   return (
     <Card width={width} height={height}>
@@ -68,8 +72,14 @@ export const MainDescriptionCard = ({
         <Txt size={'typo4'} weight={'regular'} color="#616161">
           {description}
         </Txt>
-        <ImageBlock imgIsCenter={imgIsCenter}>
-          <Image src={imgUrl} alt="image" width={imgWidth} height={imgHeight} />
+        <ImageBlock>
+          <CardImage
+            src={imgUrl}
+            alt="image"
+            width={imgWidth}
+            height={imgHeight}
+            imgLeftPx={imgLeftPx}
+          />
         </ImageBlock>
       </ContentBlock>
     </Card>
