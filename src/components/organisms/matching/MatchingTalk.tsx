@@ -10,27 +10,28 @@ import { TalkPositionGroup } from '#/components/molecules/TalkPositionGroup';
 import { exampleUsers } from '#/entities/user';
 
 const TalkContainer = styled.div`
+  overflow: hidden;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 80px 1fr 120px;
 
   width: 100%;
   max-width: 1200px;
+
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  overflow: hidden;
 `;
 
 const TalkGroupsContainer = styled.div`
+  display: flex;
   grid-column: 1 / 2;
   grid-row: 1 / 4;
-  padding: 30px 60px;
-  height: fit-content;
-
-  display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 30px;
+  justify-content: space-between;
+
+  height: fit-content;
+  padding: 30px 60px;
 `;
 
 const TalkGroupTexts = styled.div`
@@ -47,42 +48,46 @@ const TalkGroups = styled.div`
 
 const TalkBubbleHeader = styled(Txt)`
   padding: 28px 0 20px 28px;
-  background: #ffffff;
-  border-left: 1px solid #e0e0e0;
+  background: #fff;
   border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
 `;
 
 const TalkBubbles = styled.div`
-  padding: 28px;
-  background: #fafafa;
-  height: 100%;
-  overflow-y: scroll;
+  position: relative;
 
+  overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;
   gap: 60px;
 
-  position: relative;
+  height: 100%;
+  padding: 28px;
+
+  background: #fafafa;
 `;
 
 const TalkToolbox = styled.div`
-  padding: 30px;
   position: relative;
 
   display: flex;
   gap: 10px;
+
+  padding: 30px;
+
   background: #fafafa;
 `;
 
 const IconBox = styled.div`
   display: flex;
-  justify-content: center;
+  flex-shrink: 0;
   align-items: center;
+  justify-content: center;
 
   width: 60px;
   height: 60px;
-  flex-shrink: 0;
-  background: #ffffff;
+
+  background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 50%;
 
@@ -95,34 +100,38 @@ const IconBox = styled.div`
 `;
 
 const TextInput = styled(Input)`
-  border-radius: 100px;
   height: 60px;
-  background: #ffffff;
   padding: 20px 30px;
 
-  font-family: 'Spoqa Han Sans Neo';
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
+  font-style: normal;
   line-height: normal;
   letter-spacing: -0.8px;
+
+  background: #fff;
+  border-radius: 100px;
 `;
 
 const SendButton = styled(Icons)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-
   position: absolute;
   right: 35px;
   bottom: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 5px;
+
+  color: #ff908d;
+
   background: transparent;
+  border-radius: 50%;
 
   transition: all 0.3s;
 
-  color: #ff908d;
   :hover {
     cursor: pointer;
     color: #ff706c;

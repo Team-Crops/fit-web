@@ -25,45 +25,46 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
     switch (size) {
       case 'small':
         return css`
-          max-width: 360px;
           gap: 30px;
+          max-width: 360px;
         `;
       case 'large':
         return css`
-          max-width: 600px;
           gap: 40px;
+          max-width: 600px;
         `;
     }
   }}
 `;
 
 const ProfileImage = styled(Image)`
-  border-radius: 120px;
-  background: #f5f5f5;
   flex-shrink: 0;
+  background: #f5f5f5;
+  border-radius: 120px;
 `;
 
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: start;
   gap: 6px;
+  align-items: start;
 `;
 
 const NameContainer = styled.div`
   display: flex;
+  gap: 10px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
 `;
 
 const IntroduceText = styled(Txt)`
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 
   line-height: 170%;
+
+  -webkit-line-clamp: 2;
 `;
 
 interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -30,22 +30,23 @@ const MainTxt = styled(Txt)`
   font-size: 80px;
 `;
 const CharacterImage = styled(Image)`
+  pointer-events: none;
+
   position: absolute;
+  z-index: -1;
   top: 190px;
   right: 100px;
-  pointer-events: none;
-  z-index: -1;
 `;
 const RightBackground = styled(Image)`
   position: absolute;
-  top: -60px;
   z-index: -2;
+  top: -60px;
 `;
 const LeftBackground = styled(Image)`
   position: absolute;
-  left: 50px;
-  top: 500px;
   z-index: -2;
+  top: 500px;
+  left: 50px;
 `;
 
 export const FirstSection = () => {

@@ -15,8 +15,9 @@ const Block = styled.div`
   margin: 258px 0 290px;
 `;
 const CardSwiper = styled(Swiper)`
-  padding: 30px 0;
   pointer-events: none;
+  padding: 30px 0;
+
   .swiper-slide {
     width: max-content;
   }
@@ -28,14 +29,17 @@ const BackgroundImage = styled(Image)`
   left: -360px;
 `;
 const BlurBlock = styled.div`
+  pointer-events: none;
+
   position: absolute;
+  z-index: 1;
   top: 230px;
   right: 0;
+
   width: 400px;
   height: 650px;
-  z-index: 1;
-  pointer-events: none;
-  background-image: linear-gradient(270deg, #fff 0.05%, rgba(255, 255, 255, 0) 132.02%);
+
+  background-image: linear-gradient(270deg, #fff 0.05%, rgb(255 255 255 / 0%) 132.02%);
 `;
 
 const CardInfo = [

@@ -14,19 +14,19 @@ const Container = styled.div`
 const BubbleContainer = styled.div<{ myBubble: TalkBubbleProps['myBubble'] }>`
   display: flex;
   flex-direction: column;
-  align-items: ${({ myBubble }) => (myBubble ? 'flex-end' : 'flex-start')};
   gap: 10px;
+  align-items: ${({ myBubble }) => (myBubble ? 'flex-end' : 'flex-start')};
 `;
 
-const UserName = styled(Txt)``;
-
 const TextBubble = styled(Txt)<{ myBubble: TalkBubbleProps['myBubble'] }>`
-  background: #fff;
   padding: 20px 35px 20px 25px;
+
+  line-height: 2;
+
+  background: #fff;
+  filter: drop-shadow(0 0 40px rgb(0 0 0 / 8%));
   border: ${({ myBubble }) => (myBubble ? '1px solid #FFA7A5' : 'none')};
   border-radius: ${({ myBubble }) => (myBubble ? '40px 0 40px 40px' : '0 40px 40px 40px')};
-  filter: drop-shadow(0px 0px 40px rgba(0, 0, 0, 0.08));
-  line-height: 2;
 `;
 
 const BubbleTime = styled(Txt)`
@@ -49,9 +49,9 @@ export const TalkBubble = ({ myBubble = false, user, ...props }: TalkBubbleProps
       )}
       {!myBubble && <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />}
       <BubbleContainer myBubble={myBubble}>
-        <UserName size="typo5" weight="bold" color="#757575">
+        <Txt size="typo5" weight="bold" color="#757575">
           {user.nickname}
-        </UserName>
+        </Txt>
         <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props} />
       </BubbleContainer>
       {myBubble && <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />}

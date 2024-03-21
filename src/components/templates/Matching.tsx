@@ -14,7 +14,7 @@ const Container = styled.div`
 
   width: 100%;
   max-width: 1200px;
-  min-height: calc(100vh - 100px - 393px); // 100px: Header, 393px: Footer
+  min-height: calc(100vh - 100px - 393px);
   padding: 35px 0;
 `;
 

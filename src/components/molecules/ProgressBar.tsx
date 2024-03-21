@@ -7,34 +7,35 @@ import { Txt } from '../atoms/Text';
 const Container = styled.div`
   width: 100%;
   height: 15px;
-
-  border-radius: 100px;
   background-color: #ffeae9;
+  border-radius: 100px;
 `;
 
 const Bar = styled.div<{ progress: number }>`
   width: ${({ progress }) => `${progress}%`};
   height: 100%;
 
-  border-radius: 100px;
   background-color: #ff706c;
+  border-radius: 100px;
 
   transition: width 0.3s;
 `;
 
 const TooltipContainer = styled.div<{ progress: number }>`
-  display: flex;
-  gap: 4px;
-
   position: relative;
-  width: fit-content;
   left: ${({ progress }) => `${progress}%`};
   transform: translateX(-50%);
 
-  border-radius: 100px;
+  display: flex;
+  gap: 4px;
+
+  width: fit-content;
   padding: 9px 16px;
+
+  color: #fff;
+
   background-color: #ffa7a5;
-  color: #ffffff;
+  border-radius: 100px;
 
   transition: left 0.3s;
 `;

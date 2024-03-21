@@ -20,34 +20,36 @@ const GroupName = styled(Txt)`
   height: fit-content;
   padding: 12px 23px;
 
-  border-radius: 5px;
   background: #ffeae9;
+  border-radius: 5px;
 `;
 
 const UsersContainer = styled.ul`
-  flex: 1;
   display: flex;
-  justify-content: flex-start;
+  flex: 1;
   flex-wrap: wrap;
   gap: 50px;
+  justify-content: flex-start;
+
   margin: 0;
 `;
 
 const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 18px;
+  align-items: center;
 `;
 
 const EmptyUserProfile = styled.div`
+  flex-shrink: 0;
+
+  box-sizing: border-box;
   width: 80px;
   height: 80px;
-  flex-shrink: 0;
 
   border: 1px dashed #ff706c;
   border-radius: 50%;
-  box-sizing: border-box;
 `;
 
 interface TalkGroupProps {
