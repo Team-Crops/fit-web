@@ -67,7 +67,7 @@ const Chat2 = styled(Image)`
   animation: ${Chat2Animation} 3s linear infinite;
 `;
 const CircleAnimation = keyframes`
-0% {
+    0% {
       top: 50px;
     }
     100% {
@@ -81,7 +81,7 @@ const Circle = styled(Image)`
   animation: ${CircleAnimation} 2s infinite alternate;
 `;
 const ShoppingBackAnimation = keyframes`
-0% {
+    0% {
       top: 50px;
     }
     100% {
@@ -95,7 +95,7 @@ const ShoppingBack = styled(Image)`
   animation: ${ShoppingBackAnimation} 2s infinite alternate;
 `;
 const ProfileAnimation = keyframes`
-0% {
+    0% {
       top: -50px;
     }
     100% {
