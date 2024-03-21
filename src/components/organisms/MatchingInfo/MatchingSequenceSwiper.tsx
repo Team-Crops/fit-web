@@ -11,10 +11,10 @@ import { MainDescriptionCard } from '#/components/molecules/MainDescriptionCard'
 
 const Container = styled.div`
   position: relative;
-  width: 2490px;
+  width: 707px;
   padding: 30px 0;
   margin-bottom: 89px;
-  overflow: hidden;
+  /* overflow: hidden; */
 `;
 const CardSwiper = styled(Swiper)`
   width: 707px;
@@ -42,18 +42,18 @@ const NextButton = styled.div`
 `;
 const BlurBackground = styled.div`
   position: absolute;
-  top: 0;
+  top: 30px;
   z-index: 1;
   width: 830px;
   height: 600px;
   pointer-events: none;
 `;
 const LeftBlurBackground = styled(BlurBackground)`
-  left: 0;
+  left: -860px;
   background-image: linear-gradient(90deg, #fff 0.05%, rgba(255, 255, 255, 0) 132.02%);
 `;
 const RightBlurBackground = styled(BlurBackground)`
-  right: 0;
+  right: -860px;
   background-image: linear-gradient(270deg, #fff 0.05%, rgba(255, 255, 255, 0) 132.02%);
 `;
 
