@@ -15,10 +15,10 @@ const CardWrapper = styled.div`
   gap: 19px;
 `;
 const BackgroundImage = styled(Image)`
+  pointer-events: none;
   position: absolute;
   top: 815px;
   left: -105px;
-  pointer-events: none;
 `;
 
 const CardInfo = [

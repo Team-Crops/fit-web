@@ -22,10 +22,10 @@ const CardSwiper = styled(Swiper)`
   }
 `;
 const BackgroundImage = styled(Image)`
+  pointer-events: none;
   position: absolute;
   top: 30px;
   left: -360px;
-  pointer-events: none;
 `;
 const BlurBlock = styled.div`
   position: absolute;

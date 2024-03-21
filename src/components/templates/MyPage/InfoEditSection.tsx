@@ -9,6 +9,7 @@ const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 19px;
+
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;

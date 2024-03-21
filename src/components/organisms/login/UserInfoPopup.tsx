@@ -19,49 +19,51 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-evenly;
 
-  background-color: #fff;
   width: 830px;
   height: 680px;
-
-  border-radius: 15px;
   padding: 20px;
+
+  background-color: #fff;
+  border-radius: 15px;
 `;
 
 const ProfileImage = styled.div`
+  cursor: pointer;
+
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 8px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
 
   width: 164px;
   height: 164px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
 
   color: #bdbdbd;
-  cursor: pointer;
+
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
 
   transition: box-shadow 0.3s;
-  &:hover {
-    box-shadow: 0px 0px 164px rgba(0, 0, 0, 0.1);
-  }
 
-  overflow: hidden;
+  &:hover {
+    box-shadow: 0 0 164px rgb(0 0 0 / 10%);
+  }
 `;
 
 const NicknameContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: end;
   gap: 8px;
+  align-items: end;
 `;
 
 const StyledInput = styled.input`
   width: 400px;
+  padding: 10px;
   border: none;
   border-bottom: 3px solid #ff908d;
-  padding: 10px;
 
   &::placeholder {
     color: #bdbdbd;

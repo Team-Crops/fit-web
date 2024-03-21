@@ -12,8 +12,9 @@ import { ProfileBlock } from '#organisms/ProfileBlock';
 const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 21px;
+  align-items: center;
+
   width: 100%;
   max-width: 1200px;
   margin: 130px auto 20px;
@@ -26,26 +27,32 @@ const HighLight = styled.span`
 `;
 const ExposeProfile = styled.div`
   position: relative;
+
   display: flex;
-  align-items: center;
-  margin-left: auto;
   gap: 9px;
+  align-items: center;
+
+  margin-left: auto;
 `;
 const Tooltip = styled(Image)`
-  margin: 0 -5px 3px;
   cursor: pointer;
+  margin: 0 -5px 3px;
 `;
 const ExplainModal = styled.div`
   position: absolute;
+  bottom: -32px;
+  left: -7px;
+
   display: flex;
   align-items: center;
-  left: -7px;
-  bottom: -32px;
+
   height: 28px;
   padding: 0 7px;
-  border-radius: 5px;
-  background: #212121b2;
+
   white-space: nowrap;
+
+  background: #212121b2;
+  border-radius: 5px;
 `;
 
 interface ProfileSectionProps {

@@ -19,6 +19,8 @@ import { Txt } from '#atoms/Text';
 import { SignupProgressBar } from '#molecules/SignupProgressBar';
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,24 +29,22 @@ const Container = styled.div`
   width: 830px;
   height: 680px;
 
+  background: #fff;
   border-radius: 15px;
-  background: #ffffff;
-
-  position: relative;
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
 `;
 
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: end;
   gap: 10px;
+  align-items: end;
 `;
 
 const PositionTabContainer = styled.div`
@@ -55,36 +55,32 @@ const PositionTabContainer = styled.div`
 const PositionTabs = styled.div`
   display: flex;
   gap: 10px;
-
   padding: 10px;
 `;
 
 const PositionTab = styled(Button)<{ selected?: boolean; loading?: boolean }>`
   flex-grow: 1;
-
+  color: ${({ selected }) => (selected ? '#ff706c' : '#9e9e9e')};
+  background-color: ${({ loading }) => (loading ? '#f5f5f5' : 'transparent')};
   animation: ${({ loading }) =>
     loading ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none'};
-  background-color: ${({ loading }) => (loading ? '#f5f5f5' : 'transparent')};
-  color: ${({ selected }) => (selected ? '#ff706c' : '#9e9e9e')};
 
   &:hover {
-    background-color: #f5f5f5;
     color: ${({ selected }) => (selected ? '#ff706c' : '#000000')};
+    background-color: #f5f5f5;
   }
 `;
 
 const SkillsContainer = styled.div`
+  overflow-y: scroll;
   display: flex;
   flex-wrap: wrap;
-  align-content: flex-start;
   gap: 30px;
+  align-content: flex-start;
 
   width: 720px;
-
-  padding: 36px;
   height: 220px;
-
-  overflow-y: scroll;
+  padding: 36px;
 `;
 
 const SkillButton = styled(Button)<{ loading?: boolean }>`
@@ -93,10 +89,10 @@ const SkillButton = styled(Button)<{ loading?: boolean }>`
   ${({ loading }) =>
     loading &&
     css`
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      width: 150px;
       background-color: #f5f5f5;
       border: none;
-      width: 150px;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     `}
 `;
 

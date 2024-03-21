@@ -8,20 +8,23 @@ import { Txt } from '#atoms/Text';
 
 const StyledSection = styled.section`
   position: relative;
+
+  overflow: hidden;
   display: flex;
   justify-content: center;
+
   width: 100%;
   max-width: 1920px;
   height: 1117px;
   margin: 0 auto;
-  overflow: hidden;
 `;
 const ContentBlock = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
+
   width: 1200px;
   margin: 130px 0;
-  gap: 12px;
 `;
 const MainTxt = styled(Txt)`
   font-size: 80px;

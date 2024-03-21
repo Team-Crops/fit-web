@@ -25,13 +25,15 @@ const PortfolioUrlInput = styled.input`
   width: 100%;
   height: 32px;
   padding: 11px 35px 10px 10px;
-  border-radius: 5px;
-  border: 1px solid #bdbdbd;
 
-  font-family: 'SpoqaHanSansNeo';
+  font-family: SpoqaHanSansNeo, sans-serif;
   font-size: 12px;
   font-weight: 400;
   letter-spacing: -0.6px;
+
+  border: 1px solid #bdbdbd;
+  border-radius: 5px;
+
   ::placeholder {
     color: #9e9e9e;
   }
@@ -39,14 +41,16 @@ const PortfolioUrlInput = styled.input`
 const UploadButton = styled.div`
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   right: 9px;
+  transform: translateY(-50%);
+
   display: flex;
 `;
 const PortfolioList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
   width: 100%;
   margin-top: 20px;
 `;

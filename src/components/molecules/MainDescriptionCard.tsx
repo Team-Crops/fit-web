@@ -5,27 +5,32 @@ import styled from '@emotion/styled';
 import { Txt } from '#atoms/Text';
 
 const Card = styled.div<{ width: number; height: number }>`
+  z-index: 1;
+
   display: flex;
   gap: 30px;
+
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  padding: 46px;
-  border-radius: 40px;
+  padding: 40px;
+
   background: #fff;
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  border-radius: 40px;
+  box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
 `;
-const Index = styled(Txt)``;
 const ContentBlock = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 20px;
+
+  width: 100%;
+
   text-align: left;
   white-space: pre-wrap;
 `;
 const ImageBlock = styled.div`
   position: relative;
+
   display: flex;
   align-items: center;
   width: 100%;
@@ -61,9 +66,9 @@ export const MainDescriptionCard = ({
   return (
     <Card width={width} height={height}>
       {index && (
-        <Index size={'typo1'} weight={'medium'} color="#FF706C">
+        <Txt size={'typo1'} weight={'medium'} color="#FF706C">
           {index.toString().padStart(2, '0')}
-        </Index>
+        </Txt>
       )}
       <ContentBlock>
         <Txt size={'typo1'} weight={'bold'} color="#212121">

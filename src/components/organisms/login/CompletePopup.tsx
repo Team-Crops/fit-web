@@ -16,6 +16,8 @@ import { Toggle } from '#atoms/Toggle';
 import { Button } from '../../atoms/Button';
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,44 +26,45 @@ const Container = styled.div`
   width: 830px;
   height: 680px;
 
+  background: #fff;
   border-radius: 15px;
-  background: #ffffff;
-
-  position: relative;
 `;
 
 const ProfileVisibilityToggleContainer = styled.div`
   position: absolute;
   top: 40px;
   left: 50px;
+
   display: flex;
   align-items: center;
 `;
 
 const CrossButton = styled(Icons)`
+  cursor: pointer;
+
   position: absolute;
   top: 40px;
   right: 50px;
 
-  @media (max-width: 768px) {
-    top: 15px;
-    right: 10px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   width: 40px;
   height: 40px;
   padding: 8px;
-  border-radius: 50%;
-  cursor: pointer;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border-radius: 50%;
 
   transition: all 0.2s ease-in-out;
 
   &:hover {
     background-color: #e0e0e0;
+  }
+
+  @media (width <= 768px) {
+    top: 15px;
+    right: 10px;
   }
 `;
 
@@ -78,14 +81,14 @@ const Tooltip = styled.div<{ show: boolean }>`
 
   padding: 8px;
 
-  border-radius: 5px;
-  background-color: #212121b2;
-  color: #ffffff;
+  color: #fff;
+  white-space: nowrap;
+
   opacity: ${({ show }) => (show ? 1 : 0)};
+  background-color: #212121b2;
+  border-radius: 5px;
 
   transition: opacity 0.2s ease-in-out;
-
-  white-space: nowrap;
 `;
 
 const HeaderText = styled(Txt)`

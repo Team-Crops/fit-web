@@ -18,8 +18,8 @@ const FlexBlock = styled.div`
 `;
 const PolicyLinkBlock = styled.div`
   display: flex;
-  align-items: flex-end;
   gap: 13px;
+  align-items: flex-end;
 `;
 const PolicyDivider = styled.div`
   width: 1px;
@@ -28,14 +28,14 @@ const PolicyDivider = styled.div`
   background-color: #bdbdbd;
 `;
 const FooterDivider = styled(Divider)`
-  border-top: 1px solid #bdbdbd;
   margin: 23px 0 39px;
+  border-top: 1px solid #bdbdbd;
 `;
 const TxtBlock = styled.div`
   display: flex;
   flex-direction: column;
-  white-space: pre-wrap;
   gap: 11px;
+  white-space: pre-wrap;
 `;
 const LinkBlock = styled.div`
   display: flex;

@@ -11,18 +11,21 @@ import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
 import { MyPageGridBlock } from '#molecules/MyPage/MyPageGridBlock';
 
 const StyledTextarea = styled.textarea`
-  width: 100%;
-  min-height: 73px;
-  padding: 12px;
-  margin-bottom: 39px;
-  border-radius: 5px;
-  border: 1px solid #bdbdbd;
   resize: vertical;
 
-  font-family: 'SpoqaHanSansNeo';
+  width: 100%;
+  min-height: 73px;
+  margin-bottom: 39px;
+  padding: 12px;
+
+  font-family: SpoqaHanSansNeo, sans-serif;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: -0.8px;
+
+  border: 1px solid #bdbdbd;
+  border-radius: 5px;
+
   &::placeholder {
     color: #bdbdbd;
   }
@@ -48,10 +51,10 @@ const FlexBlock = styled.div`
   gap: 16px;
 `;
 const Label = styled.label`
+  cursor: pointer;
   display: flex;
   gap: 9px;
   align-items: center;
-  cursor: pointer;
 `;
 export const MemberInfoEdit = () => {
   const [isPublicPhone, setIsPublicPhone] = useState<boolean>(false);

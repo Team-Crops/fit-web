@@ -20,10 +20,10 @@ const FlexBlock = styled.div`
   gap: 16px;
 `;
 const Label = styled.label`
+  cursor: pointer;
   display: flex;
   gap: 9px;
   align-items: center;
-  cursor: pointer;
 `;
 
 export const MemberInformation = () => {

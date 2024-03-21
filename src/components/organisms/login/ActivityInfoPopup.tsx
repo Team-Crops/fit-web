@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-import { User } from '#/entities/user';
 import { AuthStep, updateAuth } from '#/redux/features/auth/slice';
 import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
@@ -13,6 +12,8 @@ import { RegionSelect } from '#molecules/RegionSelect';
 import { SignupProgressBar } from '#molecules/SignupProgressBar';
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,17 +22,15 @@ const Container = styled.div`
   width: 830px;
   height: 680px;
 
+  background: #fff;
   border-radius: 15px;
-  background: #ffffff;
-
-  position: relative;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
 `;
 
 const FormContainer = styled.div`
@@ -40,6 +39,7 @@ const FormContainer = styled.div`
   gap: 45px;
 
   width: 550px;
+
   color: #9e9e9e;
 `;
 
@@ -53,8 +53,6 @@ const StyledSelect = styled(Select)`
   width: 100%;
   height: 36px;
 `;
-
-const Spacer = styled.div``;
 
 export const ActivityInfoPopup = () => {
   const dispatch = useAppDispatch();
@@ -132,8 +130,8 @@ export const ActivityInfoPopup = () => {
           </StyledSelect>
         </InputContainer>
       </FormContainer>
-      <Spacer />
-      <Spacer />
+      <div />
+      <div />
     </Container>
   );
 };

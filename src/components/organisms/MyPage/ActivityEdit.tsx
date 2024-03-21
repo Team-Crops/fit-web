@@ -12,6 +12,7 @@ const PositionBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px 16px;
+
   width: 90%;
   margin: 24px 0 0 8px;
 `;

@@ -13,16 +13,17 @@ import { useAppDispatch } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
-
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
   justify-content: center;
 
-  background-color: #eeeeee;
+  width: 100%;
+  height: 100vh;
+
+  background-color: #eee;
+
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `;
 

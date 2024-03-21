@@ -8,18 +8,20 @@ import { PositionBadge } from './PositionBadge';
 const TechContainer = styled.div`
   width: 449px;
   min-height: 178px;
-  padding: 7px 20px;
   margin: 28px 0 0 8px;
-  border-radius: 11px;
+  padding: 7px 20px;
+
   border: 1px solid #e0e0e0;
+  border-radius: 11px;
 `;
 const TechType = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #eee;
+
   span {
-    padding: 11px 5px;
     cursor: pointer;
+    padding: 11px 5px;
   }
 `;
 const TechListBlock = styled.div`

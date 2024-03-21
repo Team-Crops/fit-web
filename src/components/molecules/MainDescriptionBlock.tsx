@@ -9,21 +9,21 @@ import { Txt } from '#atoms/Text';
 
 const Block = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: end;
-  margin-bottom: 70px;
+  justify-content: space-between;
+  margin-bottom: 100px;
 `;
 const TextBlock = styled.div`
   display: flex;
   flex-direction: column;
-  text-align: left;
   gap: 20px;
+  text-align: left;
 `;
 const LinkButton = styled(Button)`
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 13px;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface MainDescriptionBlockProps {

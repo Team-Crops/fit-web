@@ -11,11 +11,11 @@ const SpaceCSS = css`
 `;
 const StyledHeader = styled.header`
   position: fixed;
-  ${SpaceCSS}
-
-  border-bottom: 1px solid #eee;
-  background: #fff;
   z-index: 3;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+
+  ${SpaceCSS}
 `;
 const HeaderSpace = styled.div`
   ${SpaceCSS}

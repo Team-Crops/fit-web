@@ -12,17 +12,19 @@ import { SocialPlatform } from '#/entities/socialPlatform';
 import { useLoginPageQuery } from '#/redux/features/auth/api';
 
 const StyledButton = styled(Button)<SocialLoginButtonProps>`
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
-
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  width: 300px;
+
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
 
   transition: all 0.2s ease-in-out;
+
   &:hover {
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
   }
 
   ${({ loginServer }) => {
@@ -38,13 +40,13 @@ const StyledButton = styled(Button)<SocialLoginButtonProps>`
           }
 
           &:disabled {
-            background-color: rgba(251, 232, 12, 0.5);
+            background-color: rgb(251 232 12 / 50%);
           }
         `;
       case 'google':
         return css`
           color: #616161;
-          background-color: #ffffff;
+          background-color: #fff;
 
           &:hover {
             color: #212121;
@@ -52,7 +54,7 @@ const StyledButton = styled(Button)<SocialLoginButtonProps>`
           }
 
           &:disabled {
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgb(255 255 255 / 50%);
           }
         `;
     }

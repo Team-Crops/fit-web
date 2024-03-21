@@ -21,6 +21,8 @@ import { useUpdateMeMutation } from '#/redux/features/user/api';
 import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,60 +31,61 @@ const Container = styled.div`
   width: 830px;
   height: 680px;
 
+  background: linear-gradient(180deg, #fff 0%, #fff2f1 91.5%, #ffeae9 100%);
   border-radius: 15px;
-  background: linear-gradient(180deg, #ffffff 0%, #fff2f1 91.5%, #ffeae9 100%);
-
-  position: relative;
 `;
 
 const PositionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 23px;
+  align-items: center;
 `;
 
 const PositionCards = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
+  flex-flow: row wrap;
   gap: 40px;
+  justify-content: center;
 `;
 
 const PositionCard = styled.div<{ selected: boolean }>`
+  cursor: pointer;
+
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
+  gap: 16px;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  z-index: 1;
 
   width: 180px;
   height: 200px;
 
-  border-radius: 20px;
-  border: 1px solid ${({ selected }) => (selected ? '#ff706c' : '#fff')};
-  background: #fff;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
-
-  cursor: pointer;
   color: ${({ selected }) => (selected ? '#FF706C' : '#9e9e9e')};
 
+  background: #fff;
+  border: 1px solid ${({ selected }) => (selected ? '#ff706c' : '#fff')};
+  border-radius: 20px;
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
+
   transition: 0.3s;
+
   &:hover {
-    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 40px rgb(0 0 0 / 20%);
   }
 `;
 
 const PositionImageContainer = styled.div`
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 
   width: 112px;
   height: 112px;
+
   background-color: #ffeae9;
   border-radius: 50%;
 `;
@@ -91,10 +94,10 @@ const BackgroundImage1 = styled(Image)`
   position: absolute;
   top: 470px;
   left: 30px;
+  transform: rotate(-15deg);
 
   width: 221px;
   height: 221px;
-  transform: rotate(-15deg);
 
   filter: blur(1.5px);
 `;

@@ -9,6 +9,7 @@ import { Txt } from '#atoms/Text';
 const StyledSection = styled.section`
   display: flex;
   justify-content: center;
+
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;

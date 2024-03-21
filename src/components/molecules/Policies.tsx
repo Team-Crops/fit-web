@@ -11,23 +11,23 @@ import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
-  width: 700px;
-  padding: 40px 0;
-
   display: flex;
   flex-direction: column;
   gap: 30px;
 
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  width: 700px;
+  padding: 40px 0;
+
   background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
 `;
 
 const PolicyContainer = styled.div`
-  padding: 0 40px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 0 40px;
 `;
 
 const PolicyHeader = styled.div`
@@ -38,8 +38,8 @@ const PolicyHeader = styled.div`
 
 const CheckBoxContainer = styled.div`
   display: flex;
-  align-items: center;
   gap: 20px;
+  align-items: center;
 `;
 
 const ExpandButtonContainer = styled.div`
