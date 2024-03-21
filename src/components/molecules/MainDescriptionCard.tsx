@@ -31,9 +31,9 @@ const ImageBlock = styled.div`
   width: 100%;
   height: 100%;
 `;
-const CardImage = styled(Image)<{ imgLeftPx?: number }>`
+const CardImageWrapper = styled.div<{ imgLeftPx?: number }>`
   position: absolute;
-  left: ${({ imgLeftPx }) => imgLeftPx}px;
+  left: ${({ imgLeftPx }) => `${imgLeftPx}px`};
 `;
 
 interface MainDescriptionCardProps {
@@ -73,13 +73,9 @@ export const MainDescriptionCard = ({
           {description}
         </Txt>
         <ImageBlock>
-          <CardImage
-            src={imgUrl}
-            alt="image"
-            width={imgWidth}
-            height={imgHeight}
-            imgLeftPx={imgLeftPx}
-          />
+          <CardImageWrapper imgLeftPx={imgLeftPx}>
+            <Image src={imgUrl} alt="image" width={imgWidth} height={imgHeight} />
+          </CardImageWrapper>
         </ImageBlock>
       </ContentBlock>
     </Card>
