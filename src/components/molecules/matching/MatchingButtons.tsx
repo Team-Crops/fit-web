@@ -12,19 +12,19 @@ const ButtonsContainer = styled.div`
 
 interface MatchingButtonsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function MatchingButtons({ ...props }: MatchingButtonsProps) {
+export const MatchingButtons = ({ ...props }: MatchingButtonsProps) => {
   return <ButtonsContainer {...props} />;
-}
+};
 
 interface MatchingButtonProps extends Partial<React.ComponentProps<typeof Button>> {}
 
-export function MatchingButton({
+export const MatchingButton = ({
   variant = 'round',
   height = '70',
   color = 'primary',
   ...props
-}: MatchingButtonProps) {
+}: MatchingButtonProps) => {
   return <Button variant={variant} height={height} color={color} {...props} />;
-}
+};
 
 MatchingButtons.Button = MatchingButton;

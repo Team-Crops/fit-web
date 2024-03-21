@@ -15,7 +15,7 @@ const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
 `;
 
-export function MatchingTitle() {
+export const MatchingTitle = () => {
   const nickname = useAppSelector((state) => state.user.me?.nickname);
   const matchingStep = useAppSelector((state) => state.matching.step);
 
@@ -62,4 +62,4 @@ export function MatchingTitle() {
       />
     </Container>
   );
-}
+};

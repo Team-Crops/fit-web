@@ -70,7 +70,7 @@ interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
   size: 'small' | 'large';
 }
 
-export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
+export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
   const { data: positions } = useGetPositionsQuery();
 
   const positionName = useMemo(() => {
@@ -122,4 +122,4 @@ export function ProfileCard({ user, size, ...props }: ProfileCardProps) {
       </InfoContainer>
     </Container>
   );
-}
+};

@@ -63,7 +63,7 @@ const DetailContainer = styled.div`
 
 interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 
-export function MatchingProfile({ ...props }: MatchingProfileProps) {
+export const MatchingProfile = ({ ...props }: MatchingProfileProps) => {
   const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.user.me);
   const { data: skills } = useGetSkillsQuery();
@@ -127,4 +127,4 @@ export function MatchingProfile({ ...props }: MatchingProfileProps) {
       </MatchingButtons>
     </Container>
   );
-}
+};

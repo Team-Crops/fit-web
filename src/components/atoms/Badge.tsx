@@ -25,6 +25,6 @@ const StyledSpan = styled.span`
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {}
 
-export function Badge({ ...props }: BadgeProps) {
+export const Badge = ({ ...props }: BadgeProps) => {
   return <StyledSpan {...props} />;
-}
+};

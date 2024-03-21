@@ -15,13 +15,13 @@ interface UserProfileProps extends React.HTMLAttributes<HTMLDivElement> {
   height?: number;
 }
 
-export function UserProfile({
+export const UserProfile = ({
   imageUrl,
   nickname,
   width = 48,
   height = 48,
   ...props
-}: UserProfileProps) {
+}: UserProfileProps) => {
   const alt = nickname ? `${nickname}'s profile image` : 'profile image';
 
   if (imageUrl) {
@@ -29,4 +29,4 @@ export function UserProfile({
   }
 
   return <Icons icon="account" width={width} height={height} />;
-}
+};

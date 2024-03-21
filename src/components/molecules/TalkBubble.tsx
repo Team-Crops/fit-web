@@ -39,7 +39,7 @@ interface TalkBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User;
 }
 
-export function TalkBubble({ myBubble = false, user, ...props }: TalkBubbleProps) {
+export const TalkBubble = ({ myBubble = false, user, ...props }: TalkBubbleProps) => {
   return (
     <Container>
       {myBubble && (
@@ -62,4 +62,4 @@ export function TalkBubble({ myBubble = false, user, ...props }: TalkBubbleProps
       )}
     </Container>
   );
-}
+};

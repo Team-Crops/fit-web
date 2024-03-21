@@ -130,7 +130,7 @@ const SendButton = styled(Icons)`
   }
 `;
 
-export function MatchingTalk() {
+export const MatchingTalk = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const groupsRef = useRef<HTMLDivElement>(null);
 
@@ -200,4 +200,4 @@ export function MatchingTalk() {
       </TalkToolbox>
     </TalkContainer>
   );
-}
+};

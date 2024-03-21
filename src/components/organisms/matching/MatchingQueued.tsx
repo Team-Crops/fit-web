@@ -120,7 +120,7 @@ const BackgroundDoughnut = styled(Image)`
   animation: float 2s ease-in-out infinite;
 `;
 
-export function MatchingQueued() {
+export const MatchingQueued = () => {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -195,4 +195,4 @@ export function MatchingQueued() {
       </MatchingButtons>
     </Container>
   );
-}
+};

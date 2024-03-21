@@ -55,7 +55,7 @@ interface TalkGroupProps {
   users: (User | null)[];
 }
 
-export function TalkPositionGroup({ groupName, users }: TalkGroupProps) {
+export const TalkPositionGroup = ({ groupName, users }: TalkGroupProps) => {
   return (
     <Container>
       <GroupNameContainer>
@@ -84,4 +84,4 @@ export function TalkPositionGroup({ groupName, users }: TalkGroupProps) {
       </UsersContainer>
     </Container>
   );
-}
+};

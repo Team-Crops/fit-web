@@ -99,7 +99,7 @@ interface ConfirmationDialogProps {
   onCancel?: () => void;
 }
 
-export function ConfirmationDialog({
+export const ConfirmationDialog = ({
   isOpen,
   text,
   helperText,
@@ -107,7 +107,7 @@ export function ConfirmationDialog({
   cancelText = '아니오',
   onConfirm,
   onCancel,
-}: ConfirmationDialogProps) {
+}: ConfirmationDialogProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -144,4 +144,4 @@ export function ConfirmationDialog({
       </DialogContainer>
     </Backdrop>
   );
-}
+};

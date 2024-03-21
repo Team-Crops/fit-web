@@ -38,11 +38,11 @@ interface MatchingTalkBackgroundProps extends React.HTMLAttributes<HTMLDivElemen
   profilePosition?: 'left' | 'right';
 }
 
-export function MatchingTalkBackground({
+export const MatchingTalkBackground = ({
   size = 'large',
   profilePosition = 'left',
   ...props
-}: MatchingTalkBackgroundProps) {
+}: MatchingTalkBackgroundProps) => {
   const profileSize = size === 'small' ? 30 : 40;
   return (
     <Container {...props}>
@@ -55,4 +55,4 @@ export function MatchingTalkBackground({
       )}
     </Container>
   );
-}
+};
