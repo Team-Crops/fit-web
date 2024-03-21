@@ -11,6 +11,7 @@ import { useGetPositionsQuery } from '#/redux/features/skill-set/api';
 import { Badge } from '#atoms/Badge';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
+import { UserProfile } from '#atoms/UserProfile';
 
 const Container = styled.div<{ size: ProfileCardProps['size'] }>`
   display: flex;
@@ -78,18 +79,14 @@ export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
     return position?.displayName;
   }, [positions, user?.positionId]);
 
-  const profileImageSize = useMemo(
-    () => (size === 'small' ? { width: 90, height: 90 } : { width: 120, height: 120 }),
-    [size]
-  );
-
   if (user === null) {
     return (
       <Container size={size} {...props}>
         <Icons
           icon="progress"
           style={{ animation: 'spin 2s linear infinite' }}
-          {...profileImageSize}
+          width={90}
+          height={90}
         />
         <Txt size="typo3" weight="regular" color="#616161">
           유저 정보를 불러오는 중입니다.
@@ -100,15 +97,11 @@ export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
 
   return (
     <Container size={size} {...props}>
-      {user.profileImageUrl ? (
-        <ProfileImage
-          src={user.profileImageUrl}
-          alt={`${user.nickname}'s profile image`}
-          {...profileImageSize}
-        />
-      ) : (
-        <Icons icon="account" {...profileImageSize} />
-      )}
+      <UserProfile
+        imageUrl={user.profileImageUrl}
+        nickname={user.nickname}
+        size={size === 'small' ? 90 : 120}
+      />
       <InfoContainer>
         <NameContainer>
           <Txt size={size === 'small' ? 'typo5' : 'typo3'} weight="bold">
