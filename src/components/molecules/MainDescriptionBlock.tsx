@@ -11,7 +11,7 @@ const Block = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: end;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
 `;
 const TextBlock = styled.div`
   display: flex;
