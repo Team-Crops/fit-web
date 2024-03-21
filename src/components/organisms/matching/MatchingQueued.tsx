@@ -137,10 +137,9 @@ export const MatchingQueued = () => {
     <Container>
       <QueuingContainer>
         <ProgressIcon icon="progress" width={40} height={40} />
-        <Txt size="typo2" weight="bold">
+        <Txt size="typo2" weight="bold" marginBottom={8}>
           현재 매칭이 진행 중입니다.
         </Txt>
-        <div style={{ height: '8px' }} />
         <Txt size="typo5" weight="bold" color="#616161">
           최소인원 : 기획(1), 디자인(1), 서버(1), 클라이언트(1)
         </Txt>
