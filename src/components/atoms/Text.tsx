@@ -5,6 +5,11 @@ import styled from '@emotion/styled';
 
 export const TxtSizeCSS = ({ size, weight }: TxtProps) => {
   switch (size) {
+    case 'typo0':
+      return css`
+        font-size: 1.8rem;
+        letter-spacing: ${weight === 'bold' ? '-1.08px' : '-1.8px'};
+      `;
     case 'typo1':
       return css`
         font-size: 1.5rem;
@@ -72,7 +77,16 @@ const StyledTxt = styled.span<TxtProps>`
 `;
 
 export interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
-  size?: 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'display1' | 'display2';
+  size?:
+    | 'typo0'
+    | 'typo1'
+    | 'typo2'
+    | 'typo3'
+    | 'typo4'
+    | 'typo5'
+    | 'typo6'
+    | 'display1'
+    | 'display2';
   weight?: 'bold' | 'medium' | 'regular';
   marginBottom?: number;
 }

@@ -67,7 +67,6 @@ export const MyProjectBlock = () => {
               imgUrl={card.imgUrl}
               imgWidth={card.imgWidth}
               imgHeight={card.imgHeight}
-              imgIsCenter={card.imgIsCenter}
             />
           );
         })}
