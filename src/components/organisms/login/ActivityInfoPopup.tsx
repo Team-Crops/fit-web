@@ -73,8 +73,8 @@ export const ActivityInfoPopup = () => {
   return (
     <Container>
       <SignupProgressBar
-        currentStep={3}
-        totalStep={4}
+        current={3}
+        total={4}
         progressName="활동정보"
         onBackwardClick={() => goBackwardStep()}
         onForwardClick={

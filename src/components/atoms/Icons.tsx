@@ -17,6 +17,7 @@ import {
   EmojiFire,
   EmojiHoldingBackTears,
   GoogleIcon,
+  ImageIcon,
   InfoIcon,
   InstagramIcon,
   KakaoIcon,
@@ -25,6 +26,7 @@ import {
   MegaphoneIcon,
   PencilIcon,
   PlusIcon,
+  ProgressIcon,
   RunIcon,
   Upload,
   UserIcon,
@@ -48,6 +50,7 @@ export type IconName =
   | 'emojiFire'
   | 'emojiHoldingBackTears'
   | 'google'
+  | 'image'
   | 'info'
   | 'instagram'
   | 'kakao'
@@ -56,6 +59,7 @@ export type IconName =
   | 'megaphone'
   | 'pencil'
   | 'plus'
+  | 'progress'
   | 'run'
   | 'user'
   | 'upload';
@@ -148,6 +152,10 @@ const icons: Record<IconName, Icon> = {
   google: {
     SVGR: GoogleIcon,
   },
+  image: {
+    SVGR: ImageIcon,
+    color: '#FF908D',
+  },
   instagram: {
     SVGR: InstagramIcon,
   },
@@ -174,6 +182,10 @@ const icons: Record<IconName, Icon> = {
   plus: {
     SVGR: PlusIcon,
   },
+  progress: {
+    SVGR: ProgressIcon,
+    color: '#FF706C',
+  },
   run: {
     SVGR: RunIcon,
     color: '#212121',
@@ -194,5 +206,13 @@ interface IconsProps extends HTMLAttributes<SVGElement> {
 
 export const Icons = ({ icon, width, height, ...props }: IconsProps) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
-  return <SVGR color={defaultColor} width={width} height={height} style={style} {...props} />;
+  return (
+    <SVGR
+      color={defaultColor}
+      width={width}
+      height={height}
+      style={{ ...style, flexShrink: 0 }}
+      {...props}
+    />
+  );
 };

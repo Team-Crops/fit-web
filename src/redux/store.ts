@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { api } from './api';
 import authReducer from './features/auth/slice';
+import matchingReducer from './features/matching/slice';
 import userReducer from './features/user/slice';
 
 export function makeStore() {
@@ -9,6 +10,7 @@ export function makeStore() {
     reducer: {
       [api.reducerPath]: api.reducer,
       auth: authReducer,
+      matching: matchingReducer,
       user: userReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),

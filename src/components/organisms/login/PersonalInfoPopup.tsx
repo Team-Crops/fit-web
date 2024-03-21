@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -99,8 +99,8 @@ export const PersonalInfoPopup = () => {
   return (
     <Container>
       <SignupProgressBar
-        currentStep={2}
-        totalStep={4}
+        current={2}
+        total={4}
         progressName="회원정보"
         onBackwardClick={() => goBackwardStep()}
         onForwardClick={

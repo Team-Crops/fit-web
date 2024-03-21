@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -134,8 +134,8 @@ export const PositionInfoPopup = () => {
   return (
     <Container>
       <SignupProgressBar
-        currentStep={1}
-        totalStep={4}
+        current={1}
+        total={4}
         progressName="포지션"
         onBackwardClick={() => goBackwardStep()}
         onForwardClick={me?.positionId ? () => goForwardStep() : undefined}
@@ -146,7 +146,7 @@ export const PositionInfoPopup = () => {
       <PositionContainer>
         <PositionCards>
           {positions ? (
-            positions.positionList.map(({ id, displayName }, index) => (
+            positions.map(({ id, displayName }, index) => (
               <PositionCard
                 key={id}
                 selected={id === me?.positionId}

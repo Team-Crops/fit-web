@@ -28,6 +28,14 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'd2ueefa0uvyh4f.cloudfront.net',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

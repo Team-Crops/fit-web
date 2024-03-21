@@ -15,7 +15,7 @@ interface LoginGuardProps {
   children: React.ReactNode;
 }
 
-export function LoginGuard({ children }: LoginGuardProps) {
+export const LoginGuard = ({ children }: LoginGuardProps) => {
   const dispatch = useAppDispatch();
 
   const showLoginPopup = useAppSelector((state) => state.auth.showLoginPopup);
@@ -82,4 +82,4 @@ export function LoginGuard({ children }: LoginGuardProps) {
       {showLoginPopup && <Login />}
     </>
   );
-}
+};
