@@ -26,13 +26,23 @@ const ContentBlock = styled.div`
 const MainTxt = styled(Txt)`
   font-size: 80px;
 `;
-const BackgroundImage = styled(Image)`
+const CharacterImage = styled(Image)`
   position: absolute;
-  width: 135%;
-  height: 2000px;
-  top: -130px;
+  top: 190px;
+  right: 100px;
   pointer-events: none;
   z-index: -1;
+`;
+const RightBackground = styled(Image)`
+  position: absolute;
+  top: -60px;
+  z-index: -2;
+`;
+const LeftBackground = styled(Image)`
+  position: absolute;
+  left: 50px;
+  top: 500px;
+  z-index: -2;
 `;
 
 export const FirstSection = () => {
@@ -46,12 +56,24 @@ export const FirstSection = () => {
           FIT 하게 F - IT 하자
         </MainTxt>
       </ContentBlock>
-      <BackgroundImage
-        src={'/images/firstSectionBackground.svg'}
+      <CharacterImage
+        src={'/images/firstSectionCharacter.svg'}
         alt="first-section"
-        width={0}
-        height={0}
+        width={1094}
+        height={901}
         sizes="100vw"
+      />
+      <RightBackground
+        src={'/images/firstSectionBackground1.svg'}
+        alt={''}
+        width={1644}
+        height={646}
+      />
+      <LeftBackground
+        src={'/images/firstSectionBackground2.svg'}
+        alt={''}
+        width={1222}
+        height={1465}
       />
     </StyledSection>
   );

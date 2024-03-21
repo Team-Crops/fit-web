@@ -13,6 +13,7 @@ const StyledSection = styled.section`
   max-width: 1920px;
   margin: 0 auto;
   padding-bottom: 100px;
+  background: linear-gradient(180deg, #f0f3ff 0%, rgba(240, 243, 255, 0) 100%);
 `;
 const ContentBlock = styled.div`
   display: flex;
