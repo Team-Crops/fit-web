@@ -67,12 +67,7 @@ export const TalkPositionGroup = ({ groupName, users }: TalkGroupProps) => {
         {users.map((user, index) =>
           user ? (
             <UserContainer key={user.id}>
-              <UserProfile
-                imageUrl={user.profileImageUrl}
-                nickname={user.nickname}
-                width={80}
-                height={80}
-              />
+              <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} size={80} />
               <Txt size="typo5" weight="medium">
                 {user.nickname}
               </Txt>
