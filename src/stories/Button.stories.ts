@@ -16,6 +16,7 @@ export const Primary: Story = {
     variant: 'angular',
     height: '20',
     color: 'primary',
+    disabled: false,
     children: 'Button',
   },
 };

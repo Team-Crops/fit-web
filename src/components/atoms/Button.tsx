@@ -90,7 +90,7 @@ const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
         `;
       case 'secondary':
         return css`
-          color: ${disabled ? '#9E9E9E' : '#000000'};
+          color: '#ffffff';
           background-color: ${disabled ? '#EEEEEE' : '#bdbdbd'};
           &:hover {
             background-color: ${disabled ? '#EEEEEE' : '#9e9e9e'};
