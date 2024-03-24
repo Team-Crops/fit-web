@@ -28,42 +28,37 @@ const Container = styled.div`
 `;
 
 const QueuingContainer = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 8px;
 
-  position: relative;
   height: 600px;
+  padding: 60px 100px;
+
+  background: linear-gradient(180deg, rgb(255 199 198 / 58%) -62.84%, rgb(255 199 198 / 0%) 100%);
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 199, 198, 0.58) -62.84%,
-    rgba(255, 199, 198, 0) 100%
-  );
-
-  padding: 60px 100px;
 `;
 
 const BackgroundBubble1 = styled(MatchingTalkBackground)`
   position: absolute;
-  left: 13%;
   top: 40%;
+  left: 13%;
 `;
 
 const BackgroundBubble2 = styled(MatchingTalkBackground)`
   position: absolute;
-  left: calc(13% + 135px);
   top: calc(40% + 65px);
-
+  left: calc(13% + 135px);
   filter: blur(1px);
 `;
 
 const BackgroundBubble3 = styled(MatchingTalkBackground)`
   position: absolute;
-  left: calc(13% + 60px);
   top: calc(40% + 115px);
-
+  left: calc(13% + 60px);
   filter: blur(1.5px);
 `;
 
@@ -76,47 +71,45 @@ const ProgressIcon = styled(Icons)`
 
 const ProfileCardsSwiper = styled(Swiper)`
   position: absolute;
-  height: 380px;
-  left: 520px;
   top: 160px;
+  left: 520px;
+
+  height: 380px;
 
   mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
 
   .swiper-slide-active {
-    transition: filter 750ms;
     filter: blur(1px);
+    transition: filter 750ms;
   }
 
   .swiper-slide :not(.swiper-slide-pref, .swiper-slide-active, .swiper-slide-next) {
-    transition: filter 750ms;
     filter: blur(1px);
+    transition: filter 750ms;
   }
 `;
 
 const StyledProfileCard = styled(ProfileCard)`
-  border-radius: 11px;
-  border: 1px solid #eee;
   background: #fff;
-
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  border-radius: 11px;
+  box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
 `;
 
 const BackgroundImage1 = styled(Image)`
   position: absolute;
+  z-index: -1;
   right: 50px;
   bottom: 50px;
-
-  z-index: -1;
+  transform: translateY(-10%);
 
   animation: float 4s ease-in-out infinite;
-
-  transform: translateY(-10%);
 `;
 
 const BackgroundDoughnut = styled(Image)`
   position: absolute;
-  left: 35%;
   bottom: 100px;
+  left: 35%;
   animation: float 2s ease-in-out infinite;
 `;
 

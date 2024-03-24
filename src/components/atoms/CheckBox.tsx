@@ -6,29 +6,31 @@ import styled from '@emotion/styled';
 import { Icons } from '#/components/atoms/Icons';
 
 const StyledIcon = styled(Icons)`
-  display: none;
+  pointer-events: none;
+
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: none;
+
+  display: none;
 
   width: 14px;
   height: 14px;
 `;
 
 const inputColorCSS = css`
+  background-color: #fff;
   border-color: #9e9e9e;
-  background-color: #ffffff;
 
   &:disabled {
-    border-color: #eeeeee;
-    background-color: #ffffff;
+    background-color: #fff;
+    border-color: #eee;
   }
 
   &:checked {
+    background-color: #fff;
     border-color: #ff706c;
-    background-color: #ffffff;
 
     + ${StyledIcon} {
       display: block;
@@ -37,8 +39,8 @@ const inputColorCSS = css`
   }
 
   &:checked:disabled {
+    background-color: #fff;
     border-color: #ffc7c6;
-    background-color: #ffffff;
 
     + ${StyledIcon} {
       display: block;
@@ -48,28 +50,29 @@ const inputColorCSS = css`
 `;
 
 const StyledContainer = styled.div`
-  display: inline-block;
   position: relative;
-  padding: 0;
-  padding-inline: 0;
-  padding-block: 0;
+
+  display: inline-block;
 
   width: 24px;
   height: 24px;
+  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 `;
 
 const StyledInput = styled.input`
-  appearance: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
-  margin: 2px;
+  flex-shrink: 0;
 
   width: 20px;
   height: 20px;
-  flex-shrink: 0;
+  margin: 2px;
 
-  border-width: 1px;
+  appearance: none;
   border-style: solid;
+  border-width: 1px;
   border-radius: 2px;
 
   ${inputColorCSS}

@@ -20,36 +20,36 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
   switch (height) {
     case '20':
       return css`
-        padding: 0 8px;
         height: 20px;
+        padding: 0 8px;
         font-size: 12px;
         font-weight: 400;
       `;
     case '30':
       return css`
-        padding: 0 24px;
         height: 30px;
+        padding: 0 24px;
         font-size: 12px;
         font-weight: 400;
       `;
     case '50':
       return css`
-        padding: 0 48px;
         height: 50px;
+        padding: 0 48px;
         font-size: 20px;
         font-weight: 500;
       `;
     case '60':
       return css`
-        padding: 0 27px;
         height: 60px;
+        padding: 0 27px;
         font-size: 20px;
         font-weight: 700;
       `;
     case '70':
       return css`
-        padding: 0 37px;
         height: 70px;
+        padding: 0 37px;
         font-size: 20px;
         font-weight: 700;
       `;
@@ -60,18 +60,20 @@ const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
     switch (color) {
       case 'primary':
         return css`
-          background-color: #ffffff;
           color: #ff706c;
+          background-color: #fff;
           border: 1px solid #ff706c;
+
           &:hover {
             background-color: #ffeae9;
           }
         `;
       case 'secondary':
         return css`
-          background-color: #ffffff;
           color: #bdbdbd;
+          background-color: #fff;
           border: 1px solid #bdbdbd;
+
           &:hover {
             background-color: #fafafa;
           }
@@ -83,6 +85,7 @@ const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
         return css`
           color: ${disabled ? '#FFC7C6' : '#ffffff'};
           background-color: ${disabled ? '#FFA7A5' : '#ff706c'};
+
           &:hover {
             color: ${disabled ? '#FFC7C6' : '#E0E0E0'};
             background-color: ${disabled ? '#FFA7A5' : '#ee5550'};
@@ -92,6 +95,7 @@ const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
         return css`
           color: ${disabled ? '#9E9E9E' : '#000000'};
           background-color: ${disabled ? '#EEEEEE' : '#bdbdbd'};
+
           &:hover {
             background-color: ${disabled ? '#EEEEEE' : '#9e9e9e'};
           }
@@ -100,12 +104,13 @@ const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
   }
 };
 const StyledButton = styled.button<ButtonProps>`
-  border: none;
-  color: #ffffff;
+  color: #fff;
   letter-spacing: -0.6px;
 
-  transition-property: background-color color;
+  border: none;
+
   transition-duration: 0.2s;
+  transition-property: background-color color;
   ${ButtonVariantsCSS}
   ${ButtonSizeCSS}
   ${ButtonColorCSS};

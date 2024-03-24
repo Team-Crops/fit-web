@@ -7,51 +7,60 @@ import styled from '@emotion/styled';
 import { Txt } from '#atoms/Text';
 
 const StyledSection = styled.section`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  position: relative;
+
   width: 100%;
   max-width: 1920px;
-  padding: 552px 0 100px;
   margin: 0 auto;
-  white-space: pre-wrap;
+  padding: 552px 0 100px;
+
   text-align: center;
+  white-space: pre-wrap;
 `;
 const Title = styled(Txt)`
   display: block;
   margin-bottom: 400px;
 `;
 const BackgroundImage = styled(Image)`
+  pointer-events: none;
+
   position: absolute;
+  z-index: -1;
   top: -70px;
+
   width: 100%;
   height: 2000px;
-  pointer-events: none;
-  z-index: -1;
 `;
 const Block = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   width: 373px;
   height: 136px;
   margin-bottom: 46px;
-  border-radius: 23px;
+
   border: 1px solid #bdbdbd;
+  border-radius: 23px;
 `;
 const FilledBlock = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   width: 471px;
   height: 216px;
   margin: 39px 0 325px;
-  border-radius: 23px;
-  border: 1px solid #bdbdbd;
+
   background: #ff706c;
+  border: 1px solid #bdbdbd;
+  border-radius: 23px;
 `;
 
 export const ThirdSection = () => {

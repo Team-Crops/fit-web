@@ -18,17 +18,22 @@ const BlockEmptyCss = ({ isEmpty }: PortfolioFileBlockProps) => {
 };
 const Block = styled.div<PortfolioFileBlockProps>`
   position: relative;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 12px;
+  align-items: center;
+
   width: 92px;
   height: 98px;
   padding: 20px 10px 0;
-  border-radius: 5px;
+
+  text-align: center;
   word-break: keep-all;
   white-space: pre-wrap;
-  text-align: center;
+
+  border-radius: 5px;
+
   ${BlockEmptyCss}
 `;
 const CancelButton = styled.div`

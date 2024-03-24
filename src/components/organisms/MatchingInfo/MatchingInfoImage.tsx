@@ -4,13 +4,13 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const ImageBlock = styled.div`
-  position: relative;
   pointer-events: none;
+  position: relative;
 `;
 const NoteBookImage = styled(Image)`
   position: absolute;
-  left: -325px;
   z-index: 1;
+  left: -325px;
 `;
 const Chat1Animation = keyframes`
   0%{
@@ -104,9 +104,10 @@ const ProfileAnimation = keyframes`
 `;
 const ProfileImage = styled(Image)`
   position: absolute;
+  z-index: 2;
   top: -20px;
   left: -440px;
-  z-index: 2;
+
   animation: ${ProfileAnimation} 2s infinite alternate;
 `;
 

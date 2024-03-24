@@ -8,17 +8,19 @@ import { Txt } from '#/components/atoms/Text';
 import { MatchingInfoImage } from '#/components/organisms/MatchingInfo/MatchingInfoImage';
 
 const StyledSection = styled.section`
-  width: 100%;
-  height: 985px;
-  background-color: #f0f3ff;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 100%;
+  height: 985px;
+
+  background-color: #f0f3ff;
 `;
 const ContentBlock = styled.div`
   width: 1200px;
   margin: 0 auto;
-  padding: 130px 0 0 0;
+  padding: 130px 0 0;
 `;
 
 export const MatchingInfoSection = () => {

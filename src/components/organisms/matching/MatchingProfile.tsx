@@ -18,32 +18,33 @@ import { Txt } from '#atoms/Text';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 32px;
+  align-items: center;
 `;
 
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 18px;
-
-  border-radius: 10px;
-  border: 1px solid #bdbdbd;
-  padding: 32px;
+  align-items: center;
 
   width: 100%;
   max-width: 760px;
+  padding: 32px;
+
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
 `;
 
 const Details = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   width: 100%;
-  border-radius: 5px;
+
   background: #f5f5f5;
+  border-radius: 5px;
 `;
 
 const DetailsContainer = styled.div`

@@ -4,8 +4,8 @@ import { Icons } from '#atoms/Icons';
 
 const FlexBlock = styled.div`
   display: flex;
-  align-items: center;
   gap: 36px;
+  align-items: center;
 `;
 
 export const HeaderNonLoginBlock = () => {

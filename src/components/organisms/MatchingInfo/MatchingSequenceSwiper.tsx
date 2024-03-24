@@ -12,49 +12,54 @@ import { MainDescriptionCard } from '#/components/molecules/MainDescriptionCard'
 const Container = styled.div`
   position: relative;
   width: 707px;
-  padding: 30px 0;
   margin-bottom: 89px;
+  padding: 30px 0;
+
   /* overflow: hidden; */
 `;
 const CardSwiper = styled(Swiper)`
-  width: 707px;
   overflow: visible;
+  width: 707px;
 
   .swiper-slide {
     width: max-content;
   }
 `;
 const PrevButton = styled.div`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: -130px;
-  z-index: 2;
   cursor: pointer;
+
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: -130px;
+  transform: translateY(-50%);
 `;
 const NextButton = styled.div`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%) rotate(180deg);
-  right: -130px;
-  z-index: 2;
   cursor: pointer;
+
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -130px;
+  transform: translateY(-50%) rotate(180deg);
 `;
 const BlurBackground = styled.div`
+  pointer-events: none;
+
   position: absolute;
-  top: 30px;
   z-index: 1;
+  top: 30px;
+
   width: 830px;
   height: 600px;
-  pointer-events: none;
 `;
 const LeftBlurBackground = styled(BlurBackground)`
   left: -860px;
-  background-image: linear-gradient(90deg, #fff 0.05%, rgba(255, 255, 255, 0) 132.02%);
+  background-image: linear-gradient(90deg, #fff 0.05%, rgb(255 255 255 / 0%) 132.02%);
 `;
 const RightBlurBackground = styled(BlurBackground)`
   right: -860px;
-  background-image: linear-gradient(270deg, #fff 0.05%, rgba(255, 255, 255, 0) 132.02%);
+  background-image: linear-gradient(270deg, #fff 0.05%, rgb(255 255 255 / 0%) 132.02%);
 `;
 
 const CardInfo = [

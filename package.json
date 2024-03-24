@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:css": "stylelint 'src/**/*.tsx'",
     "postinstall": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -48,8 +49,14 @@
     "eslint-plugin-storybook": "^0.6.15",
     "husky": ">=7",
     "lint-staged": ">=10",
+    "postcss": "^8.4.38",
+    "postcss-styled-syntax": "^0.6.4",
     "prettier": "^3.1.1",
     "storybook": "^8.0.0-alpha.8",
+    "stylelint": "^16.2.1",
+    "stylelint-config-clean-order": "^5.4.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-order": "^6.0.4",
     "typescript": "5.3.2",
     "webpack": "^5.89.0"
   },
@@ -57,6 +64,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
+      "stylelint --fix",
       "prettier --write"
     ]
   }

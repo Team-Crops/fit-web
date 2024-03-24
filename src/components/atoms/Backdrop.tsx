@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
 
 export const Backdrop = styled.div`
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  position: fixed;
-  top: 0;
-  left: 0;
-
   width: 100vw;
   height: 100vh;
-  background: rgba(66, 66, 66, 0.4);
 
-  z-index: 100;
+  background: rgb(66 66 66 / 40%);
 `;

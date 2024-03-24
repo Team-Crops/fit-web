@@ -8,14 +8,15 @@ const ContentBlock = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   width: 1200px;
   height: 100%;
   margin: 0 auto;
 `;
 const HeaderLeftBlock = styled.div`
   display: flex;
-  align-items: center;
   gap: 128px;
+  align-items: center;
   height: 100%;
 `;
 const HeaderRightBlock = styled.div`

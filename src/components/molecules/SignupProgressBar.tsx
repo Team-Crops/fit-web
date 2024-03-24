@@ -7,27 +7,26 @@ import { Txt } from '#/components/atoms/Text';
 import { ProgressBar, ProgressBarProps } from '#molecules/ProgressBar';
 
 const StyledProgressBar = styled(ProgressBar)`
-  border-radius: 15px 15px 0 0;
   overflow: hidden;
+  border-radius: 15px 15px 0 0;
 `;
 
 const Container = styled.div`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 40px;
 
   width: 100%;
-
-  overflow: hidden;
 `;
 
 const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 45px;
 
   width: 100%;
+  padding: 0 45px;
 `;
 
 const IconButton = styled(Icons)<{ disabled: boolean }>`
@@ -37,14 +36,16 @@ const IconButton = styled(Icons)<{ disabled: boolean }>`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 6px;
+  align-items: center;
 
   padding: 8px 16px;
-  border-radius: 50px;
-  border: 1px solid #ff706c;
-  background: #fff;
+
   color: #ff706c;
+
+  background: #fff;
+  border: 1px solid #ff706c;
+  border-radius: 50px;
 `;
 
 interface SignupProgressBarProps extends Omit<ProgressBarProps, 'value'> {

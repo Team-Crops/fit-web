@@ -14,6 +14,8 @@ import { CareerSelect } from '#molecules/CareerSelect';
 import { SignupProgressBar } from '#molecules/SignupProgressBar';
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,32 +24,29 @@ const Container = styled.div`
   width: 830px;
   height: 680px;
 
+  background: #fff;
   border-radius: 15px;
-  background: #ffffff;
-
-  position: relative;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
 `;
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 45px;
-
   width: 550px;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 16px;
+  justify-content: space-between;
 `;
 
 const InputLabel = styled(Txt)`

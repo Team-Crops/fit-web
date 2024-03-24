@@ -5,14 +5,17 @@ import styled from '@emotion/styled';
 import { Txt } from '#atoms/Text';
 
 const BadgeBlock = styled.div<{ selected: boolean }>`
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   height: 25px;
   padding: 0 24px;
-  border-radius: 5px;
+
   border: 1px solid ${({ selected }) => (selected ? '#FF908D' : '#9E9E9E')};
-  cursor: pointer;
+  border-radius: 5px;
 `;
 
 interface PositionBadgeProps {

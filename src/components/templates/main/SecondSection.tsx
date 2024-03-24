@@ -9,11 +9,13 @@ import { Txt } from '#atoms/Text';
 const StyledSection = styled.section`
   display: flex;
   justify-content: center;
+
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
   padding-bottom: 100px;
-  background: linear-gradient(180deg, #f0f3ff 0%, rgba(240, 243, 255, 0) 100%);
+
+  background: linear-gradient(180deg, #f0f3ff 0%, rgb(240 243 255 / 0%) 100%);
 `;
 const ContentBlock = styled.div`
   display: flex;

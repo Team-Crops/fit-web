@@ -15,10 +15,12 @@ const TechBadge = styled(Txt)`
   display: flex;
   align-items: center;
   justify-content: center;
+
   height: 19px;
   padding: 0 17px;
-  border-radius: 33px;
+
   background: #ffeae9;
+  border-radius: 33px;
 `;
 const TechListWrapper = styled.div`
   display: flex;
@@ -32,16 +34,19 @@ const PortfolioContent = styled.div`
 const ClipBlock = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+
   width: 92px;
   height: 98px;
   padding: 0 10px;
-  border-radius: 5px;
-  border: 1px solid #e0e0e0;
-  word-break: keep-all;
+
   text-align: center;
+  word-break: keep-all;
+
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
 `;
 const PortfolioList = styled.div`
   display: flex;
@@ -52,11 +57,13 @@ const PortfolioList = styled.div`
 const Portfolio = styled.div`
   display: flex;
   align-items: center;
+
   width: 100%;
   height: 25px;
   padding: 0 9px;
-  border-radius: 5px;
+
   border: 1px solid #ff908d;
+  border-radius: 5px;
 `;
 
 export const PortfolioInformation = () => {

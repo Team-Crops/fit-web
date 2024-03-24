@@ -3,19 +3,22 @@ import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 
 const Backdrop = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   position: fixed;
   top: 0;
   left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 30%);
+
+  background-color: rgb(0 0 0 / 30%);
 `;
 
 const DialogContainer = styled.div`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -23,47 +26,44 @@ const DialogContainer = styled.div`
   width: 460px;
   height: 260px;
 
-  background-color: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-
-  color: #000000;
-  text-align: center;
-
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
+  font-style: normal;
   line-height: normal;
+  color: #000;
+  text-align: center;
   letter-spacing: -0.6px;
+
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 25%);
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   height: 100%;
 
-  color: #000000;
-  text-align: center;
-
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
+  font-style: normal;
   line-height: normal;
+  color: #000;
+  text-align: center;
   letter-spacing: -0.6px;
 `;
 
 const HelperText = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: normal;
   color: #757575;
   text-align: center;
-
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.6px;
 `;
 
@@ -73,20 +73,20 @@ const ButtonContainer = styled.div`
 `;
 
 const Button = styled.button<{ primary?: boolean }>`
-  width: 100%;
-  height: 80px;
   cursor: pointer;
 
-  border: none;
-  background-color: ${({ primary }) => (primary ? '#FF706C' : '#eeeeee')};
-
-  color: ${({ primary }) => (primary ? '#ffffff' : '#424242')};
+  width: 100%;
+  height: 80px;
 
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
+  font-style: normal;
   line-height: normal;
+  color: ${({ primary }) => (primary ? '#ffffff' : '#424242')};
   letter-spacing: -0.6px;
+
+  background-color: ${({ primary }) => (primary ? '#FF706C' : '#eeeeee')};
+  border: none;
 `;
 
 interface ConfirmationDialogProps {

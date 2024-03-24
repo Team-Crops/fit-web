@@ -11,11 +11,12 @@ const LoginButton = styled(Button)`
   display: flex;
   gap: 12px;
   align-items: center;
+
   padding: 0 23px;
 
+  font-family: SpoqaHanSansNeo, sans-serif;
   font-size: 18px;
   font-weight: 400;
-  font-family: 'SpoqaHanSansNeo';
 `;
 export const HeaderLoginBlock = () => {
   const dispatch = useAppDispatch();

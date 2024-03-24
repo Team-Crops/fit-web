@@ -5,8 +5,8 @@ import { SocialLoginButton } from '#atoms/SocialLoginButton';
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
 `;
 
 interface SocialLoginProps {

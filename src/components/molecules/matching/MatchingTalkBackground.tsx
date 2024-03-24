@@ -12,22 +12,27 @@ const TalkBubble = styled.div<{
   size: MatchingTalkBackgroundProps['size'];
 }>`
   position: relative;
-  background: #fff;
+
   width: ${({ size }) => (size === 'small' ? '185px' : '230px')};
   height: ${({ size }) => (size === 'small' ? '40px' : '50px')};
+
+  background: #fff;
   border-radius: ${({ bubbleTailPosition }) =>
     bubbleTailPosition === 'left' ? '0px 8px 8px 8px' : '8px 0px 8px 8px'};
 
   ::after {
     content: '';
+
     position: absolute;
     top: 0;
     left: ${({ bubbleTailPosition }) => (bubbleTailPosition === 'left' ? '100%' : '0')};
+    transform: translate(-50%, -50%);
+
     width: 10px;
     height: 10px;
-    border-radius: 10px;
-    transform: translate(-50%, -50%);
+
     background: #8393ea;
+    border-radius: 10px;
 
     animation: pulse 2s linear infinite;
   }

@@ -6,8 +6,8 @@ import { Button } from '#/components/atoms/Button';
 
 const ButtonsContainer = styled.div`
   display: flex;
-  justify-content: center;
   gap: 20px;
+  justify-content: center;
 `;
 
 interface MatchingButtonsProps extends React.HTMLAttributes<HTMLDivElement> {}

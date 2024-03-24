@@ -5,20 +5,24 @@ import { Txt } from '#atoms/Text';
 
 const Portfolio = styled.div`
   position: relative;
+
   display: flex;
-  align-items: center;
   gap: 5px;
+  align-items: center;
+
   width: 100%;
   height: 25px;
   padding: 0 9px;
-  border-radius: 5px;
+
   border: 1px solid #ff908d;
+  border-radius: 5px;
 `;
 const DeleteButton = styled.div`
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   right: 10px;
+  transform: translateY(-50%);
+
   display: flex;
 `;
 

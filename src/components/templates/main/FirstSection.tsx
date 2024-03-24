@@ -8,41 +8,45 @@ import { Txt } from '#atoms/Text';
 
 const StyledSection = styled.section`
   position: relative;
+
+  overflow: hidden;
   display: flex;
   justify-content: center;
+
   width: 100%;
   max-width: 1920px;
   height: 1117px;
   margin: 0 auto;
-  overflow: hidden;
 `;
 const ContentBlock = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
+
   width: 1200px;
   margin: 130px 0;
-  gap: 12px;
 `;
 const MainTxt = styled(Txt)`
   font-size: 80px;
 `;
 const CharacterImage = styled(Image)`
+  pointer-events: none;
+
   position: absolute;
+  z-index: -1;
   top: 190px;
   right: 100px;
-  pointer-events: none;
-  z-index: -1;
 `;
 const RightBackground = styled(Image)`
   position: absolute;
-  top: -60px;
   z-index: -2;
+  top: -60px;
 `;
 const LeftBackground = styled(Image)`
   position: absolute;
-  left: 50px;
-  top: 500px;
   z-index: -2;
+  top: 500px;
+  left: 50px;
 `;
 
 export const FirstSection = () => {

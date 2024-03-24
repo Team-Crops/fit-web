@@ -25,7 +25,7 @@ function getColorCSS({ error, value }: SelectProps) {
   } else if (value !== undefined) {
     return css`
       color: #212121;
-      background-color: #ffffff;
+      background-color: #fff;
       border-color: #9e9e9e;
 
       &:hover,
@@ -36,7 +36,7 @@ function getColorCSS({ error, value }: SelectProps) {
   } else {
     return css`
       color: #bdbdbd;
-      background-color: #ffffff;
+      background-color: #fff;
       border-color: #9e9e9e;
 
       &:hover,
@@ -62,6 +62,8 @@ const ArrowIcon = styled(Icons)<{ error: boolean; opened: boolean }>`
   width: 12px;
   height: 12px;
 
+  transition: 0.25s;
+
   ${({ error, opened }) =>
     error
       ? css`
@@ -70,109 +72,104 @@ const ArrowIcon = styled(Icons)<{ error: boolean; opened: boolean }>`
       : css`
           color: ${opened ? '#ff706c' : '#bdbdbd'};
         `}
-
   ${({ opened }) =>
     opened &&
     css`
       transform: translateY(-50%) rotate(-180deg);
     `}
-
-  transition: 0.25s;
 `;
 
 const SelectButton = styled.button<SelectProps>`
-  appearance: none;
-  border: 1px solid #9e9e9e;
-  border-radius: 4px;
-  padding: 10px;
+  position: relative;
 
   width: 100%;
   height: 30px;
+  padding: 10px;
 
-  text-align: left;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
+  font-style: normal;
   line-height: normal;
+  text-align: left;
   letter-spacing: -0.6px;
 
-  position: relative;
+  appearance: none;
+  border: 1px solid #9e9e9e;
+  border-radius: 4px;
 
   ${(props) => getColorCSS(props)};
 `;
 
 const OptionList = styled.ul`
-  z-index: 999;
-
   position: absolute;
+  z-index: 10;
   top: calc(100%);
   left: 0;
-  width: 100%;
 
+  width: 100%;
   margin: 0;
   padding: 0;
 
-  border-radius: 5px;
-  border: 1px solid #eeeeee;
   background-color: #f5f5f5;
-  box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15);
-  z-index: 10;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 15%);
 `;
 
 const HelperText = styled.div<{ error?: boolean }>`
   width: 100%;
 
+  font-size: 8px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: normal;
   color: ${({ error }) => (error ? '#ff0800' : '#9e9e9e')};
   text-align: right;
-  font-size: 8px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
 `;
 
 const OptionGroupContainer = styled.div`
   margin-top: 8px;
-
-  background-color: #ffffff;
+  background-color: #fff;
 `;
 
 const OptionGroupLabel = styled.div`
   padding: 4px 12px;
 
-  color: #bdbdbd;
   font-size: 9px;
-  font-style: normal;
   font-weight: 500;
+  font-style: normal;
   line-height: normal;
+  color: #bdbdbd;
   letter-spacing: -0.45px;
 `;
 
 const OptionGroupHr = styled.hr`
   width: 100%;
   margin: 0;
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
 `;
 
 const OptionItem = styled.li<{ selected: boolean }>`
   cursor: pointer;
-  list-style-type: none;
+
+  position: relative;
 
   padding: 10px;
 
-  background-color: #ffffff;
-  color: ${({ selected }) => (selected ? '#ff706c' : '#616161')};
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
+  font-style: normal;
   line-height: normal;
+  color: ${({ selected }) => (selected ? '#ff706c' : '#616161')};
   letter-spacing: -0.6px;
+  list-style-type: none;
+
+  background-color: #fff;
 
   &:hover {
-    background-color: #eeeeee;
+    background-color: #eee;
   }
-
-  position: relative;
 `;
 
 const OptionItemCheckIcon = styled(Icons)`
@@ -183,6 +180,7 @@ const OptionItemCheckIcon = styled(Icons)`
 
   width: 8px;
   height: 8px;
+
   color: #ff706c;
 `;
 

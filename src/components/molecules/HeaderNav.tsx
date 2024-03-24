@@ -12,25 +12,33 @@ const NavBlock = styled.div`
 `;
 const NavLink = styled.div<{ isCurrent: boolean }>`
   position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   height: 100%;
   padding: 18px 50px 0;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    bottom: 0;
+
+    display: block;
+
+    width: ${({ isCurrent }) => (isCurrent ? '150px' : '0px')};
+    height: 3px;
+
+    background: #ff706c;
+    border-radius: 3px;
+  }
+
   span {
     display: flex;
     align-items: center;
     height: 80px;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0px;
-    display: block;
-    width: ${({ isCurrent }) => (isCurrent ? '150px' : '0px')};
-    height: 3px;
-    background: #ff706c;
-    border-radius: 3px;
   }
 
   &:hover {
