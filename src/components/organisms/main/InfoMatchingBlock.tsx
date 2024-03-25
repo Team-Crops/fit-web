@@ -15,7 +15,6 @@ const Block = styled.div`
   margin: 258px 0 290px;
 `;
 const CardSwiper = styled(Swiper)`
-  pointer-events: none;
   padding: 30px 0;
 
   .swiper-slide {
@@ -101,7 +100,7 @@ export const InfoMatchingBlock = () => {
                 imgUrl={card.imgUrl}
                 imgWidth={card.imgWidth}
                 imgHeight={card.imgHeight}
-                // imgLeftPx={card.imgLeftPx}
+                imgLeftPx={card.imgLeftPx}
               />
             </SwiperSlide>
           );
