@@ -40,6 +40,7 @@ const CardInfo = [
     imgWidth: 345,
     imgHeight: 489,
     imgIsCenter: true,
+    imgLeftPx: -25,
   },
 ];
 
@@ -67,6 +68,7 @@ export const MyProjectBlock = () => {
               imgUrl={card.imgUrl}
               imgWidth={card.imgWidth}
               imgHeight={card.imgHeight}
+              imgLeftPx={card.imgLeftPx}
             />
           );
         })}

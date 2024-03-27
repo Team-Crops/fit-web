@@ -13,6 +13,9 @@ const StyledSection = styled.section`
   align-items: center;
 
   width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  overflow: hidden;
   padding: 194px 0 130px;
 `;
 
