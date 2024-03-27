@@ -68,9 +68,9 @@ const CardInfo = [
     title: '랜덤 팀 매칭 시작',
     description: `내 프로필을 작성한 후 원하는 포지션의 사람들과 프로젝트 시작할\n준비를 해보세요! 그러면 최적의 랜덤 팀 매칭을 받을 수 있어요!`,
     imgUrl: '/images/main_matching_img1.svg',
-    imgWidth: 330,
-    imgHeight: 330,
-    imgLeftPx: 60,
+    imgWidth: 345,
+    imgHeight: 345,
+    imgLeftPx: 70,
   },
   {
     width: 707,
