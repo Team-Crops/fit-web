@@ -12,7 +12,7 @@ const NoteBookImage = styled(Image)`
   z-index: 1;
   left: -325px;
 `;
-const Chat1Animation = keyframes`
+const ChatAnimation = keyframes`
   0%{
     top: -60px;
     opacity: 0;
@@ -33,11 +33,11 @@ const Chat1Animation = keyframes`
     opacity: 0;
   }
 `;
-const Chat1 = styled(Image)`
+const Chat = styled(Image)`
   position: absolute;
   top: -100px;
   left: -5px;
-  animation: ${Chat1Animation} 3s linear infinite;
+  animation: ${ChatAnimation} 3s linear infinite;
 `;
 const CircleAnimation = keyframes`
     0% {
@@ -78,10 +78,10 @@ const ProfileAnimation = keyframes`
 const ProfileImage = styled(Image)`
   position: absolute;
   z-index: 2;
-  top: -20px;
+  top: -50px;
   left: -440px;
 
-  animation: ${ProfileAnimation} 2s infinite alternate;
+  animation: ${ProfileAnimation} 3s infinite alternate;
 `;
 
 export const MatchingInfoImage = () => {
@@ -93,7 +93,7 @@ export const MatchingInfoImage = () => {
         height={630}
         alt={'notebook'}
       />
-      <Chat1 src={'/images/matchingInfo/chat.svg'} alt={''} width={540} height={240} />
+      <Chat src={'/images/matchingInfo/chat.svg'} alt={''} width={540} height={240} />
       <Circle src={'/images/matchingInfo/circle.svg'} alt={''} width={89} height={89} />
       <ShoppingBack
         src={'/images/matchingInfo/shoppingback.svg'}
