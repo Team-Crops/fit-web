@@ -35,36 +35,9 @@ const Chat1Animation = keyframes`
 `;
 const Chat1 = styled(Image)`
   position: absolute;
-  top: -130px;
+  top: -100px;
   left: -5px;
   animation: ${Chat1Animation} 3s linear infinite;
-`;
-const Chat2Animation = keyframes`
-  0%{
-    top: 40px;
-    opacity: 0;
-  }
-  20% {
-    top: 20px;
-    opacity: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  80% {
-    top: -30px;
-    opacity: 0;
-  }
-  100% {
-    top: -30px;
-    opacity: 0;
-  }
-`;
-const Chat2 = styled(Image)`
-  position: absolute;
-  top: -30px;
-  left: 135px;
-  animation: ${Chat2Animation} 3s linear infinite;
 `;
 const CircleAnimation = keyframes`
     0% {
@@ -120,8 +93,7 @@ export const MatchingInfoImage = () => {
         height={630}
         alt={'notebook'}
       />
-      <Chat1 src={'/images/matchingInfo/chat1.svg'} alt={''} width={420} height={300} />
-      <Chat2 src={'/images/matchingInfo/chat2.svg'} alt={''} width={420} height={300} />
+      <Chat1 src={'/images/matchingInfo/chat.svg'} alt={''} width={540} height={240} />
       <Circle src={'/images/matchingInfo/circle.svg'} alt={''} width={89} height={89} />
       <ShoppingBack
         src={'/images/matchingInfo/shoppingback.svg'}
