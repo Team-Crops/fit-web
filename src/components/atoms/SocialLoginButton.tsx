@@ -1,15 +1,16 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { getLoginPage } from '#/actions/auth';
 import { Button } from '#/components/atoms/Button';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
 import { SocialPlatform } from '#/entities/socialPlatform';
-import { useLoginPageQuery } from '#/redux/features/auth/api';
 
 const StyledButton = styled(Button)<SocialLoginButtonProps>`
   display: flex;
@@ -66,20 +67,30 @@ interface SocialLoginButtonProps {
 }
 
 export const SocialLoginButton = ({ loginServer }: SocialLoginButtonProps) => {
-  const { data, isLoading } = useLoginPageQuery(loginServer);
   const text: Record<SocialPlatform, string> = {
     kakao: '카카오 계정으로 로그인하기',
     google: '구글 계정으로 로그인하기',
   };
 
+  const [loginUrl, setLoginUrl] = useState('');
+
+  useEffect(() => {
+    async function fetchUrl() {
+      const url = await getLoginPage(loginServer);
+      setLoginUrl(url);
+    }
+
+    fetchUrl();
+  }, [loginServer]);
+
   return (
-    <Link href={data?.loginPageUrl ?? ''}>
+    <Link href={loginUrl}>
       <StyledButton
         loginServer={loginServer}
         variant={'angular'}
         height={'60'}
         color={'secondary'}
-        disabled={isLoading}
+        disabled={loginUrl === ''}
       >
         <Icons icon={loginServer} width={32} height={32} />
         <div style={{ width: '18px' }} />
