@@ -72,6 +72,7 @@ const StyledTxt = styled.span<TxtProps>`
   display: block;
   margin-bottom: ${({ marginBottom }) => marginBottom}px;
   color: ${({ color }) => color};
+  line-height: 150%;
   ${TxtSizeCSS}
   ${TxtWeightCSS}
 `;
