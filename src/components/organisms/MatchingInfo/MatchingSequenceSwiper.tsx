@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -93,6 +93,7 @@ const CardInfo = [
 ];
 export const MatchingSequenceSwiper = () => {
   const sliderRef = useRef<SwiperRef>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
@@ -101,6 +102,16 @@ export const MatchingSequenceSwiper = () => {
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slideNext();
+  }, []);
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      const swiper = sliderRef.current.swiper;
+
+      swiper.on('slideChange', () => {
+        setActiveIndex(swiper.activeIndex);
+      });
+    }
   }, []);
 
   return (
@@ -129,12 +140,16 @@ export const MatchingSequenceSwiper = () => {
             </SwiperSlide>
           );
         })}
-        <PrevButton onClick={handlePrev}>
-          <Icons icon={'arrowBackward'} width={65} height={65} color="#00000091" />
-        </PrevButton>
-        <NextButton onClick={handleNext}>
-          <Icons icon={'arrowBackward'} width={65} height={65} />
-        </NextButton>
+        {activeIndex !== 0 && (
+          <PrevButton onClick={handlePrev}>
+            <Icons icon={'arrowBackward'} width={65} height={65} color="#00000091" />
+          </PrevButton>
+        )}
+        {activeIndex !== CardInfo.length - 1 && (
+          <NextButton onClick={handleNext}>
+            <Icons icon={'arrowBackward'} width={65} height={65} />
+          </NextButton>
+        )}
       </CardSwiper>
       <LeftBlurBackground />
       <RightBlurBackground />
