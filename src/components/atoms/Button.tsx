@@ -8,7 +8,7 @@ const ButtonVariantsCSS = ({ variant }: ButtonProps) => {
     case 'angular':
     case 'outlined':
       return css`
-        border-radius: 5px;
+        border-radius: 50px;
       `;
     case 'round':
       return css`
@@ -31,6 +31,13 @@ const ButtonSizeCSS = ({ height }: ButtonProps) => {
         padding: 0 24px;
         font-size: 12px;
         font-weight: 400;
+      `;
+    case '40':
+      return css`
+        height: 40px;
+        padding: 0 28px;
+        font-size: 16px;
+        font-weight: 500;
       `;
     case '50':
       return css`
@@ -118,7 +125,7 @@ const StyledButton = styled.button<ButtonProps>`
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'angular' | 'round' | 'outlined';
-  height: '20' | '30' | '50' | '60' | '70';
+  height: '20' | '30' | '40' | '50' | '60' | '70';
   color: 'primary' | 'secondary';
   children?: ReactNode;
 }
