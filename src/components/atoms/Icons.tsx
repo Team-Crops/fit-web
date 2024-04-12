@@ -30,6 +30,8 @@ import {
   RunIcon,
   Upload,
   UserIcon,
+  HeartIcon,
+  HeartFillIcon,
 } from '#/assets/icons';
 
 export type IconName =
@@ -50,6 +52,8 @@ export type IconName =
   | 'emojiFire'
   | 'emojiHoldingBackTears'
   | 'google'
+  | 'heart'
+  | 'heartFill'
   | 'image'
   | 'info'
   | 'instagram'
@@ -151,6 +155,14 @@ const icons: Record<IconName, Icon> = {
   },
   google: {
     SVGR: GoogleIcon,
+  },
+  heart: {
+    SVGR: HeartIcon,
+    color: '#E0E0E0',
+  },
+  heartFill: {
+    SVGR: HeartFillIcon,
+    color: '#FF706C',
   },
   image: {
     SVGR: ImageIcon,

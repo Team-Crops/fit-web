@@ -26,3 +26,5 @@ export { default as ProgressIcon } from './progress.svg';
 export { default as RunIcon } from './run.svg';
 export { default as Upload } from './upload.svg';
 export { default as UserIcon } from './user.svg';
+export { default as HeartIcon } from './heart.svg';
+export { default as HeartFillIcon } from './heart-fill.svg';
