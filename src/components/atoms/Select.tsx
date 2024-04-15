@@ -47,10 +47,11 @@ function getColorCSS({ error, value }: SelectProps) {
   }
 }
 
-const SelectContainer = styled.div`
+const SelectContainer = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  ${({ width }) => width !== undefined && `width: ${width};`}
 `;
 
 const ArrowIcon = styled(Icons)<{ error: boolean; opened: boolean }>`
@@ -193,6 +194,7 @@ const SelectContext = createContext<{
 export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   helperText?: string;
+  width?: string;
 }
 
 export const Select = ({
@@ -203,6 +205,7 @@ export const Select = ({
   onChange,
   placeholder,
   children,
+  width,
   ...props
 }: SelectProps) => {
   const [isOpened, setOpened] = useState(false);
@@ -222,7 +225,7 @@ export const Select = ({
 
   return (
     <SelectContext.Provider value={{ value, onChange, setLabel }}>
-      <SelectContainer className={className} ref={containerRef}>
+      <SelectContainer className={className} ref={containerRef} width={width}>
         <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
           {label ?? placeholder}
