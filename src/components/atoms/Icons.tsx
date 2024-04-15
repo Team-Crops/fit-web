@@ -32,6 +32,8 @@ import {
   UserIcon,
   HeartIcon,
   HeartFillIcon,
+  EmailIcon,
+  PhoneFillIcon,
 } from '#/assets/icons';
 
 export type IconName =
@@ -49,6 +51,7 @@ export type IconName =
   | 'click'
   | 'clip'
   | 'cross'
+  | 'email'
   | 'emojiFire'
   | 'emojiHoldingBackTears'
   | 'google'
@@ -62,6 +65,7 @@ export type IconName =
   | 'logo'
   | 'megaphone'
   | 'pencil'
+  | 'phoneFill'
   | 'plus'
   | 'progress'
   | 'run'
@@ -147,6 +151,10 @@ const icons: Record<IconName, Icon> = {
     SVGR: CrossIcon,
     color: '#212121',
   },
+  email: {
+    SVGR: EmailIcon,
+    color: '#424242',
+  },
   emojiFire: {
     SVGR: EmojiFire,
   },
@@ -190,6 +198,10 @@ const icons: Record<IconName, Icon> = {
   },
   pencil: {
     SVGR: PencilIcon,
+  },
+  phoneFill: {
+    SVGR: PhoneFillIcon,
+    color: '#424242',
   },
   plus: {
     SVGR: PlusIcon,

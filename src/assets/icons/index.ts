@@ -28,3 +28,5 @@ export { default as Upload } from './upload.svg';
 export { default as UserIcon } from './user.svg';
 export { default as HeartIcon } from './heart.svg';
 export { default as HeartFillIcon } from './heart-fill.svg';
+export { default as EmailIcon } from './email.svg';
+export { default as PhoneFillIcon } from './phone-fill.svg';
