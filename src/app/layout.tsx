@@ -1,6 +1,5 @@
 import './globals.css';
 import { LoginGuard } from './login-guard';
-import StoreProvider from './StoreProvider';
 
 import type { Metadata } from 'next';
 
@@ -12,11 +11,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <StoreProvider>
-        <body>
-          <LoginGuard>{children}</LoginGuard>
-        </body>
-      </StoreProvider>
+      <body>
+        <LoginGuard>{children}</LoginGuard>
+      </body>
     </html>
   );
 }

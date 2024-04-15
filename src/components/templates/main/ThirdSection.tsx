@@ -66,13 +66,13 @@ const FilledBlock = styled.div`
 export const ThirdSection = () => {
   return (
     <StyledSection>
-      <Title size={'display1'} weight={'bold'} color="#000">
+      <Title size={'main1'} weight={'bold'} color="#000">
         이런 고민을 하고 있다면,{`\n`} F-IT을 시작하세요!
       </Title>
       <Txt size={'typo3'} weight={'medium'} color="#FF706C" marginBottom={45}>
         왜 F - IT일까?
       </Txt>
-      <Txt size={'display1'} weight={'bold'} color="#000" marginBottom={20}>
+      <Txt size={'main1'} weight={'bold'} color="#000" marginBottom={20}>
         “이제는 F-IT이 팀원을 매칭 및 추천해드릴게요!”
       </Txt>
       <Txt size={'typo3'} weight={'medium'} color="#616161" marginBottom={113}>

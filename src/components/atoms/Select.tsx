@@ -54,7 +54,7 @@ const SelectContainer = styled.div<{ width?: string }>`
   ${({ width }) => width !== undefined && `width: ${width};`}
 `;
 
-const ArrowIcon = styled(Icons)<{ error: boolean; opened: boolean }>`
+const ArrowIcon = styled(Icons)<{ $error: boolean; $opened: boolean }>`
   position: absolute;
   top: 50%;
   right: 10px;
@@ -65,16 +65,16 @@ const ArrowIcon = styled(Icons)<{ error: boolean; opened: boolean }>`
 
   transition: 0.25s;
 
-  ${({ error, opened }) =>
-    error
+  ${({ $error, $opened }) =>
+    $error
       ? css`
-          color: ${opened ? '#ff0800' : '#bdbdbd'};
+          color: ${$opened ? '#ff0800' : '#bdbdbd'};
         `
       : css`
-          color: ${opened ? '#ff706c' : '#bdbdbd'};
+          color: ${$opened ? '#ff706c' : '#bdbdbd'};
         `}
-  ${({ opened }) =>
-    opened &&
+  ${({ $opened }) =>
+    $opened &&
     css`
       transform: translateY(-50%) rotate(-180deg);
     `}
@@ -101,13 +101,15 @@ const SelectButton = styled.button<SelectProps>`
   ${(props) => getColorCSS(props)};
 `;
 
-const OptionList = styled.ul`
+const OptionList = styled.ul<{ position: 'top' | 'bottom' }>`
   position: absolute;
   z-index: 10;
-  top: calc(100%);
   left: 0;
 
+  overflow-y: auto;
+
   width: 100%;
+  max-height: calc(100vh - 100%);
   margin: 0;
   padding: 0;
 
@@ -115,6 +117,15 @@ const OptionList = styled.ul`
   border: 1px solid #eee;
   border-radius: 5px;
   box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 15%);
+
+  ${({ position }) =>
+    position === 'top'
+      ? css`
+          bottom: 100%;
+        `
+      : css`
+          top: 100%;
+        `}
 `;
 
 const HelperText = styled.div<{ error?: boolean }>`
@@ -210,7 +221,9 @@ export const Select = ({
 }: SelectProps) => {
   const [isOpened, setOpened] = useState(false);
   const [label, setLabel] = useState<string | undefined>();
+  const [optionsPosition, setOptionsPosition] = useState<'top' | 'bottom'>('bottom');
   const containerRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -221,7 +234,20 @@ export const Select = ({
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  });
+  }, []);
+
+  useEffect(() => {
+    if (optionsRef.current) {
+      const listTop = optionsRef.current.getBoundingClientRect().top;
+      const listHeight = optionsRef.current.offsetHeight;
+
+      if (listTop + listHeight > window.innerHeight) {
+        setOptionsPosition('top');
+      } else {
+        setOptionsPosition('bottom');
+      }
+    }
+  }, [isOpened]);
 
   return (
     <SelectContext.Provider value={{ value, onChange, setLabel }}>
@@ -229,8 +255,10 @@ export const Select = ({
         <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
           {label ?? placeholder}
-          <ArrowIcon icon="arrowDown" error={error} opened={isOpened} />
-          <OptionList hidden={!isOpened}>{children}</OptionList>
+          <ArrowIcon icon="arrowDown" $error={error} $opened={isOpened} />
+          <OptionList position={optionsPosition} hidden={!isOpened} ref={optionsRef}>
+            {children}
+          </OptionList>
         </SelectButton>
         {helperText && <HelperText error={error}>{helperText}</HelperText>}
       </SelectContainer>

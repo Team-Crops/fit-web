@@ -1,5 +1,9 @@
+'use client';
+
 import styled from '@emotion/styled';
 
+import { HeaderUserBlock } from '#/components/molecules/HeaderUserBlock';
+import { useAuthStore } from '#/stores/auth';
 import { HeaderLoginBlock } from '#molecules/HeaderLoginBlock';
 import { HeaderLogo } from '#molecules/HeaderLogo';
 import { HeaderNav } from '#molecules/HeaderNav';
@@ -9,32 +13,19 @@ const ContentBlock = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  width: 1200px;
+  width: min(100%, 1200px);
   height: 100%;
   margin: 0 auto;
-`;
-const HeaderLeftBlock = styled.div`
-  display: flex;
-  gap: 128px;
-  align-items: center;
-  height: 100%;
-`;
-const HeaderRightBlock = styled.div`
-  display: flex;
+  padding: 20px;
 `;
 
 export const HeaderContent = () => {
+  const me = useAuthStore((state) => state.user);
   return (
     <ContentBlock>
-      <HeaderLeftBlock>
-        <HeaderLogo />
-        <HeaderNav />
-      </HeaderLeftBlock>
-      <HeaderRightBlock>
-        {/* TODO: 로그인 전, 후 Component 구분하기 */}
-        <HeaderLoginBlock />
-        {/* <HeaderNonLoginBlock /> */}
-      </HeaderRightBlock>
+      <HeaderLogo />
+      <HeaderNav />
+      {me ? <HeaderUserBlock /> : <HeaderLoginBlock />}
     </ContentBlock>
   );
 };

@@ -1,4 +1,7 @@
+'use server';
+
 import { Region } from '#/entities/region';
+import { fitFetch } from '#/utilities/fetch';
 
 interface GetRegionsResponse {
   regionList: {
@@ -8,7 +11,7 @@ interface GetRegionsResponse {
 }
 
 export async function getRegions(): Promise<Region[]> {
-  const response = await fetch(`/v1/region`);
+  const response = await fitFetch(`/v1/region`);
   const json = (await response.json()) as GetRegionsResponse;
   return json.regionList;
 }
@@ -23,7 +26,7 @@ interface CreateRegionResponse {
 }
 
 export async function createRegion({ displayName }: CreateRegionRequest): Promise<Region> {
-  const response = await fetch(`/v1/region`, {
+  const response = await fitFetch(`/v1/region`, {
     method: 'POST',
     body: JSON.stringify({ displayName }),
   });

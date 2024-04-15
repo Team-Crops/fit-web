@@ -2,84 +2,65 @@
 
 import { useEffect } from 'react';
 
-import _ from 'lodash';
-
-import { Login } from '#/components/templates/Login';
-import { type PolicyType, policies } from '#/entities/policy';
-import { AuthStep, deleteAuth, updateAuth } from '#/redux/features/auth/slice';
-import { useLazyMeQuery, useLazyMyAgreementsQuery } from '#/redux/features/user/api';
-import { setMe } from '#/redux/features/user/slice';
-import { useAppDispatch, useAppSelector } from '#/redux/hooks';
+import { getMe } from '#/actions/user';
+import { SignIn } from '#/components/templates/SignIn';
+import { SignUp } from '#/components/templates/SignUp';
+import { useAuthStore } from '#/stores/auth';
+import { useSignInStore } from '#/stores/sign-in';
+import { useSignUpStore } from '#/stores/sign-up';
+import { SignUpStep } from '#/types/sign-up-step';
+import { User } from '#/types/user';
 
 interface LoginGuardProps {
   children: React.ReactNode;
 }
 
 export const LoginGuard = ({ children }: LoginGuardProps) => {
-  const dispatch = useAppDispatch();
-
-  const showLoginPopup = useAppSelector((state) => state.auth.showLoginPopup);
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
-  const refreshToken = useAppSelector((state) => state.auth.refreshToken);
-
-  const [queryMe, { data: me, isError: queryMeError }] = useLazyMeQuery();
-  const [queryAgreements, { data: agreements }] = useLazyMyAgreementsQuery();
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+  const isPopupOpened = useSignInStore((state) => state.isPopupOpened);
+  const openPopup = useSignInStore((state) => state.openPopup);
+  const setSignUpStep = useSignUpStore((state) => state.setStep);
 
   useEffect(() => {
-    const storageAccessToken = localStorage.getItem('accessToken');
-    const storageRefreshToken = localStorage.getItem('refreshToken');
-    if (storageAccessToken && storageRefreshToken) {
-      dispatch(updateAuth({ accessToken: storageAccessToken, refreshToken: storageRefreshToken }));
-    }
-  }, [dispatch]);
+    async function loadUser() {
+      const me = await getMe();
+      setUser(me);
 
-  useEffect(() => {
-    if (accessToken && refreshToken) {
-      queryMe();
-      queryAgreements();
-    }
-  }, [accessToken, queryAgreements, queryMe, refreshToken]);
-
-  useEffect(() => {
-    if (me && agreements) {
-      let step: AuthStep;
-
-      if (
-        _.some(
-          policies,
-          (policy, policyName) => policy.required && !agreements[policyName as PolicyType]
-        )
-      ) {
-        step = AuthStep.Policies;
-      } else if (!me.nickname) {
-        step = AuthStep.UserInfo;
-      } else if (!me.positionId) {
-        step = AuthStep.PositionInfo;
-      } else if (!me.username || !me.email || !me.backgroundStatus || !me.backgroundText) {
-        step = AuthStep.PersonalInfo;
-      } else if (!me.projectCount || !me.regionId || !me.activityHour) {
-        step = AuthStep.ActivityInfo;
-      } else if (!me.skillIdList) {
-        step = AuthStep.SkillInfo;
+      if (me) {
+        const step = checkSignUpStep(me);
+        if (step !== SignUpStep.Complete) {
+          openPopup();
+        }
+        setSignUpStep(step);
       } else {
-        step = AuthStep.Complete;
+        setSignUpStep(null);
       }
-
-      dispatch(setMe(me));
-      dispatch(updateAuth({ step, showLoginPopup: step !== AuthStep.Complete }));
     }
-  }, [agreements, dispatch, me]);
-
-  useEffect(() => {
-    if (queryMeError) {
-      dispatch(deleteAuth());
-    }
-  }, [dispatch, queryMeError]);
+    loadUser();
+  }, [openPopup, setSignUpStep, setUser]);
 
   return (
     <>
       {children}
-      {showLoginPopup && <Login />}
+      {isPopupOpened && user && <SignUp />}
+      {isPopupOpened && !user && <SignIn />}
     </>
   );
 };
+
+function checkSignUpStep(user: User): SignUpStep {
+  if (!user.nickname) {
+    return SignUpStep.ProfileCreation;
+  } else if (!user.positionId) {
+    return SignUpStep.PositionSelection;
+  } else if (!user.username || !user.email || !user.backgroundText || !user.backgroundStatus) {
+    return SignUpStep.ProfileDetailsSubmission;
+  } else if (!user.projectCount || !user.regionId || !user.activityHour) {
+    return SignUpStep.TimeAvailabilitySubmission;
+  } else if (!user.skillIdList?.length) {
+    return SignUpStep.ToolAvailabilitySubmission;
+  }
+
+  return SignUpStep.Complete;
+}

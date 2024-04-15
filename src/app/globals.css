@@ -1,27 +1,4 @@
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Regular.woff2');
-}
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Bold.woff2');
-  font-weight: 700;
-}
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Medium.woff2');
-  font-weight: 500;
-}
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Light.woff2');
-  font-weight: 300;
-}
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Thin.woff2');
-  font-weight: 100;
-}
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
 @keyframes pulse {
   0%,
@@ -81,7 +58,6 @@ input {
     'Noto Sans KR',
     'Malgun Gothic',
     sans-serif;
-  font-size: 20px;
 }
 
 html {

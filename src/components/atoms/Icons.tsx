@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from 'react';
 import React from 'react';
+import Image from 'next/image';
 
 import {
   AccountIcon,
@@ -16,6 +17,8 @@ import {
   CrossIcon,
   EmojiFire,
   EmojiHoldingBackTears,
+  EmojiPartyingFace,
+  EmojiWinkingFace,
   GoogleIcon,
   ImageIcon,
   InfoIcon,
@@ -54,6 +57,8 @@ export type IconName =
   | 'email'
   | 'emojiFire'
   | 'emojiHoldingBackTears'
+  | 'emojiPartyingFace'
+  | 'emojiWinkingFace'
   | 'google'
   | 'heart'
   | 'heartFill'
@@ -161,6 +166,12 @@ const icons: Record<IconName, Icon> = {
   emojiHoldingBackTears: {
     SVGR: EmojiHoldingBackTears,
   },
+  emojiPartyingFace: {
+    SVGR: EmojiPartyingFace,
+  },
+  emojiWinkingFace: {
+    SVGR: EmojiWinkingFace,
+  },
   google: {
     SVGR: GoogleIcon,
   },
@@ -224,17 +235,31 @@ const icons: Record<IconName, Icon> = {
 
 interface IconsProps extends HTMLAttributes<SVGElement> {
   icon: IconName;
+
+  size?: number;
   width?: number;
   height?: number;
 }
 
-export const Icons = ({ icon, width, height, ...props }: IconsProps) => {
+export const Icons = ({ icon, width, height, size, ...props }: IconsProps) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
+  if (typeof SVGR === 'object') {
+    return (
+      <Image
+        className={props.className}
+        src={SVGR}
+        alt={icon}
+        width={size ?? width}
+        height={size ?? height}
+      />
+    );
+  }
+
   return (
     <SVGR
       color={defaultColor}
-      width={width}
-      height={height}
+      width={size ?? width}
+      height={size ?? height}
       style={{ ...style, flexShrink: 0 }}
       {...props}
     />

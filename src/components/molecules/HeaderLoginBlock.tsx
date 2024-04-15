@@ -1,9 +1,8 @@
-import { useCallback } from 'react';
+'use client';
 
 import styled from '@emotion/styled';
 
-import { updateAuth } from '#/redux/features/auth/slice';
-import { useAppDispatch } from '#/redux/hooks';
+import { useSignInStore } from '#/stores/sign-in';
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
 
@@ -19,15 +18,11 @@ const LoginButton = styled(Button)`
   font-weight: 400;
 `;
 export const HeaderLoginBlock = () => {
-  const dispatch = useAppDispatch();
-
-  const onClickLoginButton = useCallback(() => {
-    dispatch(updateAuth({ showLoginPopup: true }));
-  }, [dispatch]);
+  const openPopup = useSignInStore((state) => state.openPopup);
 
   return (
     <div>
-      <LoginButton variant={'round'} height={'50'} color={'primary'} onClick={onClickLoginButton}>
+      <LoginButton variant={'round'} height={'50'} color={'primary'} onClick={() => openPopup()}>
         <Icons icon={'user'} width={24} height={20} />
         로그인
       </LoginButton>

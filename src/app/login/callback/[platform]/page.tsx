@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { LoginCallback } from '#/components/templates/LoginCallback';
+import { SignInCallback } from '#/components/templates/SignInCallback';
 import { SocialPlatform } from '#/entities/socialPlatform';
 
 interface PathParams {
@@ -16,7 +16,7 @@ export default function LoginCallbackPage({ params }: { params: PathParams }) {
 
   return (
     <main>
-      <LoginCallback platform={platform as SocialPlatform} />
+      <SignInCallback platform={platform as SocialPlatform} />
     </main>
   );
 }

@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { User } from '#/entities/user';
 import { useGetPositionsQuery } from '#/redux/features/skill-set/api';
+import { User } from '#/types/user';
 import { Badge } from '#atoms/Badge';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';

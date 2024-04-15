@@ -118,6 +118,7 @@ const StyledButton = styled.button<ButtonProps>`
 
   transition-duration: 0.2s;
   transition-property: background-color color;
+
   ${ButtonVariantsCSS}
   ${ButtonSizeCSS}
   ${ButtonColorCSS};
