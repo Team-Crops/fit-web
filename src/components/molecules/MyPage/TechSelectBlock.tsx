@@ -11,6 +11,7 @@ const TechContainer = styled.div`
   margin: 28px 0 0 8px;
   padding: 7px 20px;
 
+  background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 11px;
 `;
