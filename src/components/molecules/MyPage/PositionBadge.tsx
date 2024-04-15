@@ -14,6 +14,8 @@ const BadgeBlock = styled.div<{ selected: boolean }>`
   height: 25px;
   padding: 0 24px;
 
+  white-space: nowrap;
+
   border: 1px solid ${({ selected }) => (selected ? '#FF908D' : '#9E9E9E')};
   border-radius: 5px;
 `;
