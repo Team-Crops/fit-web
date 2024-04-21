@@ -1,11 +1,11 @@
+'use client';
+
+import { useState } from 'react';
+
 import styled from '@emotion/styled';
 
-import { MatchingStep } from '#/redux/features/matching/slice';
-import { useAppSelector } from '#/redux/hooks';
+import { MatchingStep } from '#/types/matching-step';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
-import { MatchingProfile } from '#organisms/matching/MatchingProfile';
-import { MatchingQueued } from '#organisms/matching/MatchingQueued';
-import { MatchingTalk } from '#organisms/matching/MatchingTalk';
 
 const Container = styled.div`
   display: flex;
@@ -19,13 +19,10 @@ const Container = styled.div`
 `;
 
 export const Matching = () => {
-  const matchingStep = useAppSelector((state) => state.matching.step);
+  const [step, setStep] = useState<MatchingStep>();
   return (
     <Container>
       <MatchingTitle />
-      {matchingStep === MatchingStep.POSITION_CHECKING && <MatchingProfile />}
-      {matchingStep === MatchingStep.QUEUING && <MatchingQueued />}
-      {matchingStep === MatchingStep.MATCHED && <MatchingTalk />}
     </Container>
   );
 };

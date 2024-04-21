@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms/Text';
-import { MatchingStep } from '#/redux/features/matching/slice';
-import { useAppSelector } from '#/redux/hooks';
+import { useAuthStore } from '#/stores/auth';
+import { MatchingStep } from '#/types/matching-step';
 import { ProgressBar } from '#molecules/ProgressBar';
 
 const Container = styled.div`
@@ -15,12 +15,13 @@ const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
 `;
 
-export const MatchingTitle = () => {
-  const nickname = useAppSelector((state) => state.user.me?.nickname);
-  const matchingStep = useAppSelector((state) => state.matching.step);
+interface MatchingTitleProps {
+  step: MatchingStep;
+}
 
-  const currentStep = useMemo(() => matchingStep + 1, [matchingStep]);
-  const totalStep = useMemo(() => Object.values(MatchingStep).length / 2, []);
+export const MatchingTitle = ({ step }: MatchingTitleProps) => {
+  const nickname = useAuthStore((store) => store.user?.nickname);
+
   const titleText = useMemo(
     () =>
       [
@@ -38,13 +39,10 @@ export const MatchingTitle = () => {
             대기방이 생성되었어요
           </Txt>
         </div>,
-      ][matchingStep],
-    [matchingStep, nickname]
+      ][step],
+    [step, nickname]
   );
-  const tooltipText = useMemo(
-    () => ['포지션 확인', '매칭 대기', '매칭 완료'][matchingStep],
-    [matchingStep]
-  );
+  const tooltipText = useMemo(() => ['포지션 확인', '매칭 대기', '매칭 완료'][step], [step]);
 
   return (
     <Container>
@@ -55,8 +53,8 @@ export const MatchingTitle = () => {
       </Txt>
       <div style={{ height: '35px' }} />
       <StyledProgressBar
-        current={currentStep}
-        total={totalStep}
+        current={step}
+        total={MatchingStep.COMPLETE}
         tooltipGap="10px"
         tooltipText={tooltipText}
       />

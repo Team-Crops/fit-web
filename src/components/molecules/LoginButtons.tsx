@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { SocialSignInButton } from '#atoms/SocialSignInButton';
+import { SocialLoginButton } from '#atoms/SocialLoginButton';
 
 const Column = styled.div`
   display: flex;
@@ -11,12 +11,12 @@ const Column = styled.div`
   align-items: center;
 `;
 
-interface SignInButtonsProps {
+interface LoginButtonsProps {
   children: React.ReactNode;
 }
 
-export const SignInButtons = ({ children }: SignInButtonsProps) => {
+export const LoginButtons = ({ children }: LoginButtonsProps) => {
   return <Column>{children}</Column>;
 };
 
-SignInButtons.Button = SocialSignInButton;
+LoginButtons.Button = SocialLoginButton;

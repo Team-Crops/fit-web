@@ -1,12 +1,9 @@
-'use client';
-
+import React from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { useUser } from '#/hooks/use-user';
-import { User } from '#/types/user';
-import { Txt } from '../atoms/Text';
+import { Txt } from '#atoms/Text';
 
 const Container = styled.div<{ selected: boolean }>`
   cursor: pointer;
@@ -49,22 +46,21 @@ const PositionImageContainer = styled.div`
   border-radius: 50%;
 `;
 
-interface PositionCardProps {
-  id: User['positionId'];
+interface PositionCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   imageUrl: string;
   selected: boolean;
+
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export const PositionCard = ({ id, name, imageUrl, selected }: PositionCardProps) => {
-  const { data: user, mutate: mutateUser } = useUser();
-
+export const PositionCard = ({ name, imageUrl, selected, onClick }: PositionCardProps) => {
   return (
-    <Container selected={selected} onClick={() => mutateUser({ positionId: id })}>
+    <Container selected={selected} onClick={onClick}>
       <PositionImageContainer>
         <Image src={imageUrl} width={130} height={130} alt={name} />
       </PositionImageContainer>
-      <Txt size="typo4" weight={id === user?.positionId ? 'bold' : 'medium'}>
+      <Txt size="typo4" weight={selected ? 'bold' : 'medium'}>
         {name}
       </Txt>
     </Container>

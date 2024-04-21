@@ -1,52 +1,39 @@
-'use client';
+import useSWR, { mutate } from 'swr';
+import useSWRMutation from 'swr/mutation';
 
-import { useCallback, useEffect, useState } from 'react';
+import { User } from '#/types/user';
+import { fitFetch, fitFetcher } from '#/utilities/fetch';
 
-import { getMe, updateMe } from '#/actions/user';
-import { useAuthStore } from '#/stores/auth';
+export const USER_QUERY_KEY = '/v1/user';
+const USER_MUTATE_KEY = '/v1/user';
 
-export function useUser() {
-  const [{ error, isLoading, isError }, set] = useState<{
-    error: any;
-    isLoading: boolean;
-    isError: boolean;
-  }>({
-    error: null,
-    isLoading: true,
-    isError: false,
+interface UserQueryResponse extends User {}
+
+export function useUserQuery() {
+  return useSWR<UserQueryResponse>(USER_QUERY_KEY, fitFetcher, {
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
   });
+}
 
-  const user = useAuthStore((state) => state.user);
-  const setUser = useAuthStore((state) => state.setUser);
+interface UserMutationArgs extends Partial<Omit<User, 'id' | 'status'>> {}
+interface UserMutationResponse extends User {}
 
-  const mutate = useCallback(
-    async (data: Parameters<typeof updateMe>[0]) => {
-      try {
-        if (user) {
-          set({ error: null, isLoading: true, isError: false });
-          const me = await updateMe(data);
-          setUser({ ...user, ...me });
-          set({ error: null, isLoading: false, isError: false });
-        }
-      } catch (error) {
-        set({ error, isLoading: false, isError: true });
-      }
-    },
-    [setUser, user]
+async function sendUserMutationRequest(url: string, { arg }: { arg: UserMutationArgs }) {
+  const nullSafedArg = Object.fromEntries(
+    Object.entries(arg).filter(([, value]) => value !== null)
   );
+  const response = await fitFetch(url, { method: 'PATCH', body: JSON.stringify(nullSafedArg) });
+  const json = await response.json();
+  return json as UserMutationResponse;
+}
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const me = await getMe();
-        setUser(me);
-        set({ error: null, isLoading: false, isError: false });
-      } catch (error) {
-        set({ error, isLoading: false, isError: true });
-      }
+export function useUserMutation() {
+  return useSWRMutation<User, any, typeof USER_MUTATE_KEY, UserMutationArgs>(
+    USER_MUTATE_KEY,
+    sendUserMutationRequest,
+    {
+      onSuccess: (data) => mutate<User>(USER_QUERY_KEY, data),
     }
-    fetchUser();
-  }, [setUser]);
-
-  return { data: user, mutate, error, isLoading, isError };
+  );
 }

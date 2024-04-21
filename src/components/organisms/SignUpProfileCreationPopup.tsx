@@ -3,10 +3,11 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { useUser } from '#/hooks/use-user';
-import { useSignUpStore } from '#/stores/sign-up';
-import { SignUpStep } from '#/types/sign-up-step';
-import { uploadProfileImage } from '#/utilities/upload-storage';
+import { usePresignedUrlQuery } from '#/hooks/use-presigned-url';
+import { useUserMutation } from '#/hooks/use-user';
+import { useAuthStore } from '#/stores/auth';
+import { User } from '#/types/user';
+import { uploadProfileImage } from '#/utilities/storage';
 import { Button } from '../atoms/Button';
 import { Icons } from '../atoms/Icons';
 import { Input } from '../atoms/Input';
@@ -60,15 +61,23 @@ const NicknameContainer = styled.div`
   width: min(100%, 420px);
 `;
 
-export const SignUpProfileCreationPopup = () => {
+interface SignUpProfileCreationPopupProps {
+  onSuccess: () => void;
+}
+
+export const SignUpProfileCreationPopup: React.FC<SignUpProfileCreationPopupProps> = ({
+  onSuccess,
+}) => {
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [nickname, setNickname] = useState<string>();
+  const [nickname, setNickname] = useState<string>('');
+  const [canSubmit, setCanSubmit] = useState(false);
 
-  const { data: user, mutate: mutateUser, isLoading } = useUser();
+  const user = useAuthStore((store) => store.user);
 
-  const setStep = useSignUpStore((state) => state.setStep);
-
-  const goForwardStep = useCallback(() => setStep(SignUpStep.ProfileCreation + 1), [setStep]);
+  const { trigger: mutateUser, isMutating: isMutatingUser } = useUserMutation();
+  const { trigger: getPresignedUrl } = usePresignedUrlQuery();
 
   const handleImageChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
@@ -83,22 +92,31 @@ export const SignUpProfileCreationPopup = () => {
   );
 
   const handleSubmit = useCallback(async () => {
-    const image = imageInputRef.current?.files?.item(0);
-    if (!image) {
-      await mutateUser({ nickname });
-      return goForwardStep();
-    } else {
-      const { fileKey } = await uploadProfileImage(image);
-      await mutateUser({ nickname, profileImageUrl: fileKey });
-      return goForwardStep();
+    const imageFile = imageInputRef.current?.files?.item(0);
+    const userInfo: Partial<User> = { nickname };
+    if (imageFile) {
+      const { preSignedUrl, fileKey } = await getPresignedUrl({
+        fileDomain: 'PROFILE_IMAGE',
+        fileName: `profile-${user?.id}`,
+      });
+      await uploadProfileImage({ imageFile, preSignedUrl });
+      userInfo.profileImageUrl = fileKey;
     }
-  }, [goForwardStep, mutateUser, nickname]);
+    await mutateUser(userInfo);
+    return onSuccess();
+  }, [getPresignedUrl, mutateUser, nickname, onSuccess, user?.id]);
 
-  const imageInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    setPreviewImage(user?.profileImageUrl ?? null);
+  }, [user?.profileImageUrl]);
 
   useEffect(() => {
     setNickname(user?.nickname ?? '');
-  }, [user]);
+  }, [user?.nickname]);
+
+  useEffect(() => {
+    setCanSubmit(!!nickname);
+  }, [nickname]);
 
   return (
     <Container>
@@ -143,7 +161,7 @@ export const SignUpProfileCreationPopup = () => {
         color="primary"
         height="70"
         variant="round"
-        disabled={isLoading}
+        disabled={isMutatingUser || !canSubmit}
         onClick={() => handleSubmit()}
       >
         시작하기

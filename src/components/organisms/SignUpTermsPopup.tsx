@@ -1,14 +1,11 @@
-'use client';
-
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { getPolicyAgreements, updatePolicyAgreements } from '#/actions/user';
 import { SignUpTermsHeader } from '#/components/molecules/SignUpTermsHeader';
-import { PolicyAgreement, PolicyType, policies } from '#/entities/policy';
-import { useSignUpStore } from '#/stores/sign-up';
-import { SignUpStep } from '#/types/sign-up-step';
+import { usePolicyAgreesMutation, usePolicyAgreesQuery } from '#/hooks/use-policy-agrees';
+import { useAuthStore } from '#/stores/auth';
+import { PolicyAgreement, PolicyType, policies } from '#/types/policy';
 import { PoliciesBox } from '#molecules/Policies';
 
 const Container = styled.div`
@@ -21,82 +18,83 @@ const Container = styled.div`
   justify-content: space-between;
 
   width: min(100%, 830px);
-  height: 510px;
 
   background-color: #fff;
   border-radius: 15px;
 `;
 
-export const SignUpTermsPopup = () => {
-  const [loading, setLoading] = useState(true);
-  const [agreements, setAgreements] = useState<Record<PolicyType, PolicyAgreement>>(
-    Object.values(policies).reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur.type]: { type: cur.type, version: cur.version, isAgree: false },
-      }),
-      {}
-    ) as Record<PolicyType, PolicyAgreement>
-  );
+interface SignUpTermsPopupProps {
+  onSuccess: () => void;
+}
 
-  const setStep = useSignUpStore((state) => state.setStep);
+export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess }) => {
+  const [policyAgrees, setPolicyAgrees] = useState<{ type: PolicyType; isAgree: boolean }[]>([]);
+  const [allAgreed, setAllAgreed] = useState(false);
 
-  const updateAgreements = useCallback(
-    async ({ type, value }: { type?: PolicyType; value: boolean }) => {
-      if (type) {
-        const updated = await updatePolicyAgreements(
-          Object.values({ ...agreements, [type]: { ...agreements[type], isAgree: value } })
-        );
-        setAgreements(updated.reduce((acc, cur) => ({ ...acc, [cur.type]: cur }), agreements));
-      } else {
-        const updated = await updatePolicyAgreements(
-          Object.values(agreements).map((agreement) => ({ ...agreement, isAgree: value }))
-        );
-        setAgreements(updated.reduce((acc, cur) => ({ ...acc, [cur.type]: cur }), agreements));
-      }
+  const setAgreed = useAuthStore((store) => store.setPolicyAgreed);
 
-      if (Object.values(agreements).every((agreement) => agreement.isAgree)) {
-        setStep(SignUpStep.TermsAgreement + 1);
-      }
-    },
-    [agreements, setStep]
-  );
+  const { data: fetchedAgrees, isLoading: isLoadingAgrees } = usePolicyAgreesQuery();
+  const {
+    data: mutatedAgreements,
+    trigger: updateAgreements,
+    isMutating: isMutatingAgreements,
+  } = usePolicyAgreesMutation();
 
   useEffect(() => {
-    async function loadAgreements() {
-      const loaded = await getPolicyAgreements();
-      setAgreements((prev) => ({
-        ...prev,
-        ...loaded.reduce((acc, cur) => ({ ...acc, [cur.type]: cur }), {}),
-      }));
-      setLoading(false);
+    if (allAgreed && !isMutatingAgreements) {
+      setAgreed(true);
+      onSuccess();
     }
+  }, [allAgreed, isMutatingAgreements, onSuccess, setAgreed]);
 
-    loadAgreements();
-  }, []);
+  useEffect(() => {
+    if (policyAgrees.length > 0) {
+      setAllAgreed(policyAgrees.every((agree) => agree.isAgree));
+    }
+  }, [policyAgrees]);
+
+  useEffect(() => {
+    if (fetchedAgrees || mutatedAgreements) {
+      const newAgrees: PolicyAgreement[] = fetchedAgrees || mutatedAgreements || [];
+      setPolicyAgrees(
+        Object.keys(policies).map((type) => {
+          const agree = newAgrees.find((agree) => agree.policyType === type);
+          return {
+            type: type as PolicyType,
+            isAgree: agree?.isAgree ?? false,
+          };
+        })
+      );
+    }
+  }, [fetchedAgrees, mutatedAgreements]);
 
   return (
     <Container>
       <SignUpTermsHeader />
       <PoliciesBox
-        allChecked={Object.values(agreements).every((agreement) => agreement.isAgree)}
-        disabled={loading}
-        toggleAll={(e) => updateAgreements({ value: e.target.checked })}
+        allChecked={allAgreed}
+        disabled={isLoadingAgrees}
+        toggleAll={(e) => {
+          const newAgrees = policyAgrees.map((agree) => ({ ...agree, isAgree: e.target.checked }));
+          setPolicyAgrees(newAgrees);
+        }}
       >
         {Object.entries(policies).map(([type, policy]) => (
           <PoliciesBox.Policy
             key={type}
             title={policy.title}
             text={policy.text}
-            disabled={loading}
-            value={agreements[type as PolicyType]?.isAgree}
+            disabled={isLoadingAgrees}
+            value={policyAgrees.find((agree) => agree.type === type)?.isAgree ?? false}
             onChange={(e) => {
-              console.log(
-                agreements[type as PolicyType]?.isAgree,
-                e.target.value,
-                e.target.checked
+              updateAgreements(
+                { type: type as PolicyType, isAgree: e.target.checked },
+                {
+                  optimisticData: {
+                    policyAgreementList: [...policyAgrees, { type, isAgree: e.target.checked }],
+                  },
+                }
               );
-              updateAgreements({ type: type as PolicyType, value: e.target.checked });
             }}
           />
         ))}

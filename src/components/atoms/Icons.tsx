@@ -239,9 +239,20 @@ interface IconsProps extends HTMLAttributes<SVGElement> {
   size?: number;
   width?: number;
   height?: number;
+
+  isError?: boolean;
+  isOpened?: boolean;
 }
 
-export const Icons = ({ icon, width, height, size, ...props }: IconsProps) => {
+export const Icons: React.FC<IconsProps> = ({
+  icon,
+  width,
+  height,
+  size,
+  isError,
+  isOpened,
+  ...props
+}) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
   if (typeof SVGR === 'object') {
     return (

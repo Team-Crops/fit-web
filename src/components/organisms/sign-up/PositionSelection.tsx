@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { getPositions } from '#/actions/skill-set';
 import { positionPageBackground1, positionPageBackground2 } from '#/assets/images';
 import { Txt } from '#/components/atoms/Text';
 import { PositionCard } from '#/components/molecules/PositionCard';
-import { Position } from '#/entities/position';
-import { useAuthStore } from '#/stores/auth';
-import { useSignUpStore } from '#/stores/sign-up';
-import { getStorageUrl } from '#/utilities/get-storage';
+import { usePositionsQuery } from '#/hooks/use-positions';
+import type { User } from '#/types';
+import { getStorageUrl } from '#/utilities/storage';
 
 const Container = styled.div`
   display: flex;
@@ -57,29 +55,19 @@ const BackgroundImage2 = styled(Image)`
   filter: blur(1px);
 `;
 
-export const PositionSelection = () => {
-  const [positions, setPositions] = useState<Position[] | null>(null);
+interface PositionSelectionProps {
+  user: User;
 
-  const user = useAuthStore((store) => store.user);
-  const setOnForward = useSignUpStore((store) => store.setOnForward);
+  onUserModified: (user: Partial<User>) => void;
+}
 
-  useEffect(() => {
-    async function fetchPositions() {
-      const fetched = await getPositions();
-      setPositions(fetched);
-    }
-
-    fetchPositions();
-  }, []);
-
-  useEffect(() => {
-    setOnForward(() => user?.positionId !== undefined);
-  }, [setOnForward, user]);
+export const PositionSelection: React.FC<PositionSelectionProps> = ({ user, onUserModified }) => {
+  const { data: positions } = usePositionsQuery();
 
   return (
     <Container>
       <Txt size="typo1" weight="bold">
-        {user?.nickname}님의 포지션을 설정해주세요!
+        {user.nickname}님의 포지션을 설정해주세요!
       </Txt>
       <PositionContainer>
         <PositionCards>
@@ -87,10 +75,10 @@ export const PositionSelection = () => {
             positions.map(({ id, displayName, imageUrl }) => (
               <PositionCard
                 key={id}
-                id={id}
                 name={displayName}
                 imageUrl={getStorageUrl(imageUrl)}
-                selected={id === user?.positionId}
+                selected={id === user.positionId}
+                onClick={() => onUserModified({ positionId: id })}
               />
             ))}
         </PositionCards>

@@ -34,7 +34,7 @@ const StyledInput = styled.input`
 
 interface ToggleProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-export const Toggle = ({ checked, ...props }: ToggleProps) => {
+export const Toggle: React.FC<ToggleProps> = ({ checked, ...props }) => {
   return (
     <ToggleOutBlock checked={checked}>
       <ToggleInBlock checked={checked} />

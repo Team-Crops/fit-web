@@ -1,12 +1,10 @@
-'use client';
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
-import { useUser } from '#/hooks/use-user';
-import { useSignInStore } from '#/stores/sign-in';
+import { useUserMutation } from '#/hooks/use-user';
+import { useAuthStore } from '#/stores/auth';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
@@ -108,16 +106,27 @@ const TextContainer = styled.div`
   align-items: center;
 `;
 
-export const SignUpCompletePopup = () => {
+interface SignUpCompletePopupProps {
+  onCancel: () => void;
+}
+
+export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCancel }) => {
   const [showProfileVisibilityTooltip, setShowProfileVisibilityTooltip] = useState(false);
 
-  const { data: user, mutate: mutateUser } = useUser();
+  const user = useAuthStore((store) => store.user);
+  const setUser = useAuthStore((store) => store.setUser);
 
-  const closePopup = useSignInStore((store) => store.closePopup);
+  const { data: mutatedUser, trigger: mutateUser, isMutating: isMutatingUser } = useUserMutation();
+
+  useEffect(() => {
+    if (mutatedUser) {
+      setUser({ ...mutatedUser });
+    }
+  }, [mutatedUser, setUser]);
 
   return (
     <Container>
-      <CloseButton icon="cross" size={40} onClick={() => closePopup()} />
+      <CloseButton icon="cross" size={40} onClick={() => onCancel()} />
       <ProfileVisibilityToggleContainer>
         <Tooltip show={showProfileVisibilityTooltip}>
           <Txt size="typo6" weight="regular">
@@ -134,7 +143,8 @@ export const SignUpCompletePopup = () => {
           내 프로필 공개
         </Txt>
         <Toggle
-          checked={user?.isOpenProfile}
+          checked={!!user?.isOpenProfile}
+          disabled={isMutatingUser}
           onChange={(e) => mutateUser({ isOpenProfile: e.target.checked })}
         />
       </ProfileVisibilityToggleContainer>
@@ -155,7 +165,7 @@ export const SignUpCompletePopup = () => {
         </TextContainer>
       </ContentContainer>
       <Link href="/mypage">
-        <Button variant="round" height="70" color="primary" onClick={() => closePopup()}>
+        <Button variant="round" height="70" color="primary" onClick={() => onCancel()}>
           포트폴리오 업로드 하러가기
         </Button>
       </Link>

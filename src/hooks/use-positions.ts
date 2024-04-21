@@ -1,34 +1,25 @@
-'use client';
+import useSWR from 'swr';
 
-import { useEffect, useState } from 'react';
+import { fitFetcher } from '#/utilities/fetch';
 
-import { getPositions } from '#/actions/skill-set';
-import { Position } from '#/entities/position';
+const POSITIONS_QUERY_KEY = '/v1/skill-set/position';
 
-export function usePositions() {
-  const [{ data, error, isLoading, isError }, set] = useState<{
-    data: Position[] | null;
-    error: any;
-    isLoading: boolean;
-    isError: boolean;
-  }>({
-    data: null,
-    error: null,
-    isLoading: true,
-    isError: false,
-  });
+interface PositionsQueryResponse {
+  positionList: {
+    id: number;
+    displayName: string;
+    imageUrl: string;
+    skillList: {
+      id: number;
+      displayName: string;
+    }[];
+  }[];
+}
 
-  useEffect(() => {
-    async function fetchPositions() {
-      try {
-        const positions = await getPositions();
-        set({ data: positions, error: null, isLoading: false, isError: false });
-      } catch (error) {
-        set({ data: null, error, isLoading: false, isError: true });
-      }
-    }
-    fetchPositions();
-  }, []);
-
-  return { data, error, isLoading, isError };
+export function usePositionsQuery() {
+  const { data, ...others } = useSWR<PositionsQueryResponse>(POSITIONS_QUERY_KEY, fitFetcher, {});
+  return {
+    data: data?.positionList,
+    ...others,
+  };
 }

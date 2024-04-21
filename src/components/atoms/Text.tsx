@@ -90,14 +90,14 @@ export interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
   textAlign?: CSSProperties['textAlign'];
 }
 
-export const Txt = ({
+export const Txt: React.FC<TxtProps> = ({
   size = 'typo4',
   weight = 'medium',
   color = 'inherit',
   marginBottom = 0,
   children,
   ...props
-}: TxtProps) => {
+}) => {
   return (
     <StyledTxt size={size} weight={weight} color={color} marginBottom={marginBottom} {...props}>
       {children}

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
-import { SignInButtons } from '#molecules/SignInButtons';
+import { LoginButtons } from '#molecules/LoginButtons';
 
 const Container = styled.div`
   position: relative;
@@ -28,7 +28,7 @@ const Container = styled.div`
   }
 `;
 
-export const SignInPopup: React.FC = () => {
+export const LoginPopup: React.FC = () => {
   return (
     <Container>
       <Txt size="typo0" weight="bold" marginBottom={30}>
@@ -41,10 +41,10 @@ export const SignInPopup: React.FC = () => {
         간편 로그인으로 서비스를 이용해보세요{' '}
         <Icons icon="emojiWinkingFace" width={20} height={20} />
       </Txt>
-      <SignInButtons>
-        <SignInButtons.Button provider="kakao" />
-        <SignInButtons.Button provider="google" />
-      </SignInButtons>
+      <LoginButtons>
+        <LoginButtons.Button platform="kakao" />
+        <LoginButtons.Button platform="google" />
+      </LoginButtons>
     </Container>
   );
 };

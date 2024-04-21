@@ -9,10 +9,6 @@ import _ from 'lodash';
 
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
-import { MatchingStep, updateMatchingStep } from '#/redux/features/matching/slice';
-import { useGetRegionsQuery } from '#/redux/features/region/api';
-import { useGetSkillsQuery } from '#/redux/features/skill-set/api';
-import { useAppDispatch, useAppSelector } from '#/redux/hooks';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`

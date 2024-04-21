@@ -7,10 +7,9 @@ import { Button } from '#/components/atoms/Button';
 import { Divider } from '#/components/atoms/Divider';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { Skill } from '#/entities/skill';
-import { usePositions } from '#/hooks/use-positions';
-import { useUser } from '#/hooks/use-user';
-import { useSignUpStore } from '#/stores/sign-up';
+import { usePositionsQuery } from '#/hooks/use-positions';
+import { User } from '#/types';
+import { Skill } from '#/types/skill';
 
 const Container = styled.div`
   display: flex;
@@ -92,51 +91,38 @@ const SkillButton = styled(Button)<{ loading?: boolean }>`
     `}
 `;
 
-export const ToolAvailabilitySubmission = () => {
-  const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
-  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+interface ToolAvailabilitySubmissionProps {
+  user: User;
+  onUserModified: (modified: Partial<User>) => void;
+}
+
+export const ToolAvailabilitySubmission: React.FC<ToolAvailabilitySubmissionProps> = ({
+  user,
+  onUserModified,
+}) => {
+  const [selectedPosition, setSelectedPosition] = useState<number | null>(user.positionId);
   const [skills, setSkills] = useState<Skill[]>([]);
 
-  const { data: positions, isLoading } = usePositions();
-  const { data: user, mutate: mutateUser, isError } = useUser();
+  const { data: positions, isLoading: isLoadingPositions } = usePositionsQuery();
 
-  const setOnForward = useSignUpStore((store) => store.setOnForward);
-
-  const skillClickHandler = useCallback(
-    (skillId: number) => {
-      if (selectedSkills.includes(skillId)) {
-        setSelectedSkills((prev) => prev.filter((id) => id !== skillId));
-      } else {
-        setSelectedSkills((prev) => [...prev, skillId]);
+  const skillClickHandler = useCallback<(id: number) => void>(
+    (skillId) => {
+      if (user.skillIdList) {
+        if (user.skillIdList.includes(skillId)) {
+          onUserModified({ skillIdList: user.skillIdList.filter((id) => id !== skillId) });
+        } else {
+          onUserModified({ skillIdList: [...user.skillIdList, skillId] });
+        }
       }
     },
-    [selectedSkills]
+    [onUserModified, user.skillIdList]
   );
-
-  useEffect(() => {
-    if (user?.skillIdList) {
-      setSelectedSkills(user.skillIdList || []);
-    }
-  }, [user?.skillIdList]);
-
-  useEffect(() => {
-    if (positions && user?.positionId) {
-      setSelectedPosition(user.positionId);
-    }
-  }, [positions, user?.positionId]);
 
   useEffect(() => {
     if (positions && selectedPosition) {
       setSkills(positions.find((position) => position.id === selectedPosition)?.skillList || []);
     }
   }, [positions, selectedPosition]);
-
-  useEffect(() => {
-    setOnForward(async () => {
-      await mutateUser({ skillIdList: selectedSkills });
-      return !isError;
-    });
-  }, [isError, mutateUser, selectedSkills, setOnForward]);
 
   return (
     <Container>
@@ -152,7 +138,7 @@ export const ToolAvailabilitySubmission = () => {
       <SubmissionsContainer>
         <ToolsContainer>
           <PositionTabs>
-            {isLoading
+            {isLoadingPositions
               ? Array.from({ length: 5 }).map((_, index) => (
                   <PositionTab
                     key={index}
@@ -190,9 +176,12 @@ export const ToolAvailabilitySubmission = () => {
                 onClick={() => skillClickHandler(skill.id)}
                 variant="outlined"
                 height="50"
-                color={selectedSkills.includes(skill.id) ? 'primary' : 'secondary'}
+                color={user.skillIdList?.includes(skill.id) ? 'primary' : 'secondary'}
               >
-                <Txt size="typo5" weight={selectedSkills.includes(skill.id) ? 'medium' : 'regular'}>
+                <Txt
+                  size="typo5"
+                  weight={user.skillIdList?.includes(skill.id) ? 'medium' : 'regular'}
+                >
                   {skill.displayName}
                 </Txt>
               </SkillButton>

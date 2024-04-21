@@ -28,7 +28,7 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: TxtProps['color'];
 }
 
-export const Label = ({
+export const Label: React.FC<LabelProps> = ({
   text,
   position = 'top',
   gap = '12px',
@@ -37,7 +37,7 @@ export const Label = ({
   color = '#9e9e9e',
   children,
   ...props
-}: LabelProps) => {
+}) => {
   return (
     <Container
       gap={gap}

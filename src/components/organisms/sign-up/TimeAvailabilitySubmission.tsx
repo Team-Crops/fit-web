@@ -1,17 +1,15 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { getRegions } from '#/actions/region';
 import { Icons } from '#/components/atoms/Icons';
 import { Label } from '#/components/atoms/Label';
 import { Select } from '#/components/atoms/Select';
 import { Txt } from '#/components/atoms/Text';
-import { Region } from '#/entities/region';
-import { useUser } from '#/hooks/use-user';
-import { useSignUpStore } from '#/stores/sign-up';
+import { useRegionsQuery } from '#/hooks/use-regions';
+import { useUserMutation } from '#/hooks/use-user';
+import { useAuthStore } from '#/stores/auth';
+import { User } from '#/types';
 
 const Container = styled.div`
   display: flex;
@@ -33,53 +31,17 @@ const SubmissionsContainer = styled.div`
   gap: 40px;
 `;
 
-export const TimeAvailabilitySubmission = () => {
-  const [data, setData] = useState<{
-    projectCount: number | null;
-    regionId: number | null;
-    activityHour: number | null;
-  }>({
-    projectCount: null,
-    regionId: null,
-    activityHour: null,
-  });
+interface TimeAvailabilitySubmissionProps {
+  user: User;
 
-  const [regions, setRegions] = useState<Region[]>([]);
+  onUserModified: (modified: Partial<User>) => void;
+}
 
-  const { data: user, mutate: mutateUser, isError } = useUser();
-  const setOnForward = useSignUpStore((store) => store.setOnForward);
-
-  useEffect(() => {
-    async function fetchRegions() {
-      const regions = await getRegions();
-      setRegions(regions);
-    }
-    fetchRegions();
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      setData({
-        projectCount: user.projectCount ?? null,
-        regionId: user.regionId ?? null,
-        activityHour: user.activityHour ?? null,
-      });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const { projectCount, regionId, activityHour } = data;
-
-    if (projectCount && regionId && activityHour) {
-      setOnForward(async () => {
-        await mutateUser({ projectCount, regionId, activityHour });
-        return !isError;
-      });
-    } else {
-      setOnForward(null);
-    }
-  }, [data, isError, setOnForward, mutateUser]);
-
+export const TimeAvailabilitySubmission: React.FC<TimeAvailabilitySubmissionProps> = ({
+  user,
+  onUserModified,
+}) => {
+  const { data: regions } = useRegionsQuery();
   return (
     <Container>
       <TitleContainer>
@@ -94,8 +56,9 @@ export const TimeAvailabilitySubmission = () => {
       <SubmissionsContainer>
         <Label text="프로젝트 경험 수">
           <Select
-            value={data.projectCount ?? 0}
-            onChange={(e) => setData({ ...data, projectCount: parseInt(e.target.value, 10) })}
+            width="100%"
+            value={user.projectCount ?? 0}
+            onChange={(e) => onUserModified({ projectCount: parseInt(e.target.value, 10) })}
           >
             {[...Array(4)].map((_, i, arr) => (
               <Select.Option key={i} value={i}>
@@ -106,10 +69,11 @@ export const TimeAvailabilitySubmission = () => {
         </Label>
         <Label text="주 활동 지역">
           <Select
-            value={data.regionId ?? 0}
-            onChange={(e) => setData({ ...data, regionId: parseInt(e.target.value, 10) })}
+            width="100%"
+            value={user.regionId ?? 0}
+            onChange={(e) => onUserModified({ regionId: parseInt(e.target.value, 10) })}
           >
-            {regions.map((region) => (
+            {regions?.map((region) => (
               <Select.Option key={region.id} value={region.id}>
                 {region.displayName}
               </Select.Option>
@@ -118,8 +82,9 @@ export const TimeAvailabilitySubmission = () => {
         </Label>
         <Label text="활동 가능 시간">
           <Select
-            value={data.activityHour ?? 0}
-            onChange={(e) => setData({ ...data, activityHour: parseInt(e.target.value, 10) })}
+            width="100%"
+            value={user.activityHour ?? 0}
+            onChange={(e) => onUserModified({ activityHour: parseInt(e.target.value, 10) })}
           >
             {[3, 6, 12, 24].map((n) => (
               <Select.Option key={n} value={n}>

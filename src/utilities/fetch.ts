@@ -1,6 +1,6 @@
 import returnFetch from 'return-fetch';
 
-import { getToken } from '#/actions/session';
+import { getTokens } from '#/utilities/session';
 
 export const fitFetch = returnFetch({
   baseUrl: 'http://dev-api.f-it.team',
@@ -8,12 +8,20 @@ export const fitFetch = returnFetch({
     'Content-Type': 'application/json',
   },
   interceptors: {
-    request: async ([url, options]) => {
-      const token = await getToken();
-      if (token && options?.headers) {
-        (options.headers as Headers).append('Authorization', `Bearer ${token}`);
+    request: async ([path, init = {}]) => {
+      let tokens = getTokens();
+      if (tokens) {
+        const headers = new Headers(init.headers);
+        headers.set('Authorization', `Bearer ${tokens.accessToken}`);
+        init.headers = headers;
       }
-      return [url, options];
+      return [path, init];
     },
   },
 });
+
+export const fitFetcher = async <T>(...args: Parameters<typeof fitFetch>) => {
+  const res = await fitFetch(...args);
+  const json = await res.json();
+  return res.ok ? (json as T) : Promise.reject(json as Error);
+};

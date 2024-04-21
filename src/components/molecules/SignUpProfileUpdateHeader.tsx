@@ -1,12 +1,9 @@
-'use client';
-
-import { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { useSignUpStore } from '#/stores/sign-up';
 import { SignUpStep } from '#/types/sign-up-step';
 import { ProgressBar, ProgressBarProps } from '#molecules/ProgressBar';
 
@@ -34,8 +31,8 @@ const ButtonsContainer = styled.div`
   padding: 0 40px;
 `;
 
-const IconButton = styled(Icons)<{ disabled: boolean }>`
-  cursor: pointer;
+const IconButton = styled(Icons)<{ disabled?: boolean }>`
+  ${({ disabled }) => !disabled && 'cursor: pointer;'}
 `;
 
 const TextContainer = styled.div`
@@ -54,62 +51,53 @@ const TextContainer = styled.div`
 `;
 
 const stepNames: Partial<Record<SignUpStep, string>> = {
-  [SignUpStep.PositionSelection]: '포지션',
-  [SignUpStep.ProfileDetailsSubmission]: '회원정보',
-  [SignUpStep.TimeAvailabilitySubmission]: '활동정보',
-  [SignUpStep.ToolAvailabilitySubmission]: '활동정보',
+  [SignUpStep.POSITION_SELECTION]: '포지션',
+  [SignUpStep.PROFILE_DETAILS_SUBMISSION]: '회원정보',
+  [SignUpStep.TIME_AVAILABILITY_SUBMISSION]: '활동정보',
+  [SignUpStep.TOOL_AVAILABILITY_SUBMISSION]: '활동정보',
 };
 
-interface SignUpProfileUpdateHeaderProps extends Omit<ProgressBarProps, 'current' | 'total'> {}
+interface SignUpProfileUpdateHeaderProps extends Omit<ProgressBarProps, 'current' | 'total'> {
+  step: SignUpStep;
+  onNextClick: () => void;
+  onPrevClick: () => void | Promise<void>;
 
-export const SignUpProfileUpdateHeader = ({ ...props }: SignUpProfileUpdateHeaderProps) => {
-  const { step, setStep, onForward, setOnForward } = useSignUpStore();
+  canProceed: boolean;
+}
 
-  const onBackwardClick = useCallback(() => step && setStep(step - 1), [setStep, step]);
-  const onForwardClick = useCallback(async () => {
-    if (step && onForward && (await onForward())) {
-      setStep(step + 1);
-      setOnForward(null);
-    }
-  }, [onForward, setOnForward, setStep, step]);
-
-  const current = useMemo(() => (step ? step - SignUpStep.PositionSelection + 1 : 1), [step]);
-  const total = 4;
-
-  const enabledBackward = useMemo(() => (step ? step > SignUpStep.ProfileCreation : false), [step]);
-  const enabledForward = useMemo(() => onForward !== null, [onForward]);
-  const progressName = useMemo(() => {
-    if (step && stepNames[step]) {
-      return stepNames[step];
-    }
-    return '';
-  }, [step]);
-
+export const SignUpProfileUpdateHeader = ({
+  step,
+  onNextClick,
+  onPrevClick,
+  canProceed,
+  ...props
+}: SignUpProfileUpdateHeaderProps) => {
+  const current = useMemo(() => step - SignUpStep.POSITION_SELECTION + 1, [step]);
+  const total = SignUpStep.COMPLETE - SignUpStep.POSITION_SELECTION;
   return (
     <Container {...props}>
       <StyledProgressBar current={current} total={total} />
       <ButtonsContainer>
         <IconButton
-          icon={enabledBackward ? 'arrowBackwardOutlined' : 'arrowBackward'}
+          icon={'arrowBackwardOutlined'}
           width={40}
           height={40}
-          onClick={onBackwardClick}
-          disabled={enabledBackward}
+          onClick={() => onPrevClick()}
         />
         <TextContainer>
           <Txt size="typo6" weight="bold">
             {current}/{total}
           </Txt>
           <Txt size="typo6" weight="medium">
-            {progressName}
+            {stepNames[step]}
           </Txt>
         </TextContainer>
         <IconButton
-          icon={enabledForward ? 'arrowForwardOutlined' : 'arrowForward'}
+          icon={canProceed ? 'arrowForwardOutlined' : 'arrowForward'}
           width={40}
           height={40}
-          onClick={onForwardClick}
-          disabled={enabledForward}
+          onClick={() => canProceed && onNextClick()}
+          disabled={!canProceed}
         />
       </ButtonsContainer>
     </Container>

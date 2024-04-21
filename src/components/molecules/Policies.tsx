@@ -14,6 +14,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  margin: 50px;
+
   text-align: right;
 `;
 
@@ -101,7 +104,7 @@ interface PolicyProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Policy = ({ title, text, value, disabled, onChange }: PolicyProps) => {
+const Policy: React.FC<PolicyProps> = ({ title, text, value, disabled, onChange }) => {
   const [isExpanded, setExpanded] = useState(false);
   return (
     <PolicyContainer>

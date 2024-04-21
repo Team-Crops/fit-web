@@ -46,7 +46,7 @@ const CancelButton = styled.div`
 interface PortfolioFileBlockProps {
   isEmpty?: boolean;
 }
-export const PortfolioFileBlock = ({ isEmpty }: PortfolioFileBlockProps) => {
+export const PortfolioFileBlock: React.FC<PortfolioFileBlockProps> = ({ isEmpty }) => {
   return (
     <Block isEmpty={isEmpty}>
       {isEmpty ? (

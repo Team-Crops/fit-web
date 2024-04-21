@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { getLoginPage } from '#/actions/auth';
 import { Button } from '#/components/atoms/Button';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { SocialPlatform } from '#/entities/socialPlatform';
+import { useLoginPageQuery } from '#/hooks/use-login-page';
+import { SocialPlatform } from '#/types/social-platform';
 
-const StyledButton = styled(Button)<SocialSignInButtonProps>`
+const StyledButton = styled(Button)<SocialLoginButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,8 +28,8 @@ const StyledButton = styled(Button)<SocialSignInButtonProps>`
     box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
   }
 
-  ${({ provider }) => {
-    switch (provider) {
+  ${({ platform }) => {
+    switch (platform) {
       case 'kakao':
         return css`
           color: #616161;
@@ -62,39 +62,31 @@ const StyledButton = styled(Button)<SocialSignInButtonProps>`
   }}
 `;
 
-interface SocialSignInButtonProps {
-  provider: SocialPlatform;
+interface SocialLoginButtonProps {
+  platform: SocialPlatform;
 }
 
-export const SocialSignInButton = ({ provider }: SocialSignInButtonProps) => {
+export const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({ platform }) => {
   const text: Record<SocialPlatform, string> = {
     kakao: '카카오톡으로 로그인하기',
     google: '구글로 로그인하기',
   };
 
-  const [href, setHref] = useState('');
-
-  useEffect(() => {
-    async function fetchUrl() {
-      const url = await getLoginPage(provider);
-      setHref(url);
-    }
-    fetchUrl();
-  }, [provider]);
+  const { data: href, isLoading } = useLoginPageQuery(platform);
 
   return (
-    <Link href={href}>
+    <Link href={href ?? ''}>
       <StyledButton
-        provider={provider}
+        platform={platform}
         variant={'angular'}
         height={'60'}
         color={'secondary'}
-        disabled={href === ''}
+        disabled={isLoading}
       >
-        <Icons icon={provider} width={32} height={32} />
+        <Icons icon={platform} width={32} height={32} />
         <div style={{ width: '16px' }} />
         <Txt size="typo5" weight="medium">
-          {text[provider]}
+          {text[platform]}
         </Txt>
       </StyledButton>
     </Link>

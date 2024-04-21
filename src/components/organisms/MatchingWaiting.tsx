@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -17,9 +15,7 @@ import { Txt } from '#/components/atoms/Text';
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
-import { exampleUsers } from '#/entities/user';
-import { MatchingStep, updateMatchingStep } from '#/redux/features/matching/slice';
-import { useAppDispatch } from '#/redux/hooks';
+import { exampleUsers } from '#/types/user';
 
 const Container = styled.div`
   display: flex;
@@ -113,14 +109,12 @@ const BackgroundDoughnut = styled(Image)`
   animation: float 2s ease-in-out infinite;
 `;
 
-export const MatchingQueued = () => {
-  const dispatch = useAppDispatch();
+interface MatchingQueuedProps extends React.HTMLAttributes<HTMLDivElement> {
+  stopQueuing: () => void;
+}
 
+export const MatchingQueued = ({ stopQueuing }: MatchingQueuedProps) => {
   const router = useRouter();
-
-  const stopQueuing = useCallback(() => {
-    dispatch(updateMatchingStep(MatchingStep.QUEUING - 1));
-  }, [dispatch]);
 
   const goHome = useCallback(() => {
     router.push('/');

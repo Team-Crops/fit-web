@@ -1,16 +1,10 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Input } from '#/components/atoms/Input';
-import { Label } from '#/components/atoms/Label';
-import { Txt } from '#/components/atoms/Text';
+import { Input, Label, Txt } from '#/components/atoms';
 import { CareerSelect } from '#/components/molecules/CareerSelect';
-import { useUser } from '#/hooks/use-user';
-import { useSignUpStore } from '#/stores/sign-up';
-import { UserBackgroundStatus, isUserStudent, isUserWorker } from '#/types/user';
+import { User, UserBackgroundStatus, isUserStudent, isUserWorker } from '#/types/user';
 
 const Container = styled.div`
   display: flex;
@@ -38,46 +32,16 @@ const Row = styled.div`
   gap: 20px;
 `;
 
-export const ProfileDetailsSubmission = () => {
-  const [details, setDetails] = useState<{
-    username: string | null;
-    email: string | null;
-    backgroundStatus: UserBackgroundStatus | null;
-    backgroundText: string | null;
-  }>({
-    username: null,
-    email: null,
-    backgroundStatus: null,
-    backgroundText: null,
-  });
+interface ProfileDetailsSubmissionProps {
+  user: User;
 
-  const { data: user, mutate: mutateUser, isError } = useUser();
-  const setOnForward = useSignUpStore((store) => store.setOnForward);
+  onUserModified: (updated: Partial<User>) => void;
+}
 
-  useEffect(() => {
-    if (user) {
-      setDetails({
-        username: user.username ?? null,
-        email: user.email ?? null,
-        backgroundStatus: user.backgroundStatus ?? null,
-        backgroundText: user.backgroundText ?? null,
-      });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const { username, email, backgroundStatus, backgroundText } = details;
-
-    if (username && email && backgroundStatus && backgroundText) {
-      setOnForward(async () => {
-        await mutateUser({ username, email, backgroundStatus, backgroundText });
-        return !isError;
-      });
-    } else {
-      setOnForward(null);
-    }
-  }, [details, isError, mutateUser, setOnForward]);
-
+export const ProfileDetailsSubmission: React.FC<ProfileDetailsSubmissionProps> = ({
+  user,
+  onUserModified,
+}) => {
   return (
     <Container>
       <TitleContainer>
@@ -95,8 +59,8 @@ export const ProfileDetailsSubmission = () => {
             variant="standard"
             typo="typo3"
             weight="medium"
-            value={details.username ?? ''}
-            onChange={(e) => setDetails({ ...details, username: e.target.value })}
+            value={user.username ?? ''}
+            onChange={(e) => onUserModified({ username: e.target.value })}
           />
         </Label>
         <Label text="이메일">
@@ -104,25 +68,25 @@ export const ProfileDetailsSubmission = () => {
             variant="standard"
             typo="typo3"
             weight="medium"
-            value={details.email ?? ''}
-            onChange={(e) => setDetails({ ...details, email: e.target.value })}
+            value={user.email ?? ''}
+            onChange={(e) => onUserModified({ email: e.target.value })}
           />
         </Label>
         <Row>
           <Label text="학력/경력" style={{ flex: 1 }}>
             <CareerSelect
-              value={details.backgroundStatus ?? ''}
+              value={user.backgroundStatus ?? ''}
               onChange={(e) =>
-                setDetails({ ...details, backgroundStatus: e.target.value as UserBackgroundStatus })
+                onUserModified({ backgroundStatus: e.target.value as UserBackgroundStatus })
               }
             />
           </Label>
-          {details.backgroundStatus && (
+          {user.backgroundStatus && (
             <Label
               text={
-                isUserStudent(details.backgroundStatus)
+                isUserStudent(user.backgroundStatus)
                   ? '학교명'
-                  : isUserWorker(details.backgroundStatus)
+                  : isUserWorker(user.backgroundStatus)
                     ? '회사명'
                     : '그룹명'
               }
@@ -132,8 +96,8 @@ export const ProfileDetailsSubmission = () => {
                 variant="standard"
                 typo="typo3"
                 weight="medium"
-                value={details.backgroundText ?? ''}
-                onChange={(e) => setDetails({ ...details, backgroundText: e.target.value })}
+                value={user.backgroundText ?? ''}
+                onChange={(e) => onUserModified({ backgroundText: e.target.value })}
               />
             </Label>
           )}

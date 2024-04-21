@@ -1,4 +1,4 @@
-import { Skill } from '#/entities/skill';
+import { Skill } from '#/types/skill';
 
 export interface Position {
   id: number;

@@ -54,7 +54,7 @@ const SelectContainer = styled.div<{ width?: string }>`
   ${({ width }) => width !== undefined && `width: ${width};`}
 `;
 
-const ArrowIcon = styled(Icons)<{ $error: boolean; $opened: boolean }>`
+const ArrowIcon = styled(Icons)<{ isError: boolean; isOpened: boolean }>`
   position: absolute;
   top: 50%;
   right: 10px;
@@ -65,16 +65,16 @@ const ArrowIcon = styled(Icons)<{ $error: boolean; $opened: boolean }>`
 
   transition: 0.25s;
 
-  ${({ $error, $opened }) =>
-    $error
+  ${({ isError, isOpened }) =>
+    isError
       ? css`
-          color: ${$opened ? '#ff0800' : '#bdbdbd'};
+          color: ${isOpened ? '#ff0800' : '#bdbdbd'};
         `
       : css`
-          color: ${$opened ? '#ff706c' : '#bdbdbd'};
+          color: ${isOpened ? '#ff706c' : '#bdbdbd'};
         `}
-  ${({ $opened }) =>
-    $opened &&
+  ${({ isOpened }) =>
+    isOpened &&
     css`
       transform: translateY(-50%) rotate(-180deg);
     `}
@@ -208,7 +208,10 @@ export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string;
 }
 
-export const Select = ({
+export const Select: React.FC<SelectProps> & {
+  OptionGroup: React.FC<OptionGroupProps>;
+  Option: React.FC<OptionProps>;
+} = ({
   className,
   error = false,
   helperText,
@@ -218,7 +221,7 @@ export const Select = ({
   children,
   width,
   ...props
-}: SelectProps) => {
+}) => {
   const [isOpened, setOpened] = useState(false);
   const [label, setLabel] = useState<string | undefined>();
   const [optionsPosition, setOptionsPosition] = useState<'top' | 'bottom'>('bottom');
@@ -255,7 +258,7 @@ export const Select = ({
         <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
           {label ?? placeholder}
-          <ArrowIcon icon="arrowDown" $error={error} $opened={isOpened} />
+          <ArrowIcon icon="arrowDown" isError={error} isOpened={isOpened} />
           <OptionList position={optionsPosition} hidden={!isOpened} ref={optionsRef}>
             {children}
           </OptionList>
@@ -271,7 +274,7 @@ type OptionGroupProps = {
   children?: ReactNode;
 };
 
-const OptionGroup = ({ label, children }: OptionGroupProps) => (
+const OptionGroup: React.FC<OptionGroupProps> = ({ label, children }) => (
   <OptionGroupContainer>
     <OptionGroupLabel>{label}</OptionGroupLabel>
     <OptionGroupHr />
@@ -286,7 +289,7 @@ type OptionProps = {
   children?: ReactNode;
 };
 
-const Option = ({ value, children }: OptionProps) => {
+const Option: React.FC<OptionProps> = ({ value, children }) => {
   const { value: currentValue, onChange, setLabel } = useContext(SelectContext);
 
   const selected = useMemo(() => value == currentValue, [currentValue, value]);
