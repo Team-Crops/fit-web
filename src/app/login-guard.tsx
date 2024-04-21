@@ -49,7 +49,7 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
   }, [user, policyAgreed]);
 
   useEffect(() => {
-    if (user?.id && step !== SignUpStep.COMPLETE) {
+    if (user?.id && step && step !== SignUpStep.COMPLETE) {
       setIsPopupOpened(true);
     }
   }, [step, user?.id]);
