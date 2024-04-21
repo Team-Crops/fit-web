@@ -9,14 +9,14 @@ const ProfileImage = styled(Image)`
 `;
 
 interface UserProfileProps extends React.HTMLAttributes<HTMLDivElement> {
-  imageUrl: string | null;
-  nickname: string | null;
+  imageUrl?: string | null;
+  nickname?: string | null;
   size?: number;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({
-  imageUrl,
-  nickname,
+  imageUrl = null,
+  nickname = null,
   size = 48,
   ...props
 }) => {
