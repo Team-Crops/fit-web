@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { MatchingStep } from '#/types/matching-step';
+import { MATCHING_NOT_FOUND_CODE, useMatchingQuery } from '#/hooks/use-matching';
+import { MatchingStatus } from '#/types';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
 
 const Container = styled.div`
@@ -19,10 +20,21 @@ const Container = styled.div`
 `;
 
 export const Matching = () => {
-  const [step, setStep] = useState<MatchingStep>();
+  const [status, setStatus] = useState<MatchingStatus>(MatchingStatus.REGISTER);
+
+  const { data: matching, error } = useMatchingQuery();
+
+  useEffect(() => {
+    if (matching) {
+      setStatus(matching.status);
+    } else if (error && error.code === MATCHING_NOT_FOUND_CODE) {
+      setStatus(MatchingStatus.REGISTER);
+    }
+  }, [matching, error]);
+
   return (
     <Container>
-      <MatchingTitle />
+      <MatchingTitle status={status} />
     </Container>
   );
 };
