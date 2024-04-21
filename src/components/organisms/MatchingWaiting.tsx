@@ -15,6 +15,7 @@ import { Txt } from '#/components/atoms/Text';
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { useMatchingCancel } from '#/hooks/use-matching';
 import { exampleUsers } from '#/types/user';
 
 const Container = styled.div`
@@ -109,11 +110,11 @@ const BackgroundDoughnut = styled(Image)`
   animation: float 2s ease-in-out infinite;
 `;
 
-interface MatchingQueuedProps extends React.HTMLAttributes<HTMLDivElement> {
-  stopQueuing: () => void;
-}
+interface MatchingQueuedProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const MatchingQueued = ({ stopQueuing }: MatchingQueuedProps) => {
+export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
+  const { trigger: cancelMatching } = useMatchingCancel();
+
   const router = useRouter();
 
   const goHome = useCallback(() => {
@@ -168,16 +169,10 @@ export const MatchingQueued = ({ stopQueuing }: MatchingQueuedProps) => {
         />
       </QueuingContainer>
       <MatchingButtons>
-        <MatchingButtons.Button color="secondary" onClick={() => stopQueuing()}>
+        <MatchingButtons.Button color="secondary" onClick={() => cancelMatching()}>
           매칭 중단하기
         </MatchingButtons.Button>
         <MatchingButtons.Button onClick={() => goHome()}>홈으로 이동</MatchingButtons.Button>
-        <MatchingButtons.Button
-          color="secondary"
-          onClick={() => dispatch(updateMatchingStep(MatchingStep.MATCHED))}
-        >
-          [FOR TEST] 매칭 완료
-        </MatchingButtons.Button>
       </MatchingButtons>
     </Container>
   );

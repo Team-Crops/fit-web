@@ -9,6 +9,10 @@ import _ from 'lodash';
 
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { useMatchingStart } from '#/hooks/use-matching';
+import { useRegionsQuery } from '#/hooks/use-regions';
+import { useSkillsQuery } from '#/hooks/use-skills';
+import { useAuthStore } from '#/stores/auth';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
@@ -60,47 +64,48 @@ const DetailContainer = styled.div`
 
 interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 
-export const MatchingProfile = ({ ...props }: MatchingProfileProps) => {
-  const dispatch = useAppDispatch();
-  const me = useAppSelector((state) => state.user.me);
-  const { data: skills } = useGetSkillsQuery();
-  const { data: regions } = useGetRegionsQuery();
+export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
+  const { data: skills } = useSkillsQuery();
+  const { data: regions } = useRegionsQuery();
+  const { trigger: matchingStart } = useMatchingStart();
+
+  const user = useAuthStore((store) => store.user);
+  const mySkillNames = useMemo(
+    () => _.uniq(user?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
+    [skills, user?.skillIdList]
+  );
 
   const router = useRouter();
 
-  const mySkillNames = useMemo(
-    () => _.uniq(me?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
-    [me?.skillIdList, skills]
-  );
-
   const details: { name: string; value: string }[] = useMemo(
     () => [
-      { name: '학력/경력', value: me?.backgroundStatus ?? '' },
-      { name: '학교명', value: me?.backgroundText ?? '' },
+      { name: '학력/경력', value: user?.backgroundStatus ?? '-' },
+      { name: '학교명', value: user?.backgroundText ?? '-' },
       { name: '사용가능한 기술/툴', value: mySkillNames.join(', ') },
-      { name: '프로젝트 경험 수', value: `${me?.projectCount ?? 0}번` },
+      { name: '프로젝트 경험 수', value: `${user?.projectCount ?? '-'}번` },
       {
         name: '주 활동지역',
-        value: regions?.find((r) => r.id === me?.regionId)?.displayName ?? '',
+        value: regions?.find((r) => r.id === user?.regionId)?.displayName ?? '-',
       },
-      { name: '활동 가능 시간', value: `${me?.activityHour ?? 0}시간` },
-      { name: '포트폴리오', value: me?.portfolioUrl ?? '' },
+      { name: '활동 가능 시간', value: `${user?.activityHour ?? '-'}시간` },
+      { name: '포트폴리오', value: user?.portfolioUrl ?? '-' },
     ],
-    [me, mySkillNames, regions]
+    [
+      mySkillNames,
+      regions,
+      user?.activityHour,
+      user?.backgroundStatus,
+      user?.backgroundText,
+      user?.portfolioUrl,
+      user?.projectCount,
+      user?.regionId,
+    ]
   );
-
-  const editButtonClickHandler = useCallback<MouseEventHandler>(() => {
-    router.push('/mypage');
-  }, [router]);
-
-  const okButtonClickHandler = useCallback<MouseEventHandler>(() => {
-    dispatch(updateMatchingStep(MatchingStep.QUEUING));
-  }, [dispatch]);
 
   return (
     <Container>
       <ProfileContainer {...props}>
-        <ProfileCard user={me} size="large" />
+        <ProfileCard user={user} size="large" />
         <Details>
           <DetailsContainer>
             {details.map((detail, index) => (
@@ -117,10 +122,10 @@ export const MatchingProfile = ({ ...props }: MatchingProfileProps) => {
         </Details>
       </ProfileContainer>
       <MatchingButtons>
-        <MatchingButtons.Button color="secondary" onClick={editButtonClickHandler}>
+        <MatchingButtons.Button color="secondary" onClick={() => router.push('/mypage')}>
           수정하기
         </MatchingButtons.Button>
-        <MatchingButtons.Button onClick={okButtonClickHandler}>확인</MatchingButtons.Button>
+        <MatchingButtons.Button onClick={() => matchingStart()}>확인</MatchingButtons.Button>
       </MatchingButtons>
     </Container>
   );

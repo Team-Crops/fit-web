@@ -7,6 +7,9 @@ import styled from '@emotion/styled';
 import { MATCHING_NOT_FOUND_CODE, useMatchingQuery } from '#/hooks/use-matching';
 import { MatchingStatus } from '#/types';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
+import { MatchingRegister } from '#organisms/MatchingRegister';
+import { MatchingTalk } from '#organisms/MatchingTalk';
+import { MatchingWaiting } from '#organisms/MatchingWaiting';
 
 const Container = styled.div`
   display: flex;
@@ -25,6 +28,8 @@ export const Matching = () => {
   const { data: matching, error } = useMatchingQuery();
 
   useEffect(() => {
+    console.log('matching', matching);
+    console.log('error', error);
     if (matching) {
       setStatus(matching.status);
     } else if (error && error.code === MATCHING_NOT_FOUND_CODE) {
@@ -35,6 +40,13 @@ export const Matching = () => {
   return (
     <Container>
       <MatchingTitle status={status} />
+      {status === MatchingStatus.REGISTER ? (
+        <MatchingRegister />
+      ) : status === MatchingStatus.WAITING ? (
+        <MatchingWaiting />
+      ) : (
+        <MatchingTalk />
+      )}
     </Container>
   );
 };

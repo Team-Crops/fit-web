@@ -22,6 +22,10 @@ export const fitFetch = returnFetch({
 
 export const fitFetcher = async <T>(...args: Parameters<typeof fitFetch>) => {
   const res = await fitFetch(...args);
-  const json = await res.json();
-  return res.ok ? (json as T) : Promise.reject(json as Error);
+  try {
+    const json = await res.json();
+    return res.ok ? (json as T) : Promise.reject(json as Error);
+  } catch (error) {
+    return res.ok ? (null as T) : Promise.reject(error as Error);
+  }
 };
