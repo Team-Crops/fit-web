@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { useShallow } from 'zustand/react/shallow';
+
 import { Backdrop } from '#/components/atoms';
 import { SignUpCompletePopup } from '#/components/organisms/SignUpCompletePopup';
 import { SignUpProfileCreationPopup } from '#/components/organisms/SignUpProfileCreationPopup';
@@ -26,9 +28,11 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
   const setNextStep = () => setStep((step) => step && step + 1);
   const setPrevStep = () => setStep((step) => step && step - 1);
 
-  const user = useAuthStore((store) => store.user);
-  const setAuth = useAuthStore((store) => store.set);
-  const policyAgreed = useAuthStore((store) => store.policyAgreed);
+  const {
+    user,
+    policyAgreed,
+    set: setAuth,
+  } = useAuthStore(useShallow(({ user, policyAgreed, set }) => ({ user, policyAgreed, set })));
 
   useEffect(() => {
     async function fetchAuth() {

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import styled from '@emotion/styled';
 
 import { Icons } from '#/components/atoms/Icons';
@@ -7,8 +5,6 @@ import { Label } from '#/components/atoms/Label';
 import { Select } from '#/components/atoms/Select';
 import { Txt } from '#/components/atoms/Text';
 import { useRegionsQuery } from '#/hooks/use-regions';
-import { useUserMutation } from '#/hooks/use-user';
-import { useAuthStore } from '#/stores/auth';
 import { User } from '#/types';
 
 const Container = styled.div`

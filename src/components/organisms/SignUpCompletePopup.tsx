@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
+import { useShallow } from 'zustand/react/shallow';
+
 import { useUserMutation } from '#/hooks/use-user';
 import { useAuthStore } from '#/stores/auth';
 import { Icons } from '#atoms/Icons';
@@ -113,8 +115,7 @@ interface SignUpCompletePopupProps {
 export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCancel }) => {
   const [showProfileVisibilityTooltip, setShowProfileVisibilityTooltip] = useState(false);
 
-  const user = useAuthStore((store) => store.user);
-  const setUser = useAuthStore((store) => store.setUser);
+  const { user, setUser } = useAuthStore(useShallow(({ user, setUser }) => ({ user, setUser })));
 
   const { data: mutatedUser, trigger: mutateUser, isMutating: isMutatingUser } = useUserMutation();
 

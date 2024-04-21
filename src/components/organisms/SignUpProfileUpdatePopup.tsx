@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { useShallow } from 'zustand/react/shallow';
+
 import { useUserMutation } from '#/hooks/use-user';
 import { useAuthStore } from '#/stores/auth';
 import { User, SignUpStep } from '#/types';
@@ -44,8 +46,12 @@ export const SignUpProfileUpdatePopup: React.FC<SignUpProfileUpdatePopupProps> =
   const userModifyHandler = (updated: Partial<User>) =>
     setModifiedUser((user) => user && { ...user, ...updated });
 
-  const user = useAuthStore((store) => store.user);
-  const setUser = useAuthStore((store) => store.setUser);
+  const { user, setUser } = useAuthStore(
+    useShallow(({ user, setUser }) => ({
+      user,
+      setUser,
+    }))
+  );
 
   const { trigger: mutateUser, isMutating } = useUserMutation();
 
