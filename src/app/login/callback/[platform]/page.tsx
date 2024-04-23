@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { LoginCallback } from '#/components/templates/LoginCallback';
-import { SocialPlatform } from '#/entities/socialPlatform';
+import { SocialPlatform } from '#/types/social-platform';
 
 interface PathParams {
   platform: string;

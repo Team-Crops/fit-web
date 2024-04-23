@@ -13,6 +13,16 @@ import { Txt } from '#atoms/Text';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
+
+  margin: 50px;
+
+  text-align: right;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 30px;
 
   width: 700px;
@@ -62,21 +72,26 @@ export const PoliciesBox = ({
   ...props
 }: PoliciesBoxProps) => {
   return (
-    <Container {...props}>
-      {allChecked !== undefined && toggleAll && (
-        <>
-          <PolicyContainer>
-            <CheckBoxContainer>
-              <CheckBox checked={allChecked} onChange={toggleAll} disabled={disabled} />
-              <Txt size="typo4" weight="bold">
-                모두 동의합니다
-              </Txt>
-            </CheckBoxContainer>
-          </PolicyContainer>
-          <Divider />
-        </>
-      )}
-      {children}
+    <Container>
+      <Box {...props}>
+        {allChecked !== undefined && toggleAll && (
+          <>
+            <PolicyContainer>
+              <CheckBoxContainer>
+                <CheckBox checked={allChecked} onChange={toggleAll} disabled={disabled} />
+                <Txt size="typo4" weight="bold">
+                  모두 동의합니다
+                </Txt>
+              </CheckBoxContainer>
+            </PolicyContainer>
+            <Divider />
+          </>
+        )}
+        {children}
+      </Box>
+      <Txt size="typo5" weight="medium" color="#9e9e9e">
+        *필수 약관에 동의하셔야 F-IT 회원가입이 가능합니다.
+      </Txt>
     </Container>
   );
 };
@@ -89,7 +104,7 @@ interface PolicyProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Policy = ({ title, text, value, disabled, onChange }: PolicyProps) => {
+const Policy: React.FC<PolicyProps> = ({ title, text, value, disabled, onChange }) => {
   const [isExpanded, setExpanded] = useState(false);
   return (
     <PolicyContainer>

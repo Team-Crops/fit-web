@@ -51,7 +51,7 @@ export const MainDescriptionBlock = ({
         <Txt size={'typo2'} weight={'bold'} color="#FF908D">
           {title}
         </Txt>
-        <Txt size={'display2'} weight={'bold'} color="#212121">
+        <Txt size={'main2'} weight={'bold'} color="#212121">
           {bigDescription}
         </Txt>
         <Txt size={'typo3'} weight={'regular'} color="#616161">

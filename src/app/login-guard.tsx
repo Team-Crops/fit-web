@@ -1,85 +1,106 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import _ from 'lodash';
+import { useShallow } from 'zustand/react/shallow';
 
-import { Login } from '#/components/templates/Login';
-import { type PolicyType, policies } from '#/entities/policy';
-import { AuthStep, deleteAuth, updateAuth } from '#/redux/features/auth/slice';
-import { useLazyMeQuery, useLazyMyAgreementsQuery } from '#/redux/features/user/api';
-import { setMe } from '#/redux/features/user/slice';
-import { useAppDispatch, useAppSelector } from '#/redux/hooks';
+import { Backdrop } from '#/components/atoms';
+import { SignUpCompletePopup } from '#/components/organisms/SignUpCompletePopup';
+import { SignUpProfileCreationPopup } from '#/components/organisms/SignUpProfileCreationPopup';
+import { SignUpProfileUpdatePopup } from '#/components/organisms/SignUpProfileUpdatePopup';
+import { SignUpTermsPopup } from '#/components/organisms/SignUpTermsPopup';
+import { useAuthStore } from '#/stores/auth';
+import { PolicyAgreement, policies } from '#/types/policy';
+import { SignUpStep } from '#/types/sign-up-step';
+import { User } from '#/types/user';
+import { checkSignUpStep } from '#/utilities/check-sign-up-step';
+import { fitFetcher } from '#/utilities/fetch';
+import { getTokens } from '#/utilities/session';
 
 interface LoginGuardProps {
   children: React.ReactNode;
 }
 
-export const LoginGuard = ({ children }: LoginGuardProps) => {
-  const dispatch = useAppDispatch();
+export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
+  const [isPopupOpened, setIsPopupOpened] = useState(false);
+  const [step, setStep] = useState<SignUpStep | null>(null);
 
-  const showLoginPopup = useAppSelector((state) => state.auth.showLoginPopup);
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
-  const refreshToken = useAppSelector((state) => state.auth.refreshToken);
+  const setNextStep = () => setStep((step) => step && step + 1);
+  const setPrevStep = () => setStep((step) => step && step - 1);
 
-  const [queryMe, { data: me, isError: queryMeError }] = useLazyMeQuery();
-  const [queryAgreements, { data: agreements }] = useLazyMyAgreementsQuery();
-
-  useEffect(() => {
-    const storageAccessToken = localStorage.getItem('accessToken');
-    const storageRefreshToken = localStorage.getItem('refreshToken');
-    if (storageAccessToken && storageRefreshToken) {
-      dispatch(updateAuth({ accessToken: storageAccessToken, refreshToken: storageRefreshToken }));
-    }
-  }, [dispatch]);
+  const {
+    user,
+    policyAgreed,
+    set: setAuth,
+  } = useAuthStore(useShallow(({ user, policyAgreed, set }) => ({ user, policyAgreed, set })));
 
   useEffect(() => {
-    if (accessToken && refreshToken) {
-      queryMe();
-      queryAgreements();
-    }
-  }, [accessToken, queryAgreements, queryMe, refreshToken]);
-
-  useEffect(() => {
-    if (me && agreements) {
-      let step: AuthStep;
-
-      if (
-        _.some(
-          policies,
-          (policy, policyName) => policy.required && !agreements[policyName as PolicyType]
-        )
-      ) {
-        step = AuthStep.Policies;
-      } else if (!me.nickname) {
-        step = AuthStep.UserInfo;
-      } else if (!me.positionId) {
-        step = AuthStep.PositionInfo;
-      } else if (!me.username || !me.email || !me.backgroundStatus || !me.backgroundText) {
-        step = AuthStep.PersonalInfo;
-      } else if (!me.projectCount || !me.regionId || !me.activityHour) {
-        step = AuthStep.ActivityInfo;
-      } else if (!me.skillIdList) {
-        step = AuthStep.SkillInfo;
-      } else {
-        step = AuthStep.Complete;
+    async function fetchAuth() {
+      const tokens = getTokens();
+      if (tokens && !user?.id) {
+        const user = await fetchUser();
+        const policyAgreed = await fetchPolicyAgreed();
+        setAuth({ user, policyAgreed });
       }
-
-      dispatch(setMe(me));
-      dispatch(updateAuth({ step, showLoginPopup: step !== AuthStep.Complete }));
     }
-  }, [agreements, dispatch, me]);
+    fetchAuth();
+  }, [user?.id, setAuth]);
 
   useEffect(() => {
-    if (queryMeError) {
-      dispatch(deleteAuth());
+    if (user && policyAgreed !== null) {
+      setStep(checkSignUpStep(user, policyAgreed));
     }
-  }, [dispatch, queryMeError]);
+  }, [user, policyAgreed]);
+
+  useEffect(() => {
+    if (user?.id && step && step !== SignUpStep.COMPLETE) {
+      setIsPopupOpened(true);
+    }
+  }, [step, user?.id]);
+
+  const popupComponent = useMemo(() => {
+    switch (step) {
+      case SignUpStep.TERMS_AGREEMENT:
+        return <SignUpTermsPopup onSuccess={() => setNextStep()} />;
+      case SignUpStep.PROFILE_CREATION:
+        return <SignUpProfileCreationPopup onSuccess={() => setNextStep()} />;
+      case SignUpStep.POSITION_SELECTION:
+      case SignUpStep.PROFILE_DETAILS_SUBMISSION:
+      case SignUpStep.TIME_AVAILABILITY_SUBMISSION:
+      case SignUpStep.TOOL_AVAILABILITY_SUBMISSION:
+        return (
+          <SignUpProfileUpdatePopup
+            step={step}
+            onSuccess={() => setNextStep()}
+            onCancel={() => setPrevStep()}
+          />
+        );
+      case SignUpStep.COMPLETE:
+        return <SignUpCompletePopup onCancel={() => setIsPopupOpened(false)} />;
+      default:
+        return null;
+    }
+  }, [step]);
 
   return (
     <>
       {children}
-      {showLoginPopup && <Login />}
+      {isPopupOpened && popupComponent && <Backdrop>{popupComponent}</Backdrop>}
     </>
   );
 };
+
+async function fetchUser(): Promise<User> {
+  return await fitFetcher<User>('/v1/user');
+}
+
+async function fetchPolicyAgreed(): Promise<boolean> {
+  const termAgreements = await fitFetcher<{ policyAgreementList: PolicyAgreement[] }>(
+    '/v1/user/policy-agreement'
+  );
+  return Object.values(policies).every(({ type }) =>
+    termAgreements.policyAgreementList.some(
+      (agreement) => agreement.policyType === type && agreement.isAgree
+    )
+  );
+}

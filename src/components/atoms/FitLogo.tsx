@@ -5,7 +5,7 @@ interface LogoProps {
   height: number;
   color?: 'primary' | 'gray';
 }
-export const FitLogo = ({ width, height, color = 'primary' }: LogoProps) => {
+export const FitLogo: React.FC<LogoProps> = ({ width, height, color = 'primary' }) => {
   const colorMap = {
     primary: '#FF706C',
     gray: '#757575',

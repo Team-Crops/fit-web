@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { css } from '@emotion/react';
@@ -8,8 +9,8 @@ import styled from '@emotion/styled';
 import { Button } from '#/components/atoms/Button';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { SocialPlatform } from '#/entities/socialPlatform';
-import { useLoginPageQuery } from '#/redux/features/auth/api';
+import { useLoginPageQuery } from '#/hooks/use-login-page';
+import { SocialPlatform } from '#/types/social-platform';
 
 const StyledButton = styled(Button)<SocialLoginButtonProps>`
   display: flex;
@@ -27,8 +28,8 @@ const StyledButton = styled(Button)<SocialLoginButtonProps>`
     box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
   }
 
-  ${({ loginServer }) => {
-    switch (loginServer) {
+  ${({ platform }) => {
+    switch (platform) {
       case 'kakao':
         return css`
           color: #616161;
@@ -62,29 +63,30 @@ const StyledButton = styled(Button)<SocialLoginButtonProps>`
 `;
 
 interface SocialLoginButtonProps {
-  loginServer: SocialPlatform;
+  platform: SocialPlatform;
 }
 
-export const SocialLoginButton = ({ loginServer }: SocialLoginButtonProps) => {
-  const { data, isLoading } = useLoginPageQuery(loginServer);
+export const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({ platform }) => {
   const text: Record<SocialPlatform, string> = {
-    kakao: '카카오 계정으로 로그인하기',
-    google: '구글 계정으로 로그인하기',
+    kakao: '카카오톡으로 로그인하기',
+    google: '구글로 로그인하기',
   };
 
+  const { data: href, isLoading } = useLoginPageQuery(platform);
+
   return (
-    <Link href={data?.loginPageUrl ?? ''}>
+    <Link href={href ?? ''}>
       <StyledButton
-        loginServer={loginServer}
+        platform={platform}
         variant={'angular'}
         height={'60'}
         color={'secondary'}
         disabled={isLoading}
       >
-        <Icons icon={loginServer} width={32} height={32} />
-        <div style={{ width: '18px' }} />
+        <Icons icon={platform} width={32} height={32} />
+        <div style={{ width: '16px' }} />
         <Txt size="typo5" weight="medium">
-          {text[loginServer]}
+          {text[platform]}
         </Txt>
       </StyledButton>
     </Link>

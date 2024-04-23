@@ -8,6 +8,7 @@ import { Txt } from '#/components/atoms/Text';
 import { MatchingSequenceSwiper } from '#/components/organisms/MatchingInfo/MatchingSequenceSwiper';
 
 const StyledSection = styled.section`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +16,6 @@ const StyledSection = styled.section`
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  overflow: hidden;
   padding: 194px 0 130px;
 `;
 
