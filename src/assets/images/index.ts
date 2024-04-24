@@ -9,3 +9,5 @@ export { default as positionPageBackground2 } from './position-page-background-2
 
 export { default as matchingPageBackground1 } from './matching-page-background-1.png';
 export { default as matchingPageDoughnut } from './matching-page-doughnut.png';
+
+export { default as notFound } from './not-found.png';

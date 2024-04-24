@@ -7,7 +7,10 @@ import { Txt } from '#atoms/Text';
 
 const NavBlock = styled.div`
   display: flex;
+  flex-grow: 1;
   align-items: center;
+  justify-content: space-evenly;
+
   height: 100%;
 `;
 const NavLink = styled.div<{ isCurrent: boolean }>`
@@ -18,7 +21,6 @@ const NavLink = styled.div<{ isCurrent: boolean }>`
   justify-content: center;
 
   height: 100%;
-  padding: 18px 50px 0;
 
   &::after {
     content: '';
@@ -50,9 +52,9 @@ const NavLink = styled.div<{ isCurrent: boolean }>`
 `;
 
 const LinkList = [
-  { name: '랜덤 팀 매칭', href: '/matchingInfo' },
-  { name: '팀원 추천', href: '/teamRecommend' },
-  { name: '프로젝트', href: '/project' },
+  { name: '랜덤 팀 매칭', href: '/matching-info' },
+  { name: '팀원 추천', href: '/team-recommend' },
+  { name: '프로젝트', href: '/projects' },
   { name: '마이페이지', href: '/mypage' },
 ];
 

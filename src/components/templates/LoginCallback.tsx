@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { useSearchParams, useRouter, notFound } from 'next/navigation';
 
 import styled from '@emotion/styled';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-import { SocialPlatform } from '#/entities/socialPlatform';
-import { useLazyAcquireTokenQuery } from '#/redux/features/auth/api';
-import { updateAuth } from '#/redux/features/auth/slice';
-import { useAppDispatch } from '#/redux/hooks';
+import { useAuthStore } from '#/stores/auth';
+import { AuthTokens } from '#/types/auth-tokens';
+import { SocialPlatform } from '#/types/social-platform';
+import { fitFetch } from '#/utilities/fetch';
+import { setTokens } from '#/utilities/session';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
@@ -32,40 +32,27 @@ interface LoginCallbackProps {
 }
 
 export const LoginCallback = ({ platform }: LoginCallbackProps) => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
-
-  const [acquireToken, { data: tokens, error: acquireTokenError }] = useLazyAcquireTokenQuery();
 
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
-  useEffect(() => {
-    if (code) {
-      acquireToken({ platform, code });
-    } else {
-      notFound();
-    }
-  }, [acquireToken, code, platform]);
+  const setAuth = useAuthStore((store) => store.set);
 
-  useEffect(() => {
-    if (tokens) {
-      dispatch(updateAuth(tokens));
-      router.push('/');
-    }
-  }, [dispatch, router, tokens]);
-
-  if (acquireTokenError) {
-    const queryError = acquireTokenError as FetchBaseQueryError;
-    return (
-      <>
-        <h1>{queryError.status}</h1>
-        <Txt size="typo4" weight="regular">
-          {JSON.stringify(queryError.data)}
-        </Txt>
-      </>
-    );
+  if (!code) {
+    notFound();
   }
+
+  useEffect(() => {
+    async function loadTokens() {
+      if (code) {
+        const tokens = await acquireTokens({ platform, code });
+        setTokens(tokens);
+        router.replace('/');
+      }
+    }
+    loadTokens();
+  }, [code, platform, router, setAuth]);
 
   return (
     <Container>
@@ -78,3 +65,27 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
     </Container>
   );
 };
+
+export async function acquireTokens({
+  platform,
+  code,
+}: {
+  platform: string;
+  code: string;
+}): Promise<AuthTokens> {
+  const host = window.location.host;
+  const response = await fitFetch(`/v1/auth/social/${platform}/login`, {
+    method: 'POST',
+    body: JSON.stringify({ code }),
+    headers: {
+      Origin: `http://${host}`,
+    },
+  });
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to acquire token: (${response.status}) ${JSON.stringify(json)}`);
+  }
+
+  return json as AuthTokens;
+}

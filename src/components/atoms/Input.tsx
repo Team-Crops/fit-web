@@ -79,7 +79,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string;
 }
 
-export const Input = ({
+export const Input: React.FC<InputProps> = ({
   variant = 'filled',
   helperText,
   error = false,
@@ -87,7 +87,7 @@ export const Input = ({
   weight = 'medium',
   width = '100%',
   ...props
-}: InputProps) => {
+}) => {
   return (
     <InputContainer width={width}>
       {variant === 'filled' && <FilledInput typo={typo} weight={weight} error={error} {...props} />}

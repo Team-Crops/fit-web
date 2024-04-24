@@ -34,7 +34,7 @@ export const SecondSection = () => {
         <Txt size={'typo3'} weight={'medium'} color="#616161">
           팀 프로젝트를 시작하고 싶은 나,
         </Txt>
-        <Title size={'display1'} weight={'bold'} color="#000">
+        <Title size={'main1'} weight={'bold'} color="#000">
           어떻게 팀원을 구하지?
         </Title>
         <Image src={'/images/main_section2_img.svg'} alt={'image'} width={1332} height={756} />

@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Txt } from '#/components/atoms/Text';
-import { MatchingStep } from '#/redux/features/matching/slice';
-import { useAppSelector } from '#/redux/hooks';
+import { Txt } from '#/components/atoms';
+import { useAuthStore } from '#/stores/auth';
+import { MatchingStatus } from '#/types';
 import { ProgressBar } from '#molecules/ProgressBar';
 
 const Container = styled.div`
@@ -15,50 +15,65 @@ const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
 `;
 
-export const MatchingTitle = () => {
-  const nickname = useAppSelector((state) => state.user.me?.nickname);
-  const matchingStep = useAppSelector((state) => state.matching.step);
+interface MatchingTitleProps {
+  status: MatchingStatus;
+}
 
-  const currentStep = useMemo(() => matchingStep + 1, [matchingStep]);
-  const totalStep = useMemo(() => Object.values(MatchingStep).length / 2, []);
-  const titleText = useMemo(
-    () =>
-      [
-        <Txt key={0} size="typo1" weight="bold">
+export const MatchingTitle = ({ status }: MatchingTitleProps) => {
+  const nickname = useAuthStore((store) => store.user?.nickname);
+
+  const step = useMemo(
+    () => (status === MatchingStatus.REGISTER ? 0 : status === MatchingStatus.WAITING ? 1 : 2),
+    [status]
+  );
+
+  const titleTexts = useMemo(
+    () => [
+      <>
+        <Txt size="typo1" weight="bold" marginBottom={4}>
           잠깐, {nickname} 님이 설정한 포지션과 기술/툴이 맞나요?
-        </Txt>,
-        <Txt key={1} size="typo1" weight="bold">
+        </Txt>
+        <Txt size="typo5" weight="regular" color="#9E9E9E">
+          마이페이지에서 포지션과 사용가능한 기술/툴을 변경할 수 있습니다.
+        </Txt>
+      </>,
+      <>
+        <Txt size="typo1" weight="bold" marginBottom={4}>
           {nickname} 님을 위한 매칭이 시작되었어요!
-        </Txt>,
-        <div key={2} style={{ display: 'flex', gap: '0.5em' }}>
-          <Txt size="typo1" weight="bold">
+        </Txt>
+        <Txt size="typo5" weight="regular" color="#9E9E9E">
+          프로젝트의 최소인원이 충족되어 팀 매칭이 완료되면 대기방이 생성되어 이메일로 알려드릴게요.
+          잠시만 기다려주세요!
+        </Txt>
+      </>,
+      <>
+        <div style={{ display: 'flex', gap: '0.5em' }}>
+          <Txt size="typo1" weight="bold" marginBottom={4}>
             매칭이 완료되어
           </Txt>
           <Txt size="typo1" weight="bold" color="#ff706c">
             대기방이 생성되었어요
           </Txt>
-        </div>,
-      ][matchingStep],
-    [matchingStep, nickname]
+        </div>
+        <Txt size="typo5" weight="regular" color="#9E9E9E">
+          대기방에 있는 사람들과 채팅을 통해 프로젝트를 준비해보세요!
+        </Txt>
+      </>,
+    ],
+    [nickname]
   );
-  const tooltipText = useMemo(
-    () => ['포지션 확인', '매칭 대기', '매칭 완료'][matchingStep],
-    [matchingStep]
-  );
+
+  const tooltipTexts = ['포지션 확인', '매칭 대기', '매칭 완료'];
 
   return (
     <Container>
-      {titleText}
-      <div style={{ height: '10px' }} />
-      <Txt size="typo5" weight="regular" color="#9E9E9E">
-        마이페이지에서 포지션과 사용가능한 기술/툴을 변경할 수 있습니다.
-      </Txt>
-      <div style={{ height: '35px' }} />
+      {titleTexts[step]}
+      <div style={{ height: '32px' }} />
       <StyledProgressBar
-        current={currentStep}
-        total={totalStep}
-        tooltipGap="10px"
-        tooltipText={tooltipText}
+        current={step + 1}
+        total={3}
+        tooltipGap="8px"
+        tooltipText={tooltipTexts[step]}
       />
     </Container>
   );

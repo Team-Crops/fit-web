@@ -1,5 +1,14 @@
-import { UserBackgroundStatusStudent, UserBackgroundStatusWorker } from '#/entities/user';
+'use client';
+
+import styled from '@emotion/styled';
+
+import { UserBackgroundStatusStudent, UserBackgroundStatusWorker } from '#/types/user';
 import { Select, type SelectProps } from '#atoms/Select';
+
+const StyledSelect = styled(Select)`
+  width: 100%;
+  height: 36px;
+`;
 
 export const CareerSelect = (props: SelectProps) => {
   const careerStudentTexts: Record<UserBackgroundStatusStudent, string> = {
@@ -11,6 +20,7 @@ export const CareerSelect = (props: SelectProps) => {
     GRADUATE_STUDENT: '대학원생',
     LEAVE_OF_ABSENCE_STUDENT: '휴학생',
   };
+
   const careerWorkerTexts: Record<UserBackgroundStatusWorker, string> = {
     WORKER_CONTRACT_WORKER: '인턴/계약직',
     WORKER_LESS_THAN_ONE_YEAR: '신입 (1년 미만)',
@@ -19,8 +29,9 @@ export const CareerSelect = (props: SelectProps) => {
     WORKER_EIGHT_TO_TEN_YEARS: '8년 ~ 9년',
     WORKER_OVER_TEN_YEARS: ' 10년 이상',
   };
+
   return (
-    <Select {...props}>
+    <StyledSelect {...props}>
       <Select.OptionGroup label="학력">
         {Object.entries(careerStudentTexts).map(([value, label]) => (
           <Select.Option key={value} value={value}>
@@ -35,6 +46,6 @@ export const CareerSelect = (props: SelectProps) => {
           </Select.Option>
         ))}
       </Select.OptionGroup>
-    </Select>
+    </StyledSelect>
   );
 };

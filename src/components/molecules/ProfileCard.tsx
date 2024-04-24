@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { User } from '#/entities/user';
-import { useGetPositionsQuery } from '#/redux/features/skill-set/api';
+import { usePositionsQuery } from '#/hooks/use-positions';
+import { User } from '#/types/user';
 import { Badge } from '#atoms/Badge';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -73,7 +73,7 @@ interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
-  const { data: positions } = useGetPositionsQuery();
+  const { data: positions } = usePositionsQuery();
 
   const positionName = useMemo(() => {
     const position = positions?.find((v) => v.id === user?.positionId);

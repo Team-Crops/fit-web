@@ -1,8 +1,6 @@
-import Image from 'next/image';
-
 import styled from '@emotion/styled';
 
-import { User } from '#/entities/user';
+import { User } from '#/types/user';
 import { Txt } from '#atoms/Text';
 import { UserProfile } from '#atoms/UserProfile';
 
