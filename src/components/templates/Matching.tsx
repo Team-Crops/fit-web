@@ -19,6 +19,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 1200px;
   min-height: calc(100vh - 100px - 393px);
+  margin: 0 auto;
   padding: 35px 0;
 `;
 
