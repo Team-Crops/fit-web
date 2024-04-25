@@ -20,12 +20,12 @@ const ContentBlock = styled.div`
 `;
 
 export const HeaderContent = () => {
-  const user = useAuthStore((store) => store.user);
+  const id = useAuthStore((store) => store.user?.id);
   return (
     <ContentBlock>
       <HeaderLogo />
       <HeaderNav />
-      {user ? <HeaderUserBlock /> : <HeaderLoginBlock />}
+      {id ? <HeaderUserBlock /> : <HeaderLoginBlock />}
     </ContentBlock>
   );
 };
