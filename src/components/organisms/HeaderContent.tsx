@@ -16,7 +16,6 @@ const ContentBlock = styled.div`
   width: min(100%, 1200px);
   height: 100%;
   margin: 0 auto;
-  padding: 20px;
 `;
 
 export const HeaderContent = () => {
