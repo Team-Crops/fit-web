@@ -30,21 +30,23 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
 
   const {
     user,
+    tokens,
     policyAgreed,
     set: setAuth,
-  } = useAuthStore(useShallow(({ user, policyAgreed, set }) => ({ user, policyAgreed, set })));
+  } = useAuthStore(
+    useShallow(({ user, tokens, policyAgreed, set }) => ({ user, tokens, policyAgreed, set }))
+  );
 
   useEffect(() => {
     async function fetchAuth() {
-      const tokens = getTokens();
-      if (tokens && !user?.id) {
+      if (tokens) {
         const user = await fetchUser();
         const policyAgreed = await fetchPolicyAgreed();
-        setAuth({ user, policyAgreed });
+        setAuth({ user, tokens, policyAgreed });
       }
     }
     fetchAuth();
-  }, [user?.id, setAuth]);
+  }, [tokens, setAuth]);
 
   useEffect(() => {
     if (user && policyAgreed !== null) {
