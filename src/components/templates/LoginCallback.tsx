@@ -9,7 +9,7 @@ import { useAuthStore } from '#/stores/auth';
 import { AuthTokens } from '#/types/auth-tokens';
 import { SocialPlatform } from '#/types/social-platform';
 import { fitFetch } from '#/utilities/fetch';
-import { setTokens } from '#/utilities/session';
+import { setTokens as setStorageTokens } from '#/utilities/session';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
@@ -37,7 +37,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
-  const setAuth = useAuthStore((store) => store.set);
+  const setStoreTokens = useAuthStore((store) => store.setTokens);
 
   if (!code) {
     notFound();
@@ -47,12 +47,13 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
     async function loadTokens() {
       if (code) {
         const tokens = await acquireTokens({ platform, code });
-        setTokens(tokens);
+        setStorageTokens(tokens);
+        setStoreTokens(tokens);
         router.replace('/');
       }
     }
     loadTokens();
-  }, [code, platform, router, setAuth]);
+  }, [code, platform, router, setStoreTokens]);
 
   return (
     <Container>

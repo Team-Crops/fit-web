@@ -1,29 +1,32 @@
 import { create } from 'zustand';
 
+import { AuthTokens } from '#/types';
 import { User } from '#/types/user';
 
 interface AuthState {
   user: User | null;
+  tokens: AuthTokens | null;
   policyAgreed: boolean | null;
 }
 
 interface AuthAction {
   setUser: (user: User) => void;
-  clearUser: () => void;
+  setTokens: (tokens: AuthTokens) => void;
   setPolicyAgreed: (policyAgreed: boolean) => void;
-  clearPolicyAgreed: () => void;
 
   set: (state: Partial<AuthState>) => void;
+  clear: () => void;
 }
 
 export const useAuthStore = create<AuthState & AuthAction>((set) => ({
   user: null,
+  tokens: null,
   policyAgreed: null,
 
   setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
+  setTokens: (tokens) => set({ tokens }),
   setPolicyAgreed: (policyAgreed) => set({ policyAgreed }),
-  clearPolicyAgreed: () => set({ policyAgreed: null }),
 
   set: (state) => set(state),
+  clear: () => set({ user: null, tokens: null, policyAgreed: null }),
 }));
