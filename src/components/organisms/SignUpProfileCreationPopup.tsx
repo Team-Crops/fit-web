@@ -3,6 +3,8 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
+import { useShallow } from 'zustand/react/shallow';
+
 import { usePresignedUrlQuery } from '#/hooks/use-presigned-url';
 import { useUserMutation } from '#/hooks/use-user';
 import { useAuthStore } from '#/stores/auth';
@@ -74,7 +76,7 @@ export const SignUpProfileCreationPopup: React.FC<SignUpProfileCreationPopupProp
   const [nickname, setNickname] = useState<string>('');
   const [canSubmit, setCanSubmit] = useState(false);
 
-  const user = useAuthStore((store) => store.user);
+  const { user, setUser } = useAuthStore(useShallow(({ user, setUser }) => ({ user, setUser })));
 
   const { trigger: mutateUser, isMutating: isMutatingUser } = useUserMutation();
   const { trigger: getPresignedUrl } = usePresignedUrlQuery();
@@ -102,9 +104,9 @@ export const SignUpProfileCreationPopup: React.FC<SignUpProfileCreationPopupProp
       await uploadProfileImage({ imageFile, preSignedUrl });
       userInfo.profileImageUrl = fileKey;
     }
-    await mutateUser(userInfo);
+    setUser(await mutateUser(userInfo));
     return onSuccess();
-  }, [getPresignedUrl, mutateUser, nickname, onSuccess, user?.id]);
+  }, [getPresignedUrl, mutateUser, nickname, onSuccess, setUser, user?.id]);
 
   useEffect(() => {
     setPreviewImage(user?.profileImageUrl ?? null);
