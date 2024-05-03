@@ -1,4 +1,4 @@
-import { User } from './user';
+import { ProjectUser, User } from './user';
 
 export enum ProjectStatus {
   PROJECT_IN_PROGRESS = 'PROJECT_IN_PROGRESS',
@@ -8,7 +8,7 @@ export enum ProjectStatus {
 export interface Project {
   id: number;
   name: string;
-  members: Pick<User, 'id' | 'positionId' | 'username' | 'profileImageUrl'>[];
+  members: ProjectUser[];
   status: ProjectStatus;
   chatRoomId: number;
 

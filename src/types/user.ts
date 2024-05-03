@@ -44,6 +44,9 @@ export interface User {
   username: string | null;
 }
 
+export interface ProjectUser
+  extends Pick<User, 'id' | 'positionId' | 'username' | 'profileImageUrl'> {}
+
 export function isUserStudent(status: UserBackgroundStatus): status is UserBackgroundStatusStudent {
   return Object.values(UserBackgroundStatusStudent).includes(status as UserBackgroundStatusStudent);
 }
@@ -52,7 +55,7 @@ export function isUserWorker(status: UserBackgroundStatus): status is UserBackgr
   return Object.values(UserBackgroundStatusWorker).includes(status as UserBackgroundStatusWorker);
 }
 
-const nullUser: User = {
+export const nullUser: User = {
   id: -1,
   projectCount: null,
   activityHour: null,
@@ -77,7 +80,7 @@ const nullUser: User = {
 export const exampleUsers: User[] = [
   {
     ...nullUser,
-    id: -1,
+    id: 1,
     introduce: '경험에서 우러나온 문제점을 구황작물 팀원들과 함께 해결해나가고 싶어요',
     nickname: '예진',
     positionId: 1,
@@ -85,7 +88,7 @@ export const exampleUsers: User[] = [
   },
   {
     ...nullUser,
-    id: -1,
+    id: 2,
     nickname: '은진',
     positionId: 2,
     introduce:
@@ -94,7 +97,7 @@ export const exampleUsers: User[] = [
   },
   {
     ...nullUser,
-    id: -1,
+    id: 3,
     nickname: '나현',
     positionId: 2,
     introduce: '팀원과 고민하여 사용자의 니즈 실현과 편안한 플로우를 만들고 싶어요',
@@ -102,7 +105,7 @@ export const exampleUsers: User[] = [
   },
   {
     ...nullUser,
-    id: -1,
+    id: 4,
     nickname: '재웅',
     positionId: 3,
     introduce: '좋은 사람들과 좋은 팀에서 좋은 결과물을 만들고 싶어요',
@@ -110,7 +113,7 @@ export const exampleUsers: User[] = [
   },
   {
     ...nullUser,
-    id: -1,
+    id: 5,
     nickname: '세헌',
     positionId: 3,
     introduce: '사용하기 쉽고 편리한 서비스를 만들고 싶어요',
@@ -118,7 +121,7 @@ export const exampleUsers: User[] = [
   },
   {
     ...nullUser,
-    id: -1,
+    id: 6,
     nickname: '서린',
     positionId: 4,
     introduce: '신뢰할 수 있는 서비스를 만들고 싶어요',
@@ -126,7 +129,7 @@ export const exampleUsers: User[] = [
   },
   {
     ...nullUser,
-    id: -1,
+    id: 7,
     nickname: '준찬',
     positionId: 4,
     introduce: '하나하나 고민해서 완벽에 가까운 제품을 제공하고 싶어요',
