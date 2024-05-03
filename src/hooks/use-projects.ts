@@ -1,9 +1,14 @@
-import useSWR, { type KeyedMutator } from 'swr';
+import { useEffect } from 'react';
 
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+
+import { useProjectStore } from '#/stores/project';
 import { Project, ProjectStatus } from '#/types';
 import { fitFetcher } from '#/utilities';
 
 const PROJECTS_QUERY_KEY = '/v1/project';
+const PROJECTS_MUTATION_KEY = (id: Project['id']) => `/v1/project/${id}`;
 
 interface GetProjectsResponse {
   projectList: {
@@ -42,9 +47,54 @@ function convertDtoToProjects(dto: GetProjectsResponse): Project[] {
 }
 
 export function useProjectsQuery() {
-  const { data, ...others } = useSWR<GetProjectsResponse>(PROJECTS_QUERY_KEY, fitFetcher, {});
+  const setProjects = useProjectStore((store) => store.setProjects);
+
+  const { data, mutate, ...others } = useSWR<GetProjectsResponse>(
+    PROJECTS_QUERY_KEY,
+    fitFetcher,
+    {}
+  );
+  const projects = data && convertDtoToProjects(data);
+
+  useEffect(() => {
+    if (projects) {
+      setProjects(projects);
+    }
+  }, [projects, setProjects]);
+
   return {
-    data: data && convertDtoToProjects(data),
+    data: projects,
     ...others,
   };
+}
+
+interface ProjectMutationArgs {
+  status?: ProjectStatus;
+  name?: string;
+}
+
+async function sendProjectsMutationRequest(
+  url: string,
+  { arg }: { arg: ProjectMutationArgs }
+): Promise<Project> {
+  const project = await fitFetcher<Project>(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectStatus: arg.status,
+      projectName: arg.name,
+    }),
+  });
+  return project;
+}
+
+export function useProjectMutator(id: Project['id']) {
+  const setProjects = useProjectStore((store) => store.setProjects);
+  return useSWRMutation(PROJECTS_MUTATION_KEY(id), sendProjectsMutationRequest, {
+    onSuccess: (data) => {
+      setProjects((projects) => projects.map((project) => (project.id === id ? data : project)));
+    },
+  });
 }
