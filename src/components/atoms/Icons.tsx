@@ -90,7 +90,7 @@ const icons: Record<IconName, Icon> = {
   },
   arrowDown: {
     SVGR: ArrowDown,
-    color: '#bdbdbd',
+    color: '#9e9e9e',
   },
   arrowForward: {
     SVGR: ArrowForward,
@@ -151,6 +151,7 @@ const icons: Record<IconName, Icon> = {
   },
   clip: {
     SVGR: ClipIcon,
+    color: '#FF908D',
   },
   cross: {
     SVGR: CrossIcon,
@@ -199,6 +200,7 @@ const icons: Record<IconName, Icon> = {
   },
   link: {
     SVGR: LinkIcon,
+    color: '#FF908D',
   },
   logo: {
     SVGR: LogoIcon,
@@ -209,6 +211,7 @@ const icons: Record<IconName, Icon> = {
   },
   pencil: {
     SVGR: PencilIcon,
+    color: '#FF908D',
   },
   phoneFill: {
     SVGR: PhoneFillIcon,
@@ -216,6 +219,7 @@ const icons: Record<IconName, Icon> = {
   },
   plus: {
     SVGR: PlusIcon,
+    color: '#FF908D',
   },
   progress: {
     SVGR: ProgressIcon,
