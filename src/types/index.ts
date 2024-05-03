@@ -3,7 +3,7 @@ export type { AuthTokens, TokenPayload } from './auth-tokens';
 export type { Link } from './link';
 
 export { MatchingStatus } from './matching';
-export type { Matching } from './matching';
+export type { Matching, MatchingRoom, MatchingUser } from './matching';
 
 export type { PolicyType, PolicyAgreement, Policy } from './policy';
 
