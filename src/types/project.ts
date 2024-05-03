@@ -1,4 +1,4 @@
-import { ProjectUser, User } from './user';
+import { ProjectUser } from './user';
 
 export enum ProjectStatus {
   PROJECT_IN_PROGRESS = 'PROJECT_IN_PROGRESS',
