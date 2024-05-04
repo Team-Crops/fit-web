@@ -83,7 +83,7 @@ export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess })
           <PoliciesBox.Policy
             key={type}
             title={policy.title}
-            text={policy.text}
+            type={type}
             disabled={isLoadingAgrees}
             value={policyAgrees.find((agree) => agree.type === type)?.isAgree ?? false}
             onChange={(e) => {
