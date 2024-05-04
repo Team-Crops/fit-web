@@ -7,9 +7,10 @@ import { UserProfile } from '#atoms/UserProfile';
 interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   myBubble?: boolean;
   user: ChatUser;
+  text: string;
 }
 
-export const ChatBubble = ({ myBubble = false, user, ...props }: ChatBubbleProps) => {
+export const ChatBubble = ({ myBubble = false, user, text, ...props }: ChatBubbleProps) => {
   return (
     <Container myBubble={myBubble}>
       <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />
@@ -17,7 +18,9 @@ export const ChatBubble = ({ myBubble = false, user, ...props }: ChatBubbleProps
         <Txt size="typo5" weight="bold" color="#757575">
           {user.nickname}
         </Txt>
-        <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props} />
+        <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props}>
+          {text}
+        </TextBubble>
       </BubbleContainer>
       <BubbleTime size="typo6" weight="medium" color="#9E9E9E">
         12:24 PM
@@ -40,7 +43,7 @@ const BubbleContainer = styled.div<{ myBubble: ChatBubbleProps['myBubble'] }>`
 `;
 
 const TextBubble = styled(Txt)<{ myBubble: ChatBubbleProps['myBubble'] }>`
-  padding: 20px 35px 20px 25px;
+  padding: 20px 32px;
 
   line-height: 2;
 

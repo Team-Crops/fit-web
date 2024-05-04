@@ -24,8 +24,6 @@ const Container = styled.div`
   align-items: center;
 
   padding: 10px;
-
-  background: #fafafa;
 `;
 
 const ToolIcon = styled(Icons)`
