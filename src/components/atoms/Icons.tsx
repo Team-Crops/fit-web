@@ -1,4 +1,3 @@
-import type { HTMLAttributes } from 'react';
 import React from 'react';
 import Image from 'next/image';
 
@@ -237,7 +236,7 @@ const icons: Record<IconName, Icon> = {
   },
 };
 
-interface IconsProps extends HTMLAttributes<SVGElement> {
+interface IconsProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: IconName;
 
   size?: number;
@@ -245,7 +244,7 @@ interface IconsProps extends HTMLAttributes<SVGElement> {
   height?: number;
 }
 
-export const Icons: React.FC<IconsProps> = ({ icon, width, height, size, ...props }) => {
+export const Icons: React.FC<IconsProps> = ({ icon, width, height, size, color, ...props }) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
   if (typeof SVGR === 'object') {
     return (
@@ -260,12 +259,13 @@ export const Icons: React.FC<IconsProps> = ({ icon, width, height, size, ...prop
   }
 
   return (
-    <SVGR
-      color={defaultColor}
-      width={size ?? width}
-      height={size ?? height}
-      style={{ ...style, flexShrink: 0 }}
-      {...props}
-    />
+    <div {...props}>
+      <SVGR
+        color={color ?? defaultColor}
+        width={size ?? width}
+        height={size ?? height}
+        style={{ ...style, flexShrink: 0 }}
+      />
+    </div>
   );
 };
