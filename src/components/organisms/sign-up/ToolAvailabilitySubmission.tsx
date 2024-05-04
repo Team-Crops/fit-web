@@ -107,12 +107,10 @@ export const ToolAvailabilitySubmission: React.FC<ToolAvailabilitySubmissionProp
 
   const skillClickHandler = useCallback<(id: number) => void>(
     (skillId) => {
-      if (user.skillIdList) {
-        if (user.skillIdList.includes(skillId)) {
-          onUserModified({ skillIdList: user.skillIdList.filter((id) => id !== skillId) });
-        } else {
-          onUserModified({ skillIdList: [...user.skillIdList, skillId] });
-        }
+      if (user.skillIdList?.includes(skillId)) {
+        onUserModified({ skillIdList: user.skillIdList.filter((id) => id !== skillId) });
+      } else {
+        onUserModified({ skillIdList: [...(user.skillIdList ?? []), skillId] });
       }
     },
     [onUserModified, user.skillIdList]
