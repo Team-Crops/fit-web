@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 
-import { User } from '#/types/user';
+import { ChatUser } from '#/types';
 import { Txt } from '#atoms/Text';
 import { UserProfile } from '#atoms/UserProfile';
 
-interface TalkBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   myBubble?: boolean;
-  user: User;
+  user: ChatUser;
 }
 
-export const TalkBubble = ({ myBubble = false, user, ...props }: TalkBubbleProps) => {
+export const ChatBubble = ({ myBubble = false, user, ...props }: ChatBubbleProps) => {
   return (
     <Container myBubble={myBubble}>
       <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />
@@ -32,14 +32,14 @@ const Container = styled.div<{ myBubble: boolean }>`
   gap: 10px;
 `;
 
-const BubbleContainer = styled.div<{ myBubble: TalkBubbleProps['myBubble'] }>`
+const BubbleContainer = styled.div<{ myBubble: ChatBubbleProps['myBubble'] }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: ${({ myBubble }) => (myBubble ? 'flex-end' : 'flex-start')};
 `;
 
-const TextBubble = styled(Txt)<{ myBubble: TalkBubbleProps['myBubble'] }>`
+const TextBubble = styled(Txt)<{ myBubble: ChatBubbleProps['myBubble'] }>`
   padding: 20px 35px 20px 25px;
 
   line-height: 2;
