@@ -20,4 +20,5 @@ export type { Skill } from './skill';
 
 export type { SocialPlatform } from './social-platform';
 
-export type { User } from './user';
+export { UserBackgroundStatusStudent, UserBackgroundStatusWorker } from './user';
+export type { UserBackgroundStatus, User, ProjectUser, ChatUser } from './user';

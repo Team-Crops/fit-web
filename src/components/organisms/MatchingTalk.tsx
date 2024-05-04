@@ -7,7 +7,7 @@ import { Input } from '#/components/atoms/Input';
 import { Txt } from '#/components/atoms/Text';
 import { TalkBubble } from '#/components/molecules/TalkBubble';
 import { TalkPositionGroup } from '#/components/molecules/TalkPositionGroup';
-import { exampleUsers } from '#/types/user';
+import { exampleUsers } from '#/entities';
 
 const TalkContainer = styled.div`
   overflow: hidden;

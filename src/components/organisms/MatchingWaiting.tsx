@@ -15,8 +15,8 @@ import { Txt } from '#/components/atoms/Text';
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
+import { exampleUsers } from '#/entities';
 import { useMatchingCancel } from '#/hooks/use-matching';
-import { exampleUsers } from '#/types/user';
 
 const Container = styled.div`
   display: flex;
