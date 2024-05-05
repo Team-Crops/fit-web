@@ -1,22 +1,12 @@
-type NestedData = string | NestedData[];
+import { Policy, PolicyType } from '#/types';
 
-interface PolicyDataContent {
-  title: string;
-  content: {
-    article: string;
-    clause: NestedData;
-  }[];
-}
-
-interface PolicyDataType {
-  terms: PolicyDataContent;
-  privacy: PolicyDataContent;
-}
-
-export const policyData: PolicyDataType = {
-  terms: {
+export const policies: Record<PolicyType, Policy> = {
+  SERVICE_POLICY: {
+    type: 'SERVICE_POLICY',
     title: '서비스 이용약관',
-    content: [
+    required: true,
+    version: '1.0.0',
+    contents: [
       {
         article: '제1조 목적',
         clause:
@@ -161,9 +151,12 @@ export const policyData: PolicyDataType = {
       },
     ],
   },
-  privacy: {
+  PRIVACY_POLICY: {
+    type: 'PRIVACY_POLICY',
     title: '개인정보처리방침',
-    content: [
+    required: true,
+    version: '1.0.0',
+    contents: [
       {
         article: '1. 개인정보의 처리 목적',
         clause: `<(주)구황작물>(‘www.f-it.team’이하 ‘핏’) 은 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.\n - 회원 가입의사 확인, 회원에 대한 서비스 제공에 따른 본인 식별.인증, 회원자격 유지.관리, 서비스 공급에 따른 금액 결제 등`,

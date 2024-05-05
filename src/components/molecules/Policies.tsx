@@ -101,7 +101,7 @@ export const PoliciesBox = ({
 
 interface PolicyProps {
   title: string;
-  type: string;
+  type: PolicyType;
   value?: boolean;
   disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
@@ -125,9 +125,7 @@ const Policy: React.FC<PolicyProps> = ({ title, type, value, disabled, onChange 
           <Icons icon="arrowForward" width={20} height={20} color="#9E9E9E" />
         </ExpandButtonContainer>
       </PolicyHeader>
-      {isExpanded && (
-        <PolicyContent type={type === 'PRIVACY_POLICY' ? 'privacy' : 'terms'} isScrolled />
-      )}
+      {isExpanded && <PolicyContent type={type} isScrolled />}
     </PolicyContainer>
   );
 };

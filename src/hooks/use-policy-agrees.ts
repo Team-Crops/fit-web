@@ -1,7 +1,8 @@
 import useSWR, { mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
 
-import { PolicyAgreement, PolicyType, policies } from '#/types/policy';
+import { policies } from '#/entities';
+import { PolicyAgreement, PolicyType } from '#/types';
 import { fitFetch, fitFetcher } from '#/utilities/fetch';
 
 const AGREEMENTS_QUERY_KEY = '/v1/user/policy-agreement';
