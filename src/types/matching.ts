@@ -1,4 +1,4 @@
-import { User } from '#/types';
+import type { User } from '#/types';
 
 export enum MatchingStatus {
   REGISTER = 'REGISTER',
@@ -34,7 +34,7 @@ export interface MatchingRoom {
 }
 
 export interface MatchingUser
-  extends Pick<User, 'id' | 'username' | 'profileImageUrl' | 'positionId'> {
+  extends Pick<User, 'id' | 'nickname' | 'profileImageUrl' | 'positionId'> {
   isHost: boolean;
   isReady: boolean;
 }

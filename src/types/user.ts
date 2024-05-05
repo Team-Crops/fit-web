@@ -1,4 +1,4 @@
-import { Link } from './link';
+import type { Link } from './link';
 
 export enum UserBackgroundStatusStudent {
   HIGH_SCHOOL_GRADUATE = 'HIGH_SCHOOL_GRADUATE',
@@ -43,9 +43,3 @@ export interface User {
   status: string | null;
   username: string | null;
 }
-
-export interface ProjectUser
-  extends Pick<User, 'id' | 'positionId' | 'username' | 'profileImageUrl'> {}
-
-export interface ChatUser
-  extends Pick<User, 'id' | 'positionId' | 'nickname' | 'profileImageUrl'> {}
