@@ -1,4 +1,8 @@
+export type { ApiError } from './api-error';
+
 export type { AuthTokens, TokenPayload } from './auth-tokens';
+
+export type { ChatUser } from './chat';
 
 export type { Link } from './link';
 
@@ -21,4 +25,4 @@ export type { Skill } from './skill';
 export type { SocialPlatform } from './social-platform';
 
 export { UserBackgroundStatusStudent, UserBackgroundStatusWorker } from './user';
-export type { UserBackgroundStatus, User, ProjectUser, ChatUser } from './user';
+export type { UserBackgroundStatus, User } from './user';
