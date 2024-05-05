@@ -3,9 +3,9 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { policyData } from '#/app/policy/[type]/policyData';
 import { Txt } from '#/components/atoms';
 import { NestedList } from '#/components/organisms/Policy/NestedList';
+import { policyData } from '#/entities/policy';
 
 const ContentBlock = styled.div<{ isScrolled?: boolean }>`
   max-width: 1200px;
