@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { SignUpTermsHeader } from '#/components/molecules/SignUpTermsHeader';
+import { policies } from '#/entities';
 import { usePolicyAgreesMutation, usePolicyAgreesQuery } from '#/hooks/use-policy-agrees';
 import { useAuthStore } from '#/stores/auth';
-import { PolicyAgreement, PolicyType, policies } from '#/types/policy';
+import { PolicyAgreement, PolicyType } from '#/types';
 import { PoliciesBox } from '#molecules/Policies';
 
 const Container = styled.div`
@@ -57,10 +58,10 @@ export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess })
     if (fetchedAgrees || mutatedAgreements) {
       const newAgrees: PolicyAgreement[] = fetchedAgrees || mutatedAgreements || [];
       setPolicyAgrees(
-        Object.keys(policies).map((type) => {
+        Object.values(policies).map(({ type }) => {
           const agree = newAgrees.find((agree) => agree.policyType === type);
           return {
-            type: type as PolicyType,
+            type,
             isAgree: agree?.isAgree ?? false,
           };
         })
@@ -79,19 +80,22 @@ export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess })
           setPolicyAgrees(newAgrees);
         }}
       >
-        {Object.entries(policies).map(([type, policy]) => (
+        {Object.values(policies).map((policy) => (
           <PoliciesBox.Policy
-            key={type}
+            key={policy.type}
             title={policy.title}
-            type={type}
+            type={policy.type}
             disabled={isLoadingAgrees}
-            value={policyAgrees.find((agree) => agree.type === type)?.isAgree ?? false}
+            value={policyAgrees.find((agree) => agree.type === policy.type)?.isAgree ?? false}
             onChange={(e) => {
               updateAgreements(
-                { type: type as PolicyType, isAgree: e.target.checked },
+                { type: policy.type, isAgree: e.target.checked },
                 {
                   optimisticData: {
-                    policyAgreementList: [...policyAgrees, { type, isAgree: e.target.checked }],
+                    policyAgreementList: [
+                      ...policyAgrees,
+                      { type: policy.type, isAgree: e.target.checked },
+                    ],
                   },
                 }
               );
