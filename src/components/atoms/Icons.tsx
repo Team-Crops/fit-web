@@ -14,6 +14,7 @@ import {
   ClickIcon,
   ClipIcon,
   CrossIcon,
+  CrownIcon,
   EmojiFire,
   EmojiHoldingBackTears,
   EmojiPartyingFace,
@@ -53,6 +54,7 @@ export type IconName =
   | 'click'
   | 'clip'
   | 'cross'
+  | 'crown'
   | 'email'
   | 'emojiFire'
   | 'emojiHoldingBackTears'
@@ -155,6 +157,10 @@ const icons: Record<IconName, Icon> = {
   cross: {
     SVGR: CrossIcon,
     color: '#212121',
+  },
+  crown: {
+    SVGR: CrownIcon,
+    color: '#4960D9',
   },
   email: {
     SVGR: EmailIcon,

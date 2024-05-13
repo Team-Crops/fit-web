@@ -10,6 +10,7 @@ export { default as CheckIcon } from './check.svg';
 export { default as ClickIcon } from './click.svg';
 export { default as ClipIcon } from './clip.svg';
 export { default as CrossIcon } from './cross.svg';
+export { default as CrownIcon } from './crown.svg';
 export { default as EmojiFire } from './emoji-fire.png';
 export { default as EmojiHoldingBackTears } from './emoji-holding-back-tears.png';
 export { default as EmojiPartyingFace } from './emoji-partying-face.png';
