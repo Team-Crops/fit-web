@@ -85,7 +85,7 @@ const SelectButton = styled.button<SelectProps>`
 
   width: 100%;
   height: 30px;
-  padding: 10px;
+  padding: 0 20px 0 10px;
 
   font-size: 12px;
   font-weight: 400;
@@ -199,7 +199,7 @@ const OptionItemCheckIcon = styled(Icons)`
 const SelectContext = createContext<{
   value?: string | number | readonly string[];
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  setLabel?: Dispatch<SetStateAction<string | undefined>>;
+  setLabel?: Dispatch<SetStateAction<ReactNode | string | undefined>>;
 }>({});
 
 export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -223,7 +223,7 @@ export const Select: React.FC<SelectProps> & {
   ...props
 }) => {
   const [isOpened, setOpened] = useState(false);
-  const [label, setLabel] = useState<string | undefined>();
+  const [label, setLabel] = useState<ReactNode | string | undefined>();
   const [optionsPosition, setOptionsPosition] = useState<'top' | 'bottom'>('bottom');
   const containerRef = useRef<HTMLDivElement>(null);
   const optionsRef = useRef<HTMLUListElement>(null);
@@ -294,11 +294,11 @@ const Option: React.FC<OptionProps> = ({ value, children }) => {
 
   const selected = useMemo(() => value == currentValue, [currentValue, value]);
   const label = useMemo(() => {
-    let label = '';
+    let label: ReactNode | string = '';
     Children.map(children, (child) => {
       if (typeof child === 'string' || typeof child === 'number') {
         label += child.toString();
-      }
+      } else label = children;
     });
     return label;
   }, [children]);
