@@ -1,7 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { usePositionsQuery } from '#/hooks/use-positions';
+import { useTempAuthStore } from '#/stores/tempAuth';
+import { Skill } from '#/types';
 import { Txt } from '#atoms/Text';
 import { PositionBadge } from './PositionBadge';
 
@@ -32,87 +35,69 @@ const TechListBlock = styled.div`
   padding: 20px 0 0;
 `;
 
-type Position = '기획자' | '디자이너' | '서버 개발자' | '웹 프론트 개발자' | '앱 개발자';
-const PositionList: Position[] = [
-  '기획자',
-  '디자이너',
-  '서버 개발자',
-  '웹 프론트 개발자',
-  '앱 개발자',
-];
-const TechList = {
-  기획자: ['GA', 'Tablue'],
-  디자이너: ['Figma', 'Photoshop', 'illustrator', 'Adobe xd', 'zeplin'],
-  '서버 개발자': ['spring', 'node', 'nest', 'go', 'express', 'django', 'flask'],
-  '웹 프론트 개발자': [
-    'React',
-    'Vue.js',
-    'Angular',
-    'Svelte',
-    'Solid JS',
-    'Qwik',
-    'Next.js',
-    'Remix',
-    'Universal',
-    'Nuxt.js',
-    'Svelte Kit',
-  ],
-  '앱 개발자': [
-    'UIKit',
-    'SwiftUI',
-    'Kotlin',
-    'Java',
-    'Jetpack',
-    'Coroutine',
-    'Flutter',
-    'React-Native',
-  ],
-};
-
 export const TechSelectBlock = () => {
-  const [selectedType, setSelectedType] = useState<Position>('기획자');
-  const [selectedTech, setSelectedTech] = useState<string[]>([]);
-  const handleType = useCallback(
-    (type: Position) => () => {
-      setSelectedType(type);
-    },
-    []
-  );
-  const handleTech = useCallback(
-    (tech: string) => () => {
-      setSelectedTech((prev) => {
-        if (prev.includes(tech)) {
-          return prev.filter((t) => t !== tech);
-        } else {
-          return [...prev, tech];
-        }
-      });
+  const tempUser = useTempAuthStore((state) => state.tempUser);
+  const setTempUser = useTempAuthStore((state) => state.setTempUser);
+  const { data: positions } = usePositionsQuery();
+  const [selectedPosition, setSelectedPosition] = useState<number>(0);
+  const [skills, setSkills] = useState<Skill[]>([]);
+
+  const handlePosition = useCallback(
+    (positionId: number) => () => {
+      setSelectedPosition(positionId);
     },
     []
   );
 
+  const handleSkill = useCallback(
+    (skillId: number) => () => {
+      if (tempUser === null) return;
+      if (tempUser.skillIdList === null) setTempUser({ ...tempUser, skillIdList: [skillId] });
+      else
+        setTempUser({
+          ...tempUser,
+          skillIdList: tempUser.skillIdList?.includes(skillId)
+            ? tempUser.skillIdList.filter((id) => id !== skillId)
+            : [...tempUser.skillIdList, skillId],
+        });
+    },
+    [setTempUser, tempUser]
+  );
+
+  useEffect(() => {
+    if (positions && selectedPosition) {
+      setSkills(positions.find((position) => position.id === selectedPosition)?.skillList || []);
+    }
+  }, [positions, selectedPosition]);
+  // init
+  useEffect(() => {
+    if (tempUser === null) return;
+    setSelectedPosition(tempUser.positionId ?? 0);
+  }, [tempUser]);
+
+  if (tempUser === null) return;
   return (
     <TechContainer>
       <TechType>
-        {PositionList.map((position) => (
+        {positions?.map((position) => (
           <Txt
-            key={position}
+            key={position.id}
             size="typo6"
-            weight={selectedType === position ? 'bold' : 'regular'}
-            color={selectedType === position ? '#FF706C' : '#9E9E9E'}
-            onClick={handleType(position)}
+            weight={selectedPosition === position.id ? 'bold' : 'regular'}
+            color={selectedPosition === position.id ? '#FF706C' : '#9E9E9E'}
+            onClick={handlePosition(position.id)}
           >
-            {position}
+            {position.displayName}
           </Txt>
         ))}
       </TechType>
       <TechListBlock>
-        {TechList[selectedType].map((tech) => (
+        {skills.map((skill) => (
           <PositionBadge
-            key={tech}
-            position={tech}
-            selected={selectedTech.includes(tech)}
-            onClick={handleTech(tech)}
+            key={skill.id}
+            position={skill.displayName}
+            selected={tempUser.skillIdList?.includes(skill.id) ?? false}
+            onClick={handleSkill(skill.id)}
           />
         ))}
       </TechListBlock>
