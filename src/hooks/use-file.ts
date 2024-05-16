@@ -12,20 +12,18 @@ interface PreSignedUrlArgs {
 }
 
 async function sendPostRequest(url: string, { arg }: { arg: PreSignedUrlArgs }) {
-  // 여기에서 필요한 데이터를 request body에 포함시킬 수 있습니다.
   const { fileName, fileDomain } = arg;
   const requestBody = {
     fileName,
     fileDomain,
   };
 
-  // POST 요청을 보내는 방식에 따라 request body를 설정할 수 있습니다.
   const requestOptions: RequestInit = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 경우에는 Content-Type을 설정합니다.
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(requestBody), // JSON.stringify를 사용하여 객체를 문자열로 변환합니다.
+    body: JSON.stringify(requestBody),
   };
 
   const response = await fitFetch(url, requestOptions);
