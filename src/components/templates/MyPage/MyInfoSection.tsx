@@ -1,5 +1,9 @@
+import { use, useCallback } from 'react';
+
 import styled from '@emotion/styled';
 
+import { useAuthStore } from '#/stores/auth';
+import { useTempAuthStore } from '#/stores/tempAuth';
 import { Button } from '#atoms/Button';
 import { ActivityInformation } from '#organisms/MyPage/ActivityInformation';
 import { MemberInformation } from '#organisms/MyPage/MemberInformation';
@@ -24,13 +28,22 @@ interface MyInfoSectionProps {
   handleEditing: () => void;
 }
 export const MyInfoSection = ({ handleEditing }: MyInfoSectionProps) => {
+  const user = useAuthStore((state) => state.user);
+  const setTempUser = useTempAuthStore((state) => state.setTempUser);
+
+  const handleModify = useCallback(() => {
+    if (user !== null) setTempUser(user);
+    scrollTo(0, 0);
+    handleEditing();
+  }, [handleEditing, setTempUser, user]);
+
   return (
     <StyledSection>
       <MemberInformation />
       <ActivityInformation />
       <PortfolioInformation />
       <PolicyInformation />
-      <ModifyButton variant={'round'} height={'70'} color={'primary'} onClick={handleEditing}>
+      <ModifyButton variant={'round'} height={'70'} color={'primary'} onClick={handleModify}>
         수정하기
       </ModifyButton>
     </StyledSection>

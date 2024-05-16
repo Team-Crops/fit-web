@@ -37,6 +37,11 @@ import {
   HeartFillIcon,
   EmailIcon,
   PhoneFillIcon,
+  GithubIcon,
+  FacebookIcon,
+  LinkedInIcon,
+  TistoryIcon,
+  VelogIcon,
 } from '#/assets/icons';
 
 export type IconName =
@@ -59,7 +64,9 @@ export type IconName =
   | 'emojiHoldingBackTears'
   | 'emojiPartyingFace'
   | 'emojiWinkingFace'
+  | 'facebook'
   | 'google'
+  | 'github'
   | 'heart'
   | 'heartFill'
   | 'image'
@@ -67,15 +74,18 @@ export type IconName =
   | 'instagram'
   | 'kakao'
   | 'link'
+  | 'linkedin'
   | 'logo'
   | 'megaphone'
   | 'pencil'
   | 'phoneFill'
   | 'plus'
   | 'progress'
+  | 'tistory'
   | 'run'
   | 'user'
-  | 'upload';
+  | 'upload'
+  | 'velog';
 
 interface Icon {
   SVGR: any;
@@ -172,8 +182,14 @@ const icons: Record<IconName, Icon> = {
   emojiWinkingFace: {
     SVGR: EmojiWinkingFace,
   },
+  facebook: {
+    SVGR: FacebookIcon,
+  },
   google: {
     SVGR: GoogleIcon,
+  },
+  github: {
+    SVGR: GithubIcon,
   },
   heart: {
     SVGR: HeartIcon,
@@ -200,6 +216,9 @@ const icons: Record<IconName, Icon> = {
   link: {
     SVGR: LinkIcon,
   },
+  linkedin: {
+    SVGR: LinkedInIcon,
+  },
   logo: {
     SVGR: LogoIcon,
     color: '#FF706C',
@@ -221,6 +240,9 @@ const icons: Record<IconName, Icon> = {
     SVGR: ProgressIcon,
     color: '#FF706C',
   },
+  tistory: {
+    SVGR: TistoryIcon,
+  },
   run: {
     SVGR: RunIcon,
     color: '#212121',
@@ -230,6 +252,9 @@ const icons: Record<IconName, Icon> = {
   },
   upload: {
     SVGR: Upload,
+  },
+  velog: {
+    SVGR: VelogIcon,
   },
 };
 

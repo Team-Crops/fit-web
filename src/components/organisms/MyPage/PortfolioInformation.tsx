@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 
+import { PortfolioFileBlock } from '#/components/atoms/MyPage/PortfolioFileBlock';
+import { useSkillsQuery } from '#/hooks/use-skills';
+import { useAuthStore } from '#/stores/auth';
 import { Icons } from '#atoms/Icons';
 import { PortfolioTicket } from '#atoms/MyPage/PortfolioTicket';
 import { Txt } from '#atoms/Text';
@@ -54,19 +57,12 @@ const PortfolioList = styled.div`
   gap: 8px;
   width: calc(100% - 110px);
 `;
-const Portfolio = styled.div`
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-  height: 25px;
-  padding: 0 9px;
-
-  border: 1px solid #ff908d;
-  border-radius: 5px;
-`;
 
 export const PortfolioInformation = () => {
+  const user = useAuthStore((state) => state.user);
+  const { data: skills } = useSkillsQuery();
+
+  if (user === null) return;
   return (
     <MyInfoBlock title={'포트폴리오'}>
       <MyPageGridBlock>
@@ -75,24 +71,16 @@ export const PortfolioInformation = () => {
             사용 가능한 기술/툴
           </Txt>
           <TechListWrapper>
-            <TechBadge size={'typo6'} weight={'regular'} color="#FF706C">
-              React
-            </TechBadge>
-            <TechBadge size={'typo6'} weight={'regular'} color="#FF706C">
-              React
-            </TechBadge>
-            <TechBadge size={'typo6'} weight={'regular'} color="#FF706C">
-              React
-            </TechBadge>
-            <TechBadge size={'typo6'} weight={'regular'} color="#FF706C">
-              PhotoShop
-            </TechBadge>
-            <TechBadge size={'typo6'} weight={'regular'} color="#FF706C">
-              PhotoShop
-            </TechBadge>
-            <TechBadge size={'typo6'} weight={'regular'} color="#FF706C">
-              PhotoShop
-            </TechBadge>
+            {user.skillIdList &&
+              user.skillIdList.map((skillId) => {
+                const skill = skills?.find((v) => v.id === skillId);
+                if (skill === undefined) return;
+                return (
+                  <TechBadge key={skill.id} size={'typo6'} weight={'regular'} color="#FF706C">
+                    {skill?.displayName}
+                  </TechBadge>
+                );
+              })}
           </TechListWrapper>
         </FlexBlock>
         <FlexBlock>
@@ -100,17 +88,11 @@ export const PortfolioInformation = () => {
             포트폴리오
           </Txt>
           <PortfolioContent>
-            <ClipBlock>
-              <Icons icon="clip" width={28} height={26} />
-              <Txt size={'typo6'} weight={'regular'} color={'#FF706C'}>
-                EZ안_포트폴리오
-              </Txt>
-            </ClipBlock>
+            {user.portfolioUrl && <PortfolioFileBlock />}
             <PortfolioList>
-              <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} />
-              <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} />
-              <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} />
-              <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} />
+              {user.linkList?.map((link) => (
+                <PortfolioTicket key={link.linkUrl} icon={'link'} text={link.linkUrl} />
+              ))}
             </PortfolioList>
           </PortfolioContent>
         </FlexBlock>

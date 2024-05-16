@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
+import { useAuthStore } from '#/stores/auth';
+import { useTempAuthStore } from '#/stores/tempAuth';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
 import { ProfileBlock } from '#organisms/ProfileBlock';
@@ -60,12 +62,19 @@ interface ProfileSectionProps {
 }
 
 export const ProfileSection = ({ isEditing }: ProfileSectionProps) => {
+  const user = useAuthStore((state) => state.user);
+  const tempUser = useTempAuthStore((state) => state.tempUser);
+  const setTempUser = useTempAuthStore((state) => state.setTempUser);
   const [isHoverTooltip, setIsHoverTooltip] = useState(false);
-  const [exposeProfile, setExposeProfile] = useState(false);
 
   const handleTooltip = () => {
     setIsHoverTooltip((prev) => !prev);
   };
+
+  const handleIsOpenProfile = useCallback(() => {
+    if (tempUser === null) return;
+    setTempUser({ ...tempUser, isOpenProfile: !tempUser.isOpenProfile });
+  }, [setTempUser, tempUser]);
 
   return (
     <StyledSection>
@@ -84,12 +93,7 @@ export const ProfileSection = ({ isEditing }: ProfileSectionProps) => {
           <Txt size={'typo5'} weight={'bold'} color="#424242">
             내 프로필 공개
           </Txt>
-          <Toggle
-            checked={exposeProfile}
-            onChange={() => {
-              setExposeProfile((prev) => !prev);
-            }}
-          />
+          <Toggle checked={tempUser?.isOpenProfile ?? false} onChange={handleIsOpenProfile} />
           {isHoverTooltip && (
             <ExplainModal>
               <Txt size={'typo6'} weight={'regular'} color="#fff">
@@ -100,7 +104,8 @@ export const ProfileSection = ({ isEditing }: ProfileSectionProps) => {
         </ExposeProfile>
       ) : (
         <CurrentState size={'typo5'} weight={'bold'} color="#BDBDBD">
-          현재 내 프로필은 <HighLight>공개상태</HighLight>입니다
+          현재 내 프로필은 <HighLight>{user?.isOpenProfile ? '공개상태' : '비공개상태'}</HighLight>
+          입니다
         </CurrentState>
       )}
     </StyledSection>
