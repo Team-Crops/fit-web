@@ -49,7 +49,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
         const tokens = await acquireTokens({ platform, code });
         setStorageTokens(tokens);
         setStoreTokens(tokens);
-        router.replace('/');
+        location.href = '/';
       }
     }
     loadTokens();
