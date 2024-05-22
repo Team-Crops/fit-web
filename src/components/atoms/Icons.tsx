@@ -42,6 +42,7 @@ import {
   LinkedInIcon,
   TistoryIcon,
   VelogIcon,
+  ClipBoldIcon,
 } from '#/assets/icons';
 
 export type IconName =
@@ -58,6 +59,7 @@ export type IconName =
   | 'check'
   | 'click'
   | 'clip'
+  | 'clipBold'
   | 'cross'
   | 'email'
   | 'emojiFire'
@@ -161,6 +163,9 @@ const icons: Record<IconName, Icon> = {
   },
   clip: {
     SVGR: ClipIcon,
+  },
+  clipBold: {
+    SVGR: ClipBoldIcon,
   },
   cross: {
     SVGR: CrossIcon,
