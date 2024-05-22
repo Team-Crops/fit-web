@@ -12,15 +12,23 @@ export const Chat: React.FC = () => {
           채팅방
         </Txt>
       </Header>
-      <ChatBubbles />
-      <ChatToolbox />
+      <ChatBubblesContainer>
+        <ChatBubbles />
+      </ChatBubblesContainer>
+      <ChatToolboxContainer>
+        <ChatToolbox />
+      </ChatToolboxContainer>
     </Container>
   );
 };
 
 const Container = styled.div`
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
   height: 100%;
+
   background-color: #fafafa;
 `;
 
@@ -31,4 +39,12 @@ const Header = styled.div`
   background-color: #fff;
   border: 1px solid #eee;
   box-shadow: 0 0 32px rgb(0 0 0 / 5%);
+`;
+
+const ChatBubblesContainer = styled.div`
+  flex: 1;
+`;
+
+const ChatToolboxContainer = styled.div`
+  padding: 30px;
 `;

@@ -4,6 +4,8 @@ export type { AuthTokens, TokenPayload } from './auth-tokens';
 
 export type { ChatUser } from './chat';
 
+export type { FetchState } from './fetch-state';
+
 export type { Link } from './link';
 
 export { MatchingStatus } from './matching';

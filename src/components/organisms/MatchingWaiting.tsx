@@ -16,7 +16,7 @@ import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons
 import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { exampleUsers } from '#/entities';
-import { useMatchingCancel } from '#/hooks/use-matching';
+import { useMatchingCancelMutation } from '#/hooks/use-matching';
 
 const Container = styled.div`
   display: flex;
@@ -113,7 +113,7 @@ const BackgroundDoughnut = styled(Image)`
 interface MatchingQueuedProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
-  const { trigger: cancelMatching } = useMatchingCancel();
+  const { trigger: cancelMatching } = useMatchingCancelMutation();
 
   const router = useRouter();
 

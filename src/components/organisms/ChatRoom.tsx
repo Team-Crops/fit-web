@@ -1,13 +1,35 @@
+import { useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 
+import { useMatchingRoom, useProject } from '#/stores';
+import { ChatUser } from '#/types';
 import { Chat } from './Chat';
 import { ChatParticipants } from './ChatParticipants';
 
-export const ChatRoom: React.FC = () => {
+interface ChatRoomProps {
+  projectId?: number;
+  matchingId?: number;
+}
+
+export const ChatRoom = ({ projectId, matchingId }: ChatRoomProps) => {
+  const [participants, setParticipants] = useState<ChatUser[]>([]);
+
+  const matchingRoomState = useMatchingRoom(matchingId);
+  const projectState = useProject(projectId);
+
+  useEffect(() => {
+    if (projectState?.data?.members) {
+      setParticipants(projectState.data.members);
+    } else if (matchingRoomState?.data?.matchingUsers) {
+      setParticipants(matchingRoomState.data.matchingUsers);
+    }
+  }, [matchingRoomState.data?.matchingUsers, projectState.data?.members]);
+
   return (
     <Container>
       <ChatParticipantsContainer>
-        <ChatParticipants />
+        <ChatParticipants projectId={projectId} participants={participants} />
       </ChatParticipantsContainer>
       <ChatContainer>
         <Chat />
@@ -17,6 +39,8 @@ export const ChatRoom: React.FC = () => {
 };
 
 const Container = styled.div`
+  position: relative;
+
   overflow: hidden;
   display: flex;
 
@@ -29,6 +53,7 @@ const Container = styled.div`
 
 const ChatParticipantsContainer = styled.div`
   flex: 1 1 50%;
+  padding: 30px 60px;
 `;
 
 const ChatContainer = styled.div`

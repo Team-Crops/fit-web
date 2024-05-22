@@ -1,3 +1,3 @@
 export { useAuthStore } from './auth';
-
-export { useProjectStore } from './project';
+export { useMatchingStore, useMatching, useMatchingRoom } from './matching';
+export { useProjectsStore, useProject } from './projects';

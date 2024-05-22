@@ -9,7 +9,7 @@ export const fitFetch = returnFetch({
   },
   interceptors: {
     request: async ([path, init = {}]) => {
-      let tokens = getTokens();
+      const tokens = getTokens();
       if (tokens) {
         const headers = new Headers(init.headers);
         headers.set('Authorization', `Bearer ${tokens.accessToken}`);

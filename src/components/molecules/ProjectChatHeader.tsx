@@ -1,12 +1,10 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useShallow } from 'zustand/react/shallow';
-
 import { Button, Input, Txt } from '#/components/atoms';
 import { useProjectMutator } from '#/hooks/use-projects';
-import { useProjectStore } from '#/stores';
+import { useProject } from '#/stores';
 import { Project, ProjectStatus } from '#/types';
 
 interface ProjectChatHeaderProps {
@@ -19,16 +17,7 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
   const [editMode, setEditMode] = useState(false);
   const [editedName, setEditedName] = useState('');
 
-  const { name, createdAt, completedAt } = useProjectStore(
-    useShallow((state) => {
-      const porject = state.projects.find((p) => p.id === projectId);
-      return {
-        name: porject?.name,
-        createdAt: porject?.createdAt,
-        completedAt: porject?.completedAt,
-      };
-    })
-  );
+  const { data: project } = useProject(projectId);
 
   const { trigger: mutateProject, isMutating: isMutatingProject } = useProjectMutator(projectId);
 
@@ -39,10 +28,10 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
           <Txt
             size="typo3"
             weight="bold"
-            color={name ? '#212121' : '#bdbdbd'}
+            color={project?.name ? '#212121' : '#bdbdbd'}
             onClick={() => setEditMode(true)}
           >
-            {name ?? '프로젝트 이름'}
+            {project?.name ?? '프로젝트 이름'}
           </Txt>
         ) : (
           <form
@@ -63,7 +52,7 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
           </form>
         )}
         <Txt size="typo5" weight="medium" color="#9e9e9e">
-          {createdAt} ~ {completedAt}
+          {project?.createdAt} ~ {project?.completedAt}
         </Txt>
       </TextContainer>
       <Button
@@ -72,14 +61,14 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
         height="30"
         onClick={() =>
           mutateProject({
-            status: completedAt
+            status: project?.completedAt
               ? ProjectStatus.PROJECT_IN_PROGRESS
               : ProjectStatus.PROJECT_COMPLETE,
           })
         }
         disabled={isMutatingProject}
       >
-        {completedAt ? '프로젝트 진행하기' : '프로젝트 종료하기'}
+        {project?.completedAt ? '프로젝트 진행하기' : '프로젝트 종료하기'}
       </Button>
     </Container>
   );

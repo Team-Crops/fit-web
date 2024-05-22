@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
 
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
-import { useProjectStore } from '#/stores/project';
 import { Project, ProjectStatus } from '#/types';
 import { fitFetcher } from '#/utilities';
 
@@ -15,7 +14,7 @@ interface GetProjectsResponse {
     projectId: number;
     projectMemberList: {
       userId: number;
-      username: string;
+      nickname: string;
       positionId: number;
       profileImageUrl: string;
     }[];
@@ -34,7 +33,7 @@ function convertDtoToProjects(dto: GetProjectsResponse): Project[] {
     name: project.projectName,
     members: project.projectMemberList.map((member) => ({
       id: member.userId,
-      username: member.username,
+      nickname: member.nickname,
       positionId: member.positionId,
       profileImageUrl: member.profileImageUrl,
     })),
@@ -47,23 +46,31 @@ function convertDtoToProjects(dto: GetProjectsResponse): Project[] {
 }
 
 export function useProjectsQuery() {
-  const setProjects = useProjectStore((store) => store.setProjects);
-
-  const { data, mutate, ...others } = useSWR<GetProjectsResponse>(
-    PROJECTS_QUERY_KEY,
-    fitFetcher,
-    {}
-  );
-  const projects = data && convertDtoToProjects(data);
-
-  useEffect(() => {
-    if (projects) {
-      setProjects(projects);
-    }
-  }, [projects, setProjects]);
+  const { data, mutate, ...others } = useSWR<GetProjectsResponse>(PROJECTS_QUERY_KEY, fitFetcher);
+  const projects = useMemo(() => data && convertDtoToProjects(data), [data]);
 
   return {
     data: projects,
+    ...others,
+  };
+}
+
+export function useProjectQuery(id: Project['id'] | null) {
+  const { data, mutate, ...others } = useSWR<GetProjectsResponse>(
+    id === null ? null : PROJECTS_QUERY_KEY,
+    fitFetcher
+  );
+
+  const project = useMemo(() => {
+    if (!data) {
+      return data;
+    }
+    const projects = convertDtoToProjects(data);
+    return projects.find((p) => p.id === id);
+  }, [data, id]);
+
+  return {
+    data: project,
     ...others,
   };
 }
@@ -91,10 +98,5 @@ async function sendProjectsMutationRequest(
 }
 
 export function useProjectMutator(id: Project['id']) {
-  const setProjects = useProjectStore((store) => store.setProjects);
-  return useSWRMutation(PROJECTS_MUTATION_KEY(id), sendProjectsMutationRequest, {
-    onSuccess: (data) => {
-      setProjects((projects) => projects.map((project) => (project.id === id ? data : project)));
-    },
-  });
+  return useSWRMutation(PROJECTS_MUTATION_KEY(id), sendProjectsMutationRequest);
 }

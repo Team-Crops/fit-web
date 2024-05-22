@@ -8,6 +8,7 @@ export { FitLogo } from './FitLogo';
 export { Icons } from './Icons';
 export { Input } from './Input';
 export { Label } from './Label';
+export { Loading } from './Loading';
 export { Select } from './Select';
 export { Txt } from './Text';
 export { Toggle } from './Toggle';

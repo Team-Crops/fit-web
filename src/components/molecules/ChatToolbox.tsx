@@ -18,12 +18,9 @@ export const ChatToolbox: React.FC = () => {
 
 const Container = styled.div`
   position: relative;
-
   display: flex;
   gap: 10px;
   align-items: center;
-
-  padding: 10px;
 `;
 
 const ToolIcon = styled(Icons)`

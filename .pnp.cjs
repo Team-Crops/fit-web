@@ -52,6 +52,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-import", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:2.29.1"],\
           ["eslint-plugin-storybook", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:0.6.15"],\
           ["husky", "npm:9.0.11"],\
+          ["immer", "npm:10.1.1"],\
           ["jsonwebtoken", "npm:9.0.2"],\
           ["lint-staged", "npm:15.2.2"],\
           ["lodash", "npm:4.17.21"],\
@@ -62,6 +63,7 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:ae5aba791464d630ca9a0aea17b5f989316a30f061971dd4a341acf3391d54193e93acbbdbf841ea867d9fd77d6c54188d5cf4aabe94f970365b1efb3feb6d36#npm:18.2.0"],\
           ["return-fetch", "npm:0.4.5"],\
+          ["socket.io-client", "npm:4.7.5"],\
           ["storybook", "npm:8.0.0"],\
           ["stylelint", "npm:16.2.1"],\
           ["stylelint-config-clean-order", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:5.4.1"],\
@@ -4041,6 +4043,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@sinclair-typebox-npm-0.27.8-23e206d653-ef6351ae07.zip/node_modules/@sinclair/typebox/",\
         "packageDependencies": [\
           ["@sinclair/typebox", "npm:0.27.8"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@socket.io/component-emitter", [\
+      ["npm:3.1.2", {\
+        "packageLocation": "./.yarn/cache/@socket.io-component-emitter-npm-3.1.2-bc4133d33f-c4242bad66.zip/node_modules/@socket.io/component-emitter/",\
+        "packageDependencies": [\
+          ["@socket.io/component-emitter", "npm:3.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9624,6 +9635,29 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["engine.io-client", [\
+      ["npm:6.5.3", {\
+        "packageLocation": "./.yarn/cache/engine.io-client-npm-6.5.3-2fd3732014-15d2136655.zip/node_modules/engine.io-client/",\
+        "packageDependencies": [\
+          ["engine.io-client", "npm:6.5.3"],\
+          ["@socket.io/component-emitter", "npm:3.1.2"],\
+          ["debug", "virtual:52cc1f08fdfa0ce0882bedf10264a24f906e33f7892b3412b78b3e749d6e4b50a5c4d47e46903c21fe956663d3ab6f4d2b4677d28abd53464b00761501f37601#npm:4.3.4"],\
+          ["engine.io-parser", "npm:5.2.2"],\
+          ["ws", "virtual:2fd373201478a6aaf4bee356f075aecbf1e55a000c6f1745014ed3e7c5c23ee05b9645e942e828f9e250d9e58f2955bcccf155cc3b4ba8f9fb88cc78f49cae1b#npm:8.11.0"],\
+          ["xmlhttprequest-ssl", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["engine.io-parser", [\
+      ["npm:5.2.2", {\
+        "packageLocation": "./.yarn/cache/engine.io-parser-npm-5.2.2-a5bf5030e1-38e71a92ed.zip/node_modules/engine.io-parser/",\
+        "packageDependencies": [\
+          ["engine.io-parser", "npm:5.2.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["enhanced-resolve", [\
       ["npm:5.16.0", {\
         "packageLocation": "./.yarn/cache/enhanced-resolve-npm-5.16.0-610f8be3e5-dd69669cbb.zip/node_modules/enhanced-resolve/",\
@@ -10898,6 +10932,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-import", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:2.29.1"],\
           ["eslint-plugin-storybook", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:0.6.15"],\
           ["husky", "npm:9.0.11"],\
+          ["immer", "npm:10.1.1"],\
           ["jsonwebtoken", "npm:9.0.2"],\
           ["lint-staged", "npm:15.2.2"],\
           ["lodash", "npm:4.17.21"],\
@@ -10908,6 +10943,7 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:ae5aba791464d630ca9a0aea17b5f989316a30f061971dd4a341acf3391d54193e93acbbdbf841ea867d9fd77d6c54188d5cf4aabe94f970365b1efb3feb6d36#npm:18.2.0"],\
           ["return-fetch", "npm:0.4.5"],\
+          ["socket.io-client", "npm:4.7.5"],\
           ["storybook", "npm:8.0.0"],\
           ["stylelint", "npm:16.2.1"],\
           ["stylelint-config-clean-order", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:5.4.1"],\
@@ -11884,6 +11920,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["image-size", "npm:1.1.1"],\
           ["queue", "npm:6.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["immer", [\
+      ["npm:10.1.1", {\
+        "packageLocation": "./.yarn/cache/immer-npm-10.1.1-973ae10d09-b749e10d13.zip/node_modules/immer/",\
+        "packageDependencies": [\
+          ["immer", "npm:10.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -16285,6 +16330,30 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["socket.io-client", [\
+      ["npm:4.7.5", {\
+        "packageLocation": "./.yarn/cache/socket.io-client-npm-4.7.5-f163ad2b04-d5dc90ee63.zip/node_modules/socket.io-client/",\
+        "packageDependencies": [\
+          ["socket.io-client", "npm:4.7.5"],\
+          ["@socket.io/component-emitter", "npm:3.1.2"],\
+          ["debug", "virtual:52cc1f08fdfa0ce0882bedf10264a24f906e33f7892b3412b78b3e749d6e4b50a5c4d47e46903c21fe956663d3ab6f4d2b4677d28abd53464b00761501f37601#npm:4.3.4"],\
+          ["engine.io-client", "npm:6.5.3"],\
+          ["socket.io-parser", "npm:4.2.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["socket.io-parser", [\
+      ["npm:4.2.4", {\
+        "packageLocation": "./.yarn/cache/socket.io-parser-npm-4.2.4-bf87f78bcd-9383b30358.zip/node_modules/socket.io-parser/",\
+        "packageDependencies": [\
+          ["socket.io-parser", "npm:4.2.4"],\
+          ["@socket.io/component-emitter", "npm:3.1.2"],\
+          ["debug", "virtual:52cc1f08fdfa0ce0882bedf10264a24f906e33f7892b3412b78b3e749d6e4b50a5c4d47e46903c21fe956663d3ab6f4d2b4677d28abd53464b00761501f37601#npm:4.3.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["socks", [\
       ["npm:2.8.1", {\
         "packageLocation": "./.yarn/cache/socks-npm-2.8.1-3b253d7256-ac77b515c2.zip/node_modules/socks/",\
@@ -18267,12 +18336,36 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["ws", [\
+      ["npm:8.11.0", {\
+        "packageLocation": "./.yarn/cache/ws-npm-8.11.0-ab72116a01-b672b312f3.zip/node_modules/ws/",\
+        "packageDependencies": [\
+          ["ws", "npm:8.11.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
       ["npm:8.16.0", {\
         "packageLocation": "./.yarn/cache/ws-npm-8.16.0-46943f6199-a7783bb421.zip/node_modules/ws/",\
         "packageDependencies": [\
           ["ws", "npm:8.16.0"]\
         ],\
         "linkType": "SOFT"\
+      }],\
+      ["virtual:2fd373201478a6aaf4bee356f075aecbf1e55a000c6f1745014ed3e7c5c23ee05b9645e942e828f9e250d9e58f2955bcccf155cc3b4ba8f9fb88cc78f49cae1b#npm:8.11.0", {\
+        "packageLocation": "./.yarn/__virtual__/ws-virtual-538e0b2f55/0/cache/ws-npm-8.11.0-ab72116a01-b672b312f3.zip/node_modules/ws/",\
+        "packageDependencies": [\
+          ["ws", "virtual:2fd373201478a6aaf4bee356f075aecbf1e55a000c6f1745014ed3e7c5c23ee05b9645e942e828f9e250d9e58f2955bcccf155cc3b4ba8f9fb88cc78f49cae1b#npm:8.11.0"],\
+          ["@types/bufferutil", null],\
+          ["@types/utf-8-validate", null],\
+          ["bufferutil", null],\
+          ["utf-8-validate", null]\
+        ],\
+        "packagePeers": [\
+          "@types/bufferutil",\
+          "@types/utf-8-validate",\
+          "bufferutil",\
+          "utf-8-validate"\
+        ],\
+        "linkType": "HARD"\
       }],\
       ["virtual:ddac3c74c2f2f7b3436791d2034fb9314e33077223b078ece59d99623dc79eef4317f19042b20f11621d6800ca3ccf114afe398dde5a9ad94bc33c48bd9f70f4#npm:8.16.0", {\
         "packageLocation": "./.yarn/__virtual__/ws-virtual-94c4523f69/0/cache/ws-npm-8.16.0-46943f6199-a7783bb421.zip/node_modules/ws/",\
@@ -18288,6 +18381,15 @@ const RAW_RUNTIME_STATE =
           "@types/utf-8-validate",\
           "bufferutil",\
           "utf-8-validate"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["xmlhttprequest-ssl", [\
+      ["npm:2.0.0", {\
+        "packageLocation": "./.yarn/cache/xmlhttprequest-ssl-npm-2.0.0-a9c0d5efed-b64ab37145.zip/node_modules/xmlhttprequest-ssl/",\
+        "packageDependencies": [\
+          ["xmlhttprequest-ssl", "npm:2.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -18363,7 +18465,7 @@ const RAW_RUNTIME_STATE =
           ["zustand", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:4.5.2"],\
           ["@types/immer", null],\
           ["@types/react", "npm:18.2.65"],\
-          ["immer", null],\
+          ["immer", "npm:10.1.1"],\
           ["react", "npm:18.2.0"],\
           ["use-sync-external-store", "virtual:1fec3c4b835c77fa6bcc575652a8ed27c66e1f5531ba5a3cd25d09e130355c322204e30fb4c84579509192f7fa25047c137feb9e4fb76152f531f23e96026898#npm:1.2.0"]\
         ],\

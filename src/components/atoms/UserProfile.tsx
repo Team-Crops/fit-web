@@ -4,7 +4,13 @@ import styled from '@emotion/styled';
 
 import { Icons } from './Icons';
 
-const ProfileImage = styled(Image)`
+const ProfileImage = styled(Image)<{ width: number; height: number }>`
+  overflow: hidden;
+
+  width: ${({ width }) => width}px;
+  max-width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+
   border-radius: 50%;
 `;
 
@@ -17,13 +23,21 @@ interface UserProfileProps extends React.HTMLAttributes<HTMLDivElement> {
 export const UserProfile: React.FC<UserProfileProps> = ({
   imageUrl = null,
   nickname = null,
-  size = 48,
+  size = 78,
   ...props
 }) => {
   const alt = nickname ? `${nickname}'s profile image` : 'profile image';
 
   if (imageUrl) {
-    return <ProfileImage src={imageUrl} alt={alt} width={size} height={size} {...props} />;
+    return (
+      <ProfileImage
+        src={`https://d2ueefa0uvyh4f.cloudfront.net/${imageUrl}`}
+        alt={alt}
+        width={size}
+        height={size}
+        {...props}
+      />
+    );
   }
 
   return <Icons icon="account" width={size} height={size} />;
