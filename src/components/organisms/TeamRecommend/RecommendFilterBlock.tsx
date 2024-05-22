@@ -6,14 +6,17 @@ import styled from '@emotion/styled';
 import { Button } from '#/components/atoms/Button';
 import { Select } from '#/components/atoms/Select';
 import { Txt } from '#/components/atoms/Text';
+import { CareerSelect } from '#/components/molecules/CareerSelect';
 import { PositionBadge } from '#/components/molecules/MyPage/PositionBadge';
 import { Filter } from '#/components/molecules/TeamRecommend/Filter';
 import { TechSelect } from '#/components/molecules/TeamRecommend/TechSelect';
+import { usePositionsQuery } from '#/hooks/use-positions';
+import { useRegionsQuery } from '#/hooks/use-regions';
+import { useRecommendStore } from '#/stores/recommend';
 
-type filterValue = 'all' | 'dibs';
 interface DibsFilterProps {
   label: string;
-  value: filterValue;
+  value: boolean;
 }
 
 const Block = styled.div`
@@ -45,6 +48,8 @@ const DibsBlock = styled(Txt)<{ selected: boolean }>`
   justify-content: center;
 
   border-bottom: 2px solid transparent;
+
+  cursor: pointer;
   ${({ selected }) =>
     selected &&
     css`
@@ -65,51 +70,59 @@ const PositionWrapper = styled.div`
   gap: 10px;
 `;
 const dibsFilter: DibsFilterProps[] = [
-  { label: '전체', value: 'all' },
-  { label: '찜만 보기', value: 'dibs' },
+  { label: '전체', value: false },
+  { label: '찜만 보기', value: true },
 ];
 
-const positionList = [
-  '기획자',
-  '디자이너',
-  '서버 개발자',
-  '웹 프론트 개발자',
-  'IOS 개발자',
-  'Android 개발자',
-];
 const activityTimeList = ['3시간', '6시간', '12시간', '24시간'];
 export const RecommendFilterBlock = () => {
-  const [selectedDibs, setSelectedDibs] = useState<filterValue>('all');
-  const [selectedPosition, setSelectedPosition] = useState<string[]>([]);
-  const [selectedActivityTime, setSelectedActivityTime] = useState<string[]>([]);
+  const { data: positionList } = usePositionsQuery();
+  const { data: regions } = useRegionsQuery();
+  const recommendFilter = useRecommendStore((state) => state.recommendFilter);
+  const setRecommendFilter = useRecommendStore((state) => state.setRecommendFilter);
+  const filterClear = useRecommendStore((state) => state.clear);
 
-  const handleSelectDibs = useCallback(
-    (dibs: filterValue) => () => {
-      setSelectedDibs(dibs);
+  const handleUpdateRecommendFilter = useCallback(
+    (key: string, value: any) => {
+      setRecommendFilter({ ...recommendFilter, [key]: value });
     },
-    []
+    [recommendFilter, setRecommendFilter]
+  );
+  const handleSelectDibs = useCallback(
+    (dibs: boolean) => () => {
+      setRecommendFilter({ ...recommendFilter, liked: dibs });
+    },
+    [recommendFilter, setRecommendFilter]
   );
   const handlePositionClick = useCallback(
-    (position: string) => () => {
-      setSelectedPosition((prev) => {
-        if (prev.includes(position)) {
-          return prev.filter((p) => p !== position);
-        }
-        return [...prev, position];
-      });
+    (positionId: number) => () => {
+      const tempPosition = recommendFilter.positionId ?? [];
+      if (tempPosition.includes(positionId)) {
+        handleUpdateRecommendFilter(
+          'positionId',
+          tempPosition.filter((p) => p !== positionId)
+        );
+      } else {
+        handleUpdateRecommendFilter('positionId', [...tempPosition, positionId]);
+      }
     },
-    []
+    [handleUpdateRecommendFilter, recommendFilter.positionId]
   );
   const handleActivityTimeClick = useCallback(
     (activityTime: string) => () => {
-      setSelectedActivityTime((prev) => {
-        if (prev.includes(activityTime)) {
-          return prev.filter((p) => p !== activityTime);
-        }
-        return [...prev, activityTime];
-      });
+      const inputTime = Number(activityTime.replace('시간', ''));
+      const tempActivityTime = recommendFilter.activityHour ?? [];
+
+      if (tempActivityTime.includes(inputTime)) {
+        handleUpdateRecommendFilter(
+          'activityHour',
+          tempActivityTime.filter((p) => p !== inputTime)
+        );
+      } else {
+        handleUpdateRecommendFilter('activityHour', [...tempActivityTime, inputTime]);
+      }
     },
-    []
+    [handleUpdateRecommendFilter, recommendFilter.activityHour]
   );
 
   return (
@@ -117,28 +130,28 @@ export const RecommendFilterBlock = () => {
       <DibsFilter>
         {dibsFilter.map((dibs) => (
           <DibsBlock
-            key={dibs.value}
+            key={dibs.label}
             size="typo4"
             weight="bold"
-            selected={selectedDibs === dibs.value}
+            selected={recommendFilter.liked === dibs.value}
             onClick={handleSelectDibs(dibs.value)}
           >
             {dibs.label}
           </DibsBlock>
         ))}
       </DibsFilter>
-      <InitFilterButton variant={'outlined'} height={'40'} color={'primary'}>
+      <InitFilterButton variant={'outlined'} height={'40'} color={'primary'} onClick={filterClear}>
         필터 초기화
       </InitFilterButton>
       <FilterGridBlock>
         <Filter title="포지션" titleWidth={206} fullColumn>
           <PositionWrapper>
-            {positionList.map((position) => (
+            {positionList?.map((position) => (
               <PositionBadge
-                key={position}
-                position={position}
-                selected={selectedPosition.includes(position)}
-                onClick={handlePositionClick(position)}
+                key={position.id}
+                position={position.displayName}
+                selected={(recommendFilter.positionId ?? []).includes(position.id)}
+                onClick={handlePositionClick(position.id)}
               />
             ))}
           </PositionWrapper>
@@ -147,27 +160,37 @@ export const RecommendFilterBlock = () => {
           <TechSelect />
         </Filter>
         <Filter title="학력/경력" titleWidth={206}>
-          <Select width="130px" placeholder="선택하세요">
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-          </Select>
+          <CareerSelect
+            value={recommendFilter.backgroundStatus ?? ''}
+            onChange={(e) => handleUpdateRecommendFilter('backgroundStatus', e.target.value)}
+          />
         </Filter>
         <Filter title="프로젝트 경험 수" titleWidth={220}>
-          <Select width="130px" placeholder="선택하세요">
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
+          <Select
+            value={recommendFilter.projectCount ?? 0}
+            onChange={(e) => handleUpdateRecommendFilter('projectCount', e.target.value)}
+            width="130px"
+            placeholder="선택하세요"
+          >
+            {[...Array(4)].map((_, i, arr) => (
+              <Select.Option key={i} value={i}>
+                {i === 0 ? '없음' : i === arr.length - 1 ? `${i}회 이상` : `${i}회`}
+              </Select.Option>
+            ))}
           </Select>
         </Filter>
         <Filter title="주 활동 지역" titleWidth={206}>
-          <Select width="130px" placeholder="선택하세요">
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
+          <Select
+            value={recommendFilter.regionId ?? 0}
+            onChange={(e) => handleUpdateRecommendFilter('regionId', e.target.value)}
+            width="130px"
+            placeholder="선택하세요"
+          >
+            {regions?.map((region) => (
+              <Select.Option key={region.id} value={region.id}>
+                {region.displayName}
+              </Select.Option>
+            ))}
           </Select>
         </Filter>
         <Filter title="활동 가능 시간" titleWidth={220} direction="column">
@@ -176,7 +199,9 @@ export const RecommendFilterBlock = () => {
               <PositionBadge
                 key={activityTime}
                 position={activityTime}
-                selected={selectedActivityTime.includes(activityTime)}
+                selected={(recommendFilter.activityHour ?? []).includes(
+                  Number(activityTime.replace('시간', ''))
+                )}
                 onClick={handleActivityTimeClick(activityTime)}
               />
             ))}

@@ -1,8 +1,13 @@
+import { MouseEventHandler, useCallback, useMemo, useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
 import { UserProfile } from '#/components/atoms/UserProfile';
+import { usePositionsQuery } from '#/hooks/use-positions';
+import { RecommendUser, useRecommendLikeUserQuery } from '#/hooks/use-recommend';
+import { useSkillsQuery } from '#/hooks/use-skills';
 
 const Card = styled.div`
   cursor: pointer;
@@ -12,7 +17,7 @@ const Card = styled.div`
 
   width: 100%;
   height: 235px;
-  padding: 30px 37px;
+  padding: 30px 0 30px 37px;
 
   border: 1px solid #ffc7c6;
   border-radius: 10px;
@@ -21,6 +26,7 @@ const Card = styled.div`
 
   &:hover {
     top: -10px;
+    padding: 29px 0 30px 36px;
     border: 2px solid #ffc7c6;
     box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
   }
@@ -38,7 +44,15 @@ const FlexBlock = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+
+  width: 180px;
   margin-bottom: 4px;
+`;
+const UserName = styled(Txt)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
 `;
 const Position = styled(Txt)`
   display: flex;
@@ -47,6 +61,8 @@ const Position = styled(Txt)`
 
   height: 22px;
   padding: 0 17px;
+
+  white-space: nowrap;
 
   background-color: #ffeae9;
   border-radius: 33px;
@@ -78,22 +94,50 @@ const LikeButton = styled(Icons)`
   right: 18px;
 `;
 
-export const UserDataCard = () => {
+interface UserDataCardProps {
+  userData: RecommendUser['recommendUserList'][0];
+  onClick: (userId: number) => void;
+}
+export const UserDataCard = ({ userData, onClick }: UserDataCardProps) => {
+  const [isLike, setIsLike] = useState(userData.isLiked);
+  const { trigger: likeTrigger } = useRecommendLikeUserQuery();
+  const positions = usePositionsQuery();
+  const skills = useSkillsQuery();
+
+  const onClickLike: MouseEventHandler = useCallback(
+    (e) => {
+      e.stopPropagation();
+      likeTrigger({
+        userId: userData.userSummary.userId,
+        like: isLike,
+      });
+      setIsLike(!userData.isLiked);
+    },
+    [isLike, likeTrigger, userData.isLiked, userData.userSummary.userId]
+  );
+
   return (
-    <Card>
+    <Card
+      onClick={() => {
+        onClick(userData.userSummary.userId);
+      }}
+    >
       <TopBlock>
-        <UserProfile size={120} />
+        <UserProfile size={120} imageUrl={userData.userSummary.profileImageUrl} />
         <SummaryBlock>
           <FlexBlock>
-            <Txt size="typo3" weight="bold" color="#212121">
-              예진
-            </Txt>
+            <UserName size="typo3" weight="bold" color="#212121">
+              {userData.userSummary.username}
+            </UserName>
             <Position size={'typo6'} weight="regular" color="#FF706C">
-              Planner
+              {
+                positions.data?.find((position) => position.id === userData.userSummary.positionId)
+                  ?.displayName
+              }
             </Position>
           </FlexBlock>
           <Introduction size="typo6" weight="medium" color="#616161">
-            “좋은 분들과 함께 멋진 프로덕트를 만들고 싶어요 :)”
+            {userData.userSummary.introduce}
           </Introduction>
         </SummaryBlock>
       </TopBlock>
@@ -102,10 +146,23 @@ export const UserDataCard = () => {
           사용가능한 기술/툴
         </Txt>
         <Skills weight="medium" size="typo6" color="#212121">
-          Figma, photoShop,Figma, photoShop,Figma, photoShop,
+          {userData.userSummary.skillIdList?.map((skillId, index) => {
+            const skill = skills.data?.find((skill) => skill.id === skillId);
+            return (
+              <>
+                {skill?.displayName}
+                {index !== (userData.userSummary.skillIdList ?? []).length - 1 && ', '}
+              </>
+            );
+          })}
         </Skills>
       </BottomBlock>
-      <LikeButton icon={'heart'} width={24} height={24} />
+      <LikeButton
+        icon={isLike ? 'heartFill' : 'heart'}
+        width={24}
+        height={24}
+        onClick={onClickLike}
+      />
     </Card>
   );
 };

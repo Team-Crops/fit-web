@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { Icons } from './Icons';
 
-const ProfileImage = styled(Image)`
+const ProfileImage = styled.img`
   border-radius: 50%;
 `;
 
@@ -23,7 +23,15 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   const alt = nickname ? `${nickname}'s profile image` : 'profile image';
 
   if (imageUrl) {
-    return <ProfileImage src={imageUrl} alt={alt} width={size} height={size} {...props} />;
+    return (
+      <ProfileImage
+        src={process.env.NEXT_PUBLIC_S3_IMAGE_URL + imageUrl}
+        alt={alt}
+        width={size}
+        height={size}
+        {...props}
+      />
+    );
   }
 
   return <Icons icon="account" width={size} height={size} />;

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms/Text';
@@ -21,7 +23,7 @@ const Content = styled(Txt)`
 
 interface DataBlockProps {
   title: string;
-  content: string;
+  content: string | ReactNode;
 }
 export const DataBlock = ({ title, content }: DataBlockProps) => {
   return (

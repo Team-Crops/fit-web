@@ -68,7 +68,12 @@ export const ProfileBlock = ({ size, editable }: ProfileBlockProps) => {
       {editable && imageBase64 ? (
         <ProfileImage src={imageBase64.toString()} alt="profile" layout="fill" objectFit="cover" />
       ) : user.profileImageUrl ? (
-        <ProfileImage src={user.profileImageUrl} alt="profile" layout="fill" objectFit="cover" />
+        <ProfileImage
+          src={process.env.NEXT_PUBLIC_S3_IMAGE_URL + user.profileImageUrl}
+          alt="profile"
+          layout="fill"
+          objectFit="cover"
+        />
       ) : (
         <Icons icon="account" width={size} height={size} style={{ zIndex: '10' }} />
       )}
