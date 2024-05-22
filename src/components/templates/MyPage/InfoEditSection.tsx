@@ -1,5 +1,3 @@
-import { use, useEffect } from 'react';
-
 import styled from '@emotion/styled';
 
 import { uploadImageToS3, usePreSignedUrl } from '#/hooks/use-file';
@@ -48,7 +46,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
         fileDomain: 'PROFILE_IMAGE',
       });
       await uploadImageToS3(registerImage.preSignedUrl, tempImage);
-      profileImageUrl = process.env.NEXT_PUBLIC_S3_IMAGE_URL + registerImage.fileKey;
+      profileImageUrl = registerImage.fileKey;
     }
     if (user?.portfolioUrl !== null && tempPortfolioFile === null) {
       portfolioUrl = null;
@@ -58,7 +56,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
         fileDomain: 'PORTFOLIO',
       });
       await uploadImageToS3(registerPortfolio.preSignedUrl, tempPortfolioFile);
-      portfolioUrl = process.env.NEXT_PUBLIC_S3_IMAGE_URL + registerPortfolio.fileKey;
+      portfolioUrl = registerPortfolio.fileKey;
     }
 
     const mutated = await mutateUser({

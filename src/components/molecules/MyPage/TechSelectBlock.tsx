@@ -35,9 +35,11 @@ const TechListBlock = styled.div`
   padding: 20px 0 0;
 `;
 
-export const TechSelectBlock = () => {
-  const tempUser = useTempAuthStore((state) => state.tempUser);
-  const setTempUser = useTempAuthStore((state) => state.setTempUser);
+interface TechSelectBlockProps {
+  value: number[];
+  onChange: (value: number) => void;
+}
+export const TechSelectBlock = ({ value, onChange }: TechSelectBlockProps) => {
   const { data: positions } = usePositionsQuery();
   const [selectedPosition, setSelectedPosition] = useState<number>(0);
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -49,33 +51,12 @@ export const TechSelectBlock = () => {
     []
   );
 
-  const handleSkill = useCallback(
-    (skillId: number) => () => {
-      if (tempUser === null) return;
-      if (tempUser.skillIdList === null) setTempUser({ ...tempUser, skillIdList: [skillId] });
-      else
-        setTempUser({
-          ...tempUser,
-          skillIdList: tempUser.skillIdList?.includes(skillId)
-            ? tempUser.skillIdList.filter((id) => id !== skillId)
-            : [...tempUser.skillIdList, skillId],
-        });
-    },
-    [setTempUser, tempUser]
-  );
-
   useEffect(() => {
     if (positions && selectedPosition) {
       setSkills(positions.find((position) => position.id === selectedPosition)?.skillList || []);
     }
   }, [positions, selectedPosition]);
-  // init
-  useEffect(() => {
-    if (tempUser === null) return;
-    setSelectedPosition(tempUser.positionId ?? 0);
-  }, [tempUser]);
 
-  if (tempUser === null) return;
   return (
     <TechContainer>
       <TechType>
@@ -96,8 +77,8 @@ export const TechSelectBlock = () => {
           <PositionBadge
             key={skill.id}
             position={skill.displayName}
-            selected={tempUser.skillIdList?.includes(skill.id) ?? false}
-            onClick={handleSkill(skill.id)}
+            selected={value?.includes(skill.id) ?? false}
+            onClick={() => onChange(skill.id)}
           />
         ))}
       </TechListBlock>

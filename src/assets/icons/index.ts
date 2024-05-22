@@ -37,3 +37,6 @@ export { default as GithubIcon } from './github.svg';
 export { default as VelogIcon } from './velog.svg';
 export { default as LinkedInIcon } from './linkedIn.svg';
 export { default as TistoryIcon } from './tistory.svg';
+export { default as ClipBoldIcon } from './clip-bold.svg';
+export { default as UserLineIcon } from './user-line.svg';
+export { default as LogoutIcon } from './logout.svg';

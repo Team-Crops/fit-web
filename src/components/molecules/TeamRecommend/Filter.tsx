@@ -38,7 +38,7 @@ export const Filter = ({
       <Title size="typo5" weight="medium" titleWidth={titleWidth}>
         {title}
       </Title>
-      <ChildrenBlock>{children}</ChildrenBlock>
+      <ChildrenBlock titleWidth={titleWidth}>{children}</ChildrenBlock>
     </StyledBlock>
   );
 };

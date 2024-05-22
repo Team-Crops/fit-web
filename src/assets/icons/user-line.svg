@@ -1,0 +1,11 @@
+<svg width="currnet" height="current" viewBox="0 0 21 22" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.5185 19.7311C15.6351 19.7311 19.787 15.5963 19.787 10.4906C19.787 5.38482 15.6351 1.25 10.5185 1.25C5.40198 1.25 1.25 5.38482 1.25 10.4906C1.25 15.5963 5.40198 19.7311 10.5185 19.7311Z" stroke="currentColor" stroke-width="1.5"/>
+    <ellipse cx="10.7085" cy="8.79243" rx="3.02881" ry="3.01887" stroke="currentColor" stroke-width="1.5"/>
+    <mask id="mask0_1277_6333" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="12" width="11" height="10">
+        <path d="M14.5002 17.283C14.5002 19.4716 12.7195 21.25 10.5177 21.25C8.31586 21.25 6.53516 19.4716 6.53516 17.283C6.53516 15.0944 8.31586 13.316 10.5177 13.316C12.7195 13.316 14.5002 15.0944 14.5002 17.283Z" stroke="currentColor" stroke-width="1.5"/>
+    </mask>
+    <g mask="url(#mask0_1277_6333)">
+        <ellipse cx="10.5185" cy="10.4906" rx="8.51852" ry="8.49057" fill="currentColor"/>
+    </g>
+</svg>

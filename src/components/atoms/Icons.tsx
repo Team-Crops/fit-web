@@ -42,6 +42,9 @@ import {
   LinkedInIcon,
   TistoryIcon,
   VelogIcon,
+  ClipBoldIcon,
+  UserLineIcon,
+  LogoutIcon,
 } from '#/assets/icons';
 
 export type IconName =
@@ -58,6 +61,7 @@ export type IconName =
   | 'check'
   | 'click'
   | 'clip'
+  | 'clipBold'
   | 'cross'
   | 'email'
   | 'emojiFire'
@@ -76,6 +80,7 @@ export type IconName =
   | 'link'
   | 'linkedin'
   | 'logo'
+  | 'logout'
   | 'megaphone'
   | 'pencil'
   | 'phoneFill'
@@ -84,6 +89,7 @@ export type IconName =
   | 'tistory'
   | 'run'
   | 'user'
+  | 'userLine'
   | 'upload'
   | 'velog';
 
@@ -162,6 +168,9 @@ const icons: Record<IconName, Icon> = {
   clip: {
     SVGR: ClipIcon,
   },
+  clipBold: {
+    SVGR: ClipBoldIcon,
+  },
   cross: {
     SVGR: CrossIcon,
     color: '#212121',
@@ -223,6 +232,9 @@ const icons: Record<IconName, Icon> = {
     SVGR: LogoIcon,
     color: '#FF706C',
   },
+  logout: {
+    SVGR: LogoutIcon,
+  },
   megaphone: {
     SVGR: MegaphoneIcon,
   },
@@ -249,6 +261,9 @@ const icons: Record<IconName, Icon> = {
   },
   user: {
     SVGR: UserIcon,
+  },
+  userLine: {
+    SVGR: UserLineIcon,
   },
   upload: {
     SVGR: Upload,
