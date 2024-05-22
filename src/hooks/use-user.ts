@@ -1,8 +1,9 @@
 import useSWR, { mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
 
-import { User } from '#/types/user';
+import { User, UserBackgroundStatus } from '#/types/user';
 import { fitFetch, fitFetcher } from '#/utilities/fetch';
+import { RecommendUser } from './use-recommend';
 
 export const USER_QUERY_KEY = '/v1/user';
 const USER_MUTATE_KEY = '/v1/user';
@@ -36,4 +37,33 @@ export function useUserMutation() {
       onSuccess: (data) => mutate<User>(USER_QUERY_KEY, data),
     }
   );
+}
+
+export interface UserIdResponse {
+  isLiked: boolean;
+  userProfile: {
+    id: number;
+    projectCount: number | null;
+    activityHour: number | null;
+    introduce: string | null;
+    portfolioUrl: string | null;
+    phoneNumber: string | null;
+    positionId: number | null;
+    regionId: number | null;
+    backgroundStatus: UserBackgroundStatus | null;
+    nickname: string | null;
+    skillIdList: number[] | null;
+    profileImageUrl: string | null;
+    email: string | null;
+    status: string | null;
+    education: string | null;
+    linkList: { linkUrl: string; linkType: string }[] | null;
+  };
+}
+
+export function useUserUserIdQuery(userId: number) {
+  return useSWR<UserIdResponse>(`${USER_QUERY_KEY}/${userId}`, fitFetcher, {
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
 }
