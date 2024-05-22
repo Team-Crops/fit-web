@@ -14,7 +14,6 @@ import { useAuthStore } from '#/stores/auth';
 import { SignUpStep, PolicyAgreement, User } from '#/types';
 import { checkSignUpStep } from '#/utilities/check-sign-up-step';
 import { fitFetcher } from '#/utilities/fetch';
-import { getTokens } from '#/utilities/session';
 
 interface LoginGuardProps {
   children: React.ReactNode;
