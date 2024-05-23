@@ -43,10 +43,18 @@ export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess })
 
   useEffect(() => {
     if (allAgreed && !isMutatingAgreements) {
+      updateAgreements(
+        policyAgrees.map((agree) => ({ type: agree.type, isAgree: agree.isAgree })),
+        {
+          optimisticData: {
+            policyAgreementList: policyAgrees,
+          },
+        }
+      );
       setAgreed(true);
       onSuccess();
     }
-  }, [allAgreed, isMutatingAgreements, onSuccess, setAgreed]);
+  }, [allAgreed, isMutatingAgreements, onSuccess, policyAgrees, setAgreed, updateAgreements]);
 
   useEffect(() => {
     if (policyAgrees.length > 0) {
