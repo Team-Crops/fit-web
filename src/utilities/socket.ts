@@ -1,3 +1,4 @@
+// @ts-expect-error
 import io from 'socket.io-client';
 
 import { getTokens } from '#/utilities/session';
