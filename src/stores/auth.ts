@@ -27,3 +27,5 @@ export const useAuthStore = create<AuthState & AuthAction>((set) => ({
 
   set: (state) => set(state),
 }));
+
+export const useUser = () => useAuthStore((store) => store.user);

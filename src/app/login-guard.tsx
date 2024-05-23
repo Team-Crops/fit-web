@@ -85,7 +85,7 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
   return (
     <>
       {children}
-      {isPopupOpened && popupComponent && <Backdrop>{popupComponent}</Backdrop>}
+      {/* {isPopupOpened && popupComponent && <Backdrop>{popupComponent}</Backdrop>} */}
     </>
   );
 };

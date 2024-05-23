@@ -17,8 +17,10 @@ interface MatchingChatRoomProps {
 
 export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
   const userId = useAuthStore((store) => store.user?.id);
+
   const { data: matching } = useMatching();
-  const { data: matchingRoom } = useMatchingRoom(matching?.roomId);
+  const { data: matchingRoom } = useMatchingRoom(matching?.id);
+
   const isReady = useMemo(
     () => matchingRoom?.matchingUsers.find((u) => u.id === userId)?.isReady,
     [matchingRoom?.matchingUsers, userId]

@@ -1,66 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
 import styled from '@emotion/styled';
 
-import { Loading, Txt } from '#/components/atoms';
+import { Txt } from '#/components/atoms';
 import { ChatBubbles } from '#/components/molecules/ChatBubbles';
 import { ChatToolbox } from '#/components/molecules/ChatToolbox';
-import { useChatMessagesQuery } from '#/hooks/use-chat';
-import { useAuthStore, useChat } from '#/stores';
-import { Message } from '#/types';
-import { fitSocket } from '#/utilities/socket';
 
 interface ChatProps {
   chatId: number;
 }
 
 export const Chat = ({ chatId }: ChatProps) => {
-  const [isTopReached, setIsTopReached] = useState(true);
-
-  const userId = useAuthStore((state) => state.user?.id)!;
-
-  const { chat, addNewMessage, addPrevMessages } = useChat(chatId);
-
-  const lastMessage = useMemo(() => chat?.messages[chat.messages.length - 1], [chat?.messages]);
-
-  const { data: messageBundle } = useChatMessagesQuery(
-    isTopReached ? chatId : null,
-    lastMessage?.id
-  );
-
-  const socket = useRef<ReturnType<typeof fitSocket>>();
-
-  const sendMessage = useCallback(
-    (message: string) => {
-      if (socket.current) {
-        socket.current.emit('/chat/text', { content: message });
-        addNewMessage({ id: -1, userId, messageType: 'TEXT', content: message });
-      }
-    },
-    [addNewMessage, userId]
-  );
-
-  const sendImage = useCallback((imageUrl: string) => {
-    if (socket.current) {
-      socket.current.emit('/chat/image', { content: imageUrl });
-    }
-  }, []);
-
-  useEffect(() => {
-    socket.current = fitSocket({ roomId: chatId });
-    socket.current.on('get_message', (message: Message) => {
-      addNewMessage(message);
-    });
-    return () => socket.current.close();
-  }, [addNewMessage, chatId]);
-
-  useEffect(() => {
-    if (messageBundle) {
-      addPrevMessages(messageBundle);
-      setIsTopReached(false);
-    }
-  }, [addPrevMessages, messageBundle]);
-
   return (
     <Container>
       <Header>
@@ -68,13 +16,9 @@ export const Chat = ({ chatId }: ChatProps) => {
           채팅방
         </Txt>
       </Header>
-      {chat ? (
-        <ChatBubbles messages={chat?.messages} loadMore={() => setIsTopReached(true)} />
-      ) : (
-        <Loading />
-      )}
+      <ChatBubbles chatId={chatId} />
       <ChatToolboxContainer>
-        <ChatToolbox sendMessage={sendMessage} sendImage={sendImage} />
+        <ChatToolbox chatId={chatId} />
       </ChatToolboxContainer>
     </Container>
   );

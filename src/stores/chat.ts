@@ -1,71 +1,73 @@
-import { useCallback } from 'react';
-
+import _ from 'lodash';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { useShallow } from 'zustand/react/shallow';
 
 import { Chat, Message } from '#/types';
+import { fitSocket } from '#/utilities/socket';
 
 interface ChatState {
-  chats: Chat[];
+  chats: Record<Chat['id'], Chat>;
 }
 
 interface ChatAction {
-  addNewMessage: (id: number, message: Message) => void;
-  addPrevMessages: (id: number, messages: Message[]) => void;
+  createChat: (chat: Pick<Chat, 'id' | 'matchingId' | 'projectId' | 'users'>) => void;
+  setParticipants: (id: Chat['id'], participants: Chat['users']) => void;
+  setMessages: (id: Chat['id'], messages: Message[]) => void;
+  unshiftMessage: (id: Chat['id'], message: Message) => void;
+  appendMessages: (id: Chat['id'], messages: Message[]) => void;
 }
 
 export const useChatStore = create<ChatState & ChatAction>()(
   immer((set) => ({
-    chats: [],
+    chats: {},
 
-    addNewMessage: (id, message) => {
+    createChat: (chat) => {
       set((state) => {
-        const chat = state.chats.find((c) => c.id === id);
-        if (chat) {
-          chat.messages.unshift(message);
-        } else {
-          state.chats.push({ id, messages: [message] });
+        if (state.chats[chat.id]) {
+          return;
         }
+        state.chats[chat.id] = {
+          ...chat,
+          messages: [],
+          socket: fitSocket({ roomId: chat.id }),
+        } as Chat;
       });
     },
-
-    addPrevMessages: (id, messages) => {
+    setParticipants: (id, participants) => {
       set((state) => {
-        const chat = state.chats.find((c) => c.id === id);
-        if (chat) {
-          chat.messages.push(...messages);
-        } else {
-          state.chats.push({ id, messages });
+        const chat = state.chats[id];
+        if (!chat) {
+          return;
         }
+        chat.users = participants;
+      });
+    },
+    setMessages: (id, messages) => {
+      set((state) => {
+        const chat = state.chats[id];
+        if (!chat) {
+          return;
+        }
+        chat.messages = messages;
+      });
+    },
+    unshiftMessage: (id, message) => {
+      set((state) => {
+        const chat = state.chats[id];
+        if (!chat) {
+          return;
+        }
+        chat.messages.unshift(message);
+      });
+    },
+    appendMessages: (id, messages) => {
+      set((state) => {
+        const chat = state.chats[id];
+        if (!chat) {
+          return;
+        }
+        chat.messages = [...chat.messages, ...messages];
       });
     },
   }))
 );
-
-export const useChat = (id: Chat['id']) => {
-  const chat = useChatStore((state) => state.chats.find((c) => c.id === id));
-
-  const { addNewMessage, addPrevMessages } = useChatStore(
-    useShallow((state) => ({
-      addNewMessage: state.addNewMessage,
-      addPrevMessages: state.addPrevMessages,
-    }))
-  );
-
-  const bindedAddNewMessage = useCallback(
-    (message: Message) => addNewMessage(id, message),
-    [addNewMessage, id]
-  );
-
-  const bindedAddPrevMessages = useCallback(
-    (messages: Message[]) => addPrevMessages(id, messages),
-    [addPrevMessages, id]
-  );
-
-  return {
-    chat,
-    addNewMessage: bindedAddNewMessage,
-    addPrevMessages: bindedAddPrevMessages,
-  };
-};

@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useMatchingRoom, useProject } from '#/stores';
-import { ChatUser } from '#/types';
-import { Chat } from './Chat';
+import { Loading } from '#/components/atoms';
+import { useChatStore, useMatchingRoom, useProject } from '#/stores';
+import { Chat } from '#/types';
+import { Chat as ChatBox } from './Chat';
 import { ChatParticipants } from './ChatParticipants';
 
 interface ChatRoomProps {
@@ -13,26 +14,15 @@ interface ChatRoomProps {
 }
 
 export const ChatRoom = ({ projectId, matchingId }: ChatRoomProps) => {
-  const [participants, setParticipants] = useState<ChatUser[]>([]);
-  const [height, setHeight] = useState<number | null>(null);
-
-  const matchingRoomState = useMatchingRoom(matchingId);
-  const projectState = useProject(projectId);
-
-  const chatId = useMemo(
-    () => matchingRoomState.data?.chatId ?? projectState.data?.chatId,
-    [matchingRoomState.data?.chatId, projectState.data?.chatId]
-  );
-
   const participantsContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (projectState?.data?.members) {
-      setParticipants(projectState.data.members);
-    } else if (matchingRoomState?.data?.matchingUsers) {
-      setParticipants(matchingRoomState.data.matchingUsers);
-    }
-  }, [matchingRoomState.data?.matchingUsers, projectState.data?.members]);
+  const [height, setHeight] = useState<number | null>(null);
+  const [chatId, setChatId] = useState<Chat['id'] | null>(null);
+
+  const { data: matchingRoom } = useMatchingRoom(matchingId);
+  const { data: project } = useProject(projectId);
+
+  const createChat = useChatStore((state) => state.createChat);
 
   useEffect(() => {
     if (participantsContainerRef.current) {
@@ -41,12 +31,28 @@ export const ChatRoom = ({ projectId, matchingId }: ChatRoomProps) => {
     }
   }, [participantsContainerRef.current?.offsetHeight]);
 
+  useEffect(() => {
+    if (matchingRoom) {
+      const { id, chatId, matchingUsers } = matchingRoom;
+      createChat({ id: chatId, matchingId: id, users: matchingUsers });
+      setChatId(chatId);
+    }
+  }, [createChat, matchingRoom]);
+
+  useEffect(() => {
+    if (project) {
+      const { id, chatId, members } = project;
+      createChat({ id: chatId, projectId: id, users: members });
+      setChatId(chatId);
+    }
+  }, [createChat, project]);
+
   return (
     <Container height={height}>
       <ChatParticipantsContainer ref={participantsContainerRef}>
-        <ChatParticipants projectId={projectId} participants={participants} />
+        {chatId ? <ChatParticipants chatId={chatId} /> : <Loading />}
       </ChatParticipantsContainer>
-      <ChatContainer>{chatId && <Chat chatId={chatId} />}</ChatContainer>
+      <ChatContainer>{chatId && <ChatBox chatId={chatId} />}</ChatContainer>
     </Container>
   );
 };
@@ -59,7 +65,7 @@ const Container = styled.div<{ height?: number | null }>`
 
   width: 100%;
   max-width: 1200px;
-  height: ${({ height }) => (height ? `${height}px` : 'auto')};
+  height: ${({ height }) => (height ? `${height}px` : 'fit-content')};
 
   border: 1px solid #e0e0e0;
   border-radius: 12px;

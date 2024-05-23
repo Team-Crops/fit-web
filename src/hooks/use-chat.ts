@@ -1,12 +1,25 @@
+import _ from 'lodash';
 import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 import useSWRSubscription from 'swr/subscription';
 
 import { Chat, Message } from '#/types';
 import { fitFetcher } from '#/utilities';
 import { fitSocket } from '#/utilities/socket';
 
-const CHAT_MESSAGES_QUERY_KEY = (id: Chat['id'], lastMessageId?: number) =>
-  `/v1/chat/room/${id}/message${lastMessageId ? `?lastMessageId=${lastMessageId}` : ''}`;
+const CHAT_MESSAGES_QUERY_KEY =
+  (id: Chat['id']) => (index: number, previousPageData: ChatMessagesPage | null) => {
+    if (previousPageData && !previousPageData.hasNext) {
+      return null;
+    }
+
+    if (index === 0 || !previousPageData) {
+      return `/v1/chat/room/${id}/message`;
+    }
+
+    return `/v1/chat/room/${id}/message?lastMessageId=${_.last(previousPageData.messages)!.id}`;
+  };
+
 const CHAT_RECENT_MESSAGE_QUERY_KEY = (id: Chat['id']) => `/v1/chat/room/${id}/recent`;
 
 export function useChatSubscription(id: Chat['id']) {
@@ -30,21 +43,29 @@ interface ChatMessagesResponse {
   };
 }
 
-export function useChatMessagesQuery(id?: Chat['id'] | null, lastMessageId?: number) {
-  return useSWR(
-    id ? CHAT_MESSAGES_QUERY_KEY(id, lastMessageId) : null,
+interface ChatMessagesPage {
+  messages: Message[];
+  hasNext: boolean;
+}
+
+export function useChatMessagesQuery(id: Chat['id']) {
+  return useSWRInfinite<ChatMessagesPage>(
+    CHAT_MESSAGES_QUERY_KEY(id),
     async (...args: Parameters<typeof fitFetcher>) => {
       const json: ChatMessagesResponse = await fitFetcher(...args);
-      return json.pageResult.values.map(
-        (v) =>
-          ({
-            id: v.messageId,
-            content: v.content,
-            imageUrl: v.imageUrl,
-            userId: v.userId,
-            messageType: v.messageType,
-          }) as Message
-      );
+      return {
+        messages: json.pageResult.values.map(
+          (v) =>
+            ({
+              id: v.messageId,
+              content: v.content,
+              imageUrl: v.imageUrl,
+              userId: v.userId,
+              messageType: v.messageType,
+            }) as Message
+        ),
+        hasNext: json.pageResult.hasNext,
+      };
     }
   );
 }

@@ -1,10 +1,16 @@
-import type { MatchingUser, Message, User } from '.';
+import { fitSocket } from '#/utilities/socket';
+
+import type { Matching, MatchingUser, Message, Project, User } from '.';
+export interface Chat {
+  id: number;
+  projectId?: Project['id'];
+  matchingId?: Matching['id'];
+  users: ChatUser[];
+  messages: Message[];
+
+  socket: ReturnType<typeof fitSocket>;
+}
 
 export interface ChatUser
   extends Pick<User, 'id' | 'positionId' | 'nickname' | 'profileImageUrl'>,
     Partial<Pick<MatchingUser, 'isHost' | 'isReady'>> {}
-
-export interface Chat {
-  id: number;
-  messages: Message[];
-}

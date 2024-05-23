@@ -13,7 +13,7 @@ export enum MatchingStatus {
 }
 
 export interface Matching {
-  roomId: number | null;
+  id: number | null;
   userId: number;
   positionId: number;
   status: MatchingStatus;

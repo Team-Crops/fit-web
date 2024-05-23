@@ -29,7 +29,7 @@ export const Matching = () => {
   const [status, setStatus] = useState<MatchingStatus>(MatchingStatus.REGISTER);
 
   const { data: matching, error, isLoading } = useMatchingQuery();
-  const { data: matchingRoom } = useMatchingRoomQuery(matching?.roomId);
+  const { data: matchingRoom } = useMatchingRoomQuery(matching?.id);
 
   useEffect(() => {
     if (matching) {

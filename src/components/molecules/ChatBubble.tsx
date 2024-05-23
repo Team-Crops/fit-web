@@ -13,7 +13,7 @@ interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
 export const ChatBubble = ({ myBubble = false, user, text, ...props }: ChatBubbleProps) => {
   return (
     <Container myBubble={myBubble}>
-      <UserProfile imageUrl={user.profileImageUrl} nickname={user.nickname} />
+      <ColoredProfile imageUrl={user.profileImageUrl} nickname={user.nickname} size={40} />
       <BubbleContainer myBubble={myBubble}>
         <Txt size="typo5" weight="bold" color="#757575">
           {user.nickname}
@@ -33,6 +33,10 @@ const Container = styled.div<{ myBubble: boolean }>`
   display: flex;
   flex-direction: ${({ myBubble }) => (myBubble ? 'row-reverse' : 'row')};
   gap: 10px;
+`;
+
+const ColoredProfile = styled(UserProfile)`
+  background-color: rgb(153 166 237 / 100%);
 `;
 
 const BubbleContainer = styled.div<{ myBubble: ChatBubbleProps['myBubble'] }>`

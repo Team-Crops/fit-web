@@ -1,24 +1,29 @@
 import styled from '@emotion/styled';
 
+import { useShallow } from 'zustand/react/shallow';
+
 import { ChatPositionGroup } from '#/components/molecules/ChatPositionGroup';
 import { MatchingChatHeader } from '#/components/molecules/MatchingChatHeader';
 import { ProjectChatHeader } from '#/components/molecules/ProjectChatHeader';
 import { usePositionsQuery } from '#/hooks/use-positions';
-import type { ChatUser, Project } from '#/types';
+import { useChatStore } from '#/stores';
+import type { Chat, ChatUser, Project } from '#/types';
 
 interface ChatParticipantsProps {
-  projectId?: Project['id'];
-  participants: ChatUser[];
+  chatId: Chat['id'];
 
   onClickHeader?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export const ChatParticipants: React.FC<ChatParticipantsProps> = ({
-  projectId,
-  participants,
-  onClickHeader,
-}) => {
+export const ChatParticipants: React.FC<ChatParticipantsProps> = ({ chatId, onClickHeader }) => {
   const { data: positions } = usePositionsQuery();
+
+  const { participants, projectId } = useChatStore(
+    useShallow(({ chats }) => ({
+      participants: chats[chatId].users,
+      projectId: chats[chatId].projectId,
+    }))
+  );
 
   return (
     <Container>
@@ -29,7 +34,7 @@ export const ChatParticipants: React.FC<ChatParticipantsProps> = ({
         <ChatPositionGroup
           key={position.id}
           name={position.displayName}
-          participants={participants.filter((p) => p.positionId === position.id)}
+          participants={participants.filter((p) => p.positionId === position.id) ?? []}
         />
       ))}
     </Container>

@@ -1,21 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import { Icons, Input } from '#/components/atoms';
+import { useChatStore, useUser } from '#/stores';
+import { Chat } from '#/types';
 
 interface ChatToolboxProps {
-  sendMessage: (message: string) => void;
-  sendImage: (imageUrl: string) => void;
+  chatId: Chat['id'];
 }
 
-export const ChatToolbox = ({ sendMessage, sendImage }: ChatToolboxProps) => {
+export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
   const [message, setMessage] = useState('');
+
+  const user = useUser();
+  const { socket, unshiftMessage } = useChatStore(({ chats, unshiftMessage }) => ({
+    socket: chats[chatId].socket,
+    unshiftMessage,
+  }));
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <Form
-      action={(e) => {
-        sendMessage(message);
-        setMessage('');
+      action={() => {
+        if (message) {
+          socket.emit('/chat/text', { content: message });
+          unshiftMessage(chatId, {
+            id: -1,
+            userId: user.id,
+            messageType: 'TEXT',
+            content: message,
+          });
+          setMessage('');
+        }
       }}
     >
       <ToolIcon icon="image" size={36} />
