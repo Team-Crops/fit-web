@@ -12,9 +12,9 @@ import { SignUpTermsPopup } from '#/components/organisms/SignUpTermsPopup';
 import { policies } from '#/entities';
 import { useAuthStore } from '#/stores/auth';
 import { SignUpStep, PolicyAgreement, User } from '#/types';
+import { getTokens } from '#/utilities';
 import { checkSignUpStep } from '#/utilities/check-sign-up-step';
 import { fitFetcher } from '#/utilities/fetch';
-import { getTokens } from '#/utilities/session';
 
 interface LoginGuardProps {
   children: React.ReactNode;
@@ -38,7 +38,8 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
 
   useEffect(() => {
     async function fetchAuth() {
-      if (tokens) {
+      const currentToken = getTokens() ?? tokens;
+      if (currentToken) {
         const user = await fetchUser();
         const policyAgreed = await fetchPolicyAgreed();
         setAuth({ user, tokens, policyAgreed });

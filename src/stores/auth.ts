@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 import { AuthTokens } from '#/types';
 import { User } from '#/types/user';
@@ -18,15 +19,22 @@ interface AuthAction {
   clear: () => void;
 }
 
-export const useAuthStore = create<AuthState & AuthAction>((set) => ({
-  user: null,
-  tokens: null,
-  policyAgreed: null,
+export const useAuthStore = create(
+  persist<AuthState & AuthAction>(
+    (set) => ({
+      user: null,
+      tokens: null,
+      policyAgreed: null,
 
-  setUser: (user) => set({ user }),
-  setTokens: (tokens) => set({ tokens }),
-  setPolicyAgreed: (policyAgreed) => set({ policyAgreed }),
+      setUser: (user) => set({ user }),
+      setTokens: (tokens) => set({ tokens }),
+      setPolicyAgreed: (policyAgreed) => set({ policyAgreed }),
 
-  set: (state) => set(state),
-  clear: () => set({ user: null, tokens: null, policyAgreed: null }),
-}));
+      set: (state) => set(state),
+      clear: () => set({ user: null, tokens: null, policyAgreed: null }),
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
