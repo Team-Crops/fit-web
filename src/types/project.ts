@@ -10,7 +10,7 @@ export interface Project {
   name: string;
   members: ProjectUser[];
   status: ProjectStatus;
-  chatRoomId: number;
+  chatId: number;
 
   createdAt: string;
   completedAt: string | null;

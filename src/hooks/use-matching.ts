@@ -7,7 +7,7 @@ import { useMatchingStore } from '#/stores';
 import { Matching } from '#/types';
 import { fitFetcher } from '#/utilities';
 
-const MATCHING_QUERY_KEY = '/v1/matching';
+export const MATCHING_QUERY_KEY = '/v1/matching';
 const MATCHING_START_KEY = '/v1/matching';
 const MATCHING_CANCEL_KEY = '/v1/matching/cancel';
 

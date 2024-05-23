@@ -2,9 +2,14 @@ import styled from '@emotion/styled';
 
 import { Icons, Input } from '#/components/atoms';
 
-export const ChatToolbox: React.FC = () => {
+interface ChatToolboxProps {
+  sendMessage: (message: string) => void;
+  sendImage: (imageUrl: string) => void;
+}
+
+export const ChatToolbox = ({ sendMessage, sendImage }: ChatToolboxProps) => {
   return (
-    <Container>
+    <Form>
       <ToolIcon icon="image" size={36} />
       <TextInput
         placeholder="대기방의 팀원에게 메세지를 보내보세요"
@@ -12,11 +17,11 @@ export const ChatToolbox: React.FC = () => {
         weight="regular"
       />
       <SendIcon icon="upload" size={36} color="#ff908d" />
-    </Container>
+    </Form>
   );
 };
 
-const Container = styled.div`
+const Form = styled.form`
   position: relative;
   display: flex;
   gap: 10px;

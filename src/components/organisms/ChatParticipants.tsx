@@ -40,7 +40,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 60px;
+
   width: 100%;
+  height: fit-content;
 `;
 
 const HeaderContainer = styled.div`

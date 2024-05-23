@@ -38,7 +38,7 @@ function convertDtoToProjects(dto: GetProjectsResponse): Project[] {
       profileImageUrl: member.profileImageUrl,
     })),
     status: project.projectStatus as ProjectStatus,
-    chatRoomId: project.chatRoomId,
+    chatId: project.chatRoomId,
 
     createdAt: project.createdAt,
     completedAt: project.completedAt,

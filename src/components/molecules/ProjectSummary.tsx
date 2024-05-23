@@ -9,7 +9,7 @@ interface ProjectSummaryProps {
 }
 
 export const ProjectSummary = ({ projectId }: ProjectSummaryProps) => {
-  const project = useProject(projectId);
+  const { data: project } = useProject(projectId);
   return (
     <Container>
       <Txt>{project?.name}</Txt>

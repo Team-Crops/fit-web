@@ -6,11 +6,13 @@ import useSWRMutation from 'swr/mutation';
 import { useMatchingStore } from '#/stores';
 import { MatchingRoom, User } from '#/types';
 import { fitFetcher } from '#/utilities';
+import { MATCHING_QUERY_KEY } from './use-matching';
 
 const MATCHING_ROOM_QUERY_KEY = (id: number) => `/v1/matching/room/${id}`;
 const MATCHING_ROOM_COMPLETE_KEY = (id: number) => `/v1/matching/room/${id}/complete`;
 const MATCHING_ROOM_FORCE_OUT_KEY = (id: number) => `/v1/matching/room/${id}/force-out`;
 const MATCHING_ROOM_READY_KEY = (id: number) => `/v1/matching/room/${id}/ready`;
+const MATCHING_ROOM_CANCEL_KEY = (id: number) => `/v1/matching/room/${id}/cancel`;
 
 export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
   const { data, isLoading, error } = useSWR<MatchingRoomResponse>(
@@ -42,12 +44,25 @@ export function useMatchingRoomForceOutMutation(
   );
 }
 
+function mutateReady(url: string, { arg: { isReady } }: { arg: { isReady: boolean } }) {
+  return fitFetcher(url, { method: 'POST', body: JSON.stringify({ isReady }) });
+}
+
 export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
+  return useSWRMutation(MATCHING_ROOM_READY_KEY(roomId), mutateReady, {
+    onSuccess: () => {
+      mutate(MATCHING_ROOM_QUERY_KEY(roomId));
+    },
+  });
+}
+
+export function useMatchingRoomCancelMutation(roomId: MatchingRoom['id']) {
   return useSWRMutation(
-    MATCHING_ROOM_READY_KEY(roomId),
+    MATCHING_ROOM_CANCEL_KEY(roomId),
     (url, options) => fitFetcher(url, { ...options, method: 'POST' }),
     {
       onSuccess: () => {
+        mutate(MATCHING_QUERY_KEY);
         mutate(MATCHING_ROOM_QUERY_KEY(roomId));
       },
     }
