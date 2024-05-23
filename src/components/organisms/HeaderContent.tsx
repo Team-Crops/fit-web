@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 
 import { HeaderUserBlock } from '#/components/molecules/HeaderUserBlock';
 import { useAuthStore } from '#/stores/auth';
+import { getTokens } from '#/utilities';
+import { useGetTokens } from '#/utilities/session';
 import { HeaderLoginBlock } from '#molecules/HeaderLoginBlock';
 import { HeaderLogo } from '#molecules/HeaderLogo';
 import { HeaderNav } from '#molecules/HeaderNav';
@@ -16,16 +18,16 @@ const ContentBlock = styled.div`
   width: min(100%, 1200px);
   height: 100%;
   margin: 0 auto;
-  padding: 20px;
 `;
 
 export const HeaderContent = () => {
-  const id = useAuthStore((store) => store.user?.id);
+  const tokens = useGetTokens();
+
   return (
     <ContentBlock>
       <HeaderLogo />
       <HeaderNav />
-      {id ? <HeaderUserBlock /> : <HeaderLoginBlock />}
+      {tokens ? <HeaderUserBlock /> : <HeaderLoginBlock />}
     </ContentBlock>
   );
 };

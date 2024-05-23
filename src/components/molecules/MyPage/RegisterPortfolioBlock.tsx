@@ -1,6 +1,10 @@
+import { ChangeEventHandler, useCallback, useState } from 'react';
+
 import styled from '@emotion/styled';
 
-import { Icons } from '#atoms/Icons';
+import { Txt } from '#/components/atoms';
+import { useTempAuthStore } from '#/stores/tempAuth';
+import { IconName, Icons } from '#atoms/Icons';
 import { PortfolioFileBlock } from '#atoms/MyPage/PortfolioFileBlock';
 import { PortfolioTicket } from '#atoms/MyPage/PortfolioTicket';
 import { Select } from '#atoms/Select';
@@ -39,6 +43,8 @@ const PortfolioUrlInput = styled.input`
   }
 `;
 const UploadButton = styled.div`
+  cursor: pointer;
+
   position: absolute;
   top: 50%;
   right: 9px;
@@ -54,31 +60,89 @@ const PortfolioList = styled.div`
   width: 100%;
   margin-top: 20px;
 `;
+const FlexBlock = styled.div`
+  display: flex;
+  gap: 9px;
+  align-items: center;
+`;
+
+interface PlatformProps {
+  icon: IconName;
+  text: string;
+  value: string;
+}
+const SelectPlatform: PlatformProps[] = [
+  { icon: 'link', text: 'Link', value: 'LINK' },
+  { icon: 'facebook', text: 'Facebook', value: 'FACEBOOK' },
+  { icon: 'github', text: 'Github', value: 'GITHUB' },
+  { icon: 'velog', text: 'Velog', value: 'VELOG' },
+  { icon: 'linkedin', text: 'Linkedin', value: 'LINKEDIN' },
+  { icon: 'instagram', text: 'Instagram', value: 'INSTAGRAM' },
+  { icon: 'tistory', text: 'Tistory', value: 'TISTORY' },
+];
 
 export const RegisterPortfolioBlock = () => {
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('LINK');
+  const [portfolioUrl, setPortfolioUrl] = useState<string>('');
+  const tempUser = useTempAuthStore((state) => state.tempUser);
+  console.log(tempUser);
+  const setTempUser = useTempAuthStore((state) => state.setTempUser);
+
+  const handlePlatformChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
+    setSelectedPlatform(e.target.value);
+  }, []);
+  const uploadLinkList = useCallback(() => {
+    if (tempUser === null) return;
+    if ((tempUser.linkList?.length ?? 0) >= 4)
+      return alert('포트폴리오는 최대 4개까지 등록 가능합니다.');
+    setTempUser({
+      ...tempUser,
+      linkList: [
+        ...(tempUser.linkList ?? []),
+        { linkType: selectedPlatform, linkUrl: portfolioUrl },
+      ],
+    });
+    setPortfolioUrl('');
+  }, [portfolioUrl, selectedPlatform, setTempUser, tempUser]);
+
   return (
     <RegisterPortfolioContainer>
-      <PortfolioFileBlock />
+      <PortfolioFileBlock isEdit />
       <PortfolioRightBlock>
         <Register>
-          <Select width="92px">
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
+          <Select width="92px" value={selectedPlatform} onChange={handlePlatformChange}>
+            {SelectPlatform.map((platform) => (
+              <Select.Option value={platform.value} key={platform.text}>
+                <FlexBlock>
+                  <Icons icon={platform.icon} width={11} height={11} color="#FF706C" />
+                  <Txt size="typo6" weight="regular" color="#9E9E9E">
+                    {platform.text}
+                  </Txt>
+                </FlexBlock>
+              </Select.Option>
+            ))}
           </Select>
           <InputBlock>
-            <PortfolioUrlInput placeholder="URL 주소를 입력하세요" />
-            <UploadButton>
+            <PortfolioUrlInput
+              value={portfolioUrl}
+              onChange={(e) => setPortfolioUrl(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && uploadLinkList()}
+              placeholder="URL 주소를 입력하세요"
+            />
+            <UploadButton onClick={uploadLinkList}>
               <Icons icon="upload" width={21} height={21} />
             </UploadButton>
           </InputBlock>
         </Register>
         <PortfolioList>
-          <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} editMode />
-          <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} editMode />
-          <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} editMode />
-          <PortfolioTicket icon={'link'} text={'2023 ㅇㅇ사 포트폴리오'} editMode />
+          {tempUser?.linkList?.map((link, index) => (
+            <PortfolioTicket
+              key={index}
+              icon={link.linkType.toLowerCase() as IconName}
+              text={link.linkUrl}
+              editMode
+            />
+          ))}
         </PortfolioList>
       </PortfolioRightBlock>
     </RegisterPortfolioContainer>

@@ -9,13 +9,12 @@ import { SignUpCompletePopup } from '#/components/organisms/SignUpCompletePopup'
 import { SignUpProfileCreationPopup } from '#/components/organisms/SignUpProfileCreationPopup';
 import { SignUpProfileUpdatePopup } from '#/components/organisms/SignUpProfileUpdatePopup';
 import { SignUpTermsPopup } from '#/components/organisms/SignUpTermsPopup';
+import { policies } from '#/entities';
 import { useAuthStore } from '#/stores/auth';
-import { PolicyAgreement, policies } from '#/types/policy';
-import { SignUpStep } from '#/types/sign-up-step';
-import { User } from '#/types/user';
+import { SignUpStep, PolicyAgreement, User } from '#/types';
+import { getTokens } from '#/utilities';
 import { checkSignUpStep } from '#/utilities/check-sign-up-step';
 import { fitFetcher } from '#/utilities/fetch';
-import { getTokens } from '#/utilities/session';
 
 interface LoginGuardProps {
   children: React.ReactNode;
@@ -30,21 +29,24 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
 
   const {
     user,
+    tokens,
     policyAgreed,
     set: setAuth,
-  } = useAuthStore(useShallow(({ user, policyAgreed, set }) => ({ user, policyAgreed, set })));
+  } = useAuthStore(
+    useShallow(({ user, tokens, policyAgreed, set }) => ({ user, tokens, policyAgreed, set }))
+  );
 
   useEffect(() => {
     async function fetchAuth() {
-      const tokens = getTokens();
-      if (tokens && !user?.id) {
+      const currentToken = getTokens() ?? tokens;
+      if (currentToken) {
         const user = await fetchUser();
         const policyAgreed = await fetchPolicyAgreed();
-        setAuth({ user, policyAgreed });
+        setAuth({ user, tokens, policyAgreed });
       }
     }
     fetchAuth();
-  }, [user?.id, setAuth]);
+  }, [tokens, setAuth]);
 
   useEffect(() => {
     if (user && policyAgreed !== null) {

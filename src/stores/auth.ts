@@ -1,31 +1,42 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
+import { AuthTokens } from '#/types';
 import { User } from '#/types/user';
 
 interface AuthState {
   user: User | null;
+  tokens: AuthTokens | null;
   policyAgreed: boolean | null;
 }
 
 interface AuthAction {
   setUser: (user: User) => void;
-  clearUser: () => void;
+  setTokens: (tokens: AuthTokens) => void;
   setPolicyAgreed: (policyAgreed: boolean) => void;
-  clearPolicyAgreed: () => void;
 
   set: (state: Partial<AuthState>) => void;
+  clear: () => void;
 }
 
-export const useAuthStore = create<AuthState & AuthAction>((set) => ({
-  user: null,
-  policyAgreed: null,
+export const useAuthStore = create(
+  persist<AuthState & AuthAction>(
+    (set) => ({
+      user: null,
+      tokens: null,
+      policyAgreed: null,
 
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
-  setPolicyAgreed: (policyAgreed) => set({ policyAgreed }),
-  clearPolicyAgreed: () => set({ policyAgreed: null }),
+      setUser: (user) => set({ user }),
+      setTokens: (tokens) => set({ tokens }),
+      setPolicyAgreed: (policyAgreed) => set({ policyAgreed }),
 
-  set: (state) => set(state),
-}));
+      set: (state) => set(state),
+      clear: () => set({ user: null, tokens: null, policyAgreed: null }),
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
 
 export const useUser = () => useAuthStore((store) => store.user);

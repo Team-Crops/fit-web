@@ -31,7 +31,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   if (imageUrl) {
     return (
       <ProfileImage
-        src={`https://d2ueefa0uvyh4f.cloudfront.net/${imageUrl}`}
+        src={process.env.NEXT_PUBLIC_S3_IMAGE_URL + imageUrl}
         alt={alt}
         width={size}
         height={size}

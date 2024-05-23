@@ -83,7 +83,7 @@ interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
 export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
   ({ checked, ...props }, ref) => (
     <StyledContainer>
-      <StyledInput ref={ref} type="checkbox" checked={checked} {...props} />
+      <StyledInput ref={ref} type="checkbox" defaultChecked={checked} {...props} />
       <StyledIcon icon="check" />
     </StyledContainer>
   )

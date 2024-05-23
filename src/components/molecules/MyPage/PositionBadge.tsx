@@ -21,7 +21,7 @@ const BadgeBlock = styled.div<{ selected: boolean }>`
 `;
 
 interface PositionBadgeProps {
-  position: string;
+  position?: string;
   selected: boolean;
   onClick?: MouseEventHandler;
 }

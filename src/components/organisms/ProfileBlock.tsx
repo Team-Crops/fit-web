@@ -1,7 +1,10 @@
+import { ChangeEvent, ChangeEventHandler, InputHTMLAttributes, useCallback, useState } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
+import { useAuthStore } from '#/stores/auth';
+import { useTempAuthStore } from '#/stores/tempAuth';
 import { Icons } from '#atoms/Icons';
 
 const Block = styled.div<{ size: number }>`
@@ -39,16 +42,53 @@ interface ProfileBlockProps {
   editable?: boolean;
 }
 export const ProfileBlock = ({ size, editable }: ProfileBlockProps) => {
+  const user = useAuthStore((state) => state.user);
+  const setTempImage = useTempAuthStore((state) => state.setTempProfileImage);
+  const [imageBase64, setImageBase64] = useState<string | ArrayBuffer | null>(null);
+
+  const handleTempImageChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files === null) return;
+      const file = e.target.files[0];
+      if (file) {
+        setTempImage(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+          setImageBase64(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [setTempImage]
+  );
+
+  if (user === null) return;
   return (
     <Block size={size}>
-      <ProfileImage src="/강아지.jpeg" alt="profile" layout="fill" objectFit="cover" />
+      {editable && imageBase64 ? (
+        <ProfileImage src={imageBase64.toString()} alt="profile" layout="fill" objectFit="cover" />
+      ) : user.profileImageUrl ? (
+        <ProfileImage
+          src={process.env.NEXT_PUBLIC_S3_IMAGE_URL + user.profileImageUrl}
+          alt="profile"
+          layout="fill"
+          objectFit="cover"
+        />
+      ) : (
+        <Icons icon="account" width={size} height={size} style={{ zIndex: '10' }} />
+      )}
 
       {editable && (
         <>
           <EditButton htmlFor="profileImage">
             <Icons icon="pencil" width={32} height={32} />
           </EditButton>
-          <ProfileInput type="file" id="profileImage" />
+          <ProfileInput
+            onChange={handleTempImageChange}
+            type="file"
+            id="profileImage"
+            accept=".jpg, .jpeg, .png"
+          />
         </>
       )}
     </Block>

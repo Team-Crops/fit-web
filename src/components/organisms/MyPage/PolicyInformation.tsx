@@ -17,17 +17,17 @@ export const PolicyInformation = () => {
   return (
     <MyInfoBlock title={'정책'}>
       <TxtBlock>
-        <Link href="/">
+        <Link href="/policy/terms">
           <PolicyTxt size={'typo5'} weight={'regular'} color="#757575">
             서비스 약관 안내
           </PolicyTxt>
         </Link>
-        <Link href="/">
+        <Link href="/policy/privacy">
           <PolicyTxt size={'typo5'} weight={'regular'} color="#757575">
             개인정보 처리 방침
           </PolicyTxt>
         </Link>
-        <Link href="/">
+        <Link href="/deregister">
           <PolicyTxt size={'typo5'} weight={'regular'} color="#757575">
             서비스 탈퇴 안내
           </PolicyTxt>

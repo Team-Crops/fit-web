@@ -1,7 +1,10 @@
-import { useCallback, useState } from 'react';
+import { use, useCallback, useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { CareerSelect } from '#/components/molecules/CareerSelect';
+import { useTempAuthStore } from '#/stores/tempAuth';
+import { isUserStudent, isUserWorker } from '#/types/user';
 import { CheckBox } from '#atoms/CheckBox';
 import { Input } from '#atoms/Input';
 import { Select } from '#atoms/Select';
@@ -57,62 +60,185 @@ const Label = styled.label`
   align-items: center;
 `;
 export const MemberInfoEdit = () => {
-  const [isPublicPhone, setIsPublicPhone] = useState<boolean>(false);
+  const tempUser = useTempAuthStore((state) => state.tempUser);
+  const [tempEmail, setTempEmail] = useState<{ id: string; domain: string }>({
+    id: '',
+    domain: '',
+  });
+  const [tempPhone, setTempPhone] = useState<{ first: string; second: string; third: string }>({
+    first: '',
+    second: '',
+    third: '',
+  });
+  const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
-  const onChangePublicPhone = useCallback(() => {
-    setIsPublicPhone(!isPublicPhone);
-  }, [isPublicPhone]);
+  const handleUpdateTempUser = useCallback(
+    (key: string, value: any) => {
+      if (tempUser !== null) setTempUser({ ...tempUser, [key]: value });
+    },
+    [tempUser, setTempUser]
+  );
 
+  const handleUpdateTempEmail = useCallback(
+    (key: 'id' | 'domain', value: string) => {
+      if (tempUser === null) return;
+      if (key === 'id') {
+        setTempEmail({ ...tempEmail, id: value });
+        setTempUser({ ...tempUser, email: `${value}@${tempEmail.domain}` });
+      } else {
+        setTempEmail({ ...tempEmail, domain: value });
+        setTempUser({ ...tempUser, email: `${tempEmail.id}@${value}` });
+      }
+    },
+    [setTempUser, tempEmail, tempUser]
+  );
+
+  const handleUpdateTempPhone = useCallback(
+    (key: 'first' | 'second' | 'third', value: string) => {
+      if (tempUser === null) return;
+      if (key === 'first') {
+        setTempPhone({ ...tempPhone, first: value });
+        setTempUser({
+          ...tempUser,
+          phoneNumber: `${value}-${tempPhone.second}-${tempPhone.third}`,
+        });
+      } else if (key === 'second') {
+        setTempPhone({ ...tempPhone, second: value });
+        setTempUser({
+          ...tempUser,
+          phoneNumber: `${tempPhone.first}-${value}-${tempPhone.third}`,
+        });
+      } else if (key === 'third') {
+        setTempPhone({ ...tempPhone, third: value });
+        setTempUser({
+          ...tempUser,
+          phoneNumber: `${tempPhone.first}-${tempPhone.second}-${value}`,
+        });
+      }
+    },
+    [setTempUser, tempPhone, tempUser]
+  );
+
+  // init
+  useEffect(() => {
+    if (tempUser !== null && tempUser.email !== null) {
+      const email = tempUser.email.split('@');
+      setTempEmail({ id: email[0], domain: email[1] });
+    }
+    if (tempUser !== null && tempUser.phoneNumber !== null) {
+      const phone = tempUser.phoneNumber.split('-');
+      setTempPhone({ first: phone[0], second: phone[1], third: phone[2] });
+    }
+  }, [tempUser]);
+
+  if (tempUser === null) return;
   return (
     <MyInfoBlock title={'회원정보'}>
       <Txt size="typo4" weight="bold" color="#212121" marginBottom={12}>
         나의 소개
       </Txt>
-      <StyledTextarea placeholder="안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세" />
+      <StyledTextarea
+        value={tempUser.introduce === null ? '' : tempUser.introduce}
+        onChange={(e) => handleUpdateTempUser('introduce', e.target.value)}
+        placeholder="안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세"
+      />
       <MyPageGridBlock>
         <BasicInfoEdit title={'이름'} titleWidth={97}>
-          <Input width="207px" placeholder="이름 입력" />
+          <Input
+            value={tempUser.username === null ? '' : tempUser.username}
+            onChange={(e) => handleUpdateTempUser('username', e.target.value)}
+            width="207px"
+            placeholder="이름 입력"
+          />
         </BasicInfoEdit>
         <BasicInfoEdit title={'이메일'} titleWidth={97} essential>
           <EmailBlock>
-            <Input width="118px" placeholder="이메일 입력" />
-            <Select width="128px" placeholder="선택하세요">
-              <Select.Option value="1">example</Select.Option>
-              <Select.Option value="1">example</Select.Option>
-              <Select.Option value="1">example</Select.Option>
+            <Input
+              value={tempEmail.id}
+              onChange={(e) => handleUpdateTempEmail('id', e.target.value)}
+              width="118px"
+              placeholder="이메일 입력"
+            />
+            <Select
+              value={tempEmail.domain}
+              onChange={(e) => handleUpdateTempEmail('domain', e.target.value)}
+              width="128px"
+              placeholder="선택하세요"
+            >
+              <Select.Option value="google.com">google.com</Select.Option>
+              <Select.Option value="naver.com">naver.com</Select.Option>
             </Select>
           </EmailBlock>
         </BasicInfoEdit>
         <BasicInfoEdit title={'닉네임'} titleWidth={97} essential>
-          <Input width="207px" placeholder="닉네임 입력" />
+          <Input
+            value={tempUser.nickname === null ? '' : tempUser.nickname}
+            onChange={(e) => handleUpdateTempUser('nickname', e.target.value)}
+            width="207px"
+            placeholder="닉네임 입력"
+          />
         </BasicInfoEdit>
         <BasicInfoEdit title={'학력/경력'} titleWidth={97} essential>
-          <Select width="250px" placeholder="선택하세요">
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-            <Select.Option value="1">example</Select.Option>
-          </Select>
+          <CareerSelect
+            value={tempUser.backgroundStatus ?? ''}
+            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value)}
+          />
         </BasicInfoEdit>
         <BasicInfoEdit title={'전화번호'} titleWidth={97}>
           <FlexBlock>
             <PhoneBlock>
-              <Input width="49px" placeholder="010" />
+              <Input
+                value={tempPhone.first}
+                onChange={(e) => handleUpdateTempPhone('first', e.target.value)}
+                width="49px"
+                placeholder="010"
+              />
               <Hyphen />
-              <Input width="49px" placeholder="0000" />
+              <Input
+                value={tempPhone.second}
+                onChange={(e) => handleUpdateTempPhone('second', e.target.value)}
+                width="49px"
+                placeholder="0000"
+              />
               <Hyphen />
-              <Input width="49px" placeholder="0000" />
+              <Input
+                value={tempPhone.third}
+                onChange={(e) => handleUpdateTempPhone('third', e.target.value)}
+                width="49px"
+                placeholder="0000"
+              />
             </PhoneBlock>
             <Label>
-              <CheckBox checked={isPublicPhone} onChange={onChangePublicPhone} />
+              <CheckBox
+                checked={tempUser.isOpenPhoneNum === null ? false : tempUser.isOpenPhoneNum}
+                onChange={(e) => handleUpdateTempUser('isOpenPhoneNum', e.target.checked)}
+              />
               <Txt size={'typo5'} weight={'regular'} color={'#616161'}>
                 공개
               </Txt>
             </Label>
           </FlexBlock>
         </BasicInfoEdit>
-        <BasicInfoEdit title={'회사명'} titleWidth={97} essential>
-          <Input width="207px" placeholder="회사명을 입력하세요." />
-        </BasicInfoEdit>
+        {tempUser.backgroundStatus && (
+          <BasicInfoEdit
+            title={
+              isUserStudent(tempUser.backgroundStatus)
+                ? '학교명'
+                : isUserWorker(tempUser.backgroundStatus)
+                  ? '회사명'
+                  : '그룹명'
+            }
+            titleWidth={97}
+            essential
+          >
+            <Input
+              value={tempUser.backgroundText === null ? '' : tempUser.backgroundText}
+              onChange={(e) => handleUpdateTempUser('backgroundText', e.target.value)}
+              width="207px"
+              placeholder="회사명을 입력하세요."
+            />
+          </BasicInfoEdit>
+        )}
       </MyPageGridBlock>
     </MyInfoBlock>
   );

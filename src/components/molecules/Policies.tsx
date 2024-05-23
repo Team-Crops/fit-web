@@ -5,10 +5,12 @@ import type { ChangeEventHandler, HTMLAttributes } from 'react';
 
 import styled from '@emotion/styled';
 
+import { PolicyType } from '#/types';
 import { CheckBox } from '#atoms/CheckBox';
 import { Divider } from '#atoms/Divider';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
+import { PolicyContent } from '../templates/Policy/PolicyContent';
 
 const Container = styled.div`
   display: flex;
@@ -53,6 +55,7 @@ const CheckBoxContainer = styled.div`
 `;
 
 const ExpandButtonContainer = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   color: #9e9e9e;
@@ -98,13 +101,13 @@ export const PoliciesBox = ({
 
 interface PolicyProps {
   title: string;
-  text: string;
+  type: PolicyType;
   value?: boolean;
   disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Policy: React.FC<PolicyProps> = ({ title, text, value, disabled, onChange }) => {
+const Policy: React.FC<PolicyProps> = ({ title, type, value, disabled, onChange }) => {
   const [isExpanded, setExpanded] = useState(false);
   return (
     <PolicyContainer>
@@ -122,11 +125,7 @@ const Policy: React.FC<PolicyProps> = ({ title, text, value, disabled, onChange 
           <Icons icon="arrowForward" width={20} height={20} color="#9E9E9E" />
         </ExpandButtonContainer>
       </PolicyHeader>
-      {isExpanded && (
-        <Txt size="typo5" weight={'medium'}>
-          {text}
-        </Txt>
-      )}
+      {isExpanded && <PolicyContent type={type} isScrolled />}
     </PolicyContainer>
   );
 };

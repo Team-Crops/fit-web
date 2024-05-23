@@ -1,9 +1,10 @@
+import { useAuthStore } from '#/stores/auth';
 import { AuthTokens } from '#/types/auth-tokens';
 
 const TOKENS_KEY = 'api-token';
 
 export function getTokens(): AuthTokens | null {
-  const tokens = localStorage.getItem(TOKENS_KEY);
+  const tokens = typeof window !== 'undefined' ? sessionStorage.getItem(TOKENS_KEY) : null;
   if (tokens) {
     return JSON.parse(tokens);
   }
@@ -16,4 +17,9 @@ export function setTokens(tokens: AuthTokens | null) {
   } else {
     localStorage.removeItem(TOKENS_KEY);
   }
+}
+
+export function useGetTokens() {
+  const tokens = useAuthStore((state) => state.tokens);
+  return getTokens() ?? tokens;
 }
