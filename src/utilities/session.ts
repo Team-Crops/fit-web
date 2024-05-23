@@ -1,3 +1,4 @@
+import { useAuthStore } from '#/stores/auth';
 import { AuthTokens } from '#/types/auth-tokens';
 
 const TOKENS_KEY = 'api-token';
@@ -16,4 +17,9 @@ export function setTokens(tokens: AuthTokens | null) {
   } else {
     sessionStorage.removeItem(TOKENS_KEY);
   }
+}
+
+export function useGetTokens() {
+  const tokens = useAuthStore((state) => state.tokens);
+  return getTokens() ?? tokens;
 }
