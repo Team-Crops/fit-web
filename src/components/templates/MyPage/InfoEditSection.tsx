@@ -39,7 +39,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
 
   const submitModifyHandler = async () => {
     let profileImageUrl = user?.profileImageUrl;
-    let portfolioUrl: string | null = null;
+    let portfolioUrl: string = '';
     if (tempImage !== null) {
       const registerImage = await mutatePreSignedUrl({
         fileName: tempImage.name,
@@ -49,7 +49,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
       profileImageUrl = registerImage.fileKey;
     }
     if (user?.portfolioUrl !== null && tempPortfolioFile === null) {
-      portfolioUrl = null;
+      portfolioUrl = '';
     } else if (tempPortfolioFile !== null) {
       const registerPortfolio = await mutatePreSignedUrl({
         fileName: tempPortfolioFile.name,
@@ -62,8 +62,9 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
     const mutated = await mutateUser({
       ...tempUser,
       profileImageUrl: profileImageUrl,
-      portfolioUrl: portfolioUrl,
+      portfolioUrl: '',
     });
+    console.log(mutated);
     setUser(mutated);
     initTempAuth();
     handleEditing();
