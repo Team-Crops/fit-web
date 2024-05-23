@@ -5,11 +5,11 @@ import styled from '@emotion/styled';
 
 import { useShallow } from 'zustand/react/shallow';
 
+import { uploadImageToS3 } from '#/hooks/use-file';
 import { usePresignedUrlQuery } from '#/hooks/use-presigned-url';
 import { useUserMutation } from '#/hooks/use-user';
 import { useAuthStore } from '#/stores/auth';
 import { User } from '#/types/user';
-import { uploadProfileImage } from '#/utilities/storage';
 import { Button } from '../atoms/Button';
 import { Icons } from '../atoms/Icons';
 import { Input } from '../atoms/Input';
@@ -99,17 +99,19 @@ export const SignUpProfileCreationPopup: React.FC<SignUpProfileCreationPopupProp
     if (imageFile) {
       const { preSignedUrl, fileKey } = await getPresignedUrl({
         fileDomain: 'PROFILE_IMAGE',
-        fileName: `profile-${user?.id}`,
+        fileName: imageFile.name,
       });
-      await uploadProfileImage({ imageFile, preSignedUrl });
+      await uploadImageToS3(preSignedUrl, imageFile);
       userInfo.profileImageUrl = fileKey;
     }
     setUser(await mutateUser(userInfo));
     return onSuccess();
-  }, [getPresignedUrl, mutateUser, nickname, onSuccess, setUser, user?.id]);
+  }, [getPresignedUrl, mutateUser, nickname, onSuccess, setUser]);
 
   useEffect(() => {
-    setPreviewImage(user?.profileImageUrl ?? null);
+    setPreviewImage(
+      user?.profileImageUrl ? process.env.NEXT_PUBLIC_S3_IMAGE_URL + user?.profileImageUrl : null
+    );
   }, [user?.profileImageUrl]);
 
   useEffect(() => {
