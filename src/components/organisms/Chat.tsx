@@ -6,7 +6,7 @@ import { Loading, Txt } from '#/components/atoms';
 import { ChatBubbles } from '#/components/molecules/ChatBubbles';
 import { ChatToolbox } from '#/components/molecules/ChatToolbox';
 import { useChatMessagesQuery } from '#/hooks/use-chat';
-import { useChat } from '#/stores';
+import { useAuthStore, useChat } from '#/stores';
 import { Message } from '#/types';
 import { fitSocket } from '#/utilities/socket';
 
@@ -16,6 +16,8 @@ interface ChatProps {
 
 export const Chat = ({ chatId }: ChatProps) => {
   const [isTopReached, setIsTopReached] = useState(true);
+
+  const userId = useAuthStore((state) => state.user?.id)!;
 
   const { chat, addNewMessage, addPrevMessages } = useChat(chatId);
 
@@ -28,11 +30,15 @@ export const Chat = ({ chatId }: ChatProps) => {
 
   const socket = useRef<ReturnType<typeof fitSocket>>();
 
-  const sendMessage = useCallback((message: string) => {
-    if (socket.current) {
-      socket.current.emit('/chat/text', { content: message });
-    }
-  }, []);
+  const sendMessage = useCallback(
+    (message: string) => {
+      if (socket.current) {
+        socket.current.emit('/chat/text', { content: message });
+        addNewMessage({ id: -1, userId, messageType: 'TEXT', content: message });
+      }
+    },
+    [addNewMessage, userId]
+  );
 
   const sendImage = useCallback((imageUrl: string) => {
     if (socket.current) {

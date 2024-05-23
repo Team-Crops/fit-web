@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import { Icons, Input } from '#/components/atoms';
@@ -8,15 +10,25 @@ interface ChatToolboxProps {
 }
 
 export const ChatToolbox = ({ sendMessage, sendImage }: ChatToolboxProps) => {
+  const [message, setMessage] = useState('');
   return (
-    <Form>
+    <Form
+      action={(e) => {
+        sendMessage(message);
+        setMessage('');
+      }}
+    >
       <ToolIcon icon="image" size={36} />
       <TextInput
         placeholder="대기방의 팀원에게 메세지를 보내보세요"
         typo="typo5"
         weight="regular"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       />
-      <SendIcon icon="upload" size={36} color="#ff908d" />
+      <SendButton type="submit">
+        <Icons icon="upload" size={36} color="#ff908d" />
+      </SendButton>
     </Form>
   );
 };
@@ -51,11 +63,13 @@ const TextInput = styled(Input)`
   border-radius: 1000px;
 `;
 
-const SendIcon = styled(Icons)`
+const SendButton = styled.button`
   cursor: pointer;
 
   position: absolute;
-  right: 20px;
+  right: 16px;
+
+  padding: 0;
 
   background-color: #fff;
   border-radius: 50%;
