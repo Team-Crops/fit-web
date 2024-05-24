@@ -77,7 +77,7 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
             key={index}
             user={participants.find((p) => p.id === message.userId) ?? nullUser}
             myBubble={message.userId === userId}
-            text={message.content}
+            message={message}
           />
         ) : isImageMessage(message) ? (
           <Image src={message.imageUrl} alt={`Image from message ${message.id}`} />
