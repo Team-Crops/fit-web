@@ -33,7 +33,7 @@ export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
             id: -1,
             userId: user.id,
             messageType: 'TEXT',
-            createdAt: Temporal.Now.instant().toString(),
+            createdAt: new Date().toISOString(),
             content: message,
           });
           setMessage('');

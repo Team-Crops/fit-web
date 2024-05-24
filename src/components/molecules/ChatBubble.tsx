@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import styled from '@emotion/styled';
-import { Temporal } from '@js-temporal/polyfill';
 
 import { ChatUser, Message } from '#/types';
 import { isImageMessage, isTextMessage } from '#/utilities/message';
@@ -15,7 +14,11 @@ interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ChatBubble = ({ user, message, myBubble = false, ...props }: ChatBubbleProps) => {
-  const plainTime = useMemo(() => Temporal.PlainTime.from(message.createdAt), [message.createdAt]);
+  const plainTime = useMemo(() => {
+    const currentDate = new Date(message.createdAt);
+    return `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+  }, [message.createdAt]);
+
   return (
     <Container myBubble={myBubble}>
       <ColoredProfile imageUrl={user.profileImageUrl} nickname={user.nickname} size={40} />
@@ -30,7 +33,7 @@ export const ChatBubble = ({ user, message, myBubble = false, ...props }: ChatBu
         ) : isImageMessage(message) ? null : null}
       </BubbleContainer>
       <BubbleTime size="typo6" weight="medium" color="#9E9E9E">
-        {plainTime.toString({ smallestUnit: 'minute' })}
+        {plainTime}
       </BubbleTime>
     </Container>
   );
