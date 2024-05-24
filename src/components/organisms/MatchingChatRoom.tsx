@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { Router } from 'next/router';
 
 import styled from '@emotion/styled';
 
@@ -6,6 +8,7 @@ import { Button } from '#/components/atoms';
 import { ChatRoom } from '#/components/organisms/ChatRoom';
 import {
   useMatchingRoomCancelMutation,
+  useMatchingRoomCompleteMutation,
   useMatchingRoomReadyMutation,
 } from '#/hooks/use-matching-room';
 import { useAuthStore, useMatching, useMatchingRoom } from '#/stores';
@@ -16,6 +19,7 @@ interface MatchingChatRoomProps {
 }
 
 export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
+  const router = useRouter();
   const userId = useAuthStore((store) => store.user?.id);
 
   const { data: matching } = useMatching();
@@ -26,7 +30,7 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
     [matchingRoom?.matchingUsers, userId]
   );
 
-  const { trigger: readyMatching } = useMatchingRoomReadyMutation(matchingId);
+  const { trigger: completeMatching } = useMatchingRoomCompleteMutation(matchingId);
   const { trigger: cancelMatching } = useMatchingRoomCancelMutation(matchingId);
 
   return (
@@ -40,7 +44,11 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
           variant="round"
           height="70"
           color="primary"
-          onClick={() => readyMatching({ isReady: !isReady })}
+          onClick={() => {
+            completeMatching().then(() => {
+              router.push('/project');
+            });
+          }}
         >
           프로젝트 시작하기
         </Button>
