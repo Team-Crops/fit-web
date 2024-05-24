@@ -4,6 +4,7 @@ export interface Message {
   id: number;
   userId: User['id'];
   messageType: 'TEXT' | 'IMAGE';
+  createdAt: string;
   content?: string;
   imageUrl?: string;
 }
