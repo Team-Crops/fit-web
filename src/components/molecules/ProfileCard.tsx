@@ -12,6 +12,7 @@ import { Badge } from '#atoms/Badge';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { UserProfile } from '#atoms/UserProfile';
+import { ProfileBlock } from '../organisms/ProfileBlock';
 
 const Container = styled.div<{ size: ProfileCardProps['size'] }>`
   display: flex;
@@ -48,6 +49,8 @@ const InfoContainer = styled.div`
   flex-direction: column;
   gap: 6px;
   align-items: start;
+
+  width: calc(100% - 120px);
 `;
 
 const NameContainer = styled.div`
@@ -99,7 +102,7 @@ export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
   return (
     <Container size={size} {...props}>
       <UserProfile
-        imageUrl={`https://d2ueefa0uvyh4f.cloudfront.net/${user.profileImageUrl}`}
+        imageUrl={user.profileImageUrl}
         nickname={user.nickname}
         size={size === 'small' ? 90 : 120}
       />
