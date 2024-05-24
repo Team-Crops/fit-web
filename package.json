@@ -15,6 +15,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@js-temporal/polyfill": "^0.4.4",
     "immer": "^10.1.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",

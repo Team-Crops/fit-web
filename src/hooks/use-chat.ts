@@ -38,6 +38,7 @@ interface ChatMessagesResponse {
       messageId: number;
       messageType: 'TEXT' | 'IMAGE';
       userId: number;
+      createdAt: string;
     }[];
     hasNext: boolean;
   };
@@ -54,16 +55,14 @@ export function useChatMessagesQuery(id: Chat['id']) {
     async (...args: Parameters<typeof fitFetcher>) => {
       const json: ChatMessagesResponse = await fitFetcher(...args);
       return {
-        messages: json.pageResult.values.map(
-          (v) =>
-            ({
-              id: v.messageId,
-              content: v.content,
-              imageUrl: v.imageUrl,
-              userId: v.userId,
-              messageType: v.messageType,
-            }) as Message
-        ),
+        messages: json.pageResult.values.map((v) => ({
+          id: v.messageId,
+          content: v.content,
+          imageUrl: v.imageUrl,
+          userId: v.userId,
+          messageType: v.messageType,
+          createdAt: v.createdAt,
+        })),
         hasNext: json.pageResult.hasNext,
       };
     }

@@ -1,16 +1,21 @@
-import styled from '@emotion/styled';
+import { useMemo } from 'react';
 
-import { ChatUser } from '#/types';
+import styled from '@emotion/styled';
+import { Temporal } from '@js-temporal/polyfill';
+
+import { ChatUser, Message } from '#/types';
+import { isImageMessage, isTextMessage } from '#/utilities/message';
 import { Txt } from '#atoms/Text';
 import { UserProfile } from '#atoms/UserProfile';
 
 interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
-  myBubble?: boolean;
   user: ChatUser;
-  text: string;
+  message: Message;
+  myBubble?: boolean;
 }
 
-export const ChatBubble = ({ myBubble = false, user, text, ...props }: ChatBubbleProps) => {
+export const ChatBubble = ({ user, message, myBubble = false, ...props }: ChatBubbleProps) => {
+  const plainTime = useMemo(() => Temporal.PlainTime.from(message.createdAt), [message.createdAt]);
   return (
     <Container myBubble={myBubble}>
       <ColoredProfile imageUrl={user.profileImageUrl} nickname={user.nickname} size={40} />
@@ -18,12 +23,14 @@ export const ChatBubble = ({ myBubble = false, user, text, ...props }: ChatBubbl
         <Txt size="typo5" weight="bold" color="#757575">
           {user.nickname}
         </Txt>
-        <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props}>
-          {text}
-        </TextBubble>
+        {isTextMessage(message) ? (
+          <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props}>
+            {message.content}
+          </TextBubble>
+        ) : isImageMessage(message) ? null : null}
       </BubbleContainer>
       <BubbleTime size="typo6" weight="medium" color="#9E9E9E">
-        12:24 PM
+        {plainTime.toString({ smallestUnit: 'minute' })}
       </BubbleTime>
     </Container>
   );
