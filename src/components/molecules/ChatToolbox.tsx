@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { Temporal } from '@js-temporal/polyfill';
 
 import { Icons, Input } from '#/components/atoms';
 import { useChatStore, useUser } from '#/stores';
@@ -32,6 +33,7 @@ export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
             id: -1,
             userId: user.id,
             messageType: 'TEXT',
+            createdAt: Temporal.Now.instant().toString(),
             content: message,
           });
           setMessage('');
