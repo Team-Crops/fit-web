@@ -51,6 +51,7 @@ const PositionTabs = styled.div`
   overflow-x: auto;
   display: flex;
   gap: 10px;
+
   padding: 10px;
 `;
 
