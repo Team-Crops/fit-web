@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { CareerSelect } from '#/components/molecules/CareerSelect';
 import { useTempAuthStore } from '#/stores/tempAuth';
-import { isUserStudent, isUserWorker } from '#/types/user';
+import { isUserStudent, isUserWorker } from '#/utilities/user';
 import { CheckBox } from '#atoms/CheckBox';
 import { Input } from '#atoms/Input';
 import { Select } from '#atoms/Select';

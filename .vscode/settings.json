@@ -7,5 +7,6 @@
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
-  "svg.preview.background": "dark-transparent"
+  "svg.preview.background": "dark-transparent",
+  "sarif-viewer.connectToGithubCodeScanning": "off"
 }

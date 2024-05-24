@@ -13,9 +13,9 @@ export function getTokens(): AuthTokens | null {
 
 export function setTokens(tokens: AuthTokens | null) {
   if (tokens) {
-    sessionStorage.setItem(TOKENS_KEY, JSON.stringify(tokens));
+    localStorage.setItem(TOKENS_KEY, JSON.stringify(tokens));
   } else {
-    sessionStorage.removeItem(TOKENS_KEY);
+    localStorage.removeItem(TOKENS_KEY);
   }
 }
 

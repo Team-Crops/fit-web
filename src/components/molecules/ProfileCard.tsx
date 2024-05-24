@@ -99,7 +99,7 @@ export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
   return (
     <Container size={size} {...props}>
       <UserProfile
-        imageUrl={user.profileImageUrl}
+        imageUrl={`https://d2ueefa0uvyh4f.cloudfront.net/${user.profileImageUrl}`}
         nickname={user.nickname}
         size={size === 'small' ? 90 : 120}
       />

@@ -111,12 +111,12 @@ const ButtonColorCSS = ({ variant, color, disabled }: ButtonProps) => {
   }
 };
 const StyledButton = styled.button<ButtonProps>`
+  cursor: pointer;
+
   color: #fff;
   letter-spacing: -0.6px;
 
   border: none;
-
-  cursor: pointer;
 
   transition-duration: 0.2s;
   transition-property: background-color color;

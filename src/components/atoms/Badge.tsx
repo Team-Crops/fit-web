@@ -2,7 +2,10 @@ import { HTMLAttributes } from 'react';
 
 import styled from '@emotion/styled';
 
-const StyledSpan = styled.span`
+import { Txt } from '#/components/atoms';
+import type { TxtProps } from '#/components/atoms/Text';
+
+const StyledSpan = styled.span<{ background: BadgeProps['background'] }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10,20 +13,32 @@ const StyledSpan = styled.span`
   height: fit-content;
   padding: 2px 8px;
 
-  font-family: 'Spoqa Han Sans Neo', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  font-style: normal;
-  color: #ff706c;
-  letter-spacing: -0.6px;
-
   forced-color-adjust: auto;
-  background: #ff706c52;
+  background: ${({ background }) => background};
   border-radius: 100px;
 `;
 
-interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {}
+interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  background?: React.CSSProperties['background'];
+  color?: React.CSSProperties['color'];
 
-export const Badge: React.FC<BadgeProps> = ({ ...props }) => {
-  return <StyledSpan {...props} />;
+  size?: TxtProps['size'];
+  weight?: TxtProps['weight'];
+}
+
+export const Badge: React.FC<BadgeProps> = ({
+  background = '#ff706c52',
+  color = '#ff706c',
+  size = 'typo6',
+  weight = 'regular',
+  children,
+  ...props
+}) => {
+  return (
+    <StyledSpan background={background} {...props}>
+      <Txt size={size} weight={weight} color={color}>
+        {children}
+      </Txt>
+    </StyledSpan>
+  );
 };

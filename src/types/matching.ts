@@ -1,3 +1,5 @@
+import type { User } from '#/types';
+
 export enum MatchingStatus {
   REGISTER = 'REGISTER',
   WAITING = 'WAITING',
@@ -11,10 +13,28 @@ export enum MatchingStatus {
 }
 
 export interface Matching {
+  id: number | null;
+  userId: number;
+  positionId: number;
+  status: MatchingStatus;
+
   expiredAt: string;
   createdAt: string;
-  positionId: number;
-  userId: number;
-  roomId: number | null;
-  status: MatchingStatus;
+}
+
+export interface MatchingRoom {
+  id: number;
+
+  hostId: User['id'];
+  chatId: number;
+  matchingUsers: MatchingUser[];
+  isCompleted: boolean;
+
+  completedAt: string | null;
+}
+
+export interface MatchingUser
+  extends Pick<User, 'id' | 'nickname' | 'profileImageUrl' | 'positionId'> {
+  isHost: boolean;
+  isReady: boolean;
 }

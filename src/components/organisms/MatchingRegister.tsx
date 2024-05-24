@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
-import { useMatchingStart } from '#/hooks/use-matching';
+import { useMatchingStartMutation } from '#/hooks/use-matching';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useAuthStore } from '#/stores/auth';
@@ -67,7 +67,7 @@ interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
   const { data: skills } = useSkillsQuery();
   const { data: regions } = useRegionsQuery();
-  const { trigger: matchingStart } = useMatchingStart();
+  const { trigger: startMatching } = useMatchingStartMutation();
 
   const user = useAuthStore((store) => store.user);
   const mySkillNames = useMemo(
@@ -125,7 +125,7 @@ export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
         <MatchingButtons.Button color="secondary" onClick={() => router.push('/mypage')}>
           수정하기
         </MatchingButtons.Button>
-        <MatchingButtons.Button onClick={() => matchingStart()}>확인</MatchingButtons.Button>
+        <MatchingButtons.Button onClick={() => startMatching()}>확인</MatchingButtons.Button>
       </MatchingButtons>
     </Container>
   );

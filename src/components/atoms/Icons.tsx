@@ -1,4 +1,3 @@
-import type { HTMLAttributes } from 'react';
 import React from 'react';
 import Image from 'next/image';
 
@@ -15,6 +14,7 @@ import {
   ClickIcon,
   ClipIcon,
   CrossIcon,
+  CrownIcon,
   EmojiFire,
   EmojiHoldingBackTears,
   EmojiPartyingFace,
@@ -63,6 +63,7 @@ export type IconName =
   | 'clip'
   | 'clipBold'
   | 'cross'
+  | 'crown'
   | 'email'
   | 'emojiFire'
   | 'emojiHoldingBackTears'
@@ -106,7 +107,7 @@ const icons: Record<IconName, Icon> = {
   },
   arrowDown: {
     SVGR: ArrowDown,
-    color: '#bdbdbd',
+    color: '#9e9e9e',
   },
   arrowForward: {
     SVGR: ArrowForward,
@@ -167,6 +168,7 @@ const icons: Record<IconName, Icon> = {
   },
   clip: {
     SVGR: ClipIcon,
+    color: '#FF908D',
   },
   clipBold: {
     SVGR: ClipBoldIcon,
@@ -174,6 +176,10 @@ const icons: Record<IconName, Icon> = {
   cross: {
     SVGR: CrossIcon,
     color: '#212121',
+  },
+  crown: {
+    SVGR: CrownIcon,
+    color: '#4960D9',
   },
   email: {
     SVGR: EmailIcon,
@@ -224,6 +230,7 @@ const icons: Record<IconName, Icon> = {
   },
   link: {
     SVGR: LinkIcon,
+    color: '#FF908D',
   },
   linkedin: {
     SVGR: LinkedInIcon,
@@ -240,6 +247,7 @@ const icons: Record<IconName, Icon> = {
   },
   pencil: {
     SVGR: PencilIcon,
+    color: '#FF908D',
   },
   phoneFill: {
     SVGR: PhoneFillIcon,
@@ -247,6 +255,7 @@ const icons: Record<IconName, Icon> = {
   },
   plus: {
     SVGR: PlusIcon,
+    color: '#FF908D',
   },
   progress: {
     SVGR: ProgressIcon,
@@ -273,26 +282,15 @@ const icons: Record<IconName, Icon> = {
   },
 };
 
-interface IconsProps extends HTMLAttributes<SVGElement> {
+interface IconsProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: IconName;
 
   size?: number;
   width?: number;
   height?: number;
-
-  isError?: boolean;
-  isOpened?: boolean;
 }
 
-export const Icons: React.FC<IconsProps> = ({
-  icon,
-  width,
-  height,
-  size,
-  isError,
-  isOpened,
-  ...props
-}) => {
+export const Icons: React.FC<IconsProps> = ({ icon, width, height, size, color, ...props }) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
   if (typeof SVGR === 'object') {
     return (
@@ -307,12 +305,13 @@ export const Icons: React.FC<IconsProps> = ({
   }
 
   return (
-    <SVGR
-      color={defaultColor}
-      width={size ?? width}
-      height={size ?? height}
-      style={{ ...style, flexShrink: 0 }}
-      {...props}
-    />
+    <div {...props}>
+      <SVGR
+        color={color ?? defaultColor}
+        width={size ?? width}
+        height={size ?? height}
+        style={{ ...style, flexShrink: 0 }}
+      />
+    </div>
   );
 };

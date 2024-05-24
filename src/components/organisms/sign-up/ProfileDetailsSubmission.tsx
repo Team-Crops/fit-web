@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 
 import { Input, Label, Txt } from '#/components/atoms';
 import { CareerSelect } from '#/components/molecules/CareerSelect';
-import { User, UserBackgroundStatus, isUserStudent, isUserWorker } from '#/types/user';
+import { User, UserBackgroundStatus } from '#/types';
+import { isUserStudent, isUserWorker } from '#/utilities';
 
 const Container = styled.div`
   display: flex;

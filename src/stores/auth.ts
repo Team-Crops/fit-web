@@ -38,3 +38,5 @@ export const useAuthStore = create(
     }
   )
 );
+
+export const useUser = () => useAuthStore((store) => store.user);

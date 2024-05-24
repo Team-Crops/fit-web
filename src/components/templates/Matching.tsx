@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { Loading } from '#/components/atoms';
 import { MATCHING_NOT_FOUND_CODE, useMatchingQuery } from '#/hooks/use-matching';
+import { useMatchingRoomQuery } from '#/hooks/use-matching-room';
 import { MatchingStatus } from '#/types';
 import { MatchingTitle } from '#molecules/matching/MatchingTitle';
+import { MatchingChatRoom } from '#organisms/MatchingChatRoom';
 import { MatchingRegister } from '#organisms/MatchingRegister';
-import { MatchingTalk } from '#organisms/MatchingTalk';
 import { MatchingWaiting } from '#organisms/MatchingWaiting';
 
 const Container = styled.div`
@@ -19,17 +21,17 @@ const Container = styled.div`
   width: 100%;
   max-width: 1200px;
   min-height: calc(100vh - 100px - 393px);
+  margin: 0 auto;
   padding: 35px 0;
 `;
 
 export const Matching = () => {
   const [status, setStatus] = useState<MatchingStatus>(MatchingStatus.REGISTER);
 
-  const { data: matching, error } = useMatchingQuery();
+  const { data: matching, error, isLoading } = useMatchingQuery();
+  const { data: matchingRoom } = useMatchingRoomQuery(matching?.id);
 
   useEffect(() => {
-    console.log('matching', matching);
-    console.log('error', error);
     if (matching) {
       setStatus(matching.status);
     } else if (error && error.code === MATCHING_NOT_FOUND_CODE) {
@@ -40,13 +42,15 @@ export const Matching = () => {
   return (
     <Container>
       <MatchingTitle status={status} />
-      {status === MatchingStatus.REGISTER ? (
+      {isLoading ? (
+        <Loading />
+      ) : status === MatchingStatus.REGISTER ? (
         <MatchingRegister />
       ) : status === MatchingStatus.WAITING ? (
         <MatchingWaiting />
-      ) : (
-        <MatchingTalk />
-      )}
+      ) : matchingRoom ? (
+        <MatchingChatRoom matchingId={matchingRoom.id} />
+      ) : null}
     </Container>
   );
 };

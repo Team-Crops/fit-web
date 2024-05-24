@@ -61,14 +61,13 @@ async function sendPolicyAgreesMutationRequest(
 }
 
 export function usePolicyAgreesMutation() {
-  const { data, ...others } = useSWRMutation<
-    PolicyAgreesMutationResponse,
-    any,
-    typeof AGREEMENTS_MUTATION_KEY,
-    PolicyAgreesMutationArgs
-  >(AGREEMENTS_MUTATION_KEY, sendPolicyAgreesMutationRequest, {
-    onSuccess: (data) => mutate(AGREEMENTS_QUERY_KEY, data.policyAgreementList),
-  });
+  const { data, ...others } = useSWRMutation(
+    AGREEMENTS_MUTATION_KEY,
+    sendPolicyAgreesMutationRequest,
+    {
+      onSuccess: (data) => mutate(AGREEMENTS_QUERY_KEY, data.policyAgreementList),
+    }
+  );
   return {
     data: data?.policyAgreementList,
     ...others,
