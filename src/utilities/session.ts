@@ -4,7 +4,7 @@ import { AuthTokens } from '#/types/auth-tokens';
 const TOKENS_KEY = 'api-token';
 
 export function getTokens(): AuthTokens | null {
-  const tokens = typeof window !== 'undefined' ? sessionStorage.getItem(TOKENS_KEY) : null;
+  const tokens = typeof window !== 'undefined' ? localStorage.getItem(TOKENS_KEY) : null;
   if (tokens) {
     return JSON.parse(tokens);
   }
