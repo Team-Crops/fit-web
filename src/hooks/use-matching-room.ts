@@ -1,9 +1,6 @@
-import { useEffect, useMemo } from 'react';
-
 import useSWR, { mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
 
-import { useMatchingStore } from '#/stores';
 import { MatchingRoom, User } from '#/types';
 import { fitFetcher } from '#/utilities';
 import { MATCHING_QUERY_KEY } from './use-matching';
@@ -13,61 +10,6 @@ const MATCHING_ROOM_COMPLETE_KEY = (id: number) => `/v1/matching/room/${id}/comp
 const MATCHING_ROOM_FORCE_OUT_KEY = (id: number) => `/v1/matching/room/${id}/force-out`;
 const MATCHING_ROOM_READY_KEY = (id: number) => `/v1/matching/room/${id}/ready`;
 const MATCHING_ROOM_CANCEL_KEY = (id: number) => `/v1/matching/room/${id}/cancel`;
-
-export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
-  const { data, isLoading, error } = useSWR<MatchingRoomResponse>(
-    !!id ? MATCHING_ROOM_QUERY_KEY(id) : null,
-    fitFetcher
-  );
-
-  const matchingRoom = useMemo(() => convertDtoToMatchingRoom(data), [data]);
-
-  const setRoom = useMatchingStore((store) => store.setRoom);
-
-  useEffect(() => {
-    if (id) {
-      setRoom(id, { data: matchingRoom, isLoading, error });
-    }
-  }, [matchingRoom, error, isLoading, setRoom, id]);
-
-  return { data: matchingRoom, isLoading, error };
-}
-
-export function useMatchingRoomCompleteMutation() {}
-
-export function useMatchingRoomForceOutMutation(
-  roomId: MatchingRoom['id'],
-  userId?: User['id'] | null
-) {
-  return useSWRMutation(MATCHING_ROOM_FORCE_OUT_KEY(roomId), (url, options) =>
-    fitFetcher(url, { ...options, method: 'POST', body: JSON.stringify({ userId }) })
-  );
-}
-
-function mutateReady(url: string, { arg: { isReady } }: { arg: { isReady: boolean } }) {
-  return fitFetcher(url, { method: 'POST', body: JSON.stringify({ isReady }) });
-}
-
-export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(MATCHING_ROOM_READY_KEY(roomId), mutateReady, {
-    onSuccess: () => {
-      mutate(MATCHING_ROOM_QUERY_KEY(roomId));
-    },
-  });
-}
-
-export function useMatchingRoomCancelMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(
-    MATCHING_ROOM_CANCEL_KEY(roomId),
-    (url, options) => fitFetcher(url, { ...options, method: 'POST' }),
-    {
-      onSuccess: () => {
-        mutate(MATCHING_QUERY_KEY);
-        mutate(MATCHING_ROOM_QUERY_KEY(roomId));
-      },
-    }
-  );
-}
 
 export interface MatchingRoomResponse {
   matchingRoomId: number;
@@ -80,31 +22,55 @@ export interface MatchingRoomResponse {
     isReady: boolean;
     profileImageUrl: string;
     userId: number;
-    username: string;
+    nickname: string;
   }[];
   isCompleted: boolean;
 
   completedAt?: string;
 }
 
-function convertDtoToMatchingRoom(dto?: MatchingRoomResponse): MatchingRoom | undefined {
-  if (!dto) {
-    return dto;
-  }
+export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
+  return useSWR(id || id === 0 ? MATCHING_ROOM_QUERY_KEY(id) : null, async (url) => {
+    const response = await fitFetcher<MatchingRoomResponse>(url);
+    return {
+      id: response.matchingRoomId,
+      hostId: response.hostUserId,
+      chatId: response.chatRoomId,
+      matchingUsers: response.matchingUserList.map((u) => ({
+        id: u.userId,
+        nickname: u.nickname,
+        profileImageUrl: u.profileImageUrl,
+        positionId: u.positionId,
+        isHost: u.isHost,
+        isReady: u.isReady,
+      })),
+      isCompleted: response.isCompleted,
+      completedAt: response.completedAt ?? null,
+    } as MatchingRoom;
+  });
+}
 
-  return {
-    id: dto.matchingRoomId,
-    hostId: dto.hostUserId,
-    chatId: dto.chatRoomId,
-    matchingUsers: dto.matchingUserList.map((u) => ({
-      id: u.userId,
-      nickname: u.username,
-      profileImageUrl: u.profileImageUrl,
-      positionId: u.positionId,
-      isHost: u.isHost,
-      isReady: u.isReady,
-    })),
-    isCompleted: dto.isCompleted,
-    completedAt: dto.completedAt ?? null,
-  };
+export function useMatchingRoomCompleteMutation() {}
+
+export function useMatchingRoomForceOutMutation(
+  roomId: MatchingRoom['id'],
+  userId?: User['id'] | null
+) {
+  return useSWRMutation(MATCHING_ROOM_FORCE_OUT_KEY(roomId), (url) =>
+    fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ userId }) })
+  );
+}
+
+export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
+  return useSWRMutation(
+    MATCHING_ROOM_READY_KEY(roomId),
+    (url, { arg: { isReady } }: { arg: { isReady: boolean } }) =>
+      fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) })
+  );
+}
+
+export function useMatchingRoomCancelMutation(roomId: MatchingRoom['id']) {
+  return useSWRMutation(MATCHING_ROOM_CANCEL_KEY(roomId), (url) =>
+    fitFetcher<null>(url, { method: 'POST' })
+  );
 }

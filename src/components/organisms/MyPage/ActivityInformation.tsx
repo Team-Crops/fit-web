@@ -1,23 +1,24 @@
 import { useMemo } from 'react';
 
+import { Loading } from '#/components/atoms';
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { useRegionsQuery } from '#/hooks/use-regions';
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { BasicInfo } from '#molecules/MyPage/BasicInfo';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
 import { MyPageGridBlock } from '#molecules/MyPage/MyPageGridBlock';
 import { PositionBadge } from '#molecules/MyPage/PositionBadge';
 
 export const ActivityInformation = () => {
-  const user = useAuthStore((state) => state.user);
+  const { data: me } = useMeQuery();
   const { data: positions } = usePositionsQuery();
   const { data: regions } = useRegionsQuery();
   const positionName = useMemo(() => {
-    const position = positions?.find((v) => v.id === user?.positionId);
+    const position = positions?.find((v) => v.id === me?.positionId);
     return position?.displayName;
-  }, [positions, user?.positionId]);
+  }, [positions, me?.positionId]);
 
-  if (user === null) return;
+  if (me === null) return <Loading />;
   return (
     <MyInfoBlock title={'활동'}>
       <MyPageGridBlock>
@@ -25,17 +26,17 @@ export const ActivityInformation = () => {
           <PositionBadge position={positionName} selected={true} />
         </BasicInfo>
         <BasicInfo title={'주 활동 지역'} titleWidth={160} type={'string'}>
-          {regions?.find((v) => v.id === user?.regionId)?.displayName}
+          {regions?.find((v) => v.id === me?.regionId)?.displayName}
         </BasicInfo>
         <BasicInfo title={'프로젝트 경험 수'} titleWidth={160} type={'string'}>
-          {user.projectCount === 0
+          {me?.projectCount === 0
             ? '없음'
-            : user.projectCount === 3
-              ? `${user.projectCount}회 이상`
-              : `${user.projectCount}회`}
+            : me?.projectCount === 3
+              ? `${me?.projectCount}회 이상`
+              : `${me?.projectCount}회`}
         </BasicInfo>
         <BasicInfo title={'활동 가능 시간'} titleWidth={160} type={'string'}>
-          {user?.activityHour ?? '-'}시간
+          {me?.activityHour ?? '-'}시간
         </BasicInfo>
       </MyPageGridBlock>
     </MyInfoBlock>

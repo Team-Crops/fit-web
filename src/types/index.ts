@@ -6,6 +6,8 @@ export type { ChatUser, Chat } from './chat';
 
 export type { FetchState } from './fetch-state';
 
+export type { PresignedUrl, FileDomain } from './file';
+
 export type { Link } from './link';
 
 export { MatchingStatus } from './matching';
@@ -20,6 +22,8 @@ export type { Position } from './position';
 export { ProjectStatus } from './project';
 export type { Project } from './project';
 
+export type { RecommendUser } from './recommend';
+
 export type { Region } from './region';
 
 export { SignUpStep } from './sign-up-step';
@@ -29,4 +33,4 @@ export type { Skill } from './skill';
 export type { SocialPlatform } from './social-platform';
 
 export { UserBackgroundStatusStudent, UserBackgroundStatusWorker } from './user';
-export type { UserBackgroundStatus, User } from './user';
+export type { UserBackgroundStatus, User, Me } from './user';

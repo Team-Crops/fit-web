@@ -9,7 +9,8 @@ import { useShallow } from 'zustand/react/shallow';
 import { Loading } from '#/components/atoms';
 import { nullUser } from '#/entities';
 import { useChatMessagesQuery } from '#/hooks/use-chat';
-import { useAuthStore, useChatStore } from '#/stores';
+import { useMeQuery } from '#/hooks/use-user';
+import { useChatStore } from '#/stores';
 import { Chat, Message } from '#/types';
 import { isImageMessage, isTextMessage } from '#/utilities/message';
 import { ChatBubble } from './ChatBubble';
@@ -24,8 +25,6 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [pageCursor, setPageCursor] = useState(0);
 
-  const userId = useAuthStore((store) => store.user?.id);
-
   const { participants, socket, messages, unshiftMessage, appendMessages } = useChatStore(
     useShallow(({ chats, unshiftMessage, appendMessages }) => ({
       participants: chats[chatId].users,
@@ -35,6 +34,8 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
       appendMessages,
     }))
   );
+
+  const { data: me } = useMeQuery();
 
   const { data: pages, size, setSize } = useChatMessagesQuery(chatId);
 
@@ -76,7 +77,7 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
           <ChatBubble
             key={index}
             user={participants.find((p) => p.id === message.userId) ?? nullUser}
-            myBubble={message.userId === userId}
+            myBubble={message.userId === me?.id}
             message={message}
           />
         ) : isImageMessage(message) ? (

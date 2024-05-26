@@ -1,6 +1,6 @@
 'use client';
 
-import { type HTMLAttributes, type MouseEventHandler, useCallback, useMemo } from 'react';
+import { type HTMLAttributes, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
@@ -12,7 +12,7 @@ import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { useMatchingStartMutation } from '#/hooks/use-matching';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
@@ -67,45 +67,45 @@ interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
 export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
   const { data: skills } = useSkillsQuery();
   const { data: regions } = useRegionsQuery();
+  const { data: me } = useMeQuery();
   const { trigger: startMatching } = useMatchingStartMutation();
 
-  const user = useAuthStore((store) => store.user);
   const mySkillNames = useMemo(
-    () => _.uniq(user?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
-    [skills, user?.skillIdList]
+    () => _.uniq(me?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
+    [skills, me?.skillIdList]
   );
 
   const router = useRouter();
 
   const details: { name: string; value: string }[] = useMemo(
     () => [
-      { name: '학력/경력', value: user?.backgroundStatus ?? '-' },
-      { name: '학교명', value: user?.backgroundText ?? '-' },
+      { name: '학력/경력', value: me?.backgroundStatus ?? '-' },
+      { name: '학교명', value: me?.backgroundText ?? '-' },
       { name: '사용가능한 기술/툴', value: mySkillNames.join(', ') },
-      { name: '프로젝트 경험 수', value: `${user?.projectCount ?? '-'}번` },
+      { name: '프로젝트 경험 수', value: `${me?.projectCount ?? '-'}번` },
       {
         name: '주 활동지역',
-        value: regions?.find((r) => r.id === user?.regionId)?.displayName ?? '-',
+        value: regions?.find((r) => r.id === me?.regionId)?.displayName ?? '-',
       },
-      { name: '활동 가능 시간', value: `${user?.activityHour ?? '-'}시간` },
-      { name: '포트폴리오', value: user?.portfolioUrl ?? '-' },
+      { name: '활동 가능 시간', value: `${me?.activityHour ?? '-'}시간` },
+      { name: '포트폴리오', value: me?.portfolioUrl ?? '-' },
     ],
     [
       mySkillNames,
       regions,
-      user?.activityHour,
-      user?.backgroundStatus,
-      user?.backgroundText,
-      user?.portfolioUrl,
-      user?.projectCount,
-      user?.regionId,
+      me?.activityHour,
+      me?.backgroundStatus,
+      me?.backgroundText,
+      me?.portfolioUrl,
+      me?.projectCount,
+      me?.regionId,
     ]
   );
 
   return (
     <Container>
       <ProfileContainer {...props}>
-        <ProfileCard user={user} size="large" />
+        <ProfileCard user={me ?? null} size="large" />
         <Details>
           <DetailsContainer>
             {details.map((detail, index) => (

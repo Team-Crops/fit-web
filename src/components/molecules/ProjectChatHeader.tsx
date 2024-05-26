@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import { Button, Input, Txt } from '#/components/atoms';
-import { useProjectMutator } from '#/hooks/use-projects';
-import { useProject } from '#/stores';
+import { useProjectMutator, useProjectsQuery } from '#/hooks/use-projects';
 import { Project, ProjectStatus } from '#/types';
 
 interface ProjectChatHeaderProps {
@@ -17,9 +16,10 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
   const [editMode, setEditMode] = useState(false);
   const [editedName, setEditedName] = useState('');
 
-  const { data: project } = useProject(projectId);
-
   const { trigger: mutateProject, isMutating: isMutatingProject } = useProjectMutator(projectId);
+  const { data: projects } = useProjectsQuery();
+
+  const project = useMemo(() => projects?.find((p) => p.id === projectId), [projects, projectId]);
 
   return (
     <Container>

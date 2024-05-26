@@ -2,19 +2,15 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { useShallow } from 'zustand/react/shallow';
-
 import { Backdrop } from '#/components/atoms';
 import { SignUpCompletePopup } from '#/components/organisms/SignUpCompletePopup';
 import { SignUpProfileCreationPopup } from '#/components/organisms/SignUpProfileCreationPopup';
 import { SignUpProfileUpdatePopup } from '#/components/organisms/SignUpProfileUpdatePopup';
 import { SignUpTermsPopup } from '#/components/organisms/SignUpTermsPopup';
-import { policies } from '#/entities';
-import { useAuthStore } from '#/stores/auth';
-import { SignUpStep, PolicyAgreement, User } from '#/types';
-import { getTokens } from '#/utilities';
+import { usePolicyAgreesQuery } from '#/hooks/use-policy-agrees';
+import { useMeQuery } from '#/hooks/use-user';
+import { SignUpStep } from '#/types';
 import { checkSignUpStep } from '#/utilities/check-sign-up-step';
-import { fitFetcher } from '#/utilities/fetch';
 
 interface LoginGuardProps {
   children: React.ReactNode;
@@ -27,38 +23,20 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
   const setNextStep = () => setStep((step) => step && step + 1);
   const setPrevStep = () => setStep((step) => step && step - 1);
 
-  const {
-    user,
-    tokens,
-    policyAgreed,
-    set: setAuth,
-  } = useAuthStore(
-    useShallow(({ user, tokens, policyAgreed, set }) => ({ user, tokens, policyAgreed, set }))
-  );
+  const { data: me } = useMeQuery();
+  const { data: policyAgreed } = usePolicyAgreesQuery();
 
   useEffect(() => {
-    async function fetchAuth() {
-      const currentToken = getTokens() ?? tokens;
-      if (currentToken) {
-        const user = await fetchUser();
-        const policyAgreed = await fetchPolicyAgreed();
-        setAuth({ user, tokens, policyAgreed });
-      }
+    if (me && policyAgreed) {
+      setStep(checkSignUpStep(me, policyAgreed));
     }
-    fetchAuth();
-  }, [tokens, setAuth]);
+  }, [me, policyAgreed]);
 
   useEffect(() => {
-    if (user && policyAgreed !== null) {
-      setStep(checkSignUpStep(user, policyAgreed));
-    }
-  }, [user, policyAgreed]);
-
-  useEffect(() => {
-    if (user?.id && step && step !== SignUpStep.COMPLETE) {
+    if (me?.id && step && step !== SignUpStep.COMPLETE) {
       setIsPopupOpened(true);
     }
-  }, [step, user?.id]);
+  }, [step, me?.id]);
 
   const popupComponent = useMemo(() => {
     switch (step) {
@@ -91,18 +69,3 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
     </>
   );
 };
-
-async function fetchUser(): Promise<User> {
-  return await fitFetcher<User>('/v1/user');
-}
-
-async function fetchPolicyAgreed(): Promise<boolean> {
-  const termAgreements = await fitFetcher<{ policyAgreementList: PolicyAgreement[] }>(
-    '/v1/user/policy-agreement'
-  );
-  return Object.values(policies).every(({ type }) =>
-    termAgreements.policyAgreementList.some(
-      (agreement) => agreement.policyType === type && agreement.isAgree
-    )
-  );
-}

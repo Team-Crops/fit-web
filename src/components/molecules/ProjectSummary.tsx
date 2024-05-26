@@ -1,7 +1,9 @@
+import { useMemo } from 'react';
+
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms';
-import { useProject } from '#/stores';
+import { useProjectsQuery } from '#/hooks/use-projects';
 import { Project } from '#/types';
 
 interface ProjectSummaryProps {
@@ -9,7 +11,10 @@ interface ProjectSummaryProps {
 }
 
 export const ProjectSummary = ({ projectId }: ProjectSummaryProps) => {
-  const { data: project } = useProject(projectId);
+  const { data: projects } = useProjectsQuery();
+
+  const project = useMemo(() => projects?.find((p) => p.id === projectId), [projects, projectId]);
+
   return (
     <Container>
       <Txt>{project?.name}</Txt>

@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
@@ -27,76 +25,39 @@ interface GetProjectsResponse {
   }[];
 }
 
-function convertDtoToProjects(dto: GetProjectsResponse): Project[] {
-  return dto.projectList.map((project) => ({
-    id: project.projectId,
-    name: project.projectName,
-    members: project.projectMemberList.map((member) => ({
-      id: member.userId,
-      nickname: member.nickname,
-      positionId: member.positionId,
-      profileImageUrl: member.profileImageUrl,
-    })),
-    status: project.projectStatus as ProjectStatus,
-    chatId: project.chatRoomId,
-
-    createdAt: project.createdAt,
-    completedAt: project.completedAt,
-  }));
-}
-
 export function useProjectsQuery() {
-  const { data, mutate, ...others } = useSWR<GetProjectsResponse>(PROJECTS_QUERY_KEY, fitFetcher);
-  const projects = useMemo(() => data && convertDtoToProjects(data), [data]);
+  return useSWR(PROJECTS_QUERY_KEY, async (url) => {
+    const response = await fitFetcher<GetProjectsResponse>(url);
+    return response.projectList.map((p) => ({
+      id: p.projectId,
+      name: p.projectName,
+      members: p.projectMemberList.map((m) => ({
+        id: m.userId,
+        nickname: m.nickname,
+        positionId: m.positionId,
+        profileImageUrl: m.profileImageUrl,
+      })),
+      status: p.projectStatus as ProjectStatus,
+      chatId: p.chatRoomId,
 
-  return {
-    data: projects,
-    ...others,
-  };
+      createdAt: p.createdAt,
+      completedAt: p.completedAt,
+    })) as Project[];
+  });
 }
 
-export function useProjectQuery(id: Project['id'] | null) {
-  const { data, mutate, ...others } = useSWR<GetProjectsResponse>(
-    id === null ? null : PROJECTS_QUERY_KEY,
-    fitFetcher
-  );
-
-  const project = useMemo(() => {
-    if (!data) {
-      return data;
-    }
-    const projects = convertDtoToProjects(data);
-    return projects.find((p) => p.id === id);
-  }, [data, id]);
-
-  return {
-    data: project,
-    ...others,
-  };
-}
-
-interface ProjectMutationArgs {
+interface ProjectMutationArg {
   status?: ProjectStatus;
   name?: string;
 }
 
-async function sendProjectsMutationRequest(
-  url: string,
-  { arg }: { arg: ProjectMutationArgs }
-): Promise<Project> {
-  const project = await fitFetcher<Project>(url, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      projectStatus: arg.status,
-      projectName: arg.name,
-    }),
-  });
-  return project;
-}
-
 export function useProjectMutator(id: Project['id']) {
-  return useSWRMutation(PROJECTS_MUTATION_KEY(id), sendProjectsMutationRequest);
+  return useSWRMutation(
+    PROJECTS_MUTATION_KEY(id),
+    (url, { arg: { status, name } }: { arg: ProjectMutationArg }) =>
+      fitFetcher<Project>(url, {
+        method: 'PATCH',
+        body: JSON.stringify({ projectStatus: status, projectName: name }),
+      })
+  );
 }

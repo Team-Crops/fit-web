@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
+import { Loading } from '#/components/atoms';
 import { PortfolioFileBlock } from '#/components/atoms/MyPage/PortfolioFileBlock';
 import { useSkillsQuery } from '#/hooks/use-skills';
-import { useAuthStore } from '#/stores/auth';
-import { Icons } from '#atoms/Icons';
+import { useMeQuery } from '#/hooks/use-user';
 import { PortfolioTicket } from '#atoms/MyPage/PortfolioTicket';
 import { Txt } from '#atoms/Text';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
@@ -59,10 +59,10 @@ const PortfolioList = styled.div`
 `;
 
 export const PortfolioInformation = () => {
-  const user = useAuthStore((state) => state.user);
+  const { data: me } = useMeQuery();
   const { data: skills } = useSkillsQuery();
 
-  if (user === null) return;
+  if (!me) return <Loading />;
   return (
     <MyInfoBlock title={'포트폴리오'}>
       <MyPageGridBlock>
@@ -71,8 +71,8 @@ export const PortfolioInformation = () => {
             사용 가능한 기술/툴
           </Txt>
           <TechListWrapper>
-            {user.skillIdList &&
-              user.skillIdList.map((skillId) => {
+            {me.skillIdList &&
+              me.skillIdList.map((skillId) => {
                 const skill = skills?.find((v) => v.id === skillId);
                 if (skill === undefined) return;
                 return (
@@ -88,9 +88,9 @@ export const PortfolioInformation = () => {
             포트폴리오
           </Txt>
           <PortfolioContent>
-            {user.portfolioUrl && <PortfolioFileBlock />}
+            {me.portfolioUrl && <PortfolioFileBlock />}
             <PortfolioList>
-              {user.linkList?.map((link) => (
+              {me.linkList?.map((link) => (
                 <PortfolioTicket key={link.linkUrl} icon={'link'} text={link.linkUrl} />
               ))}
             </PortfolioList>

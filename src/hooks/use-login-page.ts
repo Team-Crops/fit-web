@@ -10,13 +10,8 @@ interface LoginPageQueryResponse {
 }
 
 export function useLoginPageQuery(platform: SocialPlatform) {
-  const { data, ...others } = useSWR<LoginPageQueryResponse>(
-    LOGIN_PAGE_QUERY_KEY(platform),
-    fitFetcher,
-    {}
-  );
-  return {
-    data: data?.loginPageUrl,
-    ...others,
-  };
+  return useSWR(LOGIN_PAGE_QUERY_KEY(platform), async (url) => {
+    const response = await fitFetcher<LoginPageQueryResponse>(url);
+    return response.loginPageUrl;
+  });
 }

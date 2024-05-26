@@ -1,4 +1,4 @@
-import { MouseEventHandler, useCallback, useMemo, useState } from 'react';
+import { useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -6,8 +6,9 @@ import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
 import { UserProfile } from '#/components/atoms/UserProfile';
 import { usePositionsQuery } from '#/hooks/use-positions';
-import { RecommendUser, useRecommendLikeUserQuery } from '#/hooks/use-recommend';
+import { useRecommendLikeUserMutation } from '#/hooks/use-recommend';
 import { useSkillsQuery } from '#/hooks/use-skills';
+import { RecommendUser } from '#/types';
 
 const Card = styled.div`
   cursor: pointer;
@@ -95,49 +96,46 @@ const LikeButton = styled(Icons)`
 `;
 
 interface UserDataCardProps {
-  userData: RecommendUser['recommendUserList'][0];
-  onClick: (userId: number) => void;
+  user: RecommendUser;
+  onClick: () => void;
+  mutateCachedLike: (
+    userId: number,
+    isLiked: boolean | Promise<boolean>,
+    optimisticIsLiked: boolean
+  ) => void;
 }
-export const UserDataCard = ({ userData, onClick }: UserDataCardProps) => {
-  const [isLike, setIsLike] = useState(userData.isLiked);
-  const { trigger: likeTrigger } = useRecommendLikeUserQuery();
+export const UserDataCard = ({ user, onClick, mutateCachedLike }: UserDataCardProps) => {
   const positions = usePositionsQuery();
   const skills = useSkillsQuery();
+  const { trigger: mutateUserLike } = useRecommendLikeUserMutation();
 
-  const onClickLike: MouseEventHandler = useCallback(
+  const onLikeClick: React.MouseEventHandler = useCallback(
     (e) => {
       e.stopPropagation();
-      likeTrigger({
-        userId: userData.userSummary.userId,
-        like: isLike,
-      });
-      setIsLike(!userData.isLiked);
+      mutateCachedLike(
+        user.id,
+        mutateUserLike({ userId: user.id, like: !user.isLiked }),
+        !user.isLiked
+      );
     },
-    [isLike, likeTrigger, userData.isLiked, userData.userSummary.userId]
+    [mutateCachedLike, mutateUserLike, user.id, user.isLiked]
   );
 
   return (
-    <Card
-      onClick={() => {
-        onClick(userData.userSummary.userId);
-      }}
-    >
+    <Card onClick={onClick}>
       <TopBlock>
-        <UserProfile size={120} imageUrl={userData.userSummary.profileImageUrl} />
+        <UserProfile size={120} imageUrl={user.profileImageUrl} />
         <SummaryBlock>
           <FlexBlock>
             <UserName size="typo3" weight="bold" color="#212121">
-              {userData.userSummary.username}
+              {user.nickname}
             </UserName>
             <Position size={'typo6'} weight="regular" color="#FF706C">
-              {
-                positions.data?.find((position) => position.id === userData.userSummary.positionId)
-                  ?.displayName
-              }
+              {positions.data?.find((position) => position.id === user.positionId)?.displayName}
             </Position>
           </FlexBlock>
           <Introduction size="typo6" weight="medium" color="#616161">
-            {userData.userSummary.introduce}
+            {user.introduce}
           </Introduction>
         </SummaryBlock>
       </TopBlock>
@@ -146,22 +144,17 @@ export const UserDataCard = ({ userData, onClick }: UserDataCardProps) => {
           사용가능한 기술/툴
         </Txt>
         <Skills weight="medium" size="typo6" color="#212121">
-          {userData.userSummary.skillIdList?.map((skillId, index) => {
-            const skill = skills.data?.find((skill) => skill.id === skillId);
-            return (
-              <>
-                {skill?.displayName}
-                {index !== (userData.userSummary.skillIdList ?? []).length - 1 && ', '}
-              </>
-            );
-          })}
+          {user.skillIdList
+            ?.map((id) => skills.data?.find((skill) => skill.id === id)?.displayName)
+            .filter((v) => v)
+            .join(', ')}
         </Skills>
       </BottomBlock>
       <LikeButton
-        icon={isLike ? 'heartFill' : 'heart'}
+        icon={user.isLiked ? 'heartFilled' : 'heart'}
         width={24}
         height={24}
-        onClick={onClickLike}
+        onClick={onLikeClick}
       />
     </Card>
   );

@@ -1,8 +1,8 @@
-import { use, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
 import { Button } from '#atoms/Button';
 import { ActivityInformation } from '#organisms/MyPage/ActivityInformation';
@@ -28,14 +28,14 @@ interface MyInfoSectionProps {
   handleEditing: () => void;
 }
 export const MyInfoSection = ({ handleEditing }: MyInfoSectionProps) => {
-  const user = useAuthStore((state) => state.user);
+  const { data: me } = useMeQuery();
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
   const handleModify = useCallback(() => {
-    if (user !== null) setTempUser(user);
+    if (me) setTempUser(me);
     scrollTo(0, 0);
     handleEditing();
-  }, [handleEditing, setTempUser, user]);
+  }, [handleEditing, me, setTempUser]);
 
   return (
     <StyledSection>

@@ -28,18 +28,16 @@ const Background = styled.div`
 export const HeaderUserBlock = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-  const menuToggle = useCallback(() => {
-    setIsOpenMenu(!isOpenMenu);
-  }, [isOpenMenu]);
+  const toggleMenu = () => setIsOpenMenu((v) => !v);
 
   return (
     <FlexBlock>
-      <Icons icon={'bell'} width={28} height={35} />
-      <MenuBlock onClick={menuToggle}>
+      <Icons icon="bell" width={28} height={35} />
+      <MenuBlock onClick={toggleMenu}>
         <ProfileBlock size={45} />
-        <HeaderMenuModal isOpen={isOpenMenu} menuToggle={menuToggle} />
+        <HeaderMenuModal isOpen={isOpenMenu} toggleMenu={toggleMenu} />
       </MenuBlock>
-      {isOpenMenu && <Background onClick={menuToggle} />}
+      {isOpenMenu && <Background onClick={toggleMenu} />}
     </FlexBlock>
   );
 };

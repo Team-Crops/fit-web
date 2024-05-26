@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms';
 import { Icons } from '#/components/atoms/Icons';
+import { RecommendUserQueryOptions } from '#/hooks/use-recommend';
 import { useSkillsQuery } from '#/hooks/use-skills';
-import { useRecommendStore } from '#/stores/recommend';
 import { TechSelectBlock } from '../MyPage/TechSelectBlock';
 
 const TechSelectContainer = styled.div`
@@ -53,27 +53,15 @@ const TechBadge = styled(Txt)`
   border-radius: 33px;
 `;
 
-export const TechSelect = () => {
-  const { data: skills } = useSkillsQuery();
-  const recommendFilter = useRecommendStore((state) => state.recommendFilter);
-  const setRecommendFilter = useRecommendStore((state) => state.setRecommendFilter);
+interface TechSelectProps {
+  options: RecommendUserQueryOptions;
+  setOptions: Dispatch<SetStateAction<RecommendUserQueryOptions>>;
+}
+
+export const TechSelect = ({ options, setOptions }: TechSelectProps) => {
   const [openSelectBlock, setOpenSelectBlock] = useState(false);
 
-  const onChangeSkillList = useCallback(
-    (value: number) => {
-      if (recommendFilter === null) return;
-      if (recommendFilter.skillId === null)
-        setRecommendFilter({ ...recommendFilter, skillId: [value] });
-      else
-        setRecommendFilter({
-          ...recommendFilter,
-          skillId: recommendFilter.skillId?.includes(value)
-            ? recommendFilter.skillId.filter((id) => id !== value)
-            : [...recommendFilter.skillId, value],
-        });
-    },
-    [recommendFilter, setRecommendFilter]
-  );
+  const { data: skills } = useSkillsQuery();
 
   return (
     <TechSelectContainer>
@@ -82,21 +70,32 @@ export const TechSelect = () => {
           setOpenSelectBlock(!openSelectBlock);
         }}
       >
-        {recommendFilter.skillId &&
-          recommendFilter.skillId.map((skillId) => {
-            const skill = skills?.find((v) => v.id === skillId);
-            if (skill === undefined) return;
-            return (
-              <TechBadge key={skill.id} size={'typo6'} weight={'regular'} color="#FF706C">
-                {skill?.displayName}
-              </TechBadge>
-            );
-          })}
+        {options.skillIds?.map((id) => {
+          const skill = skills?.find((s) => s.id === id);
+          if (!skill) return null;
+          return (
+            <TechBadge key={skill.id} size={'typo6'} weight={'regular'} color="#FF706C">
+              {skill.displayName}
+            </TechBadge>
+          );
+        })}
         <ArrowIcon icon={'arrowDown'} width={12} height={12} />
       </TechSelectButton>
       {openSelectBlock && (
         <TechSelectWrapper>
-          <TechSelectBlock value={recommendFilter.skillId ?? []} onChange={onChangeSkillList} />
+          <TechSelectBlock
+            value={options.skillIds ?? []}
+            onTechClick={(skillId) => {
+              setOptions((options) => {
+                const skillIds = options.skillIds ?? [];
+                if (skillIds.includes(skillId)) {
+                  return { ...options, skillIds: skillIds.filter((id) => id !== skillId) };
+                } else {
+                  return { ...options, skillIds: [...skillIds, skillId] };
+                }
+              });
+            }}
+          />
         </TechSelectWrapper>
       )}
     </TechSelectContainer>

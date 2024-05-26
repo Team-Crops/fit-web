@@ -4,9 +4,8 @@ import styled from '@emotion/styled';
 
 import { useShallow } from 'zustand/react/shallow';
 
-import { useUserMutation } from '#/hooks/use-user';
-import { useAuthStore } from '#/stores/auth';
-import { User, SignUpStep } from '#/types';
+import { useMeMutation, useMeQuery } from '#/hooks/use-user';
+import { User, SignUpStep, Me } from '#/types';
 import { checkSignUpStep } from '#/utilities';
 import { PositionSelection } from './sign-up/PositionSelection';
 import { ProfileDetailsSubmission } from './sign-up/ProfileDetailsSubmission';
@@ -41,65 +40,56 @@ export const SignUpProfileUpdatePopup: React.FC<SignUpProfileUpdatePopupProps> =
   onCancel,
 }) => {
   const [canProceed, setCanProceed] = useState(false);
-  const [modifiedUser, setModifiedUser] = useState<User | null>(null);
+  const [modifiedMe, setModifiedMe] = useState<Me | null>(null);
 
-  const userModifyHandler = (updated: Partial<User>) =>
-    setModifiedUser((user) => user && { ...user, ...updated });
+  const userModifyHandler = (updated: Partial<Me>) =>
+    setModifiedMe((me) => me && { ...me, ...updated });
 
-  const { user, setUser } = useAuthStore(
-    useShallow(({ user, setUser }) => ({
-      user,
-      setUser,
-    }))
-  );
-
-  const { trigger: mutateUser, isMutating } = useUserMutation();
+  const { data: me, mutate: mutateCachedMe } = useMeQuery();
+  const { trigger: mutateUser, isMutating } = useMeMutation();
 
   const onNextClick = useMemo(
     () => async () => {
-      if (modifiedUser) {
-        const mutated = await mutateUser({ ...modifiedUser });
-        setUser(mutated);
+      if (modifiedMe) {
+        mutateCachedMe(await mutateUser({ ...modifiedMe }));
         onSuccess();
       }
     },
-    [modifiedUser, mutateUser, onSuccess, setUser]
+    [modifiedMe, mutateCachedMe, mutateUser, onSuccess]
   );
 
   const popupComponent = useMemo(() => {
-    if (modifiedUser) {
+    if (modifiedMe) {
       switch (step) {
         case SignUpStep.POSITION_SELECTION:
-          return <PositionSelection user={modifiedUser} onUserModified={userModifyHandler} />;
+          return <PositionSelection user={modifiedMe} onUserModified={userModifyHandler} />;
         case SignUpStep.PROFILE_DETAILS_SUBMISSION:
-          return (
-            <ProfileDetailsSubmission user={modifiedUser} onUserModified={userModifyHandler} />
-          );
+          return <ProfileDetailsSubmission user={modifiedMe} onUserModified={userModifyHandler} />;
         case SignUpStep.TIME_AVAILABILITY_SUBMISSION:
           return (
-            <TimeAvailabilitySubmission user={modifiedUser} onUserModified={userModifyHandler} />
+            <TimeAvailabilitySubmission user={modifiedMe} onUserModified={userModifyHandler} />
           );
         case SignUpStep.TOOL_AVAILABILITY_SUBMISSION:
           return (
-            <ToolAvailabilitySubmission user={modifiedUser} onUserModified={userModifyHandler} />
+            <ToolAvailabilitySubmission user={modifiedMe} onUserModified={userModifyHandler} />
           );
       }
     } else {
       return null;
     }
-  }, [modifiedUser, step]);
+  }, [modifiedMe, step]);
 
   useEffect(() => {
-    if (user) {
-      setModifiedUser(user);
+    if (me) {
+      setModifiedMe(me);
     }
-  }, [user]);
+  }, [me]);
 
   useEffect(() => {
-    if (modifiedUser) {
-      setCanProceed(checkSignUpStep(modifiedUser, true) > step);
+    if (modifiedMe) {
+      setCanProceed(checkSignUpStep(modifiedMe) > step);
     }
-  }, [modifiedUser, step]);
+  }, [modifiedMe, step]);
 
   return (
     <Container>

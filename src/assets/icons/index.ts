@@ -30,7 +30,7 @@ export { default as RunIcon } from './run.svg';
 export { default as Upload } from './upload.svg';
 export { default as UserIcon } from './user.svg';
 export { default as HeartIcon } from './heart.svg';
-export { default as HeartFillIcon } from './heart-fill.svg';
+export { default as HeartFilledIcon } from './heart-filled.svg';
 export { default as EmailIcon } from './email.svg';
 export { default as PhoneFillIcon } from './phone-fill.svg';
 export { default as FacebookIcon } from './facebook.svg';

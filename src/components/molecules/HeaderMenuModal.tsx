@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import { usePositionsQuery } from '#/hooks/use-positions';
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { Icons, Txt } from '../atoms';
 import { ProfileBlock } from '../organisms/ProfileBlock';
 
@@ -71,20 +71,17 @@ const LinkBlock = styled(Link)`
 `;
 interface HeaderMenuModalProps {
   isOpen: boolean;
-  menuToggle: () => void;
+  toggleMenu: () => void;
 }
-export const HeaderMenuModal = ({ isOpen, menuToggle }: HeaderMenuModalProps) => {
+export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) => {
   const { data: positions } = usePositionsQuery();
-  const userData = useAuthStore((store) => store.user);
-  const clear = useAuthStore((store) => store.clear);
+  const { data: me, mutate: mutateMe } = useMeQuery();
 
   const handleLogout = useCallback(() => {
-    clear();
-    menuToggle();
     localStorage.clear();
-    sessionStorage.clear();
-    location.href = '/';
-  }, [clear, menuToggle]);
+    mutateMe(undefined, false);
+    toggleMenu();
+  }, [mutateMe, toggleMenu]);
 
   if (!isOpen) return null;
   return (
@@ -98,23 +95,23 @@ export const HeaderMenuModal = ({ isOpen, menuToggle }: HeaderMenuModalProps) =>
         <SummaryBlock>
           <FlexBlock>
             <UserName size="typo5" weight="bold" color="#212121">
-              {userData?.nickname}
+              {me?.nickname}
             </UserName>
             <Position size={'typo6'} weight="regular" color="#FF706C">
-              {positions?.find((position) => position.id === userData?.positionId)?.displayName}
+              {positions?.find((position) => position.id === me?.positionId)?.displayName}
             </Position>
           </FlexBlock>
           <FlexBlock>
             <Icons icon={'email'} width={15} height={15} color="#757575" />
             <Txt size="typo6" weight="regular" color="#757575">
-              {userData?.email}
+              {me?.email}
             </Txt>
           </FlexBlock>
         </SummaryBlock>
       </TopBlock>
 
       <LinkListBlock>
-        <LinkBlock href={'/mypage'} onClick={menuToggle}>
+        <LinkBlock href={'/mypage'} onClick={toggleMenu}>
           <Icons icon={'userLine'} width={20} height={20} color="#FF706C" />
           <Txt size="typo6" weight="regular" color="#212121">
             마이페이지로 이동

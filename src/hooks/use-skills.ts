@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 
+import { Skill } from '#/types';
 import { Position } from '#/types/position';
 import { fitFetcher } from '#/utilities/fetch';
 
@@ -14,8 +15,10 @@ interface SkillsQueryResponse {
 }
 
 export function useSkillsQuery() {
-  const { data, ...others } = useSWR<SkillsQueryResponse>(SKILL_QUERY_KEY, fitFetcher, {});
-  return { data: data?.skillList, ...others };
+  return useSWR(SKILL_QUERY_KEY, async (url) => {
+    const response = await fitFetcher<SkillsQueryResponse>(url);
+    return response.skillList as Skill[];
+  });
 }
 
 interface PositionSkillsQueryResponse {
@@ -25,11 +28,9 @@ interface PositionSkillsQueryResponse {
   }[];
 }
 
-export function usePositionSkillsQuery(positionId: number | null) {
-  const { data, ...others } = useSWR<PositionSkillsQueryResponse>(
-    positionId ? POSITION_SKILLS_QUERY_KEY(positionId) : null,
-    fitFetcher,
-    {}
-  );
-  return { data: data?.skillList, ...others };
+export function usePositionSkillsQuery(positionId?: number | null) {
+  return useSWR(positionId ? POSITION_SKILLS_QUERY_KEY(positionId) : null, async (url) => {
+    const response = await fitFetcher<PositionSkillsQueryResponse>(url);
+    return response.skillList as Skill[];
+  });
 }
