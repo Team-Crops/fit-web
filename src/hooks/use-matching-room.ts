@@ -43,7 +43,7 @@ export function useMatchingRoomForceOutMutation(
 }
 
 export function useMatchingRoomCompleteMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation<null>(
+  return useSWRMutation(
     MATCHING_ROOM_COMPLETE_KEY(roomId),
     (url: string) => fitFetcher<null>(url, { method: 'POST' }),
     {
@@ -60,7 +60,7 @@ interface MatchingRoomCompleteMutationArg {
 }
 
 export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation<null>(
+  return useSWRMutation(
     MATCHING_ROOM_READY_KEY(roomId),
     (url: string, { arg: { isReady } }: { arg: MatchingRoomCompleteMutationArg }) => {
       return fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) });
@@ -74,7 +74,7 @@ export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
 }
 
 export function useMatchingRoomCancelMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation<null>(
+  return useSWRMutation(
     MATCHING_ROOM_CANCEL_KEY(roomId),
     (url: string) => fitFetcher<null>(url, { method: 'POST' }),
     {
