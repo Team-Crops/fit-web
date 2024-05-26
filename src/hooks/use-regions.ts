@@ -13,8 +13,14 @@ interface GetRegionsResponse {
 }
 
 export function useRegionsQuery() {
-  return useSWR(REGION_QUERY_KEY, async (url) => {
-    const response = await fitFetcher<GetRegionsResponse>(url);
-    return response.regionList as Region[];
-  });
+  return useSWR(
+    REGION_QUERY_KEY,
+    async (url) => {
+      const response = await fitFetcher<GetRegionsResponse>(url);
+      return response.regionList as Region[];
+    },
+    {
+      dedupingInterval: 1000 * 60 * 10,
+    }
+  );
 }
