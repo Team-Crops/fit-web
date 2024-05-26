@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { Temporal } from '@js-temporal/polyfill';
@@ -33,7 +33,7 @@ export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
             id: -1,
             userId: user.id,
             messageType: 'TEXT',
-            createdAt: new Date().toISOString(),
+            createdAt: Temporal.Now.zonedDateTimeISO('Asia/Seoul').toString(),
             content: message,
           });
           setMessage('');

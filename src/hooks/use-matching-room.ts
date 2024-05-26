@@ -33,17 +33,7 @@ export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
   return { data: matchingRoom, isLoading, error };
 }
 
-function mutateComplete(url: string) {
-  return fitFetcher(url, { method: 'POST' });
-}
-
-export function useMatchingRoomCompleteMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(MATCHING_ROOM_COMPLETE_KEY(roomId), mutateComplete, {
-    onSuccess: () => {
-      mutate(MATCHING_ROOM_COMPLETE_KEY(roomId));
-    },
-  });
-}
+export function useMatchingRoomCompleteMutation() {}
 
 export function useMatchingRoomForceOutMutation(
   roomId: MatchingRoom['id'],
