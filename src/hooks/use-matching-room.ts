@@ -33,8 +33,6 @@ export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
   return { data: matchingRoom, isLoading, error };
 }
 
-export function useMatchingRoomCompleteMutation() {}
-
 export function useMatchingRoomForceOutMutation(
   roomId: MatchingRoom['id'],
   userId?: User['id'] | null
@@ -44,22 +42,41 @@ export function useMatchingRoomForceOutMutation(
   );
 }
 
-function mutateReady(url: string, { arg: { isReady } }: { arg: { isReady: boolean } }) {
-  return fitFetcher(url, { method: 'POST', body: JSON.stringify({ isReady }) });
+export function useMatchingRoomCompleteMutation(roomId: MatchingRoom['id']) {
+  return useSWRMutation<null>(
+    MATCHING_ROOM_COMPLETE_KEY(roomId),
+    (url: string) => fitFetcher<null>(url, { method: 'POST' }),
+    {
+      onSuccess: () => {
+        mutate(MATCHING_QUERY_KEY);
+        mutate(MATCHING_ROOM_QUERY_KEY(roomId));
+      },
+    }
+  );
+}
+
+interface MatchingRoomCompleteMutationArg {
+  isReady: boolean;
 }
 
 export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(MATCHING_ROOM_READY_KEY(roomId), mutateReady, {
-    onSuccess: () => {
-      mutate(MATCHING_ROOM_QUERY_KEY(roomId));
+  return useSWRMutation<null>(
+    MATCHING_ROOM_READY_KEY(roomId),
+    (url: string, { arg: { isReady } }: { arg: MatchingRoomCompleteMutationArg }) => {
+      return fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) });
     },
-  });
+    {
+      onSuccess: () => {
+        mutate(MATCHING_ROOM_QUERY_KEY(roomId));
+      },
+    }
+  );
 }
 
 export function useMatchingRoomCancelMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(
+  return useSWRMutation<null>(
     MATCHING_ROOM_CANCEL_KEY(roomId),
-    (url, options) => fitFetcher(url, { ...options, method: 'POST' }),
+    (url: string) => fitFetcher<null>(url, { method: 'POST' }),
     {
       onSuccess: () => {
         mutate(MATCHING_QUERY_KEY);
