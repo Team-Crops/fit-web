@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { Input, Label, Txt } from '#/components/atoms';
 import { CareerSelect } from '#/components/molecules/CareerSelect';
-import { User, UserBackgroundStatus } from '#/types';
+import { Me, UserBackgroundStatus } from '#/types';
 import { isUserStudent, isUserWorker } from '#/utilities';
 
 const Container = styled.div`
@@ -32,9 +32,9 @@ const Row = styled.div`
 `;
 
 interface ProfileDetailsSubmissionProps {
-  user: User;
+  user: Me;
 
-  onUserModified: (updated: Partial<User>) => void;
+  onUserModified: (updated: Partial<Me>) => void;
 }
 
 export const ProfileDetailsSubmission: React.FC<ProfileDetailsSubmissionProps> = ({

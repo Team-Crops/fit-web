@@ -4,12 +4,13 @@ import styled from '@emotion/styled';
 
 import { Button } from '#/components/atoms';
 import { ChatRoom } from '#/components/organisms/ChatRoom';
+import { useMatchingQuery } from '#/hooks/use-matching';
 import {
   useMatchingRoomCancelMutation,
+  useMatchingRoomQuery,
   useMatchingRoomReadyMutation,
 } from '#/hooks/use-matching-room';
 import { useMeQuery } from '#/hooks/use-user';
-import { useMatching, useMatchingRoom } from '#/stores';
 import { MatchingRoom } from '#/types';
 
 interface MatchingChatRoomProps {
@@ -17,8 +18,8 @@ interface MatchingChatRoomProps {
 }
 
 export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
-  const { data: matching } = useMatching();
-  const { data: matchingRoom } = useMatchingRoom(matching?.id);
+  const { data: matching } = useMatchingQuery();
+  const { data: matchingRoom } = useMatchingRoomQuery(matching?.id);
 
   const { data: me } = useMeQuery();
 

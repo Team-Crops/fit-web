@@ -11,6 +11,7 @@
     }
   },
   "rules": {
+    "import/no-unused-modules": "error",
     "import/order": [
       "error",
       {

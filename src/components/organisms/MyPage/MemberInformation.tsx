@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 
 import { useMeQuery } from '#/hooks/use-user';
-import { careerTextToValue, checkStudent } from '#/utilities/career-text-value-match';
+import { isUserStudent } from '#/utilities';
+import { getBackgroundStatusText } from '#/utilities/user';
 import { CheckBox } from '#atoms/CheckBox';
 import { Txt } from '#atoms/Text';
 import { BasicInfo } from '#molecules/MyPage/BasicInfo';
@@ -51,7 +52,7 @@ export const MemberInformation = () => {
           {me.nickname}
         </BasicInfo>
         <BasicInfo title={'학력/경력'} titleWidth={97} type={'string'}>
-          {careerTextToValue(me.backgroundStatus)}
+          {getBackgroundStatusText(me.backgroundStatus)}
         </BasicInfo>
         <BasicInfo title={'전화번호'} titleWidth={97} type={'reactNode'}>
           <FlexBlock>
@@ -67,7 +68,7 @@ export const MemberInformation = () => {
           </FlexBlock>
         </BasicInfo>
         <BasicInfo
-          title={checkStudent(me.backgroundStatus) ? '학교명' : '회사명'}
+          title={me.backgroundStatus && isUserStudent(me.backgroundStatus) ? '학교명' : '회사명'}
           titleWidth={97}
           type={'string'}
         >

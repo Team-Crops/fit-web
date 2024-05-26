@@ -5,16 +5,14 @@ import {
 } from '#/types';
 
 export function isBackgroundStatus(status: string): status is UserBackgroundStatus {
-  return (
-    isUserStudent(status as UserBackgroundStatus) || isUserWorker(status as UserBackgroundStatus)
-  );
+  return isUserStudent(status) || isUserWorker(status);
 }
 
-export function isUserStudent(status: UserBackgroundStatus): status is UserBackgroundStatusStudent {
+export function isUserStudent(status: string): status is UserBackgroundStatusStudent {
   return Object.values(UserBackgroundStatusStudent).includes(status as UserBackgroundStatusStudent);
 }
 
-export function isUserWorker(status: UserBackgroundStatus): status is UserBackgroundStatusWorker {
+export function isUserWorker(status: string): status is UserBackgroundStatusWorker {
   return Object.values(UserBackgroundStatusWorker).includes(status as UserBackgroundStatusWorker);
 }
 

@@ -11,7 +11,7 @@ export const PortfolioEdit = () => {
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
-  const onChangeTechList = useCallback(
+  const onTechClick = useCallback(
     (skillId: number) => {
       if (tempUser === null) return;
       if (tempUser.skillIdList === null) setTempUser({ ...tempUser, skillIdList: [skillId] });
@@ -30,7 +30,7 @@ export const PortfolioEdit = () => {
     <MyInfoBlock title={'포트폴리오'}>
       <MyPageGridBlock>
         <BasicInfoEdit title={'사용 가능한 기술/툴'} titleWidth={300} direction="column" essential>
-          <TechSelectBlock value={tempUser?.skillIdList ?? []} onChange={onChangeTechList} />
+          <TechSelectBlock value={tempUser?.skillIdList ?? []} onTechClick={onTechClick} />
         </BasicInfoEdit>
         <BasicInfoEdit
           title={'포트폴리오'}
