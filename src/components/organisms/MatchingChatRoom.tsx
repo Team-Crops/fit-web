@@ -6,6 +6,7 @@ import { Button } from '#/components/atoms';
 import { ChatRoom } from '#/components/organisms/ChatRoom';
 import {
   useMatchingRoomCancelMutation,
+  useMatchingRoomCompleteMutation,
   useMatchingRoomReadyMutation,
 } from '#/hooks/use-matching-room';
 import { useAuthStore, useMatching, useMatchingRoom } from '#/stores';
@@ -21,12 +22,16 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
   const { data: matching } = useMatching();
   const { data: matchingRoom } = useMatchingRoom(matching?.id);
 
-  const isReady = useMemo(
-    () => matchingRoom?.matchingUsers.find((u) => u.id === userId)?.isReady,
-    [matchingRoom?.matchingUsers, userId]
-  );
+  const { isReady, isHost } = useMemo(() => {
+    const user = matchingRoom?.matchingUsers.find((u) => u.id === userId);
+    return {
+      isReady: user?.isReady,
+      isHost: user?.isHost,
+    };
+  }, [matchingRoom?.matchingUsers, userId]);
 
   const { trigger: readyMatching } = useMatchingRoomReadyMutation(matchingId);
+  const { trigger: completeMatching } = useMatchingRoomCompleteMutation(matchingId);
   const { trigger: cancelMatching } = useMatchingRoomCancelMutation(matchingId);
 
   return (
@@ -40,9 +45,9 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
           variant="round"
           height="70"
           color="primary"
-          onClick={() => readyMatching({ isReady: !isReady })}
+          onClick={() => (isHost ? completeMatching() : readyMatching({ isReady: !isReady }))}
         >
-          프로젝트 시작하기
+          프로젝트 {isHost ? '시작하기' : '준비하기'}
         </Button>
       </ButtonContainer>
     </Container>
