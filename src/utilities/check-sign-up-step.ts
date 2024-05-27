@@ -7,7 +7,7 @@ export function checkSignUpStep(me: Me, policyAgreed?: PolicyAgreement[]): SignU
     return SignUpStep.PROFILE_CREATION;
   } else if (!me.positionId) {
     return SignUpStep.POSITION_SELECTION;
-  } else if (!me.username || !me.email || !me.backgroundText || !me.backgroundStatus) {
+  } else if (!me.username || !me.email || !me.backgroundStatus) {
     return SignUpStep.PROFILE_DETAILS_SUBMISSION;
   } else if (me.projectCount === null || !me.regionId || !me.activityHour) {
     return SignUpStep.TIME_AVAILABILITY_SUBMISSION;
