@@ -1,15 +1,11 @@
-'use client';
-
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { throttle } from 'lodash';
-
+import { Loading } from '#/components/atoms';
 import { UserDataCard } from '#/components/organisms/TeamRecommend/UserDataCard';
 import { UserDetailModal } from '#/components/organisms/TeamRecommend/UserDetailModal';
-import { useRecommendUserQuery } from '#/hooks/use-recommend';
-import { useRecommendStore } from '#/stores/recommend';
+import { RecommendUser } from '#/types';
 
 const GridBlock = styled.div`
   display: grid;
@@ -20,65 +16,66 @@ const GridBlock = styled.div`
   margin: 0 auto 245px;
 `;
 
-export const UserCardList = () => {
-  const scrollBlockRef = useRef<HTMLDivElement>(null);
+interface UserCardListProps {
+  users: RecommendUser[];
+  isLoadingUsers: boolean;
+  hasNext: boolean;
+  queryTrigger: () => void;
+  mutateCachedLike: (
+    userId: number,
+    isLiked: boolean | Promise<boolean>,
+    optimisticIsLiked: boolean
+  ) => void;
+}
+
+export const UserCardList = ({
+  users,
+  isLoadingUsers,
+  hasNext,
+  queryTrigger,
+  mutateCachedLike,
+}: UserCardListProps) => {
+  const observerRef = useRef<HTMLDivElement>(null);
+
   const [detailUserId, setDetailUserId] = useState<number | null>(null);
-  const [page, setPage] = useState(0);
-  const [isFetching, setIsFetching] = useState(false);
-  const [isInit, setIsInit] = useState(true);
-  const currentFilter = useRecommendStore((state) => state.currentFilter);
-  const recommendUserList = useRecommendStore((state) => state.recommendUserList);
-  const setRecommendUserList = useRecommendStore((state) => state.setRecommendUserList);
-  const { trigger: getUser } = useRecommendUserQuery();
+  const [isObserved, setIsObserved] = useState(false);
 
-  const recommendUserHandler = useCallback(() => {
-    if (currentFilter === null) return;
-    setIsFetching(true);
-    getUser({ ...currentFilter, page }).then((data) => {
-      setRecommendUserList([...recommendUserList, ...data.recommendUserList]);
-      if (recommendUserList.length > page * 10) setPage((prevPage) => prevPage + 1);
-      setIsFetching(false);
+  useEffect(() => {
+    if (isObserved && hasNext && !isLoadingUsers) {
+      queryTrigger();
+    }
+  }, [hasNext, isLoadingUsers, isObserved, queryTrigger]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        setIsObserved(true);
+      } else {
+        setIsObserved(false);
+      }
     });
-  }, [currentFilter, getUser, page, setRecommendUserList, recommendUserList]);
-
-  const handleScroll = throttle(() => {
-    if (scrollBlockRef.current === null || isFetching) return;
-    if (
-      window.innerHeight + window.scrollY >=
-      scrollBlockRef.current.offsetHeight + scrollBlockRef.current.offsetTop
-    ) {
-      recommendUserHandler();
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
     }
-  }, 500);
-
-  const cardClickHandler = useCallback((userId: number) => {
-    setDetailUserId(userId);
-  }, []);
-  const detailModalCloseHandler = useCallback(() => {
-    setDetailUserId(null);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  useEffect(() => {
-    if (isInit) {
-      recommendUserHandler();
-      setIsInit(false);
-    }
-  }, [isInit, recommendUserHandler]);
+    return () => observer.disconnect();
+  }, [queryTrigger]);
 
   return (
-    <GridBlock ref={scrollBlockRef}>
-      {recommendUserList.map((user) => (
-        <UserDataCard key={user.userSummary.userId} userData={user} onClick={cardClickHandler} />
-      ))}
-
-      {detailUserId !== null && (
-        <UserDetailModal userId={detailUserId} isClose={detailModalCloseHandler} />
+    <>
+      {detailUserId && (
+        <UserDetailModal userId={detailUserId} onClose={() => setDetailUserId(null)} />
       )}
-    </GridBlock>
+      <GridBlock>
+        {users.map((user) => (
+          <UserDataCard
+            key={user.id}
+            user={user}
+            onClick={() => setDetailUserId(user.id)}
+            mutateCachedLike={mutateCachedLike}
+          />
+        ))}
+        {hasNext && <Loading ref={observerRef} />}
+      </GridBlock>
+    </>
   );
 };

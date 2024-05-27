@@ -1,5 +1,7 @@
 import { User } from '#/types';
 
+export const availableActivityHours: User['activityHour'][] = [3, 6, 12, 24];
+
 export const nullUser: User = {
   id: -1,
   projectCount: null,
@@ -7,9 +9,7 @@ export const nullUser: User = {
   introduce: null,
   portfolioUrl: null,
   backgroundText: null,
-  isOpenPhoneNum: null,
   linkList: null,
-  isOpenProfile: null,
   phoneNumber: null,
   positionId: null,
   regionId: null,
@@ -19,7 +19,6 @@ export const nullUser: User = {
   profileImageUrl: null,
   email: null,
   status: null,
-  username: null,
 };
 
 export const exampleUsers: User[] = [

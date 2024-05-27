@@ -3,9 +3,11 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
+import { getStorageUrl } from '#/utilities';
 import { Icons } from '#atoms/Icons';
+import { Loading } from '../atoms';
 
 const Block = styled.div<{ size: number }>`
   position: relative;
@@ -42,9 +44,11 @@ interface ProfileBlockProps {
   editable?: boolean;
 }
 export const ProfileBlock = ({ size, editable }: ProfileBlockProps) => {
-  const user = useAuthStore((state) => state.user);
-  const setTempImage = useTempAuthStore((state) => state.setTempProfileImage);
   const [imageBase64, setImageBase64] = useState<string | ArrayBuffer | null>(null);
+
+  const setTempImage = useTempAuthStore((state) => state.setTempProfileImage);
+
+  const { data: me } = useMeQuery();
 
   const handleTempImageChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,17 +66,28 @@ export const ProfileBlock = ({ size, editable }: ProfileBlockProps) => {
     [setTempImage]
   );
 
-  if (user === null) return;
+  if (!me) return <Loading />;
   return (
     <Block size={size}>
       {editable && imageBase64 ? (
-        <ProfileImage src={imageBase64.toString()} alt="profile" layout="fill" objectFit="cover" />
-      ) : user.profileImageUrl ? (
         <ProfileImage
-          src={process.env.NEXT_PUBLIC_S3_IMAGE_URL + user.profileImageUrl}
+          src={imageBase64.toString()}
           alt="profile"
-          layout="fill"
-          objectFit="cover"
+          width={size}
+          height={size}
+          style={{
+            objectFit: 'cover',
+          }}
+        />
+      ) : me.profileImageUrl ? (
+        <ProfileImage
+          src={getStorageUrl(me.profileImageUrl)}
+          alt="profile"
+          width={size}
+          height={size}
+          style={{
+            objectFit: 'cover',
+          }}
         />
       ) : (
         <Icons icon="account" width={size} height={size} style={{ zIndex: '10' }} />

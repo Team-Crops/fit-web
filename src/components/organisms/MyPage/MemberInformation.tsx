@@ -1,13 +1,8 @@
-import { useCallback, useState } from 'react';
-
 import styled from '@emotion/styled';
 
-import { useAuthStore } from '#/stores/auth';
-import {
-  careerTextToValue,
-  careerValueToText,
-  checkStudent,
-} from '#/utilities/career-text-value-match';
+import { useMeQuery } from '#/hooks/use-user';
+import { isUserStudent } from '#/utilities';
+import { getBackgroundStatusText } from '#/utilities/user';
 import { CheckBox } from '#atoms/CheckBox';
 import { Txt } from '#atoms/Text';
 import { BasicInfo } from '#molecules/MyPage/BasicInfo';
@@ -33,9 +28,9 @@ const Label = styled.label`
 `;
 
 export const MemberInformation = () => {
-  const userData = useAuthStore((state) => state.user);
+  const { data: me } = useMeQuery();
 
-  if (userData === null) return;
+  if (!me) return;
   return (
     <MyInfoBlock title={'회원정보'}>
       <Introduction>
@@ -43,29 +38,29 @@ export const MemberInformation = () => {
           나의 소개
         </Txt>
         <Txt size={'typo5'} weight={'medium'} color={'#212121'}>
-          {userData.introduce || '자신을 소개해주세요!'}
+          {me.introduce || '자신을 소개해주세요!'}
         </Txt>
       </Introduction>
       <MyPageGridBlock>
         <BasicInfo title={'이름'} titleWidth={97} type={'string'}>
-          {userData.username}
+          {me.username}
         </BasicInfo>
         <BasicInfo title={'이메일'} titleWidth={97} type={'string'}>
-          {userData.email}
+          {me.email}
         </BasicInfo>
         <BasicInfo title={'닉네임'} titleWidth={97} type={'string'}>
-          {userData.nickname}
+          {me.nickname}
         </BasicInfo>
         <BasicInfo title={'학력/경력'} titleWidth={97} type={'string'}>
-          {careerTextToValue(userData.backgroundStatus)}
+          {getBackgroundStatusText(me.backgroundStatus)}
         </BasicInfo>
         <BasicInfo title={'전화번호'} titleWidth={97} type={'reactNode'}>
           <FlexBlock>
             <Txt size={'typo5'} weight={'bold'} color={'#424242'} style={{ height: '24px' }}>
-              {userData.phoneNumber}
+              {me.phoneNumber}
             </Txt>
             <Label>
-              <CheckBox checked={userData.isOpenPhoneNum === true} />
+              <CheckBox checked={me.isOpenPhoneNum === true} />
               <Txt size={'typo5'} weight={'regular'} color={'#616161'}>
                 공개
               </Txt>
@@ -73,11 +68,11 @@ export const MemberInformation = () => {
           </FlexBlock>
         </BasicInfo>
         <BasicInfo
-          title={checkStudent(userData.backgroundStatus) ? '학교명' : '회사명'}
+          title={me.backgroundStatus && isUserStudent(me.backgroundStatus) ? '학교명' : '회사명'}
           titleWidth={97}
           type={'string'}
         >
-          {userData.backgroundText}
+          {me.backgroundText}
         </BasicInfo>
       </MyPageGridBlock>
     </MyInfoBlock>

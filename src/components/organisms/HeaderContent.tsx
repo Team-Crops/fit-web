@@ -1,11 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import { HeaderUserBlock } from '#/components/molecules/HeaderUserBlock';
-import { useAuthStore } from '#/stores/auth';
+import { AuthTokens } from '#/types';
 import { getTokens } from '#/utilities';
-import { useGetTokens } from '#/utilities/session';
 import { HeaderLoginBlock } from '#molecules/HeaderLoginBlock';
 import { HeaderLogo } from '#molecules/HeaderLogo';
 import { HeaderNav } from '#molecules/HeaderNav';
@@ -21,7 +22,11 @@ const ContentBlock = styled.div`
 `;
 
 export const HeaderContent = () => {
-  const tokens = useGetTokens();
+  const [tokens, setTokens] = useState<AuthTokens | null>(null);
+
+  useEffect(() => {
+    setTokens(getTokens());
+  }, []);
 
   return (
     <ContentBlock>

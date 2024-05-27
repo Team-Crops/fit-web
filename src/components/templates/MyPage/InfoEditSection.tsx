@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-import { uploadImageToS3, usePreSignedUrl } from '#/hooks/use-file';
-import { useUserMutation } from '#/hooks/use-user';
-import { useAuthStore } from '#/stores/auth';
+import { usePresignedUrlLazyQuery } from '#/hooks/use-file';
+import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
+import { uploadFile } from '#/utilities/storage';
 import { Button } from '#atoms/Button';
 import { ActivityEdit } from '#organisms/MyPage/ActivityEdit';
 import { MemberInfoEdit } from '#organisms/MyPage/MemberInfoEdit';
@@ -28,44 +28,44 @@ interface InfoEditSectionProps {
 }
 
 export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
-  const user = useAuthStore((state) => state.user);
-  const setUser = useAuthStore((state) => state.setUser);
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const tempImage = useTempAuthStore((state) => state.tempProfileImage);
   const tempPortfolioFile = useTempAuthStore((state) => state.tempPortfolioFile);
   const initTempAuth = useTempAuthStore((state) => state.initTempAuth);
-  const { trigger: mutateUser } = useUserMutation();
-  const { trigger: mutatePreSignedUrl } = usePreSignedUrl();
+
+  const { data: me, mutate: mutateCachedMe } = useMeQuery();
+  const { trigger: mutatePreSignedUrl } = usePresignedUrlLazyQuery();
+  const { trigger: mutateUser } = useMeMutation();
 
   const submitModifyHandler = async () => {
-    let profileImageUrl = user?.profileImageUrl;
+    let profileImageUrl = me?.profileImageUrl;
     let portfolioUrl: string = '';
     if (tempImage !== null) {
       const registerImage = await mutatePreSignedUrl({
         fileName: tempImage.name,
         fileDomain: 'PROFILE_IMAGE',
       });
-      await uploadImageToS3(registerImage.preSignedUrl, tempImage);
+      await uploadFile({ preSignedUrl: registerImage.preSignedUrl, file: tempImage });
       profileImageUrl = registerImage.fileKey;
     }
-    if (user?.portfolioUrl !== null && tempPortfolioFile === null) {
+    if (me?.portfolioUrl !== null && tempPortfolioFile === null) {
       portfolioUrl = '';
     } else if (tempPortfolioFile !== null) {
       const registerPortfolio = await mutatePreSignedUrl({
         fileName: tempPortfolioFile.name,
         fileDomain: 'PORTFOLIO',
       });
-      await uploadImageToS3(registerPortfolio.preSignedUrl, tempPortfolioFile);
+      await uploadFile({ preSignedUrl: registerPortfolio.preSignedUrl, file: tempPortfolioFile });
       portfolioUrl = registerPortfolio.fileKey;
     }
 
-    const mutated = await mutateUser({
-      ...tempUser,
-      profileImageUrl: profileImageUrl,
-      portfolioUrl: '',
-    });
-    console.log(mutated);
-    setUser(mutated);
+    mutateCachedMe(
+      await mutateUser({
+        ...tempUser,
+        profileImageUrl: profileImageUrl,
+        portfolioUrl: '',
+      })
+    );
     initTempAuth();
     handleEditing();
   };

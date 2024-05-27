@@ -34,7 +34,7 @@ import {
   Upload,
   UserIcon,
   HeartIcon,
-  HeartFillIcon,
+  HeartFilledIcon,
   EmailIcon,
   PhoneFillIcon,
   GithubIcon,
@@ -73,7 +73,7 @@ export type IconName =
   | 'google'
   | 'github'
   | 'heart'
-  | 'heartFill'
+  | 'heartFilled'
   | 'image'
   | 'info'
   | 'instagram'
@@ -210,8 +210,8 @@ const icons: Record<IconName, Icon> = {
     SVGR: HeartIcon,
     color: '#E0E0E0',
   },
-  heartFill: {
-    SVGR: HeartFillIcon,
+  heartFilled: {
+    SVGR: HeartFilledIcon,
     color: '#FF706C',
   },
   image: {

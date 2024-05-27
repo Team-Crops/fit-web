@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
@@ -62,10 +62,12 @@ interface ProfileSectionProps {
 }
 
 export const ProfileSection = ({ isEditing }: ProfileSectionProps) => {
-  const user = useAuthStore((state) => state.user);
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
+
   const [isHoverTooltip, setIsHoverTooltip] = useState(false);
+
+  const { data: me } = useMeQuery();
 
   const handleTooltip = () => {
     setIsHoverTooltip((prev) => !prev);
@@ -104,7 +106,7 @@ export const ProfileSection = ({ isEditing }: ProfileSectionProps) => {
         </ExposeProfile>
       ) : (
         <CurrentState size={'typo5'} weight={'bold'} color="#BDBDBD">
-          현재 내 프로필은 <HighLight>{user?.isOpenProfile ? '공개상태' : '비공개상태'}</HighLight>
+          현재 내 프로필은 <HighLight>{me?.isOpenProfile ? '공개상태' : '비공개상태'}</HighLight>
           입니다
         </CurrentState>
       )}

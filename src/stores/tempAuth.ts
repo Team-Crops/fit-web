@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
-import { User } from '#/types';
+import { Me } from '#/types';
 
 interface TempAuthState {
-  tempUser: User | null;
+  tempUser: Me | null;
   tempProfileImage: File | null;
   tempPortfolioFile: File | null;
 }
 
 interface TempAuthAction {
-  setTempUser: (user: User) => void;
+  setTempUser: (user: Me) => void;
   setTempProfileImage: (image: File) => void;
   setTempPortfolioFile: (file: File | null) => void;
   initTempAuth: () => void;

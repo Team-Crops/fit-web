@@ -25,21 +25,25 @@ export interface User {
   id: number;
 
   projectCount: number | null;
-  activityHour: number | null;
+  activityHour: 3 | 6 | 12 | 24 | null;
   introduce: string | null;
   portfolioUrl: string | null;
-  backgroundText: string | null;
-  isOpenPhoneNum: boolean | null;
-  linkList: Link[] | null;
-  isOpenProfile: boolean | null;
   phoneNumber: string | null;
   positionId: number | null;
   regionId: number | null;
   backgroundStatus: UserBackgroundStatus | null;
+  backgroundText: string | null;
   nickname: string | null;
   skillIdList: number[] | null;
   profileImageUrl: string | null;
   email: string | null;
   status: string | null;
+  linkList: Link[] | null;
+  isLiked?: boolean;
+}
+
+export interface Me extends Omit<User, 'isLiked'> {
   username: string | null;
+  isOpenPhoneNum: boolean | null;
+  isOpenProfile: boolean | null;
 }

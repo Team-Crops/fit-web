@@ -4,8 +4,9 @@ import { Icons } from '#/components/atoms/Icons';
 import { Label } from '#/components/atoms/Label';
 import { Select } from '#/components/atoms/Select';
 import { Txt } from '#/components/atoms/Text';
+import { availableActivityHours } from '#/entities/user';
 import { useRegionsQuery } from '#/hooks/use-regions';
-import { User } from '#/types';
+import { Me } from '#/types';
 
 const Container = styled.div`
   display: flex;
@@ -28,9 +29,9 @@ const SubmissionsContainer = styled.div`
 `;
 
 interface TimeAvailabilitySubmissionProps {
-  user: User;
+  user: Me;
 
-  onUserModified: (modified: Partial<User>) => void;
+  onUserModified: (modified: Partial<Me>) => void;
 }
 
 export const TimeAvailabilitySubmission: React.FC<TimeAvailabilitySubmissionProps> = ({
@@ -79,14 +80,19 @@ export const TimeAvailabilitySubmission: React.FC<TimeAvailabilitySubmissionProp
         <Label text="활동 가능 시간">
           <Select
             width="100%"
-            value={user.activityHour ?? 0}
-            onChange={(e) => onUserModified({ activityHour: parseInt(e.target.value, 10) })}
+            value={user.activityHour ?? undefined}
+            onChange={(e) =>
+              onUserModified({ activityHour: parseInt(e.target.value, 10) as Me['activityHour'] })
+            }
           >
-            {[3, 6, 12, 24].map((n) => (
-              <Select.Option key={n} value={n}>
-                {n}시간
-              </Select.Option>
-            ))}
+            {availableActivityHours.map(
+              (n) =>
+                n && (
+                  <Select.Option key={n} value={n}>
+                    {n}시간
+                  </Select.Option>
+                )
+            )}
           </Select>
         </Label>
       </SubmissionsContainer>

@@ -1,75 +1,66 @@
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
 import { policies } from '#/entities';
 import { PolicyAgreement, PolicyType } from '#/types';
-import { fitFetch, fitFetcher } from '#/utilities/fetch';
+import { fitFetcher } from '#/utilities/fetch';
 
 const AGREEMENTS_QUERY_KEY = '/v1/user/policy-agreement';
 const AGREEMENTS_MUTATION_KEY = '/v1/user/policy-agreement';
 
 export interface PolicyAgreesQueryResponse {
-  policyAgreementList: PolicyAgreement[];
+  policyAgreementList: {
+    policyType: string;
+    version: string;
+    isAgree: boolean;
+  }[];
 }
 
 export function usePolicyAgreesQuery() {
-  const { data, ...others } = useSWR<PolicyAgreesQueryResponse>(AGREEMENTS_QUERY_KEY, fitFetcher, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
+  return useSWR(AGREEMENTS_QUERY_KEY, async (url) => {
+    const response = await fitFetcher<PolicyAgreesQueryResponse>(url);
+    return response.policyAgreementList.map((p) => ({
+      type: p.policyType,
+      version: p.version,
+      isAgreed: p.isAgree,
+    })) as PolicyAgreement[];
   });
-  return {
-    data: data?.policyAgreementList,
-    ...others,
-  };
 }
 
-type PolicyAgreesMutationArgs =
-  | {
-      type: PolicyType;
-      isAgree: boolean;
-    }
-  | {
-      type: PolicyType;
-      isAgree: boolean;
-    }[];
+type PolicyAgreeArg = {
+  type: PolicyType;
+  isAgreed: boolean;
+};
 
 interface PolicyAgreesMutationResponse {
-  policyAgreementList: PolicyAgreement[];
-}
-
-async function sendPolicyAgreesMutationRequest(
-  url: string,
-  { arg }: { arg: PolicyAgreesMutationArgs }
-) {
-  const response = await fitFetch(url, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      policyAgreementList: Array.isArray(arg)
-        ? arg.map((agree) => ({
-            policyType: agree.type,
-            isAgree: agree.isAgree,
-            version: policies[agree.type].version,
-          }))
-        : [{ policyType: arg.type, isAgree: arg.isAgree, version: policies[arg.type].version }],
-    }),
-  });
-  const json = await response.json();
-  return json as PolicyAgreesMutationResponse;
+  policyAgreementList: {
+    policyType: string;
+    version: string;
+    isAgree: boolean;
+  }[];
 }
 
 export function usePolicyAgreesMutation() {
-  const { data, ...others } = useSWRMutation(
+  return useSWRMutation(
     AGREEMENTS_MUTATION_KEY,
-    sendPolicyAgreesMutationRequest,
-    {
-      onSuccess: (data) => mutate(AGREEMENTS_QUERY_KEY, data.policyAgreementList),
+    async (url, { arg }: { arg: PolicyAgreeArg | PolicyAgreeArg[] }) => {
+      const agrees = Array.isArray(arg) ? arg : [arg];
+      const json = await fitFetcher<PolicyAgreesMutationResponse>(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          policyAgreementList: agrees.map((agree) => ({
+            policyType: agree.type,
+            isAgree: agree.isAgreed,
+            version: policies[agree.type].version,
+          })),
+        }),
+      });
+      return json.policyAgreementList.map((p) => ({
+        type: p.policyType,
+        version: p.version,
+        isAgreed: p.isAgree,
+      })) as PolicyAgreement[];
     }
   );
-  return {
-    data: data?.policyAgreementList,
-    ...others,
-  };
 }

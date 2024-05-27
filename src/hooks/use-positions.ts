@@ -18,11 +18,14 @@ interface PositionsQueryResponse {
 }
 
 export function usePositionsQuery() {
-  return useSWR<Position[]>(
+  return useSWR(
     POSITIONS_QUERY_KEY,
-    async (...params: Parameters<typeof fitFetcher>) => {
-      const json: PositionsQueryResponse = await fitFetcher(...params);
-      return json.positionList;
+    async (url) => {
+      const json = await fitFetcher<PositionsQueryResponse>(url);
+      return json.positionList as Position[];
+    },
+    {
+      dedupingInterval: 1000 * 60 * 10,
     }
   );
 }

@@ -3,9 +3,9 @@ type Nested<T> = T | Nested<T>[];
 export type PolicyType = 'SERVICE_POLICY' | 'PRIVACY_POLICY';
 
 export interface PolicyAgreement {
-  policyType: PolicyType;
+  type: PolicyType;
   version: string;
-  isAgree: boolean;
+  isAgreed: boolean;
 }
 
 export interface Policy {

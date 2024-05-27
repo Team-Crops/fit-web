@@ -5,7 +5,8 @@ import { useSearchParams, useRouter, notFound } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
-import { useAuthStore } from '#/stores/auth';
+import { mutate } from 'swr';
+
 import { AuthTokens } from '#/types/auth-tokens';
 import { SocialPlatform } from '#/types/social-platform';
 import { fitFetch } from '#/utilities/fetch';
@@ -37,8 +38,6 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
-  const setStoreTokens = useAuthStore((store) => store.setTokens);
-
   if (!code) {
     notFound();
   }
@@ -48,12 +47,12 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
       if (code) {
         const tokens = await acquireTokens({ platform, code });
         setStorageTokens(tokens);
-        setStoreTokens(tokens);
+        mutate(() => true, undefined, { revalidate: false });
         router.replace('/');
       }
     }
     loadTokens();
-  }, [code, platform, router, setStoreTokens]);
+  }, [code, platform, router]);
 
   return (
     <Container>

@@ -5,8 +5,7 @@ import styled from '@emotion/styled';
 
 import { useShallow } from 'zustand/react/shallow';
 
-import { useUserMutation } from '#/hooks/use-user';
-import { useAuthStore } from '#/stores/auth';
+import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { Toggle } from '#atoms/Toggle';
@@ -115,15 +114,8 @@ interface SignUpCompletePopupProps {
 export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCancel }) => {
   const [showProfileVisibilityTooltip, setShowProfileVisibilityTooltip] = useState(false);
 
-  const { user, setUser } = useAuthStore(useShallow(({ user, setUser }) => ({ user, setUser })));
-
-  const { data: mutatedUser, trigger: mutateUser, isMutating: isMutatingUser } = useUserMutation();
-
-  useEffect(() => {
-    if (mutatedUser) {
-      setUser({ ...mutatedUser });
-    }
-  }, [mutatedUser, setUser]);
+  const { data: me, mutate: mutateCachedMe } = useMeQuery();
+  const { trigger: mutateMe, isMutating: isMutatingUser } = useMeMutation();
 
   return (
     <Container>
@@ -144,9 +136,11 @@ export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCanc
           내 프로필 공개
         </Txt>
         <Toggle
-          checked={!!user?.isOpenProfile}
+          checked={!!me?.isOpenProfile}
           disabled={isMutatingUser}
-          onChange={(e) => mutateUser({ isOpenProfile: e.target.checked })}
+          onChange={async (e) =>
+            mutateCachedMe(await mutateMe({ isOpenProfile: e.target.checked }))
+          }
         />
       </ProfileVisibilityToggleContainer>
 

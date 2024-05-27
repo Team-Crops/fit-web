@@ -1,45 +1,32 @@
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
-import { User, UserBackgroundStatus } from '#/types/user';
-import { fitFetch, fitFetcher } from '#/utilities/fetch';
-import { RecommendUser } from './use-recommend';
+import { ApiError, Me, User } from '#/types';
+import { fitFetcher } from '#/utilities';
 
-export const USER_QUERY_KEY = '/v1/user';
-const USER_MUTATE_KEY = '/v1/user';
+export const ME_QUERY_KEY = '/v1/user';
+const ME_MUTATION_KEY = '/v1/user';
+export const USER_QUERY_KEY = (id: User['id']) => `/v1/user/${id}`;
 
-interface UserQueryResponse extends User {}
+export function useMeQuery() {
+  return useSWR<Me, ApiError>(ME_QUERY_KEY, fitFetcher, { dedupingInterval: 1000 * 60 * 10 });
+}
 
-export function useUserQuery() {
-  return useSWR<UserQueryResponse>(USER_QUERY_KEY, fitFetcher, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
+interface MeMutationArg extends Partial<Omit<Me, 'id' | 'status'>> {}
+
+export function useMeMutation() {
+  return useSWRMutation(ME_MUTATION_KEY, async (url: string, { arg }: { arg: MeMutationArg }) => {
+    const nullSafedArg = Object.fromEntries(
+      Object.entries(arg).filter(([, value]) => value !== null)
+    );
+    return await fitFetcher<Me>(url, {
+      method: 'PATCH',
+      body: JSON.stringify(nullSafedArg),
+    });
   });
 }
 
-interface UserMutationArgs extends Partial<Omit<User, 'id' | 'status'>> {}
-interface UserMutationResponse extends User {}
-
-async function sendUserMutationRequest(url: string, { arg }: { arg: UserMutationArgs }) {
-  const nullSafedArg = Object.fromEntries(
-    Object.entries(arg).filter(([, value]) => value !== null)
-  );
-  const response = await fitFetch(url, { method: 'PATCH', body: JSON.stringify(nullSafedArg) });
-  const json = await response.json();
-  return json as UserMutationResponse;
-}
-
-export function useUserMutation() {
-  return useSWRMutation<User, any, typeof USER_MUTATE_KEY, UserMutationArgs>(
-    USER_MUTATE_KEY,
-    sendUserMutationRequest,
-    {
-      onSuccess: (data) => mutate<User>(USER_QUERY_KEY, data),
-    }
-  );
-}
-
-export interface UserIdResponse {
+export interface UserResponse {
   isLiked: boolean;
   userProfile: {
     id: number;
@@ -50,20 +37,23 @@ export interface UserIdResponse {
     phoneNumber: string | null;
     positionId: number | null;
     regionId: number | null;
-    backgroundStatus: UserBackgroundStatus | null;
+    backgroundStatus: string | null;
+    backgroundText: string | null;
     nickname: string | null;
     skillIdList: number[] | null;
     profileImageUrl: string | null;
     email: string | null;
     status: string | null;
-    education: string | null;
     linkList: { linkUrl: string; linkType: string }[] | null;
   };
 }
 
-export function useUserUserIdQuery(userId: number) {
-  return useSWR<UserIdResponse>(`${USER_QUERY_KEY}/${userId}`, fitFetcher, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
+export function useUserQuery(id: User['id']) {
+  return useSWR(USER_QUERY_KEY(id), async (url) => {
+    const response = await fitFetcher<UserResponse>(url);
+    return {
+      isLiked: response.isLiked,
+      ...response.userProfile,
+    } as User;
   });
 }

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { useAuthStore } from '#/stores/auth';
+import { useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
@@ -64,11 +64,13 @@ interface PortfolioFileBlockProps {
 }
 
 export const PortfolioFileBlock: React.FC<PortfolioFileBlockProps> = ({ isEdit }) => {
-  const user = useAuthStore((state) => state.user);
+  const [haveFile, setHaveFile] = useState<boolean>(false);
+
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const setTempPortfolioFile = useTempAuthStore((state) => state.setTempPortfolioFile);
   // 파일이 있는지 없는지 boolean useState 만들어줘
-  const [haveFile, setHaveFile] = useState<boolean>(false);
+
+  const { data: user } = useMeQuery();
 
   const handleTempPortfolioFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

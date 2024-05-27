@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
+import { getStorageUrl } from '#/utilities';
 import { Icons } from './Icons';
 
 const ProfileImage = styled(Image)<{ width: number; height: number }>`
@@ -30,13 +31,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
 
   if (imageUrl) {
     return (
-      <ProfileImage
-        src={process.env.NEXT_PUBLIC_S3_IMAGE_URL + imageUrl}
-        alt={alt}
-        width={size}
-        height={size}
-        {...props}
-      />
+      <ProfileImage src={getStorageUrl(imageUrl)} alt={alt} width={size} height={size} {...props} />
     );
   }
 

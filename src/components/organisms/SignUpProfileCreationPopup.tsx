@@ -5,15 +5,11 @@ import styled from '@emotion/styled';
 
 import { useShallow } from 'zustand/react/shallow';
 
-import { uploadImageToS3 } from '#/hooks/use-file';
+import { Button, Icons, Input, Txt } from '#/components/atoms';
 import { usePresignedUrlQuery } from '#/hooks/use-presigned-url';
-import { useUserMutation } from '#/hooks/use-user';
-import { useAuthStore } from '#/stores/auth';
-import { User } from '#/types/user';
-import { Button } from '../atoms/Button';
-import { Icons } from '../atoms/Icons';
-import { Input } from '../atoms/Input';
-import { Txt } from '../atoms/Text';
+import { useMeMutation, useMeQuery } from '#/hooks/use-user';
+import { User } from '#/types';
+import { getStorageUrl, uploadFile } from '#/utilities/storage';
 
 const Container = styled.div`
   overflow: hidden;
@@ -76,9 +72,9 @@ export const SignUpProfileCreationPopup: React.FC<SignUpProfileCreationPopupProp
   const [nickname, setNickname] = useState<string>('');
   const [canSubmit, setCanSubmit] = useState(false);
 
-  const { user, setUser } = useAuthStore(useShallow(({ user, setUser }) => ({ user, setUser })));
+  const { data: me, mutate: mutateCachedMe } = useMeQuery();
 
-  const { trigger: mutateUser, isMutating: isMutatingUser } = useUserMutation();
+  const { trigger: mutateUser, isMutating: isMutatingUser } = useMeMutation();
   const { trigger: getPresignedUrl } = usePresignedUrlQuery();
 
   const handleImageChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -101,22 +97,20 @@ export const SignUpProfileCreationPopup: React.FC<SignUpProfileCreationPopupProp
         fileDomain: 'PROFILE_IMAGE',
         fileName: imageFile.name,
       });
-      await uploadImageToS3(preSignedUrl, imageFile);
+      await uploadFile({ preSignedUrl, file: imageFile });
       userInfo.profileImageUrl = fileKey;
     }
-    setUser(await mutateUser(userInfo));
+    mutateCachedMe(await mutateUser(userInfo));
     return onSuccess();
-  }, [getPresignedUrl, mutateUser, nickname, onSuccess, setUser]);
+  }, [getPresignedUrl, mutateCachedMe, mutateUser, nickname, onSuccess]);
 
   useEffect(() => {
-    setPreviewImage(
-      user?.profileImageUrl ? process.env.NEXT_PUBLIC_S3_IMAGE_URL + user?.profileImageUrl : null
-    );
-  }, [user?.profileImageUrl]);
+    setPreviewImage(getStorageUrl(me?.profileImageUrl));
+  }, [me?.profileImageUrl]);
 
   useEffect(() => {
-    setNickname(user?.nickname ?? '');
-  }, [user?.nickname]);
+    setNickname(me?.nickname ?? '');
+  }, [me?.nickname]);
 
   useEffect(() => {
     setCanSubmit(!!nickname);

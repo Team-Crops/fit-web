@@ -1,19 +1,19 @@
-import { Fragment, MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
-import { lowerCase, upperCase } from 'lodash';
-
-import { Icons } from '#/components/atoms/Icons';
+import { Loading } from '#/components/atoms';
+import { IconName, Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
 import { UserProfile } from '#/components/atoms/UserProfile';
 import { DataBlock } from '#/components/molecules/TeamRecommend/DataBlock';
 import { usePositionsQuery } from '#/hooks/use-positions';
-import { useRecommendLikeUserQuery } from '#/hooks/use-recommend';
+import { useRecommendLikeUserMutation } from '#/hooks/use-recommend';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
-import { UserIdResponse, useUserUserIdQuery } from '#/hooks/use-user';
-import { careerTextToValue } from '#/utilities/career-text-value-match';
+import { useUserQuery } from '#/hooks/use-user';
+import { User } from '#/types';
+import { getBackgroundStatusText } from '#/utilities/user';
 
 const Background = styled.div`
   position: fixed;
@@ -124,126 +124,108 @@ const RowBlock = styled.div`
 `;
 
 interface UserDetailModalProps {
-  userId: number;
-  isClose: () => void;
+  userId: User['id'];
+  onClose: () => void;
 }
-export const UserDetailModal = ({ userId, isClose }: UserDetailModalProps) => {
-  const [userData, setUserData] = useState<UserIdResponse | undefined>(undefined);
-  console.log(userData);
+export const UserDetailModal = ({ userId, onClose }: UserDetailModalProps) => {
+  const { data: user, mutate: mutateCachedUser } = useUserQuery(userId);
   const { data: positions } = usePositionsQuery();
   const { data: skills } = useSkillsQuery();
   const { data: regions } = useRegionsQuery();
-  const { trigger: likeTrigger } = useRecommendLikeUserQuery();
-  const { mutate: getUserData } = useUserUserIdQuery(userId);
-  const positionName = useMemo(() => {
-    const position = positions?.find((v) => v.id === userData?.userProfile.positionId);
-    return position?.displayName;
-  }, [positions, userData?.userProfile.positionId]);
+  const { trigger: likeUser } = useRecommendLikeUserMutation();
 
-  const onClickLike: MouseEventHandler = useCallback(
-    (e) => {
-      likeTrigger({
-        userId: userData?.userProfile.id ?? 0,
-        like: !userData?.isLiked,
-      });
-      setUserData((prev) => {
-        if (prev === undefined) return prev;
-        return {
-          ...prev,
-          isLiked: !prev.isLiked,
-        };
-      });
-    },
-    [likeTrigger, userData?.isLiked, userData?.userProfile.id]
+  const positionName = useMemo(
+    () => positions?.find((p) => p.id === user?.positionId)?.displayName,
+    [positions, user?.positionId]
   );
 
-  useEffect(() => {
-    async function fetchData() {
-      const data = await getUserData();
-      setUserData(data);
-    }
-    fetchData();
-  }, [getUserData]);
+  const onLikeClick: React.MouseEventHandler = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (user) {
+        mutateCachedUser(
+          async () => ({
+            ...user,
+            isLiked: await likeUser({ userId: user.id, like: !user?.isLiked }),
+          }),
+          { optimisticData: (user) => ({ ...user!, isLiked: !user?.isLiked }) }
+        );
+      }
+    },
+    [likeUser, mutateCachedUser, user]
+  );
 
-  if (userData === undefined) return null;
+  if (!user) return <Loading />;
   return (
-    <Background onClick={isClose}>
+    <Background onClick={onClose}>
       <UserDetailBlock
         onClick={(e) => {
-          e.stopPropagation();
+          // e.stopPropagation();
         }}
       >
-        <CancelButton icon={'cross'} width={22} height={22} color="#BDBDBD" onClick={isClose} />
+        <CancelButton icon={'cross'} width={22} height={22} color="#BDBDBD" onClick={onClose} />
         <LikeButton
-          icon={userData?.isLiked ? 'heartFill' : 'heart'}
+          icon={user?.isLiked ? 'heartFilled' : 'heart'}
           width={39}
           height={39}
-          onClick={onClickLike}
+          onClick={onLikeClick}
         />
         <TopBlock>
-          <UserProfile size={164} imageUrl={userData.userProfile.profileImageUrl} />
+          <UserProfile size={164} imageUrl={user.profileImageUrl} />
           <SummaryBlock>
             <FlexBlock>
               <NickName size="typo1" weight="bold" color="#212121">
-                {userData.userProfile.nickname}
+                {user.nickname}
               </NickName>
               <Position size={'typo5'} weight="regular" color="#FF706C">
                 {positionName}
               </Position>
             </FlexBlock>
             <Introduction size="typo5" weight="medium" color="#616161">
-              {userData.userProfile.introduce}
+              {user.introduce}
             </Introduction>
           </SummaryBlock>
         </TopBlock>
         <DataContainer>
           <DataBlock
             title={'사용가능한 기술/툴'}
-            content={userData.userProfile.skillIdList?.map((skillId, index) => {
-              const skill = skills?.find((skill) => skill.id === skillId);
-              return (
-                <Fragment key={skillId}>
-                  {skill?.displayName}
-                  {index !== (userData.userProfile.skillIdList ?? []).length - 1 && ', '}
-                </Fragment>
-              );
-            })}
+            content={user.skillIdList?.map(
+              (id) => skills?.find((skill) => skill.id === id)?.displayName
+            )}
           />
-          <DataBlock
-            title={'학력/경력'}
-            content={careerTextToValue(userData.userProfile.backgroundStatus)}
-          />
-          <DataBlock title={'학교명'} content={userData.userProfile.education} />
+          <DataBlock title={'학력/경력'} content={getBackgroundStatusText(user.backgroundStatus)} />
+          <DataBlock title={'학교명'} content={user.backgroundText} />
           <DataBlock
             title={'프로젝트 경험 수'}
             content={
-              userData.userProfile.projectCount === 0
+              user.projectCount === 0
                 ? '없음'
-                : userData.userProfile.projectCount === 3
-                  ? `${userData.userProfile.projectCount}회 이상`
-                  : `${userData.userProfile.projectCount}회`
+                : user.projectCount === 3
+                  ? `${user.projectCount}회 이상`
+                  : `${user.projectCount}회`
             }
           />
           <DataBlock
             title={'주 활동지역'}
-            content={regions?.find((v) => v.id === userData.userProfile.regionId)?.displayName}
+            content={regions?.find((v) => v.id === user.regionId)?.displayName}
           />
-          <DataBlock
-            title={'활동 가능 시간'}
-            content={(userData.userProfile.activityHour ?? '-') + '시간'}
-          />
+          <DataBlock title={'활동 가능 시간'} content={(user.activityHour ?? '-') + '시간'} />
           <DataBlock
             title={'포트폴리오'}
             content={
               <>
                 <RowBlock>
                   <Icons icon={'clipBold'} width={14} height={14} color="#424242" />
-                  {userData.userProfile.portfolioUrl}
+                  {user.portfolioUrl}
                 </RowBlock>
-                {userData.userProfile.linkList?.map((link) => (
+                {user.linkList?.map((link) => (
                   <RowBlock key={link.linkUrl}>
-                    {/* @ts-expect-error */}
-                    <Icons icon={lowerCase(link.linkType)} width={14} height={14} color="#424242" />
+                    <Icons
+                      icon={link.linkType.toLowerCase() as IconName}
+                      width={14}
+                      height={14}
+                      color="#424242"
+                    />
                     {link.linkUrl}
                   </RowBlock>
                 ))}
@@ -256,13 +238,13 @@ export const UserDetailModal = ({ userId, isClose }: UserDetailModalProps) => {
           <ContactBlock>
             <Icons icon={'email'} width={20} height={20} />
             <Txt size="typo5" weight="regular" color="#424242">
-              {userData.userProfile.email}
+              {user.email}
             </Txt>
           </ContactBlock>
           <ContactBlock>
             <Icons icon={'phoneFill'} width={20} height={20} />
             <Txt size="typo5" weight="regular" color="#424242">
-              {userData.userProfile.phoneNumber}
+              {user.phoneNumber}
             </Txt>
           </ContactBlock>
         </Contact>

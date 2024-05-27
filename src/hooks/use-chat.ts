@@ -50,23 +50,20 @@ interface ChatMessagesPage {
 }
 
 export function useChatMessagesQuery(id: Chat['id']) {
-  return useSWRInfinite<ChatMessagesPage>(
-    CHAT_MESSAGES_QUERY_KEY(id),
-    async (...args: Parameters<typeof fitFetcher>) => {
-      const json: ChatMessagesResponse = await fitFetcher(...args);
-      return {
-        messages: json.pageResult.values.map((v) => ({
-          id: v.messageId,
-          content: v.content,
-          imageUrl: v.imageUrl,
-          userId: v.userId,
-          messageType: v.messageType,
-          createdAt: v.createdAt,
-        })),
-        hasNext: json.pageResult.hasNext,
-      };
-    }
-  );
+  return useSWRInfinite(CHAT_MESSAGES_QUERY_KEY(id), async (url) => {
+    const json = await fitFetcher<ChatMessagesResponse>(url);
+    return {
+      messages: json.pageResult.values.map((v) => ({
+        id: v.messageId,
+        content: v.content,
+        imageUrl: v.imageUrl,
+        userId: v.userId,
+        messageType: v.messageType,
+        createdAt: v.createdAt,
+      })),
+      hasNext: json.pageResult.hasNext,
+    } as { messages: Message[]; hasNext: boolean };
+  });
 }
 
 interface ChatRecentMessageResponse {
@@ -74,11 +71,8 @@ interface ChatRecentMessageResponse {
 }
 
 export function useChatRecentMessageQuery(id: Chat['id']) {
-  return useSWR(
-    CHAT_RECENT_MESSAGE_QUERY_KEY(id),
-    async (...args: Parameters<typeof fitFetcher>) => {
-      const json: ChatRecentMessageResponse = await fitFetcher(...args);
-      return json.messageId;
-    }
-  );
+  return useSWR(CHAT_RECENT_MESSAGE_QUERY_KEY(id), async (url) => {
+    const json = await fitFetcher<ChatRecentMessageResponse>(url);
+    return json.messageId;
+  });
 }

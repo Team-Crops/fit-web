@@ -1,17 +1,17 @@
-import { SignUpStep, User } from '#/types';
+import { Me, PolicyAgreement, SignUpStep } from '#/types';
 
-export function checkSignUpStep(user: User, policyAgreed: boolean): SignUpStep {
-  if (!policyAgreed) {
+export function checkSignUpStep(me: Me, policyAgreed?: PolicyAgreement[]): SignUpStep {
+  if (policyAgreed && policyAgreed.some((p) => p.isAgreed === false)) {
     return SignUpStep.TERMS_AGREEMENT;
-  } else if (!user.nickname) {
+  } else if (!me.nickname) {
     return SignUpStep.PROFILE_CREATION;
-  } else if (!user.positionId) {
+  } else if (!me.positionId) {
     return SignUpStep.POSITION_SELECTION;
-  } else if (!user.username || !user.email || !user.backgroundText || !user.backgroundStatus) {
+  } else if (!me.username || !me.email || !me.backgroundStatus) {
     return SignUpStep.PROFILE_DETAILS_SUBMISSION;
-  } else if (user.projectCount === null || !user.regionId || !user.activityHour) {
+  } else if (me.projectCount === null || !me.regionId || !me.activityHour) {
     return SignUpStep.TIME_AVAILABILITY_SUBMISSION;
-  } else if (!user.skillIdList?.length) {
+  } else if (!me.skillIdList?.length) {
     return SignUpStep.TOOL_AVAILABILITY_SUBMISSION;
   }
   return SignUpStep.COMPLETE;

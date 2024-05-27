@@ -3,8 +3,9 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Temporal } from '@js-temporal/polyfill';
 
-import { Icons, Input } from '#/components/atoms';
-import { useChatStore, useUser } from '#/stores';
+import { Icons, Input, Loading } from '#/components/atoms';
+import { useMeQuery } from '#/hooks/use-user';
+import { useChatStore } from '#/stores';
 import { Chat } from '#/types';
 
 interface ChatToolboxProps {
@@ -14,14 +15,15 @@ interface ChatToolboxProps {
 export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
   const [message, setMessage] = useState('');
 
-  const user = useUser();
   const { socket, unshiftMessage } = useChatStore(({ chats, unshiftMessage }) => ({
     socket: chats[chatId].socket,
     unshiftMessage,
   }));
 
+  const { data: user } = useMeQuery();
+
   if (!user) {
-    return null;
+    return <Loading />;
   }
 
   return (

@@ -37,9 +37,9 @@ const TechListBlock = styled.div`
 
 interface TechSelectBlockProps {
   value: number[];
-  onChange: (value: number) => void;
+  onTechClick: (value: number) => void;
 }
-export const TechSelectBlock = ({ value, onChange }: TechSelectBlockProps) => {
+export const TechSelectBlock = ({ value, onTechClick }: TechSelectBlockProps) => {
   const { data: positions } = usePositionsQuery();
   const [selectedPosition, setSelectedPosition] = useState<number>(0);
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -78,7 +78,7 @@ export const TechSelectBlock = ({ value, onChange }: TechSelectBlockProps) => {
             key={skill.id}
             position={skill.displayName}
             selected={value?.includes(skill.id) ?? false}
-            onClick={() => onChange(skill.id)}
+            onClick={() => onTechClick(skill.id)}
           />
         ))}
       </TechListBlock>
