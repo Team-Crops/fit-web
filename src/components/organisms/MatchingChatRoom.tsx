@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 
 import { Button } from '#/components/atoms';
 import { ChatRoom } from '#/components/organisms/ChatRoom';
-import { useMatchingQuery } from '#/hooks/use-matching';
+import { useMatchingCancelMutation, useMatchingQuery } from '#/hooks/use-matching';
 import {
-  useMatchingRoomCancelMutation,
   useMatchingRoomQuery,
+  useMatchingRoomCompleteMutation,
   useMatchingRoomReadyMutation,
 } from '#/hooks/use-matching-room';
 import { useMeQuery } from '#/hooks/use-user';
@@ -23,30 +23,41 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
 
   const { data: me } = useMeQuery();
 
-  const isReady = useMemo(
-    () => matchingRoom?.matchingUsers.find((u) => u.id === me?.id)?.isReady,
-    [matchingRoom?.matchingUsers, me?.id]
-  );
+  const { isReady, isHost } = useMemo(() => {
+    const user = matchingRoom?.matchingUsers.find((u) => u.id === me?.id);
+    return {
+      isReady: user?.isReady,
+      isHost: user?.isHost,
+    };
+  }, [matchingRoom?.matchingUsers, me?.id]);
 
   const { trigger: readyMatching, isMutating: isMutatingReady } =
     useMatchingRoomReadyMutation(matchingId);
-  const { trigger: cancelMatching } = useMatchingRoomCancelMutation(matchingId);
+  const { trigger: completeMatching, isMutating: isMutatingComplete } =
+    useMatchingRoomCompleteMutation(matchingId);
+  const { trigger: cancelMatching, isMutating: isMutatingCancel } = useMatchingCancelMutation();
 
   return (
     <Container>
       <ChatRoom matchingId={matchingId} />
       <ButtonContainer>
-        <Button variant="round" height="70" color="secondary" onClick={() => cancelMatching()}>
+        <Button
+          variant="round"
+          height="70"
+          color="secondary"
+          disabled={isMutatingCancel}
+          onClick={() => cancelMatching()}
+        >
           대기방에서 나가기
         </Button>
         <Button
           variant="round"
           height="70"
           color="primary"
-          disabled={isMutatingReady}
-          onClick={() => readyMatching({ isReady: !isReady })}
+          disabled={isMutatingReady || isMutatingComplete}
+          onClick={() => (isHost ? completeMatching() : readyMatching({ isReady: !isReady }))}
         >
-          프로젝트 시작하기
+          프로젝트 {isHost ? '시작하기' : '준비하기'}
         </Button>
       </ButtonContainer>
     </Container>

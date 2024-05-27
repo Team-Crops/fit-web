@@ -9,7 +9,6 @@ const MATCHING_ROOM_QUERY_KEY = (id: number) => `/v1/matching/room/${id}`;
 const MATCHING_ROOM_COMPLETE_KEY = (id: number) => `/v1/matching/room/${id}/complete`;
 const MATCHING_ROOM_FORCE_OUT_KEY = (id: number) => `/v1/matching/room/${id}/force-out`;
 const MATCHING_ROOM_READY_KEY = (id: number) => `/v1/matching/room/${id}/ready`;
-const MATCHING_ROOM_CANCEL_KEY = (id: number) => `/v1/matching/room/${id}/cancel`;
 
 export interface MatchingRoomResponse {
   matchingRoomId: number;
@@ -50,8 +49,6 @@ export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
   });
 }
 
-export function useMatchingRoomCompleteMutation() {}
-
 export function useMatchingRoomForceOutMutation(
   roomId: MatchingRoom['id'],
   userId?: User['id'] | null
@@ -61,16 +58,28 @@ export function useMatchingRoomForceOutMutation(
   );
 }
 
-export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
+export function useMatchingRoomCompleteMutation(roomId: MatchingRoom['id']) {
   return useSWRMutation(
-    MATCHING_ROOM_READY_KEY(roomId),
-    (url, { arg: { isReady } }: { arg: { isReady: boolean } }) =>
-      fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) })
+    MATCHING_ROOM_COMPLETE_KEY(roomId),
+    (url: string) => fitFetcher<null>(url, { method: 'POST' }),
+    {
+      onSuccess: () => {
+        mutate(MATCHING_QUERY_KEY);
+        mutate(MATCHING_ROOM_QUERY_KEY(roomId));
+      },
+    }
   );
 }
 
-export function useMatchingRoomCancelMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(MATCHING_ROOM_CANCEL_KEY(roomId), (url) =>
-    fitFetcher<null>(url, { method: 'POST' })
+interface MatchingRoomCompleteMutationArg {
+  isReady: boolean;
+}
+
+export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
+  return useSWRMutation(
+    MATCHING_ROOM_READY_KEY(roomId),
+    (url: string, { arg: { isReady } }: { arg: MatchingRoomCompleteMutationArg }) => {
+      return fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) });
+    }
   );
 }
