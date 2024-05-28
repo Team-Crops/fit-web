@@ -1,12 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import styled from '@emotion/styled';
 
 import { HeaderUserBlock } from '#/components/molecules/HeaderUserBlock';
-import { AuthTokens } from '#/types';
-import { getTokens } from '#/utilities';
+import { useMeQuery } from '#/hooks/use-user';
 import { HeaderLoginBlock } from '#molecules/HeaderLoginBlock';
 import { HeaderLogo } from '#molecules/HeaderLogo';
 import { HeaderNav } from '#molecules/HeaderNav';
@@ -22,17 +19,13 @@ const ContentBlock = styled.div`
 `;
 
 export const HeaderContent = () => {
-  const [tokens, setTokens] = useState<AuthTokens | null>(null);
-
-  useEffect(() => {
-    setTokens(getTokens());
-  }, []);
+  const { data: me } = useMeQuery();
 
   return (
     <ContentBlock>
       <HeaderLogo />
       <HeaderNav />
-      {tokens ? <HeaderUserBlock /> : <HeaderLoginBlock />}
+      {me ? <HeaderUserBlock /> : <HeaderLoginBlock />}
     </ContentBlock>
   );
 };
