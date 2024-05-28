@@ -98,8 +98,8 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 40px;
   align-items: center;
-  justify-content: space-between;
 
   width: min(100%, 830px);
   max-height: 100vh;

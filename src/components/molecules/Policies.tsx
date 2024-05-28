@@ -16,7 +16,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 12px;
 
-  margin: 50px;
+  margin: 0 50px;
 
   text-align: right;
 `;
