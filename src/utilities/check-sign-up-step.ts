@@ -1,7 +1,8 @@
 import { Me, PolicyAgreement, SignUpStep } from '#/types';
+import { checkPolicyAgreed } from './policy';
 
 export function checkSignUpStep(me: Me, policyAgreed?: PolicyAgreement[]): SignUpStep {
-  if (policyAgreed && policyAgreed.some((p) => p.isAgreed === false)) {
+  if (policyAgreed && !checkPolicyAgreed(policyAgreed)) {
     return SignUpStep.TERMS_AGREEMENT;
   } else if (!me.nickname) {
     return SignUpStep.PROFILE_CREATION;
