@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import type { ChangeEventHandler, HTMLAttributes } from 'react';
+import type { ChangeEventHandler, HTMLAttributes, MouseEventHandler } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -104,13 +103,22 @@ interface PolicyProps {
   type: PolicyType;
   value?: boolean;
   disabled?: boolean;
+  expanded?: boolean;
+  onClick: MouseEventHandler<HTMLDivElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Policy: React.FC<PolicyProps> = ({ title, type, value, disabled, onChange }) => {
-  const [isExpanded, setExpanded] = useState(false);
+const Policy: React.FC<PolicyProps> = ({
+  title,
+  type,
+  value,
+  disabled,
+  expanded,
+  onClick,
+  onChange,
+}) => {
   return (
-    <PolicyContainer>
+    <PolicyContainer onClick={onClick}>
       <PolicyHeader>
         <CheckBoxContainer>
           <CheckBox checked={value} onChange={onChange} disabled={disabled} />
@@ -118,14 +126,14 @@ const Policy: React.FC<PolicyProps> = ({ title, type, value, disabled, onChange 
             {title}
           </Txt>
         </CheckBoxContainer>
-        <ExpandButtonContainer onClick={() => setExpanded((prev) => !prev)}>
+        <ExpandButtonContainer>
           <Txt size="typo5" weight="medium">
             상세보기
           </Txt>
           <Icons icon="arrowForward" width={20} height={20} color="#9E9E9E" />
         </ExpandButtonContainer>
       </PolicyHeader>
-      {isExpanded && <PolicyContent type={type} isScrolled />}
+      {expanded && <PolicyContent type={type} isScrolled />}
     </PolicyContainer>
   );
 };
