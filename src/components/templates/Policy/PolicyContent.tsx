@@ -1,6 +1,5 @@
 'use client';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms';
@@ -8,20 +7,13 @@ import { NestedList } from '#/components/organisms/Policy/NestedList';
 import { policies } from '#/entities';
 import { PolicyType } from '#/types';
 
-const ContentBlock = styled.div<{ isScrolled?: boolean }>`
-  max-width: 1200px;
+const ContentBlock = styled.div`
   width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 130px 0;
 
-  white-space: pre-wrap;
   text-align: left;
-  ${({ isScrolled }) =>
-    isScrolled &&
-    css`
-      overflow-y: auto;
-      height: 500px;
-    `}
+  white-space: pre-wrap;
 `;
 const ClauseBlock = styled.div`
   margin-bottom: 72px;
@@ -29,11 +21,10 @@ const ClauseBlock = styled.div`
 
 interface PolicyContentProps {
   type: PolicyType;
-  isScrolled?: boolean;
 }
-export const PolicyContent = ({ type, isScrolled }: PolicyContentProps) => {
+export const PolicyContent = ({ type }: PolicyContentProps) => {
   return (
-    <ContentBlock isScrolled={isScrolled}>
+    <ContentBlock>
       <Txt size="typo1" weight="bold" color="#212121" marginBottom={132}>
         {policies[type].title}
       </Txt>
