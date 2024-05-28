@@ -86,7 +86,7 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
       <StyledInput
         ref={ref}
         type="checkbox"
-        defaultChecked={checked}
+        checked={checked}
         onClick={(e) => {
           e.stopPropagation();
           if (onClick) {
