@@ -3,7 +3,7 @@ import returnFetch from 'return-fetch';
 import { getTokens } from '#/utilities/session';
 
 export const fitFetch = returnFetch({
-  baseUrl: 'http://dev-api.f-it.team',
+  baseUrl: 'https://dev-api.f-it.team',
   headers: {
     'Content-Type': 'application/json',
   },
