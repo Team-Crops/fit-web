@@ -60,6 +60,11 @@ const ExpandButtonContainer = styled.div`
   color: #9e9e9e;
 `;
 
+const PolicyContentContainer = styled.div`
+  overflow-y: auto;
+  height: 200px;
+`;
+
 interface PoliciesBoxProps extends HTMLAttributes<HTMLDivElement> {
   allChecked?: boolean;
   disabled?: boolean;
@@ -133,7 +138,11 @@ const Policy: React.FC<PolicyProps> = ({
           <Icons icon="arrowForward" width={20} height={20} color="#9E9E9E" />
         </ExpandButtonContainer>
       </PolicyHeader>
-      {expanded && <PolicyContent type={type} isScrolled />}
+      {expanded && (
+        <PolicyContentContainer>
+          <PolicyContent type={type} />
+        </PolicyContentContainer>
+      )}
     </PolicyContainer>
   );
 };
