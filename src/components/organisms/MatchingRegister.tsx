@@ -6,10 +6,11 @@ import { useRouter } from 'next/navigation';
 import styled from '@emotion/styled';
 
 import _ from 'lodash';
+import { mutate } from 'swr';
 
 import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
-import { useMatchingStartMutation } from '#/hooks/use-matching';
+import { MATCHING_QUERY_KEY, useMatchingStartMutation } from '#/hooks/use-matching';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useMeQuery } from '#/hooks/use-user';
@@ -69,7 +70,7 @@ export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
   const { data: skills } = useSkillsQuery();
   const { data: regions } = useRegionsQuery();
   const { data: me } = useMeQuery();
-  const { trigger: startMatching } = useMatchingStartMutation();
+  const { trigger: startMatching, isMutating: isStarting } = useMatchingStartMutation();
 
   const mySkillNames = useMemo(
     () => _.uniq(me?.skillIdList).map((id) => skills?.find((s) => s.id === id)?.displayName),
@@ -126,7 +127,14 @@ export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
         <MatchingButtons.Button color="secondary" onClick={() => router.push('/mypage')}>
           수정하기
         </MatchingButtons.Button>
-        <MatchingButtons.Button onClick={() => startMatching()}>확인</MatchingButtons.Button>
+        <MatchingButtons.Button
+          disabled={isStarting}
+          onClick={async () => {
+            mutate(MATCHING_QUERY_KEY, await startMatching());
+          }}
+        >
+          확인
+        </MatchingButtons.Button>
       </MatchingButtons>
     </Container>
   );
