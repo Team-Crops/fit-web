@@ -158,7 +158,7 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
         >
           {exampleUsers.map((user, index) => (
             <SwiperSlide key={index}>
-              <StyledProfileCard user={user} size="small" />
+              <StyledProfileCard user={user} size="small" randomProfileImage />
             </SwiperSlide>
           ))}
         </ProfileCardsSwiper>

@@ -6,13 +6,88 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import _ from 'lodash';
+
+import DesignerImage from '#/assets/images/position-designer.png';
+import MobileDeveloperImage from '#/assets/images/position-mobile-developer.png';
+import PlannerImage from '#/assets/images/position-planner.png';
+import ServerDeveloperImage from '#/assets/images/position-server-developer.png';
+import WebDeveloperImage from '#/assets/images/position-web-developer.png';
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { User } from '#/types/user';
 import { Badge } from '#atoms/Badge';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 import { UserProfile } from '#atoms/UserProfile';
-import { ProfileBlock } from '../organisms/ProfileBlock';
+
+const positionImages = [
+  DesignerImage,
+  MobileDeveloperImage,
+  PlannerImage,
+  ServerDeveloperImage,
+  WebDeveloperImage,
+];
+
+interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  user: User | null;
+  size: 'small' | 'large';
+  randomProfileImage?: boolean;
+}
+
+export const ProfileCard = ({ user, size, randomProfileImage, ...props }: ProfileCardProps) => {
+  const { data: positions } = usePositionsQuery();
+
+  const positionName = useMemo(() => {
+    const position = positions?.find((v) => v.id === user?.positionId);
+    return position?.displayName;
+  }, [positions, user?.positionId]);
+
+  if (user === null) {
+    return (
+      <Container size={size} {...props}>
+        <Icons
+          icon="progress"
+          style={{ animation: 'spin 2s linear infinite' }}
+          width={90}
+          height={90}
+        />
+        <Txt size="typo3" weight="regular" color="#616161">
+          유저 정보를 불러오는 중입니다.
+        </Txt>
+      </Container>
+    );
+  }
+
+  return (
+    <Container size={size} {...props}>
+      {randomProfileImage ? (
+        <RoundImage
+          src={positionImages[_.random(positionImages.length - 1)]}
+          alt={`Profile image of ${user.nickname}`}
+          width={size === 'small' ? 90 : 120}
+          height={size === 'small' ? 90 : 120}
+        />
+      ) : (
+        <UserProfile
+          imageUrl={user.profileImageUrl}
+          nickname={user.nickname}
+          size={size === 'small' ? 90 : 120}
+        />
+      )}
+      <InfoContainer>
+        <NameContainer>
+          <Txt size={size === 'small' ? 'typo5' : 'typo3'} weight="bold">
+            {user.nickname}
+          </Txt>
+          <Badge>{positionName}</Badge>
+        </NameContainer>
+        <IntroduceText size={size === 'small' ? 'typo6' : 'typo5'} weight="medium" color="#616161">
+          &quot;{user.introduce}&quot;
+        </IntroduceText>
+      </InfoContainer>
+    </Container>
+  );
+};
 
 const Container = styled.div<{ size: ProfileCardProps['size'] }>`
   display: flex;
@@ -36,12 +111,6 @@ const Container = styled.div<{ size: ProfileCardProps['size'] }>`
         `;
     }
   }}
-`;
-
-const ProfileImage = styled(Image)`
-  flex-shrink: 0;
-  background: #f5f5f5;
-  border-radius: 120px;
 `;
 
 const InfoContainer = styled.div`
@@ -70,53 +139,7 @@ const IntroduceText = styled(Txt)`
   -webkit-line-clamp: 2;
 `;
 
-interface ProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  user: User | null;
-  size: 'small' | 'large';
-}
-
-export const ProfileCard = ({ user, size, ...props }: ProfileCardProps) => {
-  const { data: positions } = usePositionsQuery();
-
-  const positionName = useMemo(() => {
-    const position = positions?.find((v) => v.id === user?.positionId);
-    return position?.displayName;
-  }, [positions, user?.positionId]);
-
-  if (user === null) {
-    return (
-      <Container size={size} {...props}>
-        <Icons
-          icon="progress"
-          style={{ animation: 'spin 2s linear infinite' }}
-          width={90}
-          height={90}
-        />
-        <Txt size="typo3" weight="regular" color="#616161">
-          유저 정보를 불러오는 중입니다.
-        </Txt>
-      </Container>
-    );
-  }
-
-  return (
-    <Container size={size} {...props}>
-      <UserProfile
-        imageUrl={user.profileImageUrl}
-        nickname={user.nickname}
-        size={size === 'small' ? 90 : 120}
-      />
-      <InfoContainer>
-        <NameContainer>
-          <Txt size={size === 'small' ? 'typo5' : 'typo3'} weight="bold">
-            {user.nickname}
-          </Txt>
-          <Badge>{positionName}</Badge>
-        </NameContainer>
-        <IntroduceText size={size === 'small' ? 'typo6' : 'typo5'} weight="medium" color="#616161">
-          &quot;{user.introduce}&quot;
-        </IntroduceText>
-      </InfoContainer>
-    </Container>
-  );
-};
+const RoundImage = styled(Image)`
+  background-color: rgb(255 199 198 / 100%);
+  border-radius: 50%;
+`;
