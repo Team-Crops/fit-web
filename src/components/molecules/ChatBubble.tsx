@@ -3,14 +3,14 @@ import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { Temporal } from '@js-temporal/polyfill';
 
-import { ChatUser, Message } from '#/types';
+import { ChatUser, ImageMessage, TextMessage } from '#/types';
 import { isImageMessage, isTextMessage } from '#/utilities/message';
 import { Txt } from '#atoms/Text';
 import { UserProfile } from '#atoms/UserProfile';
 
 interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   user: ChatUser;
-  message: Message;
+  message: TextMessage | ImageMessage;
   myBubble?: boolean;
 }
 
@@ -23,11 +23,12 @@ export const ChatBubble = ({ user, message, myBubble = false, ...props }: ChatBu
         <Txt size="typo5" weight="bold" color="#757575">
           {user.nickname}
         </Txt>
-        {isTextMessage(message) ? (
+        {isTextMessage(message) && (
           <TextBubble myBubble={myBubble} size="typo4" weight="regular" color="#424242" {...props}>
             {message.content}
           </TextBubble>
-        ) : isImageMessage(message) ? null : null}
+        )}
+        {isImageMessage(message) && null}
       </BubbleContainer>
       <BubbleTime size="typo6" weight="medium" color="#9E9E9E">
         {plainTime.toString({ smallestUnit: 'minute' })}
