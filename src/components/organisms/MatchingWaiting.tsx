@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
+import { set } from 'lodash';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -121,6 +122,11 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
   const goHome = useCallback(() => {
     router.push('/');
   }, [router]);
+
+  useEffect(() => {
+    const revalidateMatchingTimer = setInterval(() => mutate(MATCHING_QUERY_KEY), 5000);
+    return () => clearInterval(revalidateMatchingTimer);
+  }, []);
 
   return (
     <Container>
