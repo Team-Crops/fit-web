@@ -19,7 +19,7 @@ interface MatchingChatRoomProps {
 }
 
 export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
-  const { data: matching } = useMatchingQuery();
+  const { data: matching, mutate: mutateMatchingCache } = useMatchingQuery();
   const { data: matchingRoom } = useMatchingRoomQuery(matching?.id);
 
   const { data: me } = useMeQuery();
@@ -48,7 +48,10 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
           height="70"
           color="secondary"
           disabled={isMutatingCancel}
-          onClick={() => quitMatching()}
+          onClick={async () => {
+            await quitMatching();
+            await mutateMatchingCache();
+          }}
         >
           대기방에서 나가기
         </Button>
