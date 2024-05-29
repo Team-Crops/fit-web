@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
@@ -12,8 +11,9 @@ import { useChatMessagesQuery } from '#/hooks/use-chat';
 import { useMeQuery } from '#/hooks/use-user';
 import { useChatStore } from '#/stores';
 import { Chat, Message } from '#/types';
-import { isImageMessage, isTextMessage } from '#/utilities/message';
+import { isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
 import { ChatBubble } from './ChatBubble';
+import { NoticeBubble } from './NoticeBubble';
 
 interface ChatBubblesProps {
   chatId: Chat['id'];
@@ -38,6 +38,18 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
   const { data: me } = useMeQuery();
 
   const { data: pages, size, setSize } = useChatMessagesQuery(chatId);
+
+  //FORDEBUG: DELETE BEFORE COMMIT
+  useEffect(() => {
+    for (let i = 0; i < 2; i++) {
+      unshiftMessage(chatId, {
+        id: 100,
+        createdAt: new Date().toISOString(),
+        messageType: 'NOTICE',
+        notice: 'This is a notice message.',
+      });
+    }
+  }, [chatId, unshiftMessage]);
 
   useEffect(() => {
     socket.on('get_message', (message: Message) => {
@@ -73,15 +85,15 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
       <div />
       <div />
       {messages?.map((message, index) =>
-        isTextMessage(message) ? (
+        isNoticeMessage(message) ? (
+          <NoticeBubble key={index} message={message} />
+        ) : isTextMessage(message) || isImageMessage(message) ? (
           <ChatBubble
             key={index}
             user={participants.find((p) => p.id === message.userId) ?? nullUser}
-            myBubble={message.userId === me?.id}
             message={message}
+            myBubble={me?.id === message.userId}
           />
-        ) : isImageMessage(message) ? (
-          <Image src={message.imageUrl} alt={`Image from message ${message.id}`} />
         ) : null
       )}
       {hasNext && <Loading ref={topRef} />}
