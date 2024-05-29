@@ -31,13 +31,6 @@ export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
       action={() => {
         if (message) {
           socket.emit('/chat/text', { content: message });
-          unshiftMessage(chatId, {
-            id: -1,
-            userId: user.id,
-            messageType: 'TEXT',
-            createdAt: Temporal.Now.zonedDateTimeISO('Asia/Seoul').toString(),
-            content: message,
-          });
           setMessage('');
         }
       }}
