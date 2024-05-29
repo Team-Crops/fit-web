@@ -39,18 +39,6 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
 
   const { data: pages, size, setSize } = useChatMessagesQuery(chatId);
 
-  //FORDEBUG: DELETE BEFORE COMMIT
-  useEffect(() => {
-    for (let i = 0; i < 2; i++) {
-      unshiftMessage(chatId, {
-        id: 100,
-        createdAt: new Date().toISOString(),
-        messageType: 'NOTICE',
-        notice: 'This is a notice message.',
-      });
-    }
-  }, [chatId, unshiftMessage]);
-
   useEffect(() => {
     socket.on('get_message', (message: Message) => {
       unshiftMessage(chatId, message);
