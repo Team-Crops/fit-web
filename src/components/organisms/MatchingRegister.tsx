@@ -13,6 +13,7 @@ import { useMatchingStartMutation } from '#/hooks/use-matching';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useMeQuery } from '#/hooks/use-user';
+import { getBackgroundStatusText } from '#/utilities';
 import { Txt } from '#atoms/Text';
 
 const Container = styled.div`
@@ -79,7 +80,7 @@ export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
 
   const details: { name: string; value: string }[] = useMemo(
     () => [
-      { name: '학력/경력', value: me?.backgroundStatus ?? '-' },
+      { name: '학력/경력', value: getBackgroundStatusText(me?.backgroundStatus) ?? '-' },
       { name: '학교명', value: me?.backgroundText ?? '-' },
       { name: '사용가능한 기술/툴', value: mySkillNames.join(', ') },
       { name: '프로젝트 경험 수', value: `${me?.projectCount ?? '-'}번` },
