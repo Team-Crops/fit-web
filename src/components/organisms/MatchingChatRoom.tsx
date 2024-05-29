@@ -4,11 +4,12 @@ import styled from '@emotion/styled';
 
 import { Button } from '#/components/atoms';
 import { ChatRoom } from '#/components/organisms/ChatRoom';
-import { useMatchingCancelMutation, useMatchingQuery } from '#/hooks/use-matching';
+import { useMatchingQuery } from '#/hooks/use-matching';
 import {
   useMatchingRoomQuery,
   useMatchingRoomCompleteMutation,
   useMatchingRoomReadyMutation,
+  useMatchingRoomQuitMutation,
 } from '#/hooks/use-matching-room';
 import { useMeQuery } from '#/hooks/use-user';
 import { MatchingRoom } from '#/types';
@@ -35,7 +36,8 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
     useMatchingRoomReadyMutation(matchingId);
   const { trigger: completeMatching, isMutating: isMutatingComplete } =
     useMatchingRoomCompleteMutation(matchingId);
-  const { trigger: cancelMatching, isMutating: isMutatingCancel } = useMatchingCancelMutation();
+  const { trigger: quitMatching, isMutating: isMutatingCancel } =
+    useMatchingRoomQuitMutation(matchingId);
 
   return (
     <Container>
@@ -46,7 +48,7 @@ export const MatchingChatRoom = ({ matchingId }: MatchingChatRoomProps) => {
           height="70"
           color="secondary"
           disabled={isMutatingCancel}
-          onClick={() => cancelMatching()}
+          onClick={() => quitMatching()}
         >
           대기방에서 나가기
         </Button>
