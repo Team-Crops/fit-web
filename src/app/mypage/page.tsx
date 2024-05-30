@@ -11,6 +11,7 @@ export default function MyPage() {
 
   const handleEditing = useCallback(() => {
     setIsEditing(!isEditing);
+    scrollTo(0, 0);
   }, [isEditing]);
 
   return (

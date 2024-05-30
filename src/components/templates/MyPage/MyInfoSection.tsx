@@ -33,7 +33,6 @@ export const MyInfoSection = ({ handleEditing }: MyInfoSectionProps) => {
 
   const handleModify = useCallback(() => {
     if (me) setTempUser(me);
-    scrollTo(0, 0);
     handleEditing();
   }, [handleEditing, me, setTempUser]);
 
