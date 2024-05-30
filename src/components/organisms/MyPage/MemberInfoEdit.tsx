@@ -143,7 +143,7 @@ export const MemberInfoEdit = () => {
         placeholder="안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세"
       />
       <MyPageGridBlock>
-        <BasicInfoEdit title={'이름'} titleWidth={97}>
+        <BasicInfoEdit title={'이름'} titleWidth={97} essential>
           <Input
             value={tempUser.username === null ? '' : tempUser.username}
             onChange={(e) => handleUpdateTempUser('username', e.target.value)}
@@ -229,7 +229,6 @@ export const MemberInfoEdit = () => {
                   : '그룹명'
             }
             titleWidth={97}
-            essential
           >
             <Input
               value={tempUser.backgroundText === null ? '' : tempUser.backgroundText}

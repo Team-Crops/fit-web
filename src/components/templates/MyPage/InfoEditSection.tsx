@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { usePresignedUrlLazyQuery } from '#/hooks/use-file';
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
+import { Me } from '#/types';
 import { uploadFile } from '#/utilities/storage';
 import { Button } from '#atoms/Button';
 import { ActivityEdit } from '#organisms/MyPage/ActivityEdit';
@@ -27,6 +28,42 @@ interface InfoEditSectionProps {
   handleEditing: () => void;
 }
 
+const checkRequiredValue = (tempUser: Me | null) => {
+  if (tempUser === null) return false;
+  if (tempUser.username === '' || tempUser.username === null) {
+    alert('이름을 입력해주세요.');
+    return false;
+  } else if (
+    tempUser.email === null ||
+    tempUser.email.split('@')[0] === '' ||
+    tempUser.email.split('@')[1] === ''
+  ) {
+    alert('이메일을 입력해주세요.');
+    return false;
+  } else if (tempUser.nickname === '' || tempUser.nickname === null) {
+    alert('닉네임을 입력해주세요.');
+    return false;
+  } else if (tempUser.backgroundStatus === null) {
+    alert('학력/경력을 입력해주세요.');
+    return false;
+  } else if (tempUser.positionId === null) {
+    alert('포지션을 선택해주세요.');
+    return false;
+  } else if (tempUser.projectCount === null) {
+    alert('프로젝트 경험 수를 선택해주세요.');
+    return false;
+  } else if (tempUser.regionId === null) {
+    alert('주 활동 지역을 선택해주세요.');
+    return false;
+  } else if (tempUser.activityHour === null) {
+    alert('활동 가능 시간을 선택해주세요.');
+    return false;
+  } else if (tempUser.skillIdList === null || tempUser.skillIdList.length === 0) {
+    alert('사용 가능한 기술/툴을 선택해주세요.');
+    return false;
+  } else return true;
+};
+
 export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const tempImage = useTempAuthStore((state) => state.tempProfileImage);
@@ -38,6 +75,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
   const { trigger: mutateUser } = useMeMutation();
 
   const submitModifyHandler = async () => {
+    if (!checkRequiredValue(tempUser)) return;
     let profileImageUrl = me?.profileImageUrl;
     let portfolioUrl: string = '';
     if (tempImage !== null) {
