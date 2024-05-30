@@ -11,7 +11,9 @@ import { useRecommendLikeUserMutation } from '#/hooks/use-recommend';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useUserQuery } from '#/hooks/use-user';
-import { User } from '#/types';
+import { Link, User } from '#/types';
+import { LinkType } from '#/types/link';
+import { getIconByLinkType } from '#/utilities/icon';
 import { getBackgroundStatusText } from '#/utilities/user';
 import { ProfileCard } from '../molecules/ProfileCard';
 
@@ -52,19 +54,58 @@ const RowBlock = styled.div`
 interface UserModalProps {
   userId: User['id'];
   showIsLiked?: boolean;
+  showContacts?: boolean;
 }
 
-export const UserDetails = ({ userId, showIsLiked }: UserModalProps) => {
+export const UserDetails = ({ userId, showIsLiked, showContacts }: UserModalProps) => {
   const { data: user, mutate: mutateCachedUser } = useUserQuery(userId);
-  const { data: positions } = usePositionsQuery();
   const { data: skills } = useSkillsQuery();
   const { data: regions } = useRegionsQuery();
   const { trigger: likeUser } = useRecommendLikeUserMutation();
 
-  const positionName = useMemo(
-    () => positions?.find((p) => p.id === user?.positionId)?.displayName,
-    [positions, user?.positionId]
+  const details: { name: string; value: string | Link[] }[] = useMemo(
+    () => [
+      { name: '학력/경력', value: getBackgroundStatusText(user?.backgroundStatus) ?? '-' },
+      { name: '학교명', value: user?.backgroundText ?? '-' },
+      {
+        name: '사용가능한 기술/툴',
+        value:
+          skills
+            ?.filter((s) => user?.skillIdList?.some((sid) => s.id === sid))
+            .map((s) => s.displayName)
+            .join(', ') ?? '-',
+      },
+      { name: '프로젝트 경험 수', value: user?.projectCount ? `${user?.projectCount}번` : '없음' },
+      {
+        name: '주 활동지역',
+        value: regions?.find((r) => r.id === user?.regionId)?.displayName ?? '-',
+      },
+      { name: '활동 가능 시간', value: `${user?.activityHour ?? '-'}시간` },
+      {
+        name: '포트폴리오',
+        value: [
+          ...(user?.portfolioUrl
+            ? [{ linkType: 'LINK' as LinkType, linkUrl: user?.portfolioUrl ?? '' }]
+            : []),
+          ...(user?.linkList ?? []),
+        ],
+      },
+    ],
+    [
+      regions,
+      skills,
+      user?.activityHour,
+      user?.backgroundStatus,
+      user?.backgroundText,
+      user?.linkList,
+      user?.portfolioUrl,
+      user?.projectCount,
+      user?.regionId,
+      user?.skillIdList,
+    ]
   );
+
+  console.dir(details);
 
   const onLikeClick: React.MouseEventHandler = useCallback(
     (e) => {
@@ -99,66 +140,42 @@ export const UserDetails = ({ userId, showIsLiked }: UserModalProps) => {
         <ProfileCard user={user} size="large" />
       </TopBlock>
       <DataContainer>
-        <DataBlock
-          title={'사용가능한 기술/툴'}
-          content={user.skillIdList?.map(
-            (id) => skills?.find((skill) => skill.id === id)?.displayName
-          )}
-        />
-        <DataBlock title={'학력/경력'} content={getBackgroundStatusText(user.backgroundStatus)} />
-        <DataBlock title={'학교명'} content={user.backgroundText} />
-        <DataBlock
-          title={'프로젝트 경험 수'}
-          content={
-            user.projectCount === 0
-              ? '없음'
-              : user.projectCount === 3
-                ? `${user.projectCount}회 이상`
-                : `${user.projectCount}회`
+        {details.map((detail) => {
+          if (Array.isArray(detail.value)) {
+            return (
+              <DataBlock
+                key={detail.name}
+                title={detail.name}
+                content={detail.value.map((link) => (
+                  <RowBlock key={link.linkUrl}>
+                    <Icons icon={getIconByLinkType(link.linkType)} size={14} color="#424242" />
+                    <Txt size="typo5" weight="regular">
+                      {link.linkUrl}
+                    </Txt>
+                  </RowBlock>
+                ))}
+              />
+            );
           }
-        />
-        <DataBlock
-          title={'주 활동지역'}
-          content={regions?.find((v) => v.id === user.regionId)?.displayName}
-        />
-        <DataBlock title={'활동 가능 시간'} content={(user.activityHour ?? '-') + '시간'} />
-        <DataBlock
-          title={'포트폴리오'}
-          content={
-            <>
-              <RowBlock>
-                <Icons icon={'clipBold'} width={14} height={14} color="#424242" />
-                {user.portfolioUrl}
-              </RowBlock>
-              {user.linkList?.map((link) => (
-                <RowBlock key={link.linkUrl}>
-                  <Icons
-                    icon={link.linkType.toLowerCase() as IconName}
-                    width={14}
-                    height={14}
-                    color="#424242"
-                  />
-                  {link.linkUrl}
-                </RowBlock>
-              ))}
-            </>
-          }
-        />
+          return <DataBlock key={detail.name} title={detail.name} content={detail.value} />;
+        })}
       </DataContainer>
-      <ContactContainer>
-        <ContactBlock>
-          <Icons icon={'email'} width={20} height={20} />
-          <Txt size="typo5" weight="regular" color="#424242">
-            {user.email}
-          </Txt>
-        </ContactBlock>
-        <ContactBlock>
-          <Icons icon={'phoneFill'} width={20} height={20} />
-          <Txt size="typo5" weight="regular" color="#424242">
-            {user.phoneNumber}
-          </Txt>
-        </ContactBlock>
-      </ContactContainer>
+      {showContacts && (
+        <ContactContainer>
+          <ContactBlock>
+            <Icons icon={'email'} width={20} height={20} />
+            <Txt size="typo5" weight="regular" color="#424242">
+              {user.email}
+            </Txt>
+          </ContactBlock>
+          <ContactBlock>
+            <Icons icon={'phoneFill'} width={20} height={20} />
+            <Txt size="typo5" weight="regular" color="#424242">
+              {user.phoneNumber}
+            </Txt>
+          </ContactBlock>
+        </ContactContainer>
+      )}
     </Container>
   );
 };

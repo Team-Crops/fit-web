@@ -13,7 +13,7 @@ export const UserDetailsModal = ({ userId, onClose }: UserDetailsModalProps) => 
   return (
     <Backdrop onClick={onClose}>
       <Container onClick={(e) => e.stopPropagation()}>
-        <UserDetails userId={userId} showIsLiked />
+        <UserDetails userId={userId} showIsLiked showContacts />
         <CancelButton icon={'cross'} width={22} height={22} color="#BDBDBD" onClick={onClose} />
       </Container>
     </Backdrop>
