@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { Loading } from '#/components/atoms';
 import { UserDataCard } from '#/components/organisms/TeamRecommend/UserDataCard';
-import { UserDetails } from '#/components/organisms/UserDetails';
+import { UserDetailsModal } from '#/components/organisms/TeamRecommend/UserDetailsModal';
 import { RecommendUser } from '#/types';
 
 const GridBlock = styled.div`
@@ -62,7 +62,9 @@ export const UserCardList = ({
 
   return (
     <>
-      {detailUserId && <UserDetails userId={detailUserId} onClose={() => setDetailUserId(null)} />}
+      {detailUserId && (
+        <UserDetailsModal userId={detailUserId} onClose={() => setDetailUserId(null)} />
+      )}
       <GridBlock>
         {users.map((user) => (
           <UserDataCard

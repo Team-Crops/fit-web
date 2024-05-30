@@ -15,32 +15,11 @@ import { useUserQuery } from '#/hooks/use-user';
 import { User } from '#/types';
 import { getBackgroundStatusText } from '#/utilities/user';
 
-const Background = styled.div`
-  position: fixed;
-  z-index: 10;
-  top: 0;
-  left: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100vw;
-  height: 100vh;
-
-  background: rgb(66 66 66 / 40%);
-`;
-const UserDetailBlock = styled.div`
-  position: relative;
-  width: 630px;
-  background-color: #fff;
-  border-radius: 10px;
-`;
 const TopBlock = styled.div`
   display: flex;
-  gap: 37px;
+  gap: 20px;
   align-items: center;
-  margin: 99px 61px 34px;
+  padding: 100px 60px 30px;
 `;
 const SummaryBlock = styled.div`
   display: block;
@@ -88,34 +67,21 @@ const DataContainer = styled.div`
   gap: 24px;
 
   width: calc(100% - 78px);
-  margin: 0 39px 35px;
-  padding: 27px;
+  padding: 28px;
 
   background-color: #f5f5f5;
   border-radius: 6px;
 `;
-const Contact = styled.div`
+const ContactContainer = styled.div`
   display: flex;
   gap: 40px;
   justify-content: center;
-  margin-bottom: 48px;
+  padding: 40px;
 `;
 const ContactBlock = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
-`;
-const CancelButton = styled(Icons)`
-  cursor: pointer;
-  position: absolute;
-  top: 28px;
-  left: 38px;
-`;
-const LikeButton = styled(Icons)`
-  cursor: pointer;
-  position: absolute;
-  top: 28px;
-  right: 31px;
 `;
 const RowBlock = styled.div`
   display: flex;
@@ -125,9 +91,10 @@ const RowBlock = styled.div`
 
 interface UserModalProps {
   userId: User['id'];
-  onClose: () => void;
+  showIsLiked?: boolean;
 }
-export const UserDetails = ({ userId, onClose }: UserModalProps) => {
+
+export const UserDetails = ({ userId, showIsLiked }: UserModalProps) => {
   const { data: user, mutate: mutateCachedUser } = useUserQuery(userId);
   const { data: positions } = usePositionsQuery();
   const { data: skills } = useSkillsQuery();
@@ -155,100 +122,116 @@ export const UserDetails = ({ userId, onClose }: UserModalProps) => {
     [likeUser, mutateCachedUser, user]
   );
 
-  if (!user) return <Loading />;
+  if (!user) {
+    return <Loading />;
+  }
   return (
-    <Background onClick={onClose}>
-      <UserDetailBlock
-        onClick={(e) => {
-          // e.stopPropagation();
-        }}
-      >
-        <CancelButton icon={'cross'} width={22} height={22} color="#BDBDBD" onClick={onClose} />
+    <Container>
+      {showIsLiked && (
         <LikeButton
           icon={user?.isLiked ? 'heartFilled' : 'heart'}
-          width={39}
-          height={39}
+          size={40}
           onClick={onLikeClick}
         />
-        <TopBlock>
-          <UserProfile size={164} imageUrl={user.profileImageUrl} />
-          <SummaryBlock>
-            <FlexBlock>
-              <NickName size="typo1" weight="bold" color="#212121">
-                {user.nickname}
-              </NickName>
-              <Position size={'typo5'} weight="regular" color="#FF706C">
-                {positionName}
-              </Position>
-            </FlexBlock>
-            <Introduction size="typo5" weight="medium" color="#616161">
-              {user.introduce}
-            </Introduction>
-          </SummaryBlock>
-        </TopBlock>
-        <DataContainer>
-          <DataBlock
-            title={'사용가능한 기술/툴'}
-            content={user.skillIdList?.map(
-              (id) => skills?.find((skill) => skill.id === id)?.displayName
-            )}
-          />
-          <DataBlock title={'학력/경력'} content={getBackgroundStatusText(user.backgroundStatus)} />
-          <DataBlock title={'학교명'} content={user.backgroundText} />
-          <DataBlock
-            title={'프로젝트 경험 수'}
-            content={
-              user.projectCount === 0
-                ? '없음'
-                : user.projectCount === 3
-                  ? `${user.projectCount}회 이상`
-                  : `${user.projectCount}회`
-            }
-          />
-          <DataBlock
-            title={'주 활동지역'}
-            content={regions?.find((v) => v.id === user.regionId)?.displayName}
-          />
-          <DataBlock title={'활동 가능 시간'} content={(user.activityHour ?? '-') + '시간'} />
-          <DataBlock
-            title={'포트폴리오'}
-            content={
-              <>
-                <RowBlock>
-                  <Icons icon={'clipBold'} width={14} height={14} color="#424242" />
-                  {user.portfolioUrl}
-                </RowBlock>
-                {user.linkList?.map((link) => (
-                  <RowBlock key={link.linkUrl}>
-                    <Icons
-                      icon={link.linkType.toLowerCase() as IconName}
-                      width={14}
-                      height={14}
-                      color="#424242"
-                    />
-                    {link.linkUrl}
-                  </RowBlock>
-                ))}
-              </>
-            }
-          />
-        </DataContainer>
+      )}
 
-        <Contact>
-          <ContactBlock>
-            <Icons icon={'email'} width={20} height={20} />
-            <Txt size="typo5" weight="regular" color="#424242">
-              {user.email}
-            </Txt>
-          </ContactBlock>
-          <ContactBlock>
-            <Icons icon={'phoneFill'} width={20} height={20} />
-            <Txt size="typo5" weight="regular" color="#424242">
-              {user.phoneNumber}
-            </Txt>
-          </ContactBlock>
-        </Contact>
-      </UserDetailBlock>
-    </Background>
+      <TopBlock>
+        <UserProfile size={164} imageUrl={user.profileImageUrl} />
+        <SummaryBlock>
+          <FlexBlock>
+            <NickName size="typo1" weight="bold" color="#212121">
+              {user.nickname}
+            </NickName>
+            <Position size={'typo5'} weight="regular" color="#FF706C">
+              {positionName}
+            </Position>
+          </FlexBlock>
+          <Introduction size="typo5" weight="medium" color="#616161">
+            {user.introduce}
+          </Introduction>
+        </SummaryBlock>
+      </TopBlock>
+      <DataContainer>
+        <DataBlock
+          title={'사용가능한 기술/툴'}
+          content={user.skillIdList?.map(
+            (id) => skills?.find((skill) => skill.id === id)?.displayName
+          )}
+        />
+        <DataBlock title={'학력/경력'} content={getBackgroundStatusText(user.backgroundStatus)} />
+        <DataBlock title={'학교명'} content={user.backgroundText} />
+        <DataBlock
+          title={'프로젝트 경험 수'}
+          content={
+            user.projectCount === 0
+              ? '없음'
+              : user.projectCount === 3
+                ? `${user.projectCount}회 이상`
+                : `${user.projectCount}회`
+          }
+        />
+        <DataBlock
+          title={'주 활동지역'}
+          content={regions?.find((v) => v.id === user.regionId)?.displayName}
+        />
+        <DataBlock title={'활동 가능 시간'} content={(user.activityHour ?? '-') + '시간'} />
+        <DataBlock
+          title={'포트폴리오'}
+          content={
+            <>
+              <RowBlock>
+                <Icons icon={'clipBold'} width={14} height={14} color="#424242" />
+                {user.portfolioUrl}
+              </RowBlock>
+              {user.linkList?.map((link) => (
+                <RowBlock key={link.linkUrl}>
+                  <Icons
+                    icon={link.linkType.toLowerCase() as IconName}
+                    width={14}
+                    height={14}
+                    color="#424242"
+                  />
+                  {link.linkUrl}
+                </RowBlock>
+              ))}
+            </>
+          }
+        />
+      </DataContainer>
+      <ContactContainer>
+        <ContactBlock>
+          <Icons icon={'email'} width={20} height={20} />
+          <Txt size="typo5" weight="regular" color="#424242">
+            {user.email}
+          </Txt>
+        </ContactBlock>
+        <ContactBlock>
+          <Icons icon={'phoneFill'} width={20} height={20} />
+          <Txt size="typo5" weight="regular" color="#424242">
+            {user.phoneNumber}
+          </Txt>
+        </ContactBlock>
+      </ContactContainer>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 630px;
+
+  background-color: #fff;
+  border-radius: 10px;
+`;
+
+const LikeButton = styled(Icons)`
+  cursor: pointer;
+  position: absolute;
+  top: 28px;
+  right: 31px;
+`;
