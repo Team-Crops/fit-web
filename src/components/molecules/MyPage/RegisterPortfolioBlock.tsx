@@ -85,7 +85,6 @@ export const RegisterPortfolioBlock = () => {
   const [selectedPlatform, setSelectedPlatform] = useState<string>('LINK');
   const [portfolioUrl, setPortfolioUrl] = useState<string>('');
   const tempUser = useTempAuthStore((state) => state.tempUser);
-  console.log(tempUser);
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
   const handlePlatformChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
