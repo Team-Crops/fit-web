@@ -51,7 +51,7 @@ export const ActivityEdit = () => {
   return (
     <MyInfoBlock title={'활동'}>
       <MyPageGridBlock>
-        <BasicInfoEdit title={'활동명'} titleWidth={100} direction="column" essential>
+        <BasicInfoEdit title={'포지션'} titleWidth={100} direction="column" essential>
           <PositionBlock>
             {positions?.map((position) => (
               <PositionBadge
