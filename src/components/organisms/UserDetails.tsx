@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import { Loading } from '#/components/atoms';
 import { IconName, Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { UserProfile } from '#/components/atoms/UserProfile';
 import { DataBlock } from '#/components/molecules/TeamRecommend/DataBlock';
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { useRecommendLikeUserMutation } from '#/hooks/use-recommend';
@@ -14,52 +13,13 @@ import { useSkillsQuery } from '#/hooks/use-skills';
 import { useUserQuery } from '#/hooks/use-user';
 import { User } from '#/types';
 import { getBackgroundStatusText } from '#/utilities/user';
+import { ProfileCard } from '../molecules/ProfileCard';
 
 const TopBlock = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
   padding: 100px 60px 30px;
-`;
-const SummaryBlock = styled.div`
-  display: block;
-`;
-const FlexBlock = styled.div`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-
-  width: 320px;
-  margin-bottom: 4px;
-`;
-const NickName = styled(Txt)`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
-  white-space: nowrap;
-`;
-const Position = styled(Txt)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 28px;
-  padding: 0 17px;
-
-  white-space: nowrap;
-
-  background-color: #ffeae9;
-  border-radius: 33px;
-`;
-const Introduction = styled(Txt)`
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-
-  line-height: 200%;
-  word-break: keep-all;
-
-  -webkit-line-clamp: 2;
 `;
 const DataContainer = styled.div`
   display: flex;
@@ -136,20 +96,7 @@ export const UserDetails = ({ userId, showIsLiked }: UserModalProps) => {
       )}
 
       <TopBlock>
-        <UserProfile size={164} imageUrl={user.profileImageUrl} />
-        <SummaryBlock>
-          <FlexBlock>
-            <NickName size="typo1" weight="bold" color="#212121">
-              {user.nickname}
-            </NickName>
-            <Position size={'typo5'} weight="regular" color="#FF706C">
-              {positionName}
-            </Position>
-          </FlexBlock>
-          <Introduction size="typo5" weight="medium" color="#616161">
-            {user.introduce}
-          </Introduction>
-        </SummaryBlock>
+        <ProfileCard user={user} size="large" />
       </TopBlock>
       <DataContainer>
         <DataBlock
