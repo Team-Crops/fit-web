@@ -100,8 +100,8 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
     mutateCachedMe(
       await mutateUser({
         ...tempUser,
-        profileImageUrl: profileImageUrl,
-        portfolioUrl: '',
+        profileImageUrl,
+        portfolioUrl,
       })
     );
     initTempAuth();
