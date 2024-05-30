@@ -123,11 +123,11 @@ const RowBlock = styled.div`
   align-items: center;
 `;
 
-interface UserDetailModalProps {
+interface UserModalProps {
   userId: User['id'];
   onClose: () => void;
 }
-export const UserDetailModal = ({ userId, onClose }: UserDetailModalProps) => {
+export const UserDetails = ({ userId, onClose }: UserModalProps) => {
   const { data: user, mutate: mutateCachedUser } = useUserQuery(userId);
   const { data: positions } = usePositionsQuery();
   const { data: skills } = useSkillsQuery();
