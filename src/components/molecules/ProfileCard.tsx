@@ -64,14 +64,14 @@ export const ProfileCard = ({ user, size, randomProfileImage, ...props }: Profil
         <RoundImage
           src={positionImages[_.random(positionImages.length - 1)]}
           alt={`Profile image of ${user.nickname}`}
-          width={size === 'small' ? 90 : 120}
-          height={size === 'small' ? 90 : 120}
+          width={size === 'small' ? 90 : 135}
+          height={size === 'small' ? 90 : 135}
         />
       ) : (
         <UserProfile
           imageUrl={user.profileImageUrl}
           nickname={user.nickname}
-          size={size === 'small' ? 90 : 120}
+          size={size === 'small' ? 90 : 135}
         />
       )}
       <InfoContainer>
