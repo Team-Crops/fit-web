@@ -81,12 +81,22 @@ const StyledInput = styled.input`
 interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
-  ({ checked, ...props }, ref) => (
-    <StyledContainer>
-      <StyledInput ref={ref} type="checkbox" defaultChecked={checked} {...props} />
-      <StyledIcon icon="check" />
-    </StyledContainer>
-  )
+  ({ checked, onChange, ...props }, ref) => {
+    return (
+      <StyledContainer>
+        <StyledInput
+          ref={ref}
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => {
+            onChange && onChange(e);
+          }}
+          {...props}
+        />
+        <StyledIcon icon="check" />
+      </StyledContainer>
+    );
+  }
 );
 
 CheckBox.displayName = 'CheckBox';
