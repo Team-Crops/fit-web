@@ -73,14 +73,22 @@ export const MemberInfoEdit = () => {
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
   const handleUpdateTempUser = useCallback(
-    (key: string, value: any) => {
+    (key: string, value: any, maxLength?: number) => {
+      if (maxLength && value.length > maxLength) {
+        alert('최대 글자수를 초과하였습니다.');
+        return;
+      }
       if (tempUser !== null) setTempUser({ ...tempUser, [key]: value });
     },
     [tempUser, setTempUser]
   );
 
   const handleUpdateTempEmail = useCallback(
-    (key: 'id' | 'domain', value: string) => {
+    (key: 'id' | 'domain', value: string, maxLength?: number) => {
+      if (maxLength && value.length > maxLength) {
+        alert('최대 글자수를 초과하였습니다.');
+        return;
+      }
       if (tempUser === null) return;
       if (key === 'id') {
         setTempEmail({ ...tempEmail, id: value });
@@ -94,7 +102,11 @@ export const MemberInfoEdit = () => {
   );
 
   const handleUpdateTempPhone = useCallback(
-    (key: 'first' | 'second' | 'third', value: string) => {
+    (key: 'first' | 'second' | 'third', value: string, maxLength?: number) => {
+      if (maxLength && value.length > maxLength) {
+        alert('최대 글자수를 초과하였습니다.');
+        return;
+      }
       if (tempUser === null) return;
       if (key === 'first') {
         setTempPhone({ ...tempPhone, first: value });
@@ -139,14 +151,14 @@ export const MemberInfoEdit = () => {
       </Txt>
       <StyledTextarea
         value={tempUser.introduce === null ? '' : tempUser.introduce}
-        onChange={(e) => handleUpdateTempUser('introduce', e.target.value)}
+        onChange={(e) => handleUpdateTempUser('introduce', e.target.value, 200)}
         placeholder="안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세요. 저는 ㅇㅇ대학교에 재학 중인 4학년 ㅇㅇㅇ입니다. 요즘 저의 관심사는...안녕하세"
       />
       <MyPageGridBlock>
         <BasicInfoEdit title={'이름'} titleWidth={97} essential>
           <Input
             value={tempUser.username === null ? '' : tempUser.username}
-            onChange={(e) => handleUpdateTempUser('username', e.target.value)}
+            onChange={(e) => handleUpdateTempUser('username', e.target.value, 10)}
             width="207px"
             placeholder="이름 입력"
           />
@@ -155,7 +167,7 @@ export const MemberInfoEdit = () => {
           <EmailBlock>
             <Input
               value={tempEmail.id}
-              onChange={(e) => handleUpdateTempEmail('id', e.target.value)}
+              onChange={(e) => handleUpdateTempEmail('id', e.target.value, 20)}
               width="118px"
               placeholder="이메일 입력"
             />
@@ -173,7 +185,7 @@ export const MemberInfoEdit = () => {
         <BasicInfoEdit title={'닉네임'} titleWidth={97} essential>
           <Input
             value={tempUser.nickname === null ? '' : tempUser.nickname}
-            onChange={(e) => handleUpdateTempUser('nickname', e.target.value)}
+            onChange={(e) => handleUpdateTempUser('nickname', e.target.value, 20)}
             width="207px"
             placeholder="닉네임 입력"
           />
@@ -181,7 +193,7 @@ export const MemberInfoEdit = () => {
         <BasicInfoEdit title={'학력/경력'} titleWidth={97} essential>
           <CareerSelect
             value={tempUser.backgroundStatus ?? ''}
-            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value)}
+            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value, 20)}
           />
         </BasicInfoEdit>
         <BasicInfoEdit title={'전화번호'} titleWidth={97}>
@@ -189,21 +201,21 @@ export const MemberInfoEdit = () => {
             <PhoneBlock>
               <Input
                 value={tempPhone.first}
-                onChange={(e) => handleUpdateTempPhone('first', e.target.value)}
+                onChange={(e) => handleUpdateTempPhone('first', e.target.value, 3)}
                 width="49px"
                 placeholder="010"
               />
               <Hyphen />
               <Input
                 value={tempPhone.second}
-                onChange={(e) => handleUpdateTempPhone('second', e.target.value)}
+                onChange={(e) => handleUpdateTempPhone('second', e.target.value, 4)}
                 width="49px"
                 placeholder="0000"
               />
               <Hyphen />
               <Input
                 value={tempPhone.third}
-                onChange={(e) => handleUpdateTempPhone('third', e.target.value)}
+                onChange={(e) => handleUpdateTempPhone('third', e.target.value, 4)}
                 width="49px"
                 placeholder="0000"
               />
@@ -232,7 +244,7 @@ export const MemberInfoEdit = () => {
           >
             <Input
               value={tempUser.backgroundText === null ? '' : tempUser.backgroundText}
-              onChange={(e) => handleUpdateTempUser('backgroundText', e.target.value)}
+              onChange={(e) => handleUpdateTempUser('backgroundText', e.target.value, 50)}
               width="207px"
               placeholder="회사명을 입력하세요."
             />
