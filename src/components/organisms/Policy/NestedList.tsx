@@ -19,9 +19,9 @@ const StyledLi = styled.li`
   }
 `;
 
-const renderNestedList = (data: NestedData[]) => {
+const renderNestedList = (data: NestedData[], key?: React.Key) => {
   return (
-    <ol type="a">
+    <ol type="a" key={key}>
       {data.map((item, index) => (
         <StyledLi key={index}>
           <Txt size="typo5" weight="regular" color="#757575" marginBottom={15}>
@@ -34,27 +34,26 @@ const renderNestedList = (data: NestedData[]) => {
 };
 
 export const NestedList = ({ data }: NestedListProps) => {
-  if (typeof data === 'string')
+  if (typeof data === 'string') {
     return (
       <Txt size="typo5" weight="regular" color="#757575">
         {data}
       </Txt>
     );
+  }
   return (
     <StyledOl>
-      {data.map((item, index) => (
-        <>
-          {Array.isArray(item) ? (
-            <>{renderNestedList(item)}</>
-          ) : (
-            <StyledLi key={index}>
-              <Txt size="typo5" weight="regular" color="#757575" marginBottom={15}>
-                {item}
-              </Txt>
-            </StyledLi>
-          )}
-        </>
-      ))}
+      {data.map((item, index) =>
+        Array.isArray(item) ? (
+          renderNestedList(item, index)
+        ) : (
+          <StyledLi key={index}>
+            <Txt size="typo5" weight="regular" color="#757575" marginBottom={15}>
+              {item}
+            </Txt>
+          </StyledLi>
+        )
+      )}
     </StyledOl>
   );
 };

@@ -22,6 +22,7 @@ export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess })
       {} as Record<PolicyType, PolicyAgreement>
     )
   );
+  const [expandedPolicy, setExpandedPolicy] = useState<PolicyType | null>(null);
 
   const isAllAgreed = useMemo(() => {
     return Object.values(policyAgrees).every(({ isAgreed }) => isAgreed);
@@ -64,7 +65,9 @@ export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess })
             title={policy.title}
             type={policy.type}
             disabled={isLoadingAgrees}
+            expanded={expandedPolicy === policy.type}
             value={policyAgrees[policy.type].isAgreed}
+            onClick={() => setExpandedPolicy((t) => (policy.type === t ? null : policy.type))}
             onChange={(e) =>
               setPolicyAgrees(
                 produce((draft) => {
@@ -95,10 +98,11 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 40px;
   align-items: center;
-  justify-content: space-between;
 
   width: min(100%, 830px);
+  max-height: 100vh;
 
   background-color: #fff;
   border-radius: 15px;
