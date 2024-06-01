@@ -12,6 +12,7 @@ export { Loading } from './Loading';
 export { Select } from './Select';
 export { Txt } from './Text';
 export { Toggle } from './Toggle';
+export { Tooltip } from './Tooltip';
 export { UserProfile } from './UserProfile';
 
 export { SocialLoginButton } from './SocialLoginButton';
