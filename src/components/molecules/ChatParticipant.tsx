@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Icons, Txt, UserProfile } from '#/components/atoms';
+import { Icons, Tooltip, Txt, UserProfile } from '#/components/atoms';
 import type { ChatUser } from '#/types';
 
 interface ChatParticipantProps {
@@ -25,8 +25,16 @@ export const ChatParticipant = ({
       ) : (
         <UserProfileContainer isReady={isReady}>
           <UserProfile imageUrl={imageUrl} nickname={nickname} />
-          {isHost && <HostIcon icon="crown" size={28} />}
-          {isReady && <ReadyIcon icon="check" size={16} color="#fff" />}
+          {isHost && (
+            <Tooltip text="랜덤설정된 임시방장입니다.">
+              <HostIcon icon="crown" size={28} />
+            </Tooltip>
+          )}
+          {isReady && (
+            <Tooltip text="프로젝트에 참여 완료한 팀원입니다.">
+              <ReadyIcon icon="check" size={16} color="#fff" />
+            </Tooltip>
+          )}
         </UserProfileContainer>
       )}
       <Nickname size="typo5" weight="medium" color="rgba(33, 33, 33, 1)">
