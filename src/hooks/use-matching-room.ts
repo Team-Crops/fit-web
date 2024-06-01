@@ -9,6 +9,7 @@ const MATCHING_ROOM_QUERY_KEY = (id: number) => `/v1/matching/room/${id}`;
 const MATCHING_ROOM_COMPLETE_KEY = (id: number) => `/v1/matching/room/${id}/complete`;
 const MATCHING_ROOM_FORCE_OUT_KEY = (id: number) => `/v1/matching/room/${id}/force-out`;
 const MATCHING_ROOM_READY_KEY = (id: number) => `/v1/matching/room/${id}/ready`;
+const MATCHING_ROOM_QUIT_KEY = (id: number) => `/v1/matching/room/${id}/cancel`;
 
 export interface MatchingRoomResponse {
   matchingRoomId: number;
@@ -82,4 +83,10 @@ export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
       return fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) });
     }
   );
+}
+
+export function useMatchingRoomQuitMutation(roomId: MatchingRoom['id']) {
+  return useSWRMutation(MATCHING_ROOM_QUIT_KEY(roomId), (url: string) => {
+    return fitFetcher<null>(url, { method: 'POST' });
+  });
 }
