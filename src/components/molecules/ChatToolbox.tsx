@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import { Icons, Input, Loading } from '#/components/atoms';
+import { usePresignedUrlLazyQuery } from '#/hooks/use-file';
 import { useMeQuery } from '#/hooks/use-user';
 import { useChatStore } from '#/stores';
 import { Chat } from '#/types';
 import { getStorageUrl } from '#/utilities';
+import { uploadFile } from '#/utilities/storage';
 import { RemovableImage } from './RemovableImage';
 
 interface ChatToolboxProps {
@@ -14,14 +16,33 @@ interface ChatToolboxProps {
 }
 
 export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
   const [message, setMessage] = useState('');
-  const [imageUrls, setImageUrls] = useState<string[]>([
-    'file/profile/default/b45a8562-389b-41bc-b78b-867309a0155bweb.png',
-  ]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const socket = useChatStore((state) => state.chats[chatId].socket);
 
   const { data: user } = useMeQuery();
+  const { trigger: getPresignedUrl } = usePresignedUrlLazyQuery();
+
+  const onUploadImage = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    async (e) => {
+      const files = e.target.files;
+      if (!files) {
+        return;
+      }
+      for (let i = 0; i < files.length; i++) {
+        const { fileKey, preSignedUrl } = await getPresignedUrl({
+          fileDomain: 'CHAT',
+          fileName: files.item(i)!.name,
+        });
+        await uploadFile({ preSignedUrl, file: files.item(i)! });
+        setImageUrls((urls) => [...urls, fileKey]);
+      }
+    },
+    [getPresignedUrl]
+  );
 
   if (!user) {
     return <Loading />;
@@ -52,7 +73,8 @@ export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
           }
         }}
       >
-        <ToolIcon icon="image" size={36} />
+        <input ref={imageInputRef} hidden type="file" accept="image/*" onChange={onUploadImage} />
+        <ToolIcon icon="image" size={36} onClick={() => imageInputRef.current?.click()} />
         <TextInput
           placeholder="대기방의 팀원에게 메세지를 보내보세요"
           typo="typo5"
