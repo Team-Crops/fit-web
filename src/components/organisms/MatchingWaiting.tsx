@@ -1,13 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
+import { set } from 'lodash';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { mutate } from 'swr';
 
 import { matchingPageBackground1, matchingPageDoughnut } from '#/assets/images';
 import { Icons } from '#/components/atoms/Icons';
@@ -16,7 +18,7 @@ import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons
 import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { exampleUsers } from '#/entities';
-import { useMatchingCancelMutation } from '#/hooks/use-matching';
+import { MATCHING_QUERY_KEY, useMatchingCancelMutation } from '#/hooks/use-matching';
 
 const Container = styled.div`
   display: flex;
@@ -121,6 +123,11 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
     router.push('/');
   }, [router]);
 
+  useEffect(() => {
+    const revalidateMatchingTimer = setInterval(() => mutate(MATCHING_QUERY_KEY), 5000);
+    return () => clearInterval(revalidateMatchingTimer);
+  }, []);
+
   return (
     <Container>
       <QueuingContainer>
@@ -151,7 +158,7 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
         >
           {exampleUsers.map((user, index) => (
             <SwiperSlide key={index}>
-              <StyledProfileCard user={user} size="small" />
+              <StyledProfileCard user={user} size="small" randomProfileImage />
             </SwiperSlide>
           ))}
         </ProfileCardsSwiper>
@@ -169,7 +176,13 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
         />
       </QueuingContainer>
       <MatchingButtons>
-        <MatchingButtons.Button color="secondary" onClick={() => cancelMatching()}>
+        <MatchingButtons.Button
+          color="secondary"
+          onClick={async () => {
+            await cancelMatching();
+            await mutate(MATCHING_QUERY_KEY, undefined);
+          }}
+        >
           매칭 중단하기
         </MatchingButtons.Button>
         <MatchingButtons.Button onClick={() => goHome()}>홈으로 이동</MatchingButtons.Button>
