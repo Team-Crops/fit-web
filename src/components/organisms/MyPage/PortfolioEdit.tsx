@@ -36,7 +36,6 @@ export const PortfolioEdit = () => {
           title={'포트폴리오'}
           titleWidth={200}
           direction="column"
-          essential
           description="포트폴리오 링크는 최대 4개까지 업로드 할 수 있습니다."
         >
           <RegisterPortfolioBlock />

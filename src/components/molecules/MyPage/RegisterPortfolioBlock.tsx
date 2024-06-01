@@ -86,7 +86,6 @@ export const RegisterPortfolioBlock = () => {
   const [selectedPlatform, setSelectedPlatform] = useState<LinkType>('LINK');
   const [portfolioUrl, setPortfolioUrl] = useState<string>('');
   const tempUser = useTempAuthStore((state) => state.tempUser);
-  console.log(tempUser);
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
   const handlePlatformChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
@@ -127,7 +126,10 @@ export const RegisterPortfolioBlock = () => {
             <PortfolioUrlInput
               value={portfolioUrl}
               onChange={(e) => setPortfolioUrl(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && uploadLinkList()}
+              onKeyDown={(e) => {
+                if (e.nativeEvent.isComposing) return;
+                e.key === 'Enter' && uploadLinkList();
+              }}
               placeholder="URL 주소를 입력하세요"
             />
             <UploadButton onClick={uploadLinkList}>
