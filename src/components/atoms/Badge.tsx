@@ -7,6 +7,7 @@ import type { TxtProps } from '#/components/atoms/Text';
 
 const StyledSpan = styled.span<{ background: BadgeProps['background'] }>`
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
 

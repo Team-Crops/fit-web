@@ -7,6 +7,7 @@ import { Icons } from './Icons';
 
 const ProfileImage = styled(Image)<{ width: number; height: number }>`
   overflow: hidden;
+  flex-shrink: 0;
 
   width: ${({ width }) => width}px;
   max-width: ${({ width }) => width}px;
@@ -35,5 +36,5 @@ export const UserProfile: React.FC<UserProfileProps> = ({
     );
   }
 
-  return <Icons icon="account" width={size} height={size} />;
+  return <Icons icon="account" width={size} height={size} style={{ flexShrink: 0 }} />;
 };

@@ -119,7 +119,7 @@ export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCanc
 
   return (
     <Container>
-      <CloseButton icon="cross" size={40} onClick={() => onCancel()} />
+      <CloseButton icon="cross" size={20} color="#BDBDBD" onClick={() => onCancel()} />
       <ProfileVisibilityToggleContainer>
         <Tooltip show={showProfileVisibilityTooltip}>
           <Txt size="typo6" weight="regular">

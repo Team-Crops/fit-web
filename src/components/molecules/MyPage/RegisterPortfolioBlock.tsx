@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms';
 import { useTempAuthStore } from '#/stores/tempAuth';
+import { LinkType } from '#/types/link';
 import { IconName, Icons } from '#atoms/Icons';
 import { PortfolioFileBlock } from '#atoms/MyPage/PortfolioFileBlock';
 import { PortfolioTicket } from '#atoms/MyPage/PortfolioTicket';
@@ -82,13 +83,13 @@ const SelectPlatform: PlatformProps[] = [
 ];
 
 export const RegisterPortfolioBlock = () => {
-  const [selectedPlatform, setSelectedPlatform] = useState<string>('LINK');
+  const [selectedPlatform, setSelectedPlatform] = useState<LinkType>('LINK');
   const [portfolioUrl, setPortfolioUrl] = useState<string>('');
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
   const handlePlatformChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    setSelectedPlatform(e.target.value);
+    setSelectedPlatform(e.target.value as LinkType);
   }, []);
   const uploadLinkList = useCallback(() => {
     if (tempUser === null) return;

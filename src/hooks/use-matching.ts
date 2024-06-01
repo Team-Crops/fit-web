@@ -21,17 +21,21 @@ interface MatchingResponse {
 }
 
 export function useMatchingQuery() {
-  return useSWR(MATCHING_QUERY_KEY, async (url) => {
-    const json = await fitFetcher<MatchingResponse>(url);
-    return {
-      id: json.roomId,
-      userId: json.userId,
-      positionId: json.positionId,
-      status: json.status,
-      expiredAt: json.expiredAt,
-      createdAt: json.createdAt,
-    } as Matching;
-  });
+  return useSWR(
+    MATCHING_QUERY_KEY,
+    async (url) => {
+      const json = await fitFetcher<MatchingResponse>(url);
+      return {
+        id: json.roomId,
+        userId: json.userId,
+        positionId: json.positionId,
+        status: json.status,
+        expiredAt: json.expiredAt,
+        createdAt: json.createdAt,
+      } as Matching;
+    },
+    { shouldRetryOnError: false }
+  );
 }
 
 export function useMatchingStartMutation() {

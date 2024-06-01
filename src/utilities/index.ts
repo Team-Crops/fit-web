@@ -3,4 +3,4 @@ export { fitFetch, fitFetcher } from './fetch';
 export { isTextMessage, isImageMessage, isNoticeMessage } from './message';
 export { getStorageUrl } from './storage';
 export { getTokens, setTokens } from './session';
-export { isUserStudent, isUserWorker } from './user';
+export { isBackgroundStatus, isUserStudent, isUserWorker, getBackgroundStatusText } from './user';
