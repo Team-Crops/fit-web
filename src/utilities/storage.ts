@@ -11,9 +11,7 @@ interface UploadProfileImageArg {
 }
 
 export async function uploadFile({ file, preSignedUrl }: UploadProfileImageArg) {
-  const formData = new FormData();
-  formData.append('file', file);
-  const response = await fetch(preSignedUrl, { method: 'PUT', body: formData });
+  const response = await fetch(preSignedUrl, { method: 'PUT', body: file });
   if (!response.ok) {
     throw new Error('Failed to upload image');
   }
