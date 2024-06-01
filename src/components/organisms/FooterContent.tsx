@@ -48,7 +48,7 @@ export const FooterContent = () => {
       <FlexBlock>
         <FitLogo width={118} height={39} color="gray" />
         <PolicyLinkBlock>
-          <Link href={'/policy/term'}>
+          <Link href={'/policy/terms'}>
             <Txt size={'typo5'} weight={'bold'} color="#757575">
               서비스 이용약관
             </Txt>
@@ -74,10 +74,7 @@ export const FooterContent = () => {
           </Txt>
         </TxtBlock>
         <LinkBlock>
-          <Link
-            href={'https://www.instagram.com/f.it.official?igsh=dWw4OHo0cTZ1ZXli'}
-            target="__blank"
-          >
+          <Link href={process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? ''} target="_blank">
             <Icons icon={'instagram'} color="#9E9E9E" width={37} />
           </Link>
         </LinkBlock>
