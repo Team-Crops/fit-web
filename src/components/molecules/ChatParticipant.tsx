@@ -1,11 +1,15 @@
+import { useState } from 'react';
+
 import styled from '@emotion/styled';
 
-import { Icons, Tooltip, Txt, UserProfile } from '#/components/atoms';
+import { Icons, MouseDetector, Tooltip, Txt, UserProfile } from '#/components/atoms';
+import { UserDetails } from '#/components/organisms/UserDetails';
 import type { ChatUser } from '#/types';
 
 interface ChatParticipantProps {
   imageUrl: ChatUser['profileImageUrl'];
   nickname: ChatUser['nickname'];
+  userId?: ChatUser['id'];
   isEmpty?: boolean;
   isHost?: boolean;
   isReady?: boolean;
@@ -14,16 +18,18 @@ interface ChatParticipantProps {
 export const ChatParticipant = ({
   imageUrl,
   nickname,
+  userId,
   isEmpty,
   isHost,
   isReady,
 }: ChatParticipantProps) => {
+  const [showDetails, setShowDetails] = useState(false);
   return (
     <Container>
       {isEmpty ? (
         <EmptyCircle />
       ) : (
-        <UserProfileContainer isReady={isReady}>
+        <UserProfileContainer isReady={isReady} onClick={() => setShowDetails((v) => !v)}>
           <UserProfile imageUrl={imageUrl} nickname={nickname} />
           {isHost && (
             <Tooltip text="랜덤설정된 임시방장입니다.">
@@ -40,14 +46,22 @@ export const ChatParticipant = ({
       <Nickname size="typo5" weight="medium" color="rgba(33, 33, 33, 1)">
         {nickname ?? ''}
       </Nickname>
+      {userId && showDetails && (
+        <UserDetailsPopup onClickOutside={() => setShowDetails(false)}>
+          <UserDetails userId={userId} />
+        </UserDetailsPopup>
+      )}
     </Container>
   );
 };
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+
   width: 78px;
 `;
 
@@ -62,6 +76,8 @@ const EmptyCircle = styled.div`
 `;
 
 const UserProfileContainer = styled.div<{ isReady?: boolean }>`
+  cursor: pointer;
+
   position: relative;
 
   width: fit-content;
@@ -79,7 +95,7 @@ const HostIcon = styled(Icons)`
 
 const ReadyIcon = styled(Icons)`
   position: absolute;
-  top: -4px;
+  top: -28px;
   right: -4px;
 
   display: flex;
@@ -96,4 +112,18 @@ const ReadyIcon = styled(Icons)`
 
 const Nickname = styled(Txt)`
   text-align: center;
+`;
+
+const UserDetailsPopup = styled(MouseDetector)`
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: calc(100% + 16px);
+
+  padding-bottom: 40px;
+
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
 `;

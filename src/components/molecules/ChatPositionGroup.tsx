@@ -23,6 +23,7 @@ export const ChatPositionGroup = ({ name, participants }: ChatPositionGroupProps
             key={participant.id}
             imageUrl={participant.profileImageUrl}
             nickname={participant.nickname}
+            userId={participant.id}
             isHost={participant.isHost}
             isReady={participant.isReady}
           />

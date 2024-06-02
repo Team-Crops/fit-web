@@ -51,13 +51,13 @@ const RowBlock = styled.div`
   align-items: center;
 `;
 
-interface UserModalProps {
+interface UserModalProps extends React.HTMLAttributes<HTMLDivElement> {
   userId: User['id'];
   showIsLiked?: boolean;
   showContacts?: boolean;
 }
 
-export const UserDetails = ({ userId, showIsLiked, showContacts }: UserModalProps) => {
+export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: UserModalProps) => {
   const { data: user, mutate: mutateCachedUser } = useUserQuery(userId);
   const { data: skills } = useSkillsQuery();
   const { data: regions } = useRegionsQuery();
@@ -105,8 +105,6 @@ export const UserDetails = ({ userId, showIsLiked, showContacts }: UserModalProp
     ]
   );
 
-  console.dir(details);
-
   const onLikeClick: React.MouseEventHandler = useCallback(
     (e) => {
       e.stopPropagation();
@@ -127,7 +125,7 @@ export const UserDetails = ({ userId, showIsLiked, showContacts }: UserModalProp
     return <Loading />;
   }
   return (
-    <Container>
+    <Container {...props}>
       {showIsLiked && (
         <LikeButton
           icon={user?.isLiked ? 'heartFilled' : 'heart'}
