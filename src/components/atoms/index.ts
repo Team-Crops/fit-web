@@ -11,7 +11,7 @@ export { Label } from './Label';
 export { Loading } from './Loading';
 export { MouseDetector } from './MouseDetector';
 export { Select } from './Select';
-export { Txt } from './Text';
+export { Txt, Textarea } from './Text';
 export { Toggle } from './Toggle';
 export { Tooltip } from './Tooltip';
 export { UserProfile } from './UserProfile';

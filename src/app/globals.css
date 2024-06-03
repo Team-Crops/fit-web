@@ -43,7 +43,8 @@
 
 html,
 body,
-input {
+input,
+textarea {
   padding: 0;
   margin: 0;
   font-family:
