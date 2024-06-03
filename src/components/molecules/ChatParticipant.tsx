@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Icons, MouseDetector, Tooltip, Txt, UserProfile } from '#/components/atoms';
+import { Button, Icons, MouseDetector, Tooltip, Txt, UserProfile } from '#/components/atoms';
 import { UserDetails } from '#/components/organisms/UserDetails';
+import type { ReportUserMutationArg } from '#/hooks/use-projects';
 import type { ChatUser } from '#/types';
+import { ReportPopup } from './ReportPopup';
 
 interface ChatParticipantProps {
   imageUrl: ChatUser['profileImageUrl'];
@@ -13,6 +15,8 @@ interface ChatParticipantProps {
   isEmpty?: boolean;
   isHost?: boolean;
   isReady?: boolean;
+  onReportUser?: (args: Omit<ReportUserMutationArg, 'targetUserId'>) => Promise<void>;
+  onKickUser?: () => void;
 }
 
 export const ChatParticipant = ({
@@ -22,8 +26,12 @@ export const ChatParticipant = ({
   isEmpty,
   isHost,
   isReady,
+  onReportUser,
+  onKickUser,
 }: ChatParticipantProps) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [showReportPopup, setShowReportPopup] = useState(false);
+
   return (
     <Container>
       {isEmpty ? (
@@ -49,7 +57,30 @@ export const ChatParticipant = ({
       {userId && showDetails && (
         <UserDetailsPopup onClickOutside={() => setShowDetails(false)}>
           <UserDetails userId={userId} />
+          <Toolbox>
+            {onReportUser && (
+              <Button
+                variant={'angular'}
+                height={'20'}
+                color="primary"
+                onClick={() => {
+                  setShowDetails(false);
+                  setShowReportPopup(true);
+                }}
+              >
+                신고하기
+              </Button>
+            )}
+            {onKickUser && (
+              <Button variant={'angular'} height={'20'} color="primary" onClick={onKickUser}>
+                강퇴하기
+              </Button>
+            )}
+          </Toolbox>
         </UserDetailsPopup>
+      )}
+      {onReportUser && showReportPopup && (
+        <ReportPopup onClose={() => setShowReportPopup(false)} onReport={onReportUser} />
       )}
     </Container>
   );
@@ -126,4 +157,13 @@ const UserDetailsPopup = styled(MouseDetector)`
   border: 1px solid #eee;
   border-radius: 12px;
   box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
+`;
+
+const Toolbox = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  display: flex;
+  gap: 10px;
 `;
