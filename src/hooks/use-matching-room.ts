@@ -50,19 +50,23 @@ export function useMatchingRoomQuery(id?: MatchingRoom['id'] | null) {
   });
 }
 
-export function useMatchingRoomForceOutMutation(
-  roomId: MatchingRoom['id'],
-  userId?: User['id'] | null
-) {
-  return useSWRMutation(MATCHING_ROOM_FORCE_OUT_KEY(roomId), (url) =>
-    fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ userId }) })
+interface MatchingRoomForceOutMutationArg {
+  userId: User['id'];
+}
+
+export function useMatchingRoomForceOutMutation(roomId?: MatchingRoom['id']) {
+  return useSWRMutation(
+    roomId ? MATCHING_ROOM_FORCE_OUT_KEY(roomId) : undefined,
+    (url, { arg: { userId } }: { arg: MatchingRoomForceOutMutationArg }) => {
+      return fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ userId }) });
+    }
   );
 }
 
 export function useMatchingRoomCompleteMutation(roomId: MatchingRoom['id']) {
   return useSWRMutation(
     MATCHING_ROOM_COMPLETE_KEY(roomId),
-    (url: string) => fitFetcher<null>(url, { method: 'POST' }),
+    (url) => fitFetcher<null>(url, { method: 'POST' }),
     {
       onSuccess: () => {
         mutate(MATCHING_QUERY_KEY);
@@ -79,14 +83,14 @@ interface MatchingRoomCompleteMutationArg {
 export function useMatchingRoomReadyMutation(roomId: MatchingRoom['id']) {
   return useSWRMutation(
     MATCHING_ROOM_READY_KEY(roomId),
-    (url: string, { arg: { isReady } }: { arg: MatchingRoomCompleteMutationArg }) => {
+    (url, { arg: { isReady } }: { arg: MatchingRoomCompleteMutationArg }) => {
       return fitFetcher<null>(url, { method: 'POST', body: JSON.stringify({ isReady }) });
     }
   );
 }
 
 export function useMatchingRoomQuitMutation(roomId: MatchingRoom['id']) {
-  return useSWRMutation(MATCHING_ROOM_QUIT_KEY(roomId), (url: string) => {
+  return useSWRMutation(MATCHING_ROOM_QUIT_KEY(roomId), (url) => {
     return fitFetcher<null>(url, { method: 'POST' });
   });
 }
