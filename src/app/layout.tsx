@@ -1,7 +1,7 @@
 import { Footer } from '#/components/templates/Footer';
 import { Header } from '#/components/templates/Header';
 import './globals.css';
-import { LoginGuard } from './login-guard';
+import { SignupGuard } from './signup-guard';
 
 import type { Metadata } from 'next';
 
@@ -14,11 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <LoginGuard>
-          <Header />
-          {children}
-          <Footer />
-        </LoginGuard>
+        <SignupGuard />
+        <Header />
+        {children}
+        <Footer />
       </body>
     </html>
   );

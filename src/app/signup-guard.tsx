@@ -12,11 +12,7 @@ import { useMeQuery } from '#/hooks/use-user';
 import { SignUpStep } from '#/types';
 import { checkSignUpStep } from '#/utilities/check-sign-up-step';
 
-interface LoginGuardProps {
-  children: React.ReactNode;
-}
-
-export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
+export const SignupGuard = () => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [step, setStep] = useState<SignUpStep | null>(null);
 
@@ -62,10 +58,5 @@ export const LoginGuard: React.FC<LoginGuardProps> = ({ children }) => {
     }
   }, [step]);
 
-  return (
-    <>
-      {children}
-      {isPopupOpened && popupComponent && <Backdrop>{popupComponent}</Backdrop>}
-    </>
-  );
+  return isPopupOpened && popupComponent ? <Backdrop>{popupComponent}</Backdrop> : null;
 };
