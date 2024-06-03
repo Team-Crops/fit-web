@@ -83,6 +83,7 @@ const TextBubble = styled(Txt)<{ myBubble: ChatBubbleProps['myBubble'] }>`
 const ImageBubble = styled(Image)`
   flex: 1;
   width: 100%;
+  background-color: #d9d9d9;
   border-radius: 6px;
 `;
 
