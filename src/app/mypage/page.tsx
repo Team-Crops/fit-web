@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 
+import { LoginGuard } from '#/app/login-guard';
 import { InfoEditSection } from '#templates/MyPage/InfoEditSection';
 import { MyInfoSection } from '#templates/MyPage/MyInfoSection';
 import { ProfileSection } from '#templates/MyPage/ProfileSection';
@@ -15,13 +16,13 @@ export default function MyPage() {
   }, [isEditing]);
 
   return (
-    <>
+    <LoginGuard>
       <ProfileSection isEditing={isEditing} />
       {isEditing ? (
         <InfoEditSection handleEditing={handleEditing} />
       ) : (
         <MyInfoSection handleEditing={handleEditing} />
       )}
-    </>
+    </LoginGuard>
   );
 }
