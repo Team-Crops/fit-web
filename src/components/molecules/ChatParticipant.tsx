@@ -2,7 +2,15 @@ import { useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Button, Icons, MouseDetector, Tooltip, Txt, UserProfile } from '#/components/atoms';
+import {
+  Button,
+  ConfirmationDialog,
+  Icons,
+  MouseDetector,
+  Tooltip,
+  Txt,
+  UserProfile,
+} from '#/components/atoms';
 import { UserDetails } from '#/components/organisms/UserDetails';
 import type { ReportUserMutationArg } from '#/hooks/use-projects';
 import type { ChatUser } from '#/types';
@@ -31,6 +39,7 @@ export const ChatParticipant = ({
 }: ChatParticipantProps) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showReportPopup, setShowReportPopup] = useState(false);
+  const [showKickDialog, setShowKickDialog] = useState(false);
 
   return (
     <Container>
@@ -72,7 +81,15 @@ export const ChatParticipant = ({
               </Button>
             )}
             {onKickUser && (
-              <Button variant={'angular'} height={'20'} color="primary" onClick={onKickUser}>
+              <Button
+                variant={'angular'}
+                height={'20'}
+                color="primary"
+                onClick={() => {
+                  setShowDetails(false);
+                  setShowKickDialog(true);
+                }}
+              >
                 강퇴하기
               </Button>
             )}
@@ -81,6 +98,17 @@ export const ChatParticipant = ({
       )}
       {onReportUser && showReportPopup && (
         <ReportPopup onClose={() => setShowReportPopup(false)} onReport={onReportUser} />
+      )}
+      {onKickUser && showKickDialog && (
+        <ConfirmationDialog
+          isOpen={showKickDialog}
+          text={`${nickname} 님을 강퇴하시겠습니까?`}
+          onConfirm={() => {
+            onKickUser();
+            setShowKickDialog(false);
+          }}
+          onCancel={() => setShowKickDialog(false)}
+        />
       )}
     </Container>
   );

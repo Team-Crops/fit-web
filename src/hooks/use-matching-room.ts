@@ -5,7 +5,7 @@ import { MatchingRoom, User } from '#/types';
 import { fitFetcher } from '#/utilities';
 import { MATCHING_QUERY_KEY } from './use-matching';
 
-const MATCHING_ROOM_QUERY_KEY = (id: number) => `/v1/matching/room/${id}`;
+export const MATCHING_ROOM_QUERY_KEY = (id: number) => `/v1/matching/room/${id}`;
 const MATCHING_ROOM_COMPLETE_KEY = (id: number) => `/v1/matching/room/${id}/complete`;
 const MATCHING_ROOM_FORCE_OUT_KEY = (id: number) => `/v1/matching/room/${id}/force-out`;
 const MATCHING_ROOM_READY_KEY = (id: number) => `/v1/matching/room/${id}/ready`;

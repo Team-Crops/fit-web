@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import { mutate } from 'swr';
 import { useShallow } from 'zustand/react/shallow';
 
 import {
@@ -8,11 +9,15 @@ import {
 } from '#/components/molecules/ChatPositionGroup';
 import { MatchingChatHeader } from '#/components/molecules/MatchingChatHeader';
 import { ProjectChatHeader } from '#/components/molecules/ProjectChatHeader';
-import { useMatchingRoomForceOutMutation } from '#/hooks/use-matching-room';
+import {
+  MATCHING_ROOM_QUERY_KEY,
+  useMatchingRoomForceOutMutation,
+} from '#/hooks/use-matching-room';
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { useReportUserMutator } from '#/hooks/use-projects';
+import { useMeQuery } from '#/hooks/use-user';
 import { useChatStore } from '#/stores';
-import type { Chat, ChatUser, Project } from '#/types';
+import type { Chat } from '#/types';
 
 interface ChatParticipantsProps {
   chatId: Chat['id'];
@@ -29,6 +34,7 @@ export const ChatParticipants: React.FC<ChatParticipantsProps> = ({ chatId, onCl
     }))
   );
 
+  const { data: me } = useMeQuery();
   const { data: positions } = usePositionsQuery();
   const { trigger: kickUser } = useMatchingRoomForceOutMutation(matchingId ?? undefined);
   const { trigger: reportUser } = useReportUserMutator(projectId);
@@ -55,7 +61,14 @@ export const ChatParticipants: React.FC<ChatParticipantsProps> = ({ chatId, onCl
             key={position.id}
             name={position.displayName}
             participants={participants.filter((p) => p.positionId === position.id) ?? []}
-            onKickUser={(userId) => kickUser({ userId })}
+            onKickUser={
+              participants.some((p) => p.isHost && p.id === me?.id)
+                ? async (userId) => {
+                    await kickUser({ userId });
+                    mutate(MATCHING_ROOM_QUERY_KEY(matchingId));
+                  }
+                : undefined
+            }
           />
         ) : null
       )}

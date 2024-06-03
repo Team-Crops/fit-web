@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms/Text';
@@ -39,8 +37,7 @@ const ChatPositionGroup = ({
             onKickUser={onKickUser ? () => onKickUser(participant.id) : undefined}
             onReportUser={
               onReportUser
-                ? (args: Omit<ReportUserMutationArg, 'targetUserId'>) =>
-                    onReportUser?.({ ...args, targetUserId: participant.id })
+                ? (args) => onReportUser({ ...args, targetUserId: participant.id })
                 : undefined
             }
           />
