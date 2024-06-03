@@ -34,7 +34,7 @@ interface ChatMessagesResponse {
   pageResult: {
     values: {
       content?: string;
-      imageUrl?: string;
+      imagesUrl?: string;
       messageId: number;
       messageType: 'TEXT' | 'IMAGE';
       userId: number;
@@ -56,7 +56,7 @@ export function useChatMessagesQuery(id: Chat['id']) {
       messages: json.pageResult.values.map((v) => ({
         id: v.messageId,
         content: v.content,
-        imageUrl: v.imageUrl,
+        imageUrl: v.imagesUrl,
         userId: v.userId,
         messageType: v.messageType,
         createdAt: v.createdAt,
