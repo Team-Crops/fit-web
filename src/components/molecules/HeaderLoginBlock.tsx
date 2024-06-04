@@ -1,12 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-
 import styled from '@emotion/styled';
 
+import { useLoginGuardStore } from '#/stores';
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
-import { LoginPopup } from '#templates/LoginPopup';
 
 const LoginButton = styled(Button)`
   display: flex;
@@ -19,20 +17,20 @@ const LoginButton = styled(Button)`
   font-size: 18px;
   font-weight: 400;
 `;
+
 export const HeaderLoginBlock = () => {
-  const [isOpenedLoginPopup, setIsOpenedLoginPopup] = useState(false);
+  const showLoginPopup = useLoginGuardStore((state) => state.showLoginPopup);
   return (
     <div>
       <LoginButton
         variant={'round'}
         height={'50'}
         color={'primary'}
-        onClick={() => setIsOpenedLoginPopup(true)}
+        onClick={() => showLoginPopup()}
       >
         <Icons icon={'user'} width={24} height={20} />
         로그인
       </LoginButton>
-      {isOpenedLoginPopup && <LoginPopup onCancel={() => setIsOpenedLoginPopup(false)} />}
     </div>
   );
 };

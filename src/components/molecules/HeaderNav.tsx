@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
 import { Txt } from '#atoms/Text';
+import { GuardedLink } from '../atoms/Link';
 
 const NavBlock = styled.div`
   display: flex;
@@ -65,11 +65,11 @@ export const HeaderNav = () => {
       {LinkList.map((link) => {
         return (
           <NavLink key={link.name} isCurrent={pathName === link.href}>
-            <Link href={link.href}>
+            <GuardedLink href={link.href}>
               <Txt size={'typo5'} weight={'bold'} color="#212121">
                 {link.name}
               </Txt>
-            </Link>
+            </GuardedLink>
           </NavLink>
         );
       })}
