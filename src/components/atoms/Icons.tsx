@@ -45,6 +45,7 @@ import {
   ClipBoldIcon,
   UserLineIcon,
   LogoutIcon,
+  EmojiPoliceCarLight,
 } from '#/assets/icons';
 
 export type IconName =
@@ -68,6 +69,7 @@ export type IconName =
   | 'emojiFire'
   | 'emojiHoldingBackTears'
   | 'emojiPartyingFace'
+  | 'emojiPoliceCarLight'
   | 'emojiWinkingFace'
   | 'facebook'
   | 'google'
@@ -193,6 +195,9 @@ const icons: Record<IconName, Icon> = {
   },
   emojiPartyingFace: {
     SVGR: EmojiPartyingFace,
+  },
+  emojiPoliceCarLight: {
+    SVGR: EmojiPoliceCarLight,
   },
   emojiWinkingFace: {
     SVGR: EmojiWinkingFace,

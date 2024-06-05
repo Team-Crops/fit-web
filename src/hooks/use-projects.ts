@@ -1,11 +1,12 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
-import { Project, ProjectStatus } from '#/types';
+import { Project, ProjectStatus, type ReportType } from '#/types';
 import { fitFetcher } from '#/utilities';
 
 const PROJECTS_QUERY_KEY = '/v1/project';
 const PROJECTS_MUTATION_KEY = (id: Project['id']) => `/v1/project/${id}`;
+const PROJECTS_REPORT_USER_MUTATION_KEY = (id: Project['id']) => `/v1/project/${id}/report`;
 
 interface GetProjectsResponse {
   projectList: {
@@ -54,10 +55,29 @@ interface ProjectMutationArg {
 export function useProjectMutator(id: Project['id']) {
   return useSWRMutation(
     PROJECTS_MUTATION_KEY(id),
-    (url, { arg: { status, name } }: { arg: ProjectMutationArg }) =>
-      fitFetcher<Project>(url, {
+    async (url, { arg: { status, name } }: { arg: ProjectMutationArg }) => {
+      return await fitFetcher<Project>(url, {
         method: 'PATCH',
         body: JSON.stringify({ projectStatus: status, projectName: name }),
-      })
+      });
+    }
+  );
+}
+
+export interface ReportUserMutationArg {
+  reportType: ReportType;
+  description: string;
+  targetUserId: number;
+}
+
+export function useReportUserMutator(id?: Project['id']) {
+  return useSWRMutation(
+    id ? PROJECTS_REPORT_USER_MUTATION_KEY(id) : undefined,
+    async (url, { arg }: { arg: ReportUserMutationArg }) => {
+      return await fitFetcher<void>(url, {
+        method: 'POST',
+        body: JSON.stringify(arg),
+      });
+    }
   );
 }

@@ -83,9 +83,12 @@ const StyledTxt = styled.span<TxtProps>`
   ${TxtWeightCSS}
 `;
 
-export interface TxtProps extends HTMLAttributes<HTMLSpanElement> {
+interface TextBasicProps {
   size?: 'typo0' | 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'main1' | 'main2';
   weight?: 'bold' | 'medium' | 'regular';
+}
+
+export interface TxtProps extends TextBasicProps, React.HTMLAttributes<HTMLSpanElement> {
   marginBottom?: number;
   textAlign?: CSSProperties['textAlign'];
 }
@@ -104,3 +107,17 @@ export const Txt: React.FC<TxtProps> = ({
     </StyledTxt>
   );
 };
+
+interface TextareaProps extends TextBasicProps, React.HTMLAttributes<HTMLTextAreaElement> {
+  size?: 'typo0' | 'typo1' | 'typo2' | 'typo3' | 'typo4' | 'typo5' | 'typo6' | 'main1' | 'main2';
+  weight?: 'bold' | 'medium' | 'regular';
+}
+
+export const Textarea = styled.textarea<TextareaProps>`
+  display: block;
+  line-height: 1.5;
+  color: ${({ color }) => color};
+
+  ${TxtSizeCSS}
+  ${TxtWeightCSS}
+`;

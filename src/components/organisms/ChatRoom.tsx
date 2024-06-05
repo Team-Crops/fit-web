@@ -63,7 +63,6 @@ export const ChatRoom = ({ projectId, matchingId }: ChatRoomProps) => {
 const Container = styled.div<{ height?: number | null }>`
   position: relative;
 
-  overflow: hidden;
   display: flex;
 
   width: 100%;

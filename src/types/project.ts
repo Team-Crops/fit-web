@@ -5,6 +5,12 @@ export enum ProjectStatus {
   PROJECT_COMPLETE = 'PROJECT_COMPLETE',
 }
 
+export enum ReportType {
+  ESCAPE = 'ESCAPE',
+  DIVE = 'DIVE',
+  ETC = 'ETC',
+}
+
 export interface Project {
   id: number;
   name: string;

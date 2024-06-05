@@ -2,20 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
-const Backdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100vw;
-  height: 100vh;
-
-  background-color: rgb(0 0 0 / 30%);
-`;
+import { Backdrop } from '.';
 
 const DialogContainer = styled.div`
   overflow: hidden;

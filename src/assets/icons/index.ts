@@ -14,6 +14,7 @@ export { default as CrownIcon } from './crown.svg';
 export { default as EmojiFire } from './emoji-fire.png';
 export { default as EmojiHoldingBackTears } from './emoji-holding-back-tears.png';
 export { default as EmojiPartyingFace } from './emoji-partying-face.png';
+export { default as EmojiPoliceCarLight } from './emoji-police-car-light.png';
 export { default as EmojiWinkingFace } from './emoji-winking-face.png';
 export { default as GoogleIcon } from './google.svg';
 export { default as ImageIcon } from './image.svg';

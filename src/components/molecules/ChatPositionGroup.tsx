@@ -1,15 +1,23 @@
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms/Text';
+import type { ReportUserMutationArg } from '#/hooks/use-projects';
 import { ChatUser, Position } from '#/types';
 import { ChatParticipant } from './ChatParticipant';
 
 interface ChatPositionGroupProps {
   name: Position['displayName'];
   participants: ChatUser[];
+  onKickUser?: (userId: ChatUser['id']) => void;
+  onReportUser?: (args: ReportUserMutationArg) => Promise<void>;
 }
 
-export const ChatPositionGroup = ({ name, participants }: ChatPositionGroupProps) => {
+const ChatPositionGroup = ({
+  name,
+  participants,
+  onKickUser,
+  onReportUser,
+}: ChatPositionGroupProps) => {
   return (
     <Container>
       <NameContainer>
@@ -23,17 +31,30 @@ export const ChatPositionGroup = ({ name, participants }: ChatPositionGroupProps
             key={participant.id}
             imageUrl={participant.profileImageUrl}
             nickname={participant.nickname}
+            userId={participant.id}
             isHost={participant.isHost}
             isReady={participant.isReady}
+            onKickUser={onKickUser ? () => onKickUser(participant.id) : undefined}
+            onReportUser={
+              onReportUser
+                ? (args) => onReportUser({ ...args, targetUserId: participant.id })
+                : undefined
+            }
           />
         ))}
         {Array.from({ length: 2 - participants.length }).map((_, index) => (
-          <ChatParticipant key={index} isEmpty imageUrl={null} nickname={null} />
+          <ChatParticipant key={`empty-${index}`} isEmpty imageUrl={null} nickname={null} />
         ))}
       </UserContainer>
     </Container>
   );
 };
+
+export const MatchingChatPositionGroup = (props: Omit<ChatPositionGroupProps, 'onReportUser'>) =>
+  ChatPositionGroup(props);
+
+export const ProjectChatPositionGroup = (props: Omit<ChatPositionGroupProps, 'onKickUser'>) =>
+  ChatPositionGroup(props);
 
 const Container = styled.div`
   display: flex;

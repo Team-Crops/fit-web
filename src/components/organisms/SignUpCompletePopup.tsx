@@ -1,15 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
-import { useShallow } from 'zustand/react/shallow';
-
+import { Txt, Icons, Toggle, Button, Tooltip } from '#/components/atoms';
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
-import { Icons } from '#atoms/Icons';
-import { Txt } from '#atoms/Text';
-import { Toggle } from '#atoms/Toggle';
-import { Button } from '../atoms/Button';
 
 const Container = styled.div`
   position: relative;
@@ -66,23 +61,6 @@ const ProfileVisibilityToggleContainer = styled.div`
   align-items: center;
 `;
 
-const Tooltip = styled.div<{ show: boolean }>`
-  position: absolute;
-  top: 28px;
-  right: 0;
-
-  padding: 8px;
-
-  color: #fff;
-  white-space: nowrap;
-
-  opacity: ${({ show }) => (show ? 1 : 0)};
-  background-color: #212121b2;
-  border-radius: 5px;
-
-  transition: opacity 0.2s ease-in-out;
-`;
-
 const TooltipIcon = styled(Icons)`
   cursor: pointer;
   color: #bdbdbd;
@@ -121,17 +99,9 @@ export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCanc
     <Container>
       <CloseButton icon="cross" size={20} color="#BDBDBD" onClick={() => onCancel()} />
       <ProfileVisibilityToggleContainer>
-        <Tooltip show={showProfileVisibilityTooltip}>
-          <Txt size="typo6" weight="regular">
-            다른 사용자들의 추천 목록에 프로필이 공개됩니다.
-          </Txt>
+        <Tooltip text="다른 사용자들의 추천 목록에 프로필이 공개됩니다">
+          <TooltipIcon icon="info" size={14} />
         </Tooltip>
-        <TooltipIcon
-          icon="info"
-          size={14}
-          onMouseOver={() => setShowProfileVisibilityTooltip(true)}
-          onMouseLeave={() => setShowProfileVisibilityTooltip(false)}
-        />
         <Txt size="typo5" weight="bold">
           내 프로필 공개
         </Txt>

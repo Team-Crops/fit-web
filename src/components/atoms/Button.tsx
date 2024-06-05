@@ -8,7 +8,7 @@ const ButtonVariantsCSS = ({ variant }: ButtonProps) => {
     case 'angular':
     case 'outlined':
       return css`
-        border-radius: 50px;
+        border-radius: 5px;
       `;
     case 'round':
       return css`
