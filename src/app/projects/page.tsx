@@ -1,5 +1,10 @@
+import { LoginGuard } from '#/app/login-guard';
 import { Projects } from '#/components/templates/Projects';
 
 export default function ProjectsPage() {
-  return <Projects />;
+  return (
+    <LoginGuard>
+      <Projects />
+    </LoginGuard>
+  );
 }
