@@ -3,7 +3,7 @@ import returnFetch from 'return-fetch';
 import { getTokens } from '#/utilities/session';
 
 export const fitFetch = returnFetch({
-  baseUrl: 'https://dev-api.f-it.team',
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
