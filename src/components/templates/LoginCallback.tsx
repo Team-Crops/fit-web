@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 
 import { mutate } from 'swr';
 
+import { AGREEMENTS_QUERY_KEY } from '#/hooks/use-policy-agrees';
 import { ME_QUERY_KEY } from '#/hooks/use-user';
 import { AuthTokens } from '#/types/auth-tokens';
 import { SocialPlatform } from '#/types/social-platform';
@@ -48,6 +49,7 @@ export const LoginCallback = ({ platform }: LoginCallbackProps) => {
       if (code) {
         const tokens = await acquireTokens({ platform, code });
         setStorageTokens(tokens);
+        mutate(AGREEMENTS_QUERY_KEY);
         mutate(ME_QUERY_KEY);
         router.replace('/');
       }

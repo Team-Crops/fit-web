@@ -9,7 +9,10 @@ const ME_MUTATION_KEY = '/v1/user';
 export const USER_QUERY_KEY = (id: User['id']) => `/v1/user/${id}`;
 
 export function useMeQuery() {
-  return useSWR<Me, ApiError>(ME_QUERY_KEY, fitFetcher, { dedupingInterval: 1000 * 60 * 10 });
+  return useSWR<Me, ApiError>(ME_QUERY_KEY, fitFetcher, {
+    dedupingInterval: 1000 * 60 * 10,
+    errorRetryCount: 0,
+  });
 }
 
 interface MeMutationArg extends Partial<Omit<Me, 'id' | 'status'>> {}

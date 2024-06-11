@@ -5,7 +5,7 @@ import { policies } from '#/entities';
 import { PolicyAgreement, PolicyType } from '#/types';
 import { fitFetcher } from '#/utilities/fetch';
 
-const AGREEMENTS_QUERY_KEY = '/v1/user/policy-agreement';
+export const AGREEMENTS_QUERY_KEY = '/v1/user/policy-agreement';
 const AGREEMENTS_MUTATION_KEY = '/v1/user/policy-agreement';
 
 export interface PolicyAgreesQueryResponse {
@@ -17,14 +17,18 @@ export interface PolicyAgreesQueryResponse {
 }
 
 export function usePolicyAgreesQuery() {
-  return useSWR(AGREEMENTS_QUERY_KEY, async (url) => {
-    const response = await fitFetcher<PolicyAgreesQueryResponse>(url);
-    return response.policyAgreementList.map((p) => ({
-      type: p.policyType,
-      version: p.version,
-      isAgreed: p.isAgree,
-    })) as PolicyAgreement[];
-  });
+  return useSWR(
+    AGREEMENTS_QUERY_KEY,
+    async (url) => {
+      const response = await fitFetcher<PolicyAgreesQueryResponse>(url);
+      return response.policyAgreementList.map((p) => ({
+        type: p.policyType,
+        version: p.version,
+        isAgreed: p.isAgree,
+      })) as PolicyAgreement[];
+    },
+    { errorRetryCount: 0 }
+  );
 }
 
 type PolicyAgreeArg = {
