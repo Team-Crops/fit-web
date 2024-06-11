@@ -5,7 +5,7 @@ import { policies } from '#/entities';
 import { PolicyAgreement, PolicyType } from '#/types';
 import { fitFetcher } from '#/utilities/fetch';
 
-const AGREEMENTS_QUERY_KEY = '/v1/user/policy-agreement';
+export const AGREEMENTS_QUERY_KEY = '/v1/user/policy-agreement';
 const AGREEMENTS_MUTATION_KEY = '/v1/user/policy-agreement';
 
 export interface PolicyAgreesQueryResponse {
