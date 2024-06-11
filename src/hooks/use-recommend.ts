@@ -12,7 +12,7 @@ const RECOMMEND_USER_QUERY_KEY =
       return null;
     }
 
-    const params: Record<string, string> = { page: (index + 1).toString() };
+    const params: Record<string, string> = { page: index.toString() };
     for (const [key, value] of Object.entries(options)) {
       if (Array.isArray(value)) {
         if (value.length) {
