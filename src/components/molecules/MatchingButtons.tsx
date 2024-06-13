@@ -111,8 +111,10 @@ export const MatchingReadyButton = ({
   matchingId,
   ...props
 }: Omit<MatchingButtonProps, 'onClick'> & { matchingId: MatchingRoom['id'] }) => {
+  const router = useRouter();
+
   const { data: me } = useMeQuery();
-  const { data: room } = useMatchingRoomQuery(matchingId);
+  const { data: room, mutate: mutateRoom } = useMatchingRoomQuery(matchingId);
 
   const { trigger: ready, isMutating: isReadyMutating } = useMatchingRoomReadyMutation(matchingId);
   const { trigger: start, isMutating: isStartMutating } =
@@ -126,7 +128,10 @@ export const MatchingReadyButton = ({
   return matchingMe?.isHost ? (
     <MatchingButton
       disabled={!room?.matchingUsers.every((u) => u.isReady) || isStartMutating}
-      onClick={() => start()}
+      onClick={async () => {
+        await start();
+        router.push('/projects');
+      }}
       {...props}
     >
       시작하기
@@ -134,7 +139,10 @@ export const MatchingReadyButton = ({
   ) : (
     <MatchingButton
       disabled={isReadyMutating}
-      onClick={() => ready({ isReady: !matchingMe?.isReady })}
+      onClick={async () => {
+        await ready({ isReady: !matchingMe?.isReady });
+        await mutateRoom();
+      }}
       {...props}
     >
       {matchingMe?.isReady ? '준비 취소하기' : '준비하기'}
