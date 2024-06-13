@@ -8,7 +8,7 @@ import { Loading } from '#/components/atoms';
 import { useMatchingQuery } from '#/hooks/use-matching';
 import { useMatchingRoomQuery } from '#/hooks/use-matching-room';
 import { ApiError, MatchingStatus } from '#/types';
-import { MatchingTitle } from '#molecules/matching/MatchingTitle';
+import { MatchingTitle } from '#molecules/MatchingTitle';
 import { MatchingChatRoom } from '#organisms/MatchingChatRoom';
 import { MatchingRegister } from '#organisms/MatchingRegister';
 import { MatchingWaiting } from '#organisms/MatchingWaiting';
