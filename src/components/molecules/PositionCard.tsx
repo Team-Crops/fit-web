@@ -3,7 +3,29 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { Txt } from '#atoms/Text';
+import { Txt } from '#/components/atoms';
+import { media } from '#/utilities';
+
+interface PositionCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  name: string;
+  imageUrl: string;
+  selected: boolean;
+
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+}
+
+export const PositionCard = ({ name, imageUrl, selected, onClick }: PositionCardProps) => {
+  return (
+    <Container selected={selected} onClick={onClick}>
+      <PositionImageContainer>
+        <Image src={imageUrl} alt={name} fill />
+      </PositionImageContainer>
+      <Txt size="typo4" weight={selected ? 'bold' : 'medium'} textAlign="center">
+        {name}
+      </Txt>
+    </Container>
+  );
+};
 
 const Container = styled.div<{ selected: boolean }>`
   cursor: pointer;
@@ -12,9 +34,8 @@ const Container = styled.div<{ selected: boolean }>`
 
   display: flex;
   flex-direction: column;
-  gap: 16px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 
   width: 180px;
   height: 200px;
@@ -31,11 +52,19 @@ const Container = styled.div<{ selected: boolean }>`
   &:hover {
     box-shadow: 0 0 40px rgb(0 0 0 / 20%);
   }
+
+  ${media.small} {
+    width: 135px;
+    height: 150px;
+  }
 `;
 
 const PositionImageContainer = styled.div`
+  position: relative;
+
   overflow: hidden;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
 
@@ -44,25 +73,9 @@ const PositionImageContainer = styled.div`
 
   background-color: #ffeae9;
   border-radius: 50%;
+
+  ${media.small} {
+    width: 84px;
+    height: 84px;
+  }
 `;
-
-interface PositionCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: string;
-  imageUrl: string;
-  selected: boolean;
-
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-}
-
-export const PositionCard = ({ name, imageUrl, selected, onClick }: PositionCardProps) => {
-  return (
-    <Container selected={selected} onClick={onClick}>
-      <PositionImageContainer>
-        <Image src={imageUrl} width={130} height={130} alt={name} />
-      </PositionImageContainer>
-      <Txt size="typo4" weight={selected ? 'bold' : 'medium'}>
-        {name}
-      </Txt>
-    </Container>
-  );
-};

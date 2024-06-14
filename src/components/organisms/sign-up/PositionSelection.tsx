@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -8,52 +7,8 @@ import { Txt } from '#/components/atoms/Text';
 import { PositionCard } from '#/components/molecules/PositionCard';
 import { usePositionsQuery } from '#/hooks/use-positions';
 import type { User } from '#/types';
+import { media } from '#/utilities';
 import { getStorageUrl } from '#/utilities/storage';
-
-const Container = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const PositionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 23px;
-  align-items: center;
-`;
-
-const PositionCards = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: 40px;
-  justify-content: center;
-`;
-
-const BackgroundImage1 = styled(Image)`
-  position: absolute;
-  top: 470px;
-  left: 30px;
-  transform: rotate(-15deg);
-
-  width: 221px;
-  height: 221px;
-
-  filter: blur(1.5px);
-`;
-
-const BackgroundImage2 = styled(Image)`
-  position: absolute;
-  top: 200px;
-  left: 750px;
-
-  width: 69px;
-  height: 69px;
-
-  filter: blur(1px);
-`;
 
 interface PositionSelectionProps {
   user: User;
@@ -90,3 +45,54 @@ export const PositionSelection: React.FC<PositionSelectionProps> = ({ user, onUs
     </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+
+  padding: 0 10px;
+`;
+
+const PositionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+  align-items: center;
+`;
+
+const PositionCards = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  gap: 40px;
+  justify-content: center;
+
+  ${media.small} {
+    gap: 10px;
+  }
+`;
+
+const BackgroundImage1 = styled(Image)`
+  position: absolute;
+  top: 470px;
+  left: 30px;
+  transform: rotate(-15deg);
+
+  width: 221px;
+  height: 221px;
+
+  filter: blur(1.5px);
+`;
+
+const BackgroundImage2 = styled(Image)`
+  position: absolute;
+  top: 200px;
+  left: 750px;
+
+  width: 69px;
+  height: 69px;
+
+  filter: blur(1px);
+`;

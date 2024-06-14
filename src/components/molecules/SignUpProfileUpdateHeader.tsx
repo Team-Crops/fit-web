@@ -19,7 +19,6 @@ const Container = styled.div`
   gap: 40px;
 
   width: 100%;
-  padding-bottom: 52px;
 `;
 
 const ButtonsContainer = styled.div`

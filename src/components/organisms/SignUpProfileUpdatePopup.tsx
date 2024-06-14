@@ -2,10 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useShallow } from 'zustand/react/shallow';
-
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
-import { User, SignUpStep, Me } from '#/types';
+import { SignUpStep, Me } from '#/types';
 import { checkSignUpStep } from '#/utilities';
 import { PositionSelection } from './sign-up/PositionSelection';
 import { ProfileDetailsSubmission } from './sign-up/ProfileDetailsSubmission';
@@ -18,11 +16,13 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
+  gap: 32px;
   align-items: center;
-  justify-content: space-between;
 
-  width: min(830px, 100%);
-  height: 680px;
+  width: 100%;
+  max-width: 830px;
+  max-height: 100vh;
+  margin: 0 4px;
 
   background: linear-gradient(180deg, #fff 0%, #fff2f1 91.5%, #ffeae9 100%);
   border-radius: 15px;
@@ -100,6 +100,7 @@ export const SignUpProfileUpdatePopup: React.FC<SignUpProfileUpdatePopupProps> =
         canProceed={canProceed && !isMutating}
       />
       {popupComponent}
+      <div />
     </Container>
   );
 };
