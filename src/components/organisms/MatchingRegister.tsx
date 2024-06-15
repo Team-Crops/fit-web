@@ -1,26 +1,18 @@
 'use client';
 
-import { type HTMLAttributes } from 'react';
-import { useRouter } from 'next/navigation';
-
 import styled from '@emotion/styled';
 
 import _ from 'lodash';
-import { mutate } from 'swr';
 
-import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
-import { MATCHING_QUERY_KEY, useMatchingStartMutation } from '#/hooks/use-matching';
+import { MatchingButtons } from '#/components/molecules/MatchingButtons';
 import { useMeQuery } from '#/hooks/use-user';
 import { UserDetails } from './UserDetails';
 import { Loading } from '../atoms';
 
-interface MatchingProfileProps extends HTMLAttributes<HTMLDivElement> {}
+interface MatchingProfileProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
   const { data: me } = useMeQuery();
-  const { trigger: startMatching, isMutating: isStarting } = useMatchingStartMutation();
-
-  const router = useRouter();
 
   return (
     <Container {...props}>
@@ -32,17 +24,10 @@ export const MatchingRegister = ({ ...props }: MatchingProfileProps) => {
         <Loading />
       )}
       <MatchingButtons>
-        <MatchingButtons.Button color="secondary" onClick={() => router.push('/mypage')}>
+        <MatchingButtons.LinkButton href="/mypage" color="secondary">
           수정하기
-        </MatchingButtons.Button>
-        <MatchingButtons.Button
-          disabled={isStarting}
-          onClick={async () => {
-            mutate(MATCHING_QUERY_KEY, await startMatching());
-          }}
-        >
-          확인
-        </MatchingButtons.Button>
+        </MatchingButtons.LinkButton>
+        <MatchingButtons.SearchButton>확인</MatchingButtons.SearchButton>
       </MatchingButtons>
     </Container>
   );

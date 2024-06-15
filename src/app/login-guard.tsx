@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 
 import { Loading } from '#/components/atoms';
 import { LoginPopup } from '#/components/templates/LoginPopup';
-import { ApiErrorCode } from '#/entities/api-error';
 import { useMeQuery } from '#/hooks/use-user';
 import { useLoginGuardStore } from '#/stores';
+import { ApiError } from '#/types';
 
 interface LoginGuardProps {
   children?: React.ReactNode;
@@ -21,14 +21,14 @@ export const LoginGuard = ({ children }: LoginGuardProps) => {
     return <Loading />;
   }
 
-  if (error && error.code === ApiErrorCode.INVALID_ACCESS_TOKEN) {
+  if (error && error.code === ApiError.INVALID_ACCESS_TOKEN_CODE) {
     showLoginPopup();
     router.back();
   }
 
   return (
     <>
-      {error && error.code === ApiErrorCode.INVALID_ACCESS_TOKEN && <LoginPopup />}
+      {error && error.code === ApiError.INVALID_ACCESS_TOKEN_CODE && <LoginPopup />}
       {children}
     </>
   );
