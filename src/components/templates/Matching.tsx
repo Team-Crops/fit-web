@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Loading } from '#/components/atoms';
-import { MATCHING_NOT_FOUND_CODE, useMatchingQuery } from '#/hooks/use-matching';
+import { useMatchingQuery } from '#/hooks/use-matching';
 import { useMatchingRoomQuery } from '#/hooks/use-matching-room';
-import { MatchingStatus } from '#/types';
-import { MatchingTitle } from '#molecules/matching/MatchingTitle';
+import { ApiError, MatchingStatus } from '#/types';
+import { MatchingTitle } from '#molecules/MatchingTitle';
 import { MatchingChatRoom } from '#organisms/MatchingChatRoom';
 import { MatchingRegister } from '#organisms/MatchingRegister';
 import { MatchingWaiting } from '#organisms/MatchingWaiting';
@@ -34,7 +34,7 @@ export const Matching = () => {
   useEffect(() => {
     if (matching) {
       setStatus(matching.status);
-    } else if (error && error.code === MATCHING_NOT_FOUND_CODE) {
+    } else if (error && error.code === ApiError.MATCHING_NOT_FOUND_CODE) {
       setStatus(MatchingStatus.REGISTER);
     }
   }, [matching, error]);

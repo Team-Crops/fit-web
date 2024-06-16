@@ -1,10 +1,8 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
-import { set } from 'lodash';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -14,11 +12,11 @@ import { mutate } from 'swr';
 import { matchingPageBackground1, matchingPageDoughnut } from '#/assets/images';
 import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
-import { MatchingButtons } from '#/components/molecules/matching/MatchingButtons';
-import { MatchingTalkBackground } from '#/components/molecules/matching/MatchingTalkBackground';
+import { MatchingButtons } from '#/components/molecules/MatchingButtons';
+import { MatchingTalkBackground } from '#/components/molecules/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { exampleUsers } from '#/entities';
-import { MATCHING_QUERY_KEY, useMatchingCancelMutation } from '#/hooks/use-matching';
+import { MATCHING_QUERY_KEY } from '#/hooks/use-matching';
 
 const Container = styled.div`
   display: flex;
@@ -71,7 +69,7 @@ const ProgressIcon = styled(Icons)`
 const ProfileCardsSwiper = styled(Swiper)`
   position: absolute;
   top: 160px;
-  left: 520px;
+  left: 420px;
 
   height: 380px;
 
@@ -85,6 +83,10 @@ const ProfileCardsSwiper = styled(Swiper)`
   .swiper-slide :not(.swiper-slide-pref, .swiper-slide-active, .swiper-slide-next) {
     filter: blur(1px);
     transition: filter 750ms;
+  }
+
+  .swiper-wrapper {
+    padding: 100px;
   }
 `;
 
@@ -115,14 +117,6 @@ const BackgroundDoughnut = styled(Image)`
 interface MatchingQueuedProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
-  const { trigger: cancelMatching } = useMatchingCancelMutation();
-
-  const router = useRouter();
-
-  const goHome = useCallback(() => {
-    router.push('/');
-  }, [router]);
-
   useEffect(() => {
     const revalidateMatchingTimer = setInterval(() => mutate(MATCHING_QUERY_KEY), 5000);
     return () => clearInterval(revalidateMatchingTimer);
@@ -176,16 +170,8 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
         />
       </QueuingContainer>
       <MatchingButtons>
-        <MatchingButtons.Button
-          color="secondary"
-          onClick={async () => {
-            await cancelMatching();
-            await mutate(MATCHING_QUERY_KEY, undefined);
-          }}
-        >
-          매칭 중단하기
-        </MatchingButtons.Button>
-        <MatchingButtons.Button onClick={() => goHome()}>홈으로 이동</MatchingButtons.Button>
+        <MatchingButtons.CancelButton />
+        <MatchingButtons.LinkButton href="/">홈으로 이동</MatchingButtons.LinkButton>
       </MatchingButtons>
     </Container>
   );

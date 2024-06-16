@@ -289,13 +289,22 @@ const icons: Record<IconName, Icon> = {
 
 interface IconsProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: IconName;
+  useCSSColor?: boolean;
 
   size?: number;
   width?: number;
   height?: number;
 }
 
-export const Icons: React.FC<IconsProps> = ({ icon, width, height, size, color, ...props }) => {
+export const Icons: React.FC<IconsProps> = ({
+  icon,
+  useCSSColor,
+  width,
+  height,
+  size,
+  color,
+  ...props
+}) => {
   const { SVGR, color: defaultColor, style } = icons[icon];
   if (typeof SVGR === 'object') {
     return (
@@ -311,12 +320,16 @@ export const Icons: React.FC<IconsProps> = ({ icon, width, height, size, color, 
 
   return (
     <div {...props}>
-      <SVGR
-        color={color ?? defaultColor}
-        width={size ?? width}
-        height={size ?? height}
-        style={{ ...style, flexShrink: 0 }}
-      />
+      {useCSSColor ? (
+        <SVGR width={size ?? width} height={size ?? height} style={{ ...style, flexShrink: 0 }} />
+      ) : (
+        <SVGR
+          color={color ?? defaultColor}
+          width={size ?? width}
+          height={size ?? height}
+          style={{ ...style, flexShrink: 0 }}
+        />
+      )}
     </div>
   );
 };

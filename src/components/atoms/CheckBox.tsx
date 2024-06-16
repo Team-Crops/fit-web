@@ -33,7 +33,9 @@ const inputColorCSS = css`
     border-color: #ff706c;
 
     + ${StyledIcon} {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #ff706c;
     }
   }
@@ -43,7 +45,9 @@ const inputColorCSS = css`
     border-color: #ffc7c6;
 
     + ${StyledIcon} {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #ffc7c6;
     }
   }
@@ -95,7 +99,7 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
         }}
         {...props}
       />
-      <StyledIcon icon="check" />
+      <StyledIcon icon="check" useCSSColor />
     </StyledContainer>
   )
 );

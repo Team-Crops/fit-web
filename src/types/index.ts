@@ -1,4 +1,4 @@
-export type { ApiError } from './api-error';
+export { ApiError } from './api-error';
 
 export type { AuthTokens, TokenPayload } from './auth-tokens';
 
