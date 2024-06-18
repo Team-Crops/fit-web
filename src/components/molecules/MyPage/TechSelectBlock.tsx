@@ -37,9 +37,10 @@ const TechListBlock = styled.div`
 
 interface TechSelectBlockProps {
   value: number[];
+  initPosition?: number;
   onTechClick: (value: number) => void;
 }
-export const TechSelectBlock = ({ value, onTechClick }: TechSelectBlockProps) => {
+export const TechSelectBlock = ({ value, initPosition, onTechClick }: TechSelectBlockProps) => {
   const { data: positions } = usePositionsQuery();
   const [selectedPosition, setSelectedPosition] = useState<number>(0);
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -56,6 +57,13 @@ export const TechSelectBlock = ({ value, onTechClick }: TechSelectBlockProps) =>
       setSkills(positions.find((position) => position.id === selectedPosition)?.skillList || []);
     }
   }, [positions, selectedPosition]);
+
+  // init
+  useEffect(() => {
+    if (initPosition) {
+      setSelectedPosition(initPosition);
+    }
+  }, [initPosition]);
 
   return (
     <TechContainer>
