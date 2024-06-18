@@ -1,103 +1,22 @@
-import { useState } from 'react';
 import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
 import { Txt, Icons, Toggle, Button, Tooltip } from '#/components/atoms';
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
-
-const Container = styled.div`
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-
-  width: 830px;
-  height: 680px;
-
-  background: #fff;
-  border-radius: 15px;
-`;
-
-const CloseButton = styled(Icons)`
-  cursor: pointer;
-
-  position: absolute;
-  top: 20px;
-  left: 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px;
-
-  color: #bdbdbd;
-
-  border-radius: 50%;
-
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    color: #757575;
-    background-color: #e0e0e0;
-  }
-
-  @media (width <= 768px) {
-    top: 16px;
-    right: 16px;
-  }
-`;
-
-const ProfileVisibilityToggleContainer = styled.div`
-  position: absolute;
-  top: 36px;
-  right: 36px;
-
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-
-const TooltipIcon = styled(Icons)`
-  cursor: pointer;
-  color: #bdbdbd;
-  transition: color 0.2s ease-in-out;
-
-  :hover {
-    color: #757575;
-  }
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: center;
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-`;
+import { media } from '#/utilities';
 
 interface SignUpCompletePopupProps {
   onCancel: () => void;
 }
 
 export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCancel }) => {
-  const [showProfileVisibilityTooltip, setShowProfileVisibilityTooltip] = useState(false);
-
   const { data: me, mutate: mutateCachedMe } = useMeQuery();
   const { trigger: mutateMe, isMutating: isMutatingUser } = useMeMutation();
 
   return (
     <Container>
-      <CloseButton icon="cross" size={20} color="#BDBDBD" onClick={() => onCancel()} />
+      <CloseButton icon="cross" color="#BDBDBD" onClick={() => onCancel()} size={16} />
       <ProfileVisibilityToggleContainer>
         <Tooltip text="다른 사용자들의 추천 목록에 프로필이 공개됩니다">
           <TooltipIcon icon="info" size={14} />
@@ -137,3 +56,84 @@ export const SignUpCompletePopup: React.FC<SignUpCompletePopupProps> = ({ onCanc
     </Container>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  width: 830px;
+  height: 680px;
+  padding: 16px;
+
+  background: #fff;
+  border-radius: 15px;
+`;
+
+const CloseButton = styled(Icons)`
+  cursor: pointer;
+
+  position: absolute;
+  top: 28px;
+  left: 40px;
+
+  padding: 8px;
+
+  color: #bdbdbd;
+
+  border-radius: 50%;
+
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    color: #757575;
+    background-color: #e0e0e0;
+  }
+
+  ${media.small} {
+    top: 16px;
+    left: 16px;
+  }
+`;
+
+const ProfileVisibilityToggleContainer = styled.div`
+  position: absolute;
+  top: 36px;
+  right: 36px;
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  ${media.small} {
+    top: 16px;
+    right: 16px;
+  }
+`;
+
+const TooltipIcon = styled(Icons)`
+  cursor: pointer;
+  color: #bdbdbd;
+  transition: color 0.2s ease-in-out;
+
+  :hover {
+    color: #757575;
+  }
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+`;
