@@ -4,29 +4,12 @@ import styled from '@emotion/styled';
 
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { SignUpStep, Me } from '#/types';
-import { checkSignUpStep } from '#/utilities';
+import { checkSignUpStep, media } from '#/utilities';
 import { PositionSelection } from './sign-up/PositionSelection';
 import { ProfileDetailsSubmission } from './sign-up/ProfileDetailsSubmission';
 import { TimeAvailabilitySubmission } from './sign-up/TimeAvailabilitySubmission';
 import { ToolAvailabilitySubmission } from './sign-up/ToolAvailabilitySubmission';
 import { SignUpProfileUpdateHeader } from '../molecules/SignUpProfileUpdateHeader';
-
-const Container = styled.div`
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  align-items: center;
-
-  width: 100%;
-  max-width: 830px;
-  max-height: 100vh;
-  margin: 0 4px;
-
-  background: linear-gradient(180deg, #fff 0%, #fff2f1 91.5%, #ffeae9 100%);
-  border-radius: 15px;
-`;
 
 interface SignUpProfileUpdatePopupProps {
   step: SignUpStep;
@@ -99,8 +82,36 @@ export const SignUpProfileUpdatePopup: React.FC<SignUpProfileUpdatePopupProps> =
         onNextClick={onNextClick}
         canProceed={canProceed && !isMutating}
       />
-      {popupComponent}
+      <Content>{popupComponent}</Content>
       <div />
     </Container>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+
+  width: 100%;
+  max-width: 830px;
+  max-height: 100vh;
+
+  background: linear-gradient(180deg, #fff 0%, #fff2f1 91.5%, #ffeae9 100%);
+  border-radius: 15px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 590px;
+  padding: 0 20px;
+
+  ${media.small} {
+    width: 100%;
+    max-width: 550px;
+  }
+`;
