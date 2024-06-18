@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 import { Loading } from '#/components/atoms';
+import { IconName } from '#/components/atoms/Icons';
 import { PortfolioFileBlock } from '#/components/atoms/MyPage/PortfolioFileBlock';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useMeQuery } from '#/hooks/use-user';
@@ -91,7 +92,11 @@ export const PortfolioInformation = () => {
             {me.portfolioUrl && <PortfolioFileBlock />}
             <PortfolioList>
               {me.linkList?.map((link) => (
-                <PortfolioTicket key={link.linkUrl} icon={'link'} text={link.linkUrl} />
+                <PortfolioTicket
+                  key={link.linkUrl}
+                  icon={link.linkType.toLowerCase() as IconName}
+                  text={link.linkUrl}
+                />
               ))}
             </PortfolioList>
           </PortfolioContent>
