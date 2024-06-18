@@ -193,7 +193,7 @@ export const MemberInfoEdit = () => {
         <BasicInfoEdit title={'학력/경력'} titleWidth={97} essential>
           <CareerSelect
             value={tempUser.backgroundStatus ?? ''}
-            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value, 20)}
+            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value)}
           />
         </BasicInfoEdit>
         <BasicInfoEdit title={'전화번호'} titleWidth={97}>
