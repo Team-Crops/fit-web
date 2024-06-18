@@ -107,7 +107,7 @@ const Container = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  width: 590px;
+  width: 100%;
   padding: 0 20px;
 
   ${media.small} {

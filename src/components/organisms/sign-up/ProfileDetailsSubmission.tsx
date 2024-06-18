@@ -11,6 +11,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   justify-content: space-between;
+
+  width: 100%;
+  max-width: 580px;
+  margin: auto;
 `;
 
 const TitleContainer = styled.div`
