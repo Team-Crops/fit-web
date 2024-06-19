@@ -19,7 +19,6 @@ const Container = styled.div`
   gap: 40px;
 
   width: 100%;
-  padding-bottom: 52px;
 `;
 
 const ButtonsContainer = styled.div`
@@ -41,13 +40,12 @@ const TextContainer = styled.div`
   gap: 6px;
   align-items: center;
 
-  padding: 8px 16px;
+  padding: 4px 16px;
 
   color: #ff706c;
 
-  background: #fff;
-  border: 1px solid #ff706c;
-  border-radius: 50px;
+  background: #ffeae9;
+  border-radius: 100px;
 `;
 
 const stepNames: Partial<Record<SignUpStep, string>> = {
@@ -85,10 +83,10 @@ export const SignUpProfileUpdateHeader = ({
           onClick={() => onPrevClick()}
         />
         <TextContainer>
-          <Txt size="typo6" weight="bold">
+          <Txt size="typo6" weight="medium">
             {current}/{total}
           </Txt>
-          <Txt size="typo6" weight="medium">
+          <Txt size="typo6" weight="regular">
             {stepNames[step]}
           </Txt>
         </TextContainer>

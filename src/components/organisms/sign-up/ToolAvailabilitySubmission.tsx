@@ -10,87 +10,7 @@ import { Txt } from '#/components/atoms/Text';
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { User } from '#/types';
 import { Skill } from '#/types/skill';
-
-const Container = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 52px;
-
-  @media (width <= 768px) {
-    padding: 16px;
-  }
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-`;
-
-const SubmissionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: end;
-
-  width: calc(100% - 104px);
-`;
-
-const ToolsContainer = styled.div`
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-`;
-
-const PositionTabs = styled.div`
-  overflow-x: auto;
-  display: flex;
-  gap: 10px;
-
-  padding: 10px;
-`;
-
-const PositionTab = styled(Button)<{ selected?: boolean; loading?: boolean }>`
-  flex-grow: 1;
-  color: ${({ selected }) => (selected ? '#ff706c' : '#9e9e9e')};
-  background-color: ${({ loading }) => (loading ? '#f5f5f5' : 'transparent')};
-  animation: ${({ loading }) =>
-    loading ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none'};
-
-  &:hover {
-    color: ${({ selected }) => (selected ? '#ff706c' : '#000000')};
-    background-color: #f5f5f5;
-  }
-`;
-
-const SkillsContainer = styled.div`
-  overflow-y: scroll;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  align-content: flex-start;
-
-  height: 220px;
-  padding: 36px;
-`;
-
-const SkillButton = styled(Button)<{ loading?: boolean }>`
-  padding: 10px 40px;
-
-  ${({ loading }) =>
-    loading &&
-    css`
-      width: 150px;
-      background-color: #f5f5f5;
-      border: none;
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    `}
-`;
+import { media } from '#/utilities';
 
 interface ToolAvailabilitySubmissionProps {
   user: User;
@@ -130,7 +50,7 @@ export const ToolAvailabilitySubmission: React.FC<ToolAvailabilitySubmissionProp
           사용 가능한 툴을 선택해주세요
         </Txt>
         <Txt size="typo4" weight="medium" color="#bdbdbd">
-          마지막 항목이에요! <Icons icon="emojiFire" width={20} height={20} />
+          마지막 항목이에요! <Icons icon="emojiFire" size={20} />
         </Txt>
       </TitleContainer>
 
@@ -195,3 +115,84 @@ export const ToolAvailabilitySubmission: React.FC<ToolAvailabilitySubmissionProp
     </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 52px;
+
+  ${media.small} {
+    padding: 12px;
+  }
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+`;
+
+const SubmissionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: end;
+
+  width: 100%;
+`;
+
+const ToolsContainer = styled.div`
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+`;
+
+const PositionTabs = styled.div`
+  overflow-x: auto;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+`;
+
+const PositionTab = styled(Button)<{ selected?: boolean; loading?: boolean }>`
+  flex-grow: 1;
+  color: ${({ selected }) => (selected ? '#ff706c' : '#9e9e9e')};
+  background-color: ${({ loading }) => (loading ? '#f5f5f5' : 'transparent')};
+  animation: ${({ loading }) =>
+    loading ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none'};
+
+  &:hover {
+    color: ${({ selected }) => (selected ? '#ff706c' : '#000000')};
+    background-color: #f5f5f5;
+  }
+`;
+
+const SkillsContainer = styled.div`
+  overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-content: flex-start;
+
+  height: 220px;
+  padding: 36px;
+`;
+
+const SkillButton = styled(Button)<{ loading?: boolean }>`
+  padding: 10px 40px;
+
+  ${({ loading }) =>
+    loading &&
+    css`
+      width: 150px;
+      background-color: #f5f5f5;
+      border: none;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    `}
+`;

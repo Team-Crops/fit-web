@@ -3,12 +3,11 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { useShallow } from 'zustand/react/shallow';
-
 import { Button, Icons, Input, Txt } from '#/components/atoms';
 import { usePresignedUrlQuery } from '#/hooks/use-presigned-url';
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { User } from '#/types';
+import { media } from '#/utilities';
 import { getStorageUrl, uploadFile } from '#/utilities/storage';
 
 const Container = styled.div`
@@ -20,6 +19,8 @@ const Container = styled.div`
 
   width: min(100%, 830px);
   height: 700px;
+  margin: 0 4px;
+  padding: 0 20px;
 
   background-color: #fff;
   border-radius: 15px;
@@ -56,7 +57,12 @@ const NicknameContainer = styled.div`
   gap: 8px;
   align-items: end;
 
-  width: min(100%, 420px);
+  width: 100%;
+  max-width: 420px;
+
+  ${media.small} {
+    max-width: 210px;
+  }
 `;
 
 interface SignUpProfileCreationPopupProps {

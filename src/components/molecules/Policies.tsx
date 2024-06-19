@@ -4,21 +4,25 @@ import type { ChangeEventHandler, HTMLAttributes, MouseEventHandler } from 'reac
 
 import styled from '@emotion/styled';
 
+import { CheckBox, Divider, Icons, Txt } from '#/components/atoms';
+import { PolicyContent } from '#/components/templates/Policy/PolicyContent';
 import { PolicyType } from '#/types';
-import { CheckBox } from '#atoms/CheckBox';
-import { Divider } from '#atoms/Divider';
-import { Icons } from '#atoms/Icons';
-import { Txt } from '#atoms/Text';
-import { PolicyContent } from '../templates/Policy/PolicyContent';
+import { media } from '#/utilities';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 
-  margin: 0 50px;
+  width: calc(100% - 80px);
+  margin: 0 40px;
 
   text-align: right;
+
+  ${media.small} {
+    width: calc(100% - 24px);
+    margin: 0 12px;
+  }
 `;
 
 const Box = styled.div`
@@ -26,12 +30,17 @@ const Box = styled.div`
   flex-direction: column;
   gap: 30px;
 
-  width: 700px;
+  width: 100%;
   padding: 40px 0;
 
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
+
+  ${media.small} {
+    gap: 20px;
+    padding: 12px 0;
+  }
 `;
 
 const PolicyContainer = styled.div`
@@ -39,6 +48,11 @@ const PolicyContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 0 40px;
+
+  ${media.small} {
+    gap: 12px;
+    padding: 0 12px;
+  }
 `;
 
 const PolicyHeader = styled.div`
@@ -91,7 +105,7 @@ export const PoliciesBox = ({
                 </Txt>
               </CheckBoxContainer>
             </PolicyContainer>
-            <Divider />
+            <Divider color="#e0e0e0" />
           </>
         )}
         {children}

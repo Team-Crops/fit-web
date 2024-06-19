@@ -3,18 +3,24 @@ import styled from '@emotion/styled';
 import { Input, Label, Txt } from '#/components/atoms';
 import { CareerSelect } from '#/components/molecules/CareerSelect';
 import { Me, UserBackgroundStatus } from '#/types';
-import { isUserStudent, isUserWorker } from '#/utilities';
+import { isUserStudent, isUserWorker, media } from '#/utilities';
 
 const Container = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  gap: 20px;
   justify-content: space-between;
+
+  width: 100%;
+  max-width: 580px;
+  margin: auto;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
   align-items: center;
 `;
 
@@ -22,7 +28,6 @@ const SubmissionsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: 550px;
 `;
 
 const Row = styled.div`
@@ -44,7 +49,7 @@ export const ProfileDetailsSubmission: React.FC<ProfileDetailsSubmissionProps> =
   return (
     <Container>
       <TitleContainer>
-        <Txt size="typo1" weight="bold" marginBottom={20}>
+        <Txt size="typo1" weight="bold">
           이름, 학력/경력, 이메일을 입력해주세요
         </Txt>
         <Txt size="typo4" weight="medium" color="#bdbdbd">

@@ -103,6 +103,7 @@ const Container = styled.div`
 
   width: min(100%, 830px);
   max-height: 100vh;
+  margin: 0 4px;
 
   background-color: #fff;
   border-radius: 15px;
