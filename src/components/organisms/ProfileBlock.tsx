@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, InputHTMLAttributes, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
