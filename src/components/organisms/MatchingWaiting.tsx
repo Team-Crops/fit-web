@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
+import { Temporal } from '@js-temporal/polyfill';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -10,13 +11,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { mutate } from 'swr';
 
 import { matchingPageBackground1, matchingPageDoughnut } from '#/assets/images';
-import { Icons } from '#/components/atoms/Icons';
-import { Txt } from '#/components/atoms/Text';
+import { Icons, Txt } from '#/components/atoms';
 import { MatchingButtons } from '#/components/molecules/MatchingButtons';
 import { MatchingTalkBackground } from '#/components/molecules/MatchingTalkBackground';
 import { ProfileCard } from '#/components/molecules/ProfileCard';
 import { exampleUsers } from '#/entities';
-import { MATCHING_QUERY_KEY } from '#/hooks/use-matching';
+import { MATCHING_QUERY_KEY, useMatchingQuery } from '#/hooks/use-matching';
+import { isMatching } from '#/utilities/matching';
 
 const Container = styled.div`
   display: flex;
@@ -116,14 +117,31 @@ const BackgroundDoughnut = styled(Image)`
 
 interface MatchingQueuedProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
+export const MatchingWaiting = (props: MatchingQueuedProps) => {
+  const [remainTime, setRemainTime] = useState('');
+
+  const { data: matching } = useMatchingQuery();
+
   useEffect(() => {
+    const calculateTimer = setInterval(() => {
+      if (isMatching(matching)) {
+        const expiredAt = Temporal.Instant.from(`${matching.expiredAt}+09:00`);
+        const duration = expiredAt.since(Temporal.Now.instant());
+        const totalHours = duration.total({ unit: 'hour' });
+        const days = Math.floor(totalHours / 24);
+        const hours = Math.floor(totalHours % 24);
+        setRemainTime(`${days}일 ${hours}시간`);
+      }
+    }, 1000 * 60);
     const revalidateMatchingTimer = setInterval(() => mutate(MATCHING_QUERY_KEY), 5000);
-    return () => clearInterval(revalidateMatchingTimer);
-  }, []);
+    return () => {
+      clearInterval(calculateTimer);
+      clearInterval(revalidateMatchingTimer);
+    };
+  }, [matching]);
 
   return (
-    <Container>
+    <Container {...props}>
       <QueuingContainer>
         <ProgressIcon icon="progress" width={40} height={40} />
         <Txt size="typo2" weight="bold" marginBottom={8}>
@@ -133,7 +151,7 @@ export const MatchingWaiting: React.FC<MatchingQueuedProps> = () => {
           최소인원 : 기획(1), 디자인(1), 서버(1), 클라이언트(1)
         </Txt>
         <Txt size="typo5" weight="bold" color="#4960D9">
-          매칭 종료까지 남은 시간 : 1일 22시간
+          매칭 종료까지 남은 시간 : {remainTime}
         </Txt>
 
         <BackgroundBubble1 profilePosition="left" />
