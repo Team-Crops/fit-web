@@ -13,33 +13,29 @@ const MenuModal = styled.div`
   right: 0;
   bottom: -218px;
 
-  width: 250px;
   height: 190px;
-  padding: 25px 20px 20px;
+  padding: 24px;
 
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
 `;
 const SummaryBlock = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2px 0;
 `;
 const TopBlock = styled.div`
   display: flex;
-  gap: 13px;
+  gap: 12px;
 `;
 const FlexBlock = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
-
-  width: 147px;
-  margin-bottom: 4px;
 `;
 const UserName = styled(Txt)`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
   white-space: nowrap;
 `;
 const Position = styled(Txt)`
@@ -47,13 +43,12 @@ const Position = styled(Txt)`
   align-items: center;
   justify-content: center;
 
-  height: 22px;
-  padding: 0 17px;
+  padding: 2px 16px;
 
   white-space: nowrap;
 
   background-color: #ffeae9;
-  border-radius: 33px;
+  border-radius: 100px;
 `;
 const LinkListBlock = styled.div`
   display: flex;
@@ -102,7 +97,7 @@ export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) =>
             </Position>
           </FlexBlock>
           <FlexBlock>
-            <Icons icon={'email'} width={15} height={15} color="#757575" />
+            <Icons icon={'email'} size={16} color="#757575" />
             <Txt size="typo6" weight="regular" color="#757575">
               {me?.email}
             </Txt>
@@ -112,13 +107,13 @@ export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) =>
 
       <LinkListBlock>
         <LinkBlock href={'/mypage'} onClick={toggleMenu}>
-          <Icons icon={'userLine'} width={20} height={20} color="#FF706C" />
+          <Icons icon={'userLine'} size={20} color="#FF706C" />
           <Txt size="typo6" weight="regular" color="#212121">
             마이페이지로 이동
           </Txt>
         </LinkBlock>
         <LinkBlock href={'/mypage'} onClick={handleLogout}>
-          <Icons icon={'logout'} width={20} height={20} color="#FF706C" />
+          <Icons icon={'logout'} size={20} color="#FF706C" />
           <Txt size="typo6" weight="regular" color="#212121">
             로그아웃
           </Txt>
