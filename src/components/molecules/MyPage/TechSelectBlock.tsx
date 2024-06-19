@@ -40,13 +40,9 @@ interface TechSelectBlockProps {
   initPositionId?: Position['id'];
   onTechClick: (value: number) => void;
 }
-export const TechSelectBlock = ({
-  value,
-  initPositionId: initPosition,
-  onTechClick,
-}: TechSelectBlockProps) => {
+export const TechSelectBlock = ({ value, initPositionId, onTechClick }: TechSelectBlockProps) => {
   const { data: positions } = usePositionsQuery();
-  const [selectedPosition, setSelectedPosition] = useState<number>(0);
+  const [selectedPosition, setSelectedPosition] = useState(initPositionId ?? 0);
   const [skills, setSkills] = useState<Skill[]>([]);
 
   const handlePosition = useCallback(
@@ -61,13 +57,6 @@ export const TechSelectBlock = ({
       setSkills(positions.find((position) => position.id === selectedPosition)?.skillList || []);
     }
   }, [positions, selectedPosition]);
-
-  // init
-  useEffect(() => {
-    if (initPosition) {
-      setSelectedPosition(initPosition);
-    }
-  }, [initPosition]);
 
   return (
     <TechContainer>
