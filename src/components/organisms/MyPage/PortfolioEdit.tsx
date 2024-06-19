@@ -32,7 +32,7 @@ export const PortfolioEdit = () => {
         <BasicInfoEdit title={'사용 가능한 기술/툴'} titleWidth={300} direction="column" essential>
           <TechSelectBlock
             value={tempUser?.skillIdList ?? []}
-            initPosition={tempUser?.positionId ?? 1}
+            initPositionId={tempUser?.positionId ?? 1}
             onTechClick={onTechClick}
           />
         </BasicInfoEdit>
