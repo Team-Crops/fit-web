@@ -93,6 +93,7 @@ export const RegisterPortfolioBlock = () => {
   }, []);
   const uploadLinkList = useCallback(() => {
     if (tempUser === null) return;
+    if (!portfolioUrl) return alert('URL을 입력해주세요.');
     if ((tempUser.linkList?.length ?? 0) >= 4)
       return alert('포트폴리오는 최대 4개까지 등록 가능합니다.');
     setTempUser({

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { useTempAuthStore } from '#/stores/tempAuth';
-import { Skill } from '#/types';
+import { Position, Skill } from '#/types';
 import { Txt } from '#atoms/Text';
 import { PositionBadge } from './PositionBadge';
 
@@ -37,11 +37,12 @@ const TechListBlock = styled.div`
 
 interface TechSelectBlockProps {
   value: number[];
+  initPositionId?: Position['id'];
   onTechClick: (value: number) => void;
 }
-export const TechSelectBlock = ({ value, onTechClick }: TechSelectBlockProps) => {
+export const TechSelectBlock = ({ value, initPositionId, onTechClick }: TechSelectBlockProps) => {
   const { data: positions } = usePositionsQuery();
-  const [selectedPosition, setSelectedPosition] = useState<number>(0);
+  const [selectedPosition, setSelectedPosition] = useState(initPositionId ?? 0);
   const [skills, setSkills] = useState<Skill[]>([]);
 
   const handlePosition = useCallback(

@@ -30,7 +30,11 @@ export const PortfolioEdit = () => {
     <MyInfoBlock title={'포트폴리오'}>
       <MyPageGridBlock>
         <BasicInfoEdit title={'사용 가능한 기술/툴'} titleWidth={300} direction="column" essential>
-          <TechSelectBlock value={tempUser?.skillIdList ?? []} onTechClick={onTechClick} />
+          <TechSelectBlock
+            value={tempUser?.skillIdList ?? []}
+            initPositionId={tempUser?.positionId ?? 1}
+            onTechClick={onTechClick}
+          />
         </BasicInfoEdit>
         <BasicInfoEdit
           title={'포트폴리오'}

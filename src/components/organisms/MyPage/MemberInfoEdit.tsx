@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import { CareerSelect } from '#/components/molecules/CareerSelect';
 import { useTempAuthStore } from '#/stores/tempAuth';
+import { UserBackgroundStatus } from '#/types';
 import { isUserStudent, isUserWorker } from '#/utilities/user';
 import { CheckBox } from '#atoms/CheckBox';
 import { Input } from '#atoms/Input';
@@ -59,6 +60,13 @@ const Label = styled.label`
   gap: 9px;
   align-items: center;
 `;
+
+const isUserStudentOrWorker = (backgroundStatus: UserBackgroundStatus) => {
+  if (isUserStudent(backgroundStatus)) return '학교명';
+  else if (isUserWorker(backgroundStatus)) return '회사명';
+  else return '그룹명';
+};
+
 export const MemberInfoEdit = () => {
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const [tempEmail, setTempEmail] = useState<{ id: string; domain: string }>({
@@ -193,7 +201,7 @@ export const MemberInfoEdit = () => {
         <BasicInfoEdit title={'학력/경력'} titleWidth={97} essential>
           <CareerSelect
             value={tempUser.backgroundStatus ?? ''}
-            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value, 20)}
+            onChange={(e) => handleUpdateTempUser('backgroundStatus', e.target.value)}
           />
         </BasicInfoEdit>
         <BasicInfoEdit title={'전화번호'} titleWidth={97}>
@@ -232,21 +240,12 @@ export const MemberInfoEdit = () => {
           </FlexBlock>
         </BasicInfoEdit>
         {tempUser.backgroundStatus && (
-          <BasicInfoEdit
-            title={
-              isUserStudent(tempUser.backgroundStatus)
-                ? '학교명'
-                : isUserWorker(tempUser.backgroundStatus)
-                  ? '회사명'
-                  : '그룹명'
-            }
-            titleWidth={97}
-          >
+          <BasicInfoEdit title={isUserStudentOrWorker(tempUser.backgroundStatus)} titleWidth={97}>
             <Input
               value={tempUser.backgroundText === null ? '' : tempUser.backgroundText}
               onChange={(e) => handleUpdateTempUser('backgroundText', e.target.value, 50)}
               width="207px"
-              placeholder="회사명을 입력하세요."
+              placeholder={isUserStudentOrWorker(tempUser.backgroundStatus) + '을 입력하세요.'}
             />
           </BasicInfoEdit>
         )}
