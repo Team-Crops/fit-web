@@ -1,15 +1,19 @@
-import Logo from 'src/assets/logo.svg';
+import ColoredLogo from '#/assets/logos/colored.svg';
+import MonochromeLogo from '#/assets/logos/monochrome.svg';
 
 interface LogoProps {
-  width: number;
-  height: number;
-  color?: 'primary' | 'gray';
+  height?: number;
+  color?: 'primary' | 'gray' | string;
 }
-export const FitLogo: React.FC<LogoProps> = ({ width, height, color = 'primary' }) => {
-  const colorMap = {
-    primary: '#FF706C',
-    gray: '#757575',
-  };
-
-  return <Logo width={width} height={height} color={colorMap[color]} />;
+export const FitLogo: React.FC<LogoProps> = ({ height = 40, color = 'primary' }) => {
+  const aspectRatio = 120 / 40;
+  return color === 'primary' ? (
+    <ColoredLogo width={height * aspectRatio} height={height} />
+  ) : (
+    <MonochromeLogo
+      width={height * aspectRatio}
+      height={height}
+      color={color === 'gray' ? '#757575' : color}
+    />
+  );
 };
