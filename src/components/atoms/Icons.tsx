@@ -27,7 +27,6 @@ import {
   InstagramIcon,
   KakaoIcon,
   LinkIcon,
-  LogoIcon,
   MegaphoneIcon,
   PencilIcon,
   PlusIcon,
@@ -84,7 +83,6 @@ export type IconName =
   | 'kakao'
   | 'link'
   | 'linkedin'
-  | 'logo'
   | 'logout'
   | 'megaphone'
   | 'pencil'
@@ -241,10 +239,6 @@ const icons: Record<IconName, Icon> = {
   },
   linkedin: {
     SVGR: LinkedInIcon,
-  },
-  logo: {
-    SVGR: LogoIcon,
-    color: '#FF706C',
   },
   logout: {
     SVGR: LogoutIcon,

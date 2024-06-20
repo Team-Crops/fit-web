@@ -2,10 +2,7 @@ import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
-import { Divider } from '#atoms/Divider';
-import { FitLogo } from '#atoms/FitLogo';
-import { Icons } from '#atoms/Icons';
-import { Txt } from '#atoms/Text';
+import { Divider, FitLogo, Icons, Txt } from '#/components/atoms';
 
 const ContentBlock = styled.div`
   width: 1200px;
@@ -46,7 +43,7 @@ export const FooterContent = () => {
   return (
     <ContentBlock>
       <FlexBlock>
-        <FitLogo width={118} height={39} color="gray" />
+        <FitLogo color="gray" />
         <PolicyLinkBlock>
           <Link href={'/policy/terms'}>
             <Txt size={'typo5'} weight={'bold'} color="#757575">

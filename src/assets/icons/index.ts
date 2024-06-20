@@ -22,7 +22,6 @@ export { default as InfoIcon } from './info.svg';
 export { default as InstagramIcon } from './instagram.svg';
 export { default as KakaoIcon } from './kakao.svg';
 export { default as LinkIcon } from './link.svg';
-export { default as LogoIcon } from './logo.svg';
 export { default as MegaphoneIcon } from './megaphone.svg';
 export { default as PencilIcon } from './pencil.svg';
 export { default as PlusIcon } from './plus.svg';

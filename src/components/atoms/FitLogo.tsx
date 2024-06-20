@@ -1,15 +1,29 @@
-import Logo from 'src/assets/logo.svg';
+import { SignatureLogo, MonochromeSignatureLogo, SymbolLogo } from '#/assets/logos';
 
 interface LogoProps {
-  width: number;
-  height: number;
-  color?: 'primary' | 'gray';
+  variant?: 'signature' | 'symbol';
+  height?: number;
+  color?: 'primary' | 'gray' | string;
 }
-export const FitLogo: React.FC<LogoProps> = ({ width, height, color = 'primary' }) => {
-  const colorMap = {
+export const FitLogo: React.FC<LogoProps> = ({
+  variant = 'signature',
+  height = 40,
+  color = 'primary',
+}) => {
+  const colors: Record<string, string> = {
     primary: '#FF706C',
     gray: '#757575',
   };
+  const pickedColor = colors[color] ?? color;
 
-  return <Logo width={width} height={height} color={colorMap[color]} />;
+  if (variant === 'signature') {
+    const aspectRatio = 120 / 40;
+    return color === 'primary' ? (
+      <SignatureLogo width={height * aspectRatio} height={height} />
+    ) : (
+      <MonochromeSignatureLogo width={height * aspectRatio} height={height} color={pickedColor} />
+    );
+  } else if (variant === 'symbol') {
+    return <SymbolLogo width={height} height={height} color={pickedColor} />;
+  }
 };
