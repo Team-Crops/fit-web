@@ -1,5 +1,4 @@
-import ColoredLogo from '#/assets/logos/colored.svg';
-import MonochromeLogo from '#/assets/logos/monochrome.svg';
+import { SignatureLogo, MonochromeSignatureLogo } from '#/assets/logos';
 
 interface LogoProps {
   height?: number;
@@ -8,9 +7,9 @@ interface LogoProps {
 export const FitLogo: React.FC<LogoProps> = ({ height = 40, color = 'primary' }) => {
   const aspectRatio = 120 / 40;
   return color === 'primary' ? (
-    <ColoredLogo width={height * aspectRatio} height={height} />
+    <SignatureLogo width={height * aspectRatio} height={height} />
   ) : (
-    <MonochromeLogo
+    <MonochromeSignatureLogo
       width={height * aspectRatio}
       height={height}
       color={color === 'gray' ? '#757575' : color}
