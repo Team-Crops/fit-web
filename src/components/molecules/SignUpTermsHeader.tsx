@@ -2,8 +2,7 @@
 
 import styled from '@emotion/styled';
 
-import { Icons } from '#atoms/Icons';
-import { Txt } from '#atoms/Text';
+import { FitLogo, Txt } from '#/components/atoms';
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +19,7 @@ const Container = styled.div`
 export const SignUpTermsHeader = () => {
   return (
     <Container>
-      <Icons icon="logo" height={26} />
+      <FitLogo height={26} />
       <Txt size="typo2" weight="bold">
         이용 약관
       </Txt>
