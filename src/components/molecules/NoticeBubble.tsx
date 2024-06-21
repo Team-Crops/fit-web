@@ -22,6 +22,6 @@ const Bubble = styled.div`
   margin: 0 auto;
   padding: 5px 20px;
 
-  background-color: rgb(238 238 238 / 100%);
+  background-color: #eee;
   border-radius: 20px;
 `;
