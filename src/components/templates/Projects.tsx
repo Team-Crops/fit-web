@@ -1,26 +1,16 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import styled from '@emotion/styled';
 
 import { Loading, Txt } from '#/components/atoms';
-import { ProjectDivider } from '#/components/molecules/ProjectDivider';
-import { ProjectChatRoom } from '#/components/organisms/ProjectChatRoom';
+import { EmptyProjectList } from '#/components/organisms/EmptyProjectList';
+import { ProjectList } from '#/components/organisms/ProjectList';
 import { useProjectsQuery } from '#/hooks/use-projects';
 import { useMeQuery } from '#/hooks/use-user';
-
-const Container = styled.div`
-  width: min(100%, 1200px);
-  margin: 0 auto;
-`;
 
 export const Projects: React.FC = () => {
   const { data: me } = useMeQuery();
   const { data: projects } = useProjectsQuery();
-
-  const inProgressProjects = useMemo(() => projects?.filter((p) => !p.completedAt), [projects]);
-  const completedProjects = useMemo(() => projects?.filter((p) => p.completedAt), [projects]);
 
   if (!me) {
     return <Loading />;
@@ -33,14 +23,19 @@ export const Projects: React.FC = () => {
       <Txt size="typo5" weight="regular" color="#9e9e9e">
         {me.nickname} 님의 프로젝트를 효과적으로 관리하고, 참여하세요!
       </Txt>
-      <ProjectDivider />
-      {inProgressProjects?.map((project) => (
-        <ProjectChatRoom key={project.id} projectId={project.id} />
-      ))}
-      <ProjectDivider done />
-      {completedProjects?.map((project) => (
-        <ProjectChatRoom key={project.id} projectId={project.id} />
-      ))}
+      {projects && projects?.length === 0 && <EmptyProjectList />}
+      {projects && projects?.length > 0 && <ProjectList />}
     </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+`;
