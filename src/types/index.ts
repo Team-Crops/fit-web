@@ -1,3 +1,5 @@
+export type { AlarmCase, Alarm, AlarmQueryResponse } from './alarm';
+
 export { ApiError } from './api-error';
 
 export type { AuthTokens, TokenPayload } from './auth-tokens';
