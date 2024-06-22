@@ -26,6 +26,7 @@ interface UserCardListProps {
     isLiked: boolean | Promise<boolean>,
     optimisticIsLiked: boolean
   ) => void;
+  isLoading: boolean;
 }
 
 export const UserCardList = ({
@@ -34,6 +35,7 @@ export const UserCardList = ({
   hasNext,
   queryTrigger,
   mutateCachedLike,
+  isLoading,
 }: UserCardListProps) => {
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +76,7 @@ export const UserCardList = ({
             mutateCachedLike={mutateCachedLike}
           />
         ))}
-        {hasNext && <Loading ref={observerRef} />}
+        {isLoading && <Loading ref={observerRef} />}
       </GridBlock>
     </>
   );
