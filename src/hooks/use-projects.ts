@@ -16,6 +16,7 @@ interface GetProjectsResponse {
       nickname: string;
       positionId: number;
       profileImageUrl: string;
+      isReportable: boolean;
     }[];
     projectStatus: string;
     projectName: string;
@@ -37,6 +38,7 @@ export function useProjectsQuery() {
         nickname: m.nickname,
         positionId: m.positionId,
         profileImageUrl: m.profileImageUrl,
+        isReportable: m.isReportable,
       })),
       status: p.projectStatus as ProjectStatus,
       chatId: p.chatRoomId,

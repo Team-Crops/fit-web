@@ -23,4 +23,6 @@ export interface Project {
 }
 
 export interface ProjectUser
-  extends Pick<User, 'id' | 'positionId' | 'nickname' | 'profileImageUrl'> {}
+  extends Pick<User, 'id' | 'positionId' | 'nickname' | 'profileImageUrl'> {
+  isReportable: boolean;
+}
