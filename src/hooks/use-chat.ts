@@ -33,12 +33,13 @@ export function useChatSubscription(id: Chat['id']) {
 interface ChatMessagesResponse {
   pageResult: {
     values: {
+      createdAt: string;
+      messageType: 'TEXT' | 'IMAGE';
+      messageId: number;
+      userId: number;
       content?: string;
       imageUrl?: string;
-      messageId: number;
-      messageType: 'TEXT' | 'IMAGE';
-      userId: number;
-      createdAt: string;
+      notice?: string;
     }[];
     hasNext: boolean;
   };
@@ -54,12 +55,13 @@ export function useChatMessagesQuery(id: Chat['id']) {
     const json = await fitFetcher<ChatMessagesResponse>(url);
     return {
       messages: json.pageResult.values.map((v) => ({
+        createdAt: v.createdAt,
+        messageType: v.messageType,
         id: v.messageId,
+        userId: v.userId,
         content: v.content,
         imageUrl: v.imageUrl,
-        userId: v.userId,
-        messageType: v.messageType,
-        createdAt: v.createdAt,
+        notice: v.notice,
       })),
       hasNext: json.pageResult.hasNext,
     } as { messages: Message[]; hasNext: boolean };
