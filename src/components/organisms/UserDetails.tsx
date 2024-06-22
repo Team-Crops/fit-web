@@ -88,7 +88,7 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
             ? [
                 {
                   linkType: 'PORTFOLIO' as LinkType,
-                  linkUrl: process.env.NEXT_PUBLIC_STORAGE_URL + user?.portfolioUrl ?? '',
+                  linkUrl: process.env.NEXT_PUBLIC_STORAGE_URL + user?.portfolioUrl,
                 },
               ]
             : []),
