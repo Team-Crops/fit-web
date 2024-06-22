@@ -23,6 +23,7 @@ interface ChatParticipantProps {
   isEmpty?: boolean;
   isHost?: boolean;
   isReady?: boolean;
+  isReportable?: boolean;
   onReportUser?: (args: Omit<ReportUserMutationArg, 'targetUserId'>) => Promise<void>;
   onKickUser?: () => void;
 }
@@ -34,6 +35,7 @@ export const ChatParticipant = ({
   isEmpty,
   isHost,
   isReady,
+  isReportable,
   onReportUser,
   onKickUser,
 }: ChatParticipantProps) => {
@@ -72,6 +74,7 @@ export const ChatParticipant = ({
                 variant={'angular'}
                 height={'20'}
                 color="primary"
+                disabled={!isReportable}
                 onClick={() => {
                   setShowDetails(false);
                   setShowReportPopup(true);
