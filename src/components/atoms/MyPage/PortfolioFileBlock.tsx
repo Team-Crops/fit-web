@@ -68,8 +68,6 @@ export const PortfolioFileBlock: React.FC<PortfolioFileBlockProps> = ({ isEdit }
 
   const tempUser = useTempAuthStore((state) => state.tempUser);
   const setTempPortfolioFile = useTempAuthStore((state) => state.setTempPortfolioFile);
-  // 파일이 있는지 없는지 boolean useState 만들어줘
-
   const { data: user } = useMeQuery();
 
   const handleTempPortfolioFileChange = useCallback(
@@ -91,9 +89,11 @@ export const PortfolioFileBlock: React.FC<PortfolioFileBlockProps> = ({ isEdit }
   // init
   useEffect(() => {
     if (tempUser?.portfolioUrl) {
+      const currentFile = new File([], tempUser.portfolioUrl);
+      setTempPortfolioFile(currentFile);
       setHaveFile(true);
     }
-  }, [tempUser?.portfolioUrl]);
+  }, [setTempPortfolioFile, tempUser?.portfolioUrl]);
 
   return (
     <Block haveFile={haveFile || !isEdit}>

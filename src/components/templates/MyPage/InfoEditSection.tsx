@@ -77,7 +77,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
   const submitModifyHandler = async () => {
     if (!checkRequiredValue(tempUser)) return;
     let profileImageUrl = me?.profileImageUrl;
-    let portfolioUrl: string = '';
+    let portfolioUrl = me?.portfolioUrl;
     if (tempImage !== null) {
       const registerImage = await mutatePreSignedUrl({
         fileName: tempImage.name,
@@ -88,7 +88,7 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
     }
     if (me?.portfolioUrl !== null && tempPortfolioFile === null) {
       portfolioUrl = '';
-    } else if (tempPortfolioFile !== null) {
+    } else if (tempPortfolioFile !== null && me?.portfolioUrl !== tempPortfolioFile.name) {
       const registerPortfolio = await mutatePreSignedUrl({
         fileName: tempPortfolioFile.name,
         fileDomain: 'PORTFOLIO',
