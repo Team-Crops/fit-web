@@ -37,6 +37,33 @@
   }
 }
 
+@keyframes spin-elastic-out {
+  0% {
+    transform: rotate(0deg);
+  }
+  16% {
+    transform: rotate(475deg);
+  }
+  28% {
+    transform: rotate(313deg);
+  }
+  44% {
+    transform: rotate(378deg);
+  }
+  59% {
+    transform: rotate(352deg);
+  }
+  73% {
+    transform: rotate(363deg);
+  }
+  88% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
