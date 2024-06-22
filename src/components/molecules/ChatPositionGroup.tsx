@@ -34,6 +34,7 @@ const ChatPositionGroup = ({
             userId={participant.id}
             isHost={participant.isHost}
             isReady={participant.isReady}
+            isReportable={participant.isReportable}
             onKickUser={onKickUser ? () => onKickUser(participant.id) : undefined}
             onReportUser={
               onReportUser
