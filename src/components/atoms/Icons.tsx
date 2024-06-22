@@ -1,8 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 
-import styled from '@emotion/styled';
-
 import {
   AccountIcon,
   ArrowDown,
@@ -314,22 +312,20 @@ export const Icons: React.FC<IconsProps> = ({
     );
   }
 
-  return (
-    <Container {...props}>
-      {useCSSColor ? (
-        <SVGR width={size ?? width} height={size ?? height} style={{ ...style, flexShrink: 0 }} />
-      ) : (
-        <SVGR
-          color={color ?? defaultColor}
-          width={size ?? width}
-          height={size ?? height}
-          style={{ ...style, flexShrink: 0 }}
-        />
-      )}
-    </Container>
+  return useCSSColor ? (
+    <SVGR
+      width={size ?? width}
+      height={size ?? height}
+      style={{ ...style, flexShrink: 0 }}
+      {...props}
+    />
+  ) : (
+    <SVGR
+      color={color ?? defaultColor}
+      width={size ?? width}
+      height={size ?? height}
+      style={{ ...style, flexShrink: 0 }}
+      {...props}
+    />
   );
 };
-
-const Container = styled.div`
-  display: contents;
-`;
