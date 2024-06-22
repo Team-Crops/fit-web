@@ -116,7 +116,11 @@ export const RecommendFilterBlock = ({ options, setOptions }: RecommendFilterBlo
         variant={'outlined'}
         height={'40'}
         color={'primary'}
-        onClick={() => setOptions({})}
+        onClick={() =>
+          setOptions({
+            liked: false,
+          })
+        }
       >
         필터 초기화
       </InitFilterButton>

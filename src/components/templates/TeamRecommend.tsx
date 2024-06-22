@@ -8,7 +8,9 @@ import { UserCardList } from './TeamRecommend/UserCardList';
 import { Loading } from '../atoms';
 
 export const TeamRecommend = () => {
-  const [options, setOptions] = useState<RecommendUserQueryOptions>({});
+  const [options, setOptions] = useState<RecommendUserQueryOptions>({
+    liked: false,
+  });
 
   const {
     data: users,
