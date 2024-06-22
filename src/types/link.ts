@@ -1,7 +1,6 @@
 export interface Link {
   linkUrl: string;
   linkType: LinkType;
-  isPortfolio?: boolean;
 }
 
 export type LinkType =
@@ -11,4 +10,5 @@ export type LinkType =
   | 'VELOG'
   | 'LINKEDIN'
   | 'INSTAGRAM'
-  | 'TISTORY';
+  | 'TISTORY'
+  | 'PORTFOLIO';

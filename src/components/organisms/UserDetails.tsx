@@ -87,9 +87,8 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
           ...(user?.portfolioUrl
             ? [
                 {
-                  linkType: 'LINK' as LinkType,
+                  linkType: 'PORTFOLIO' as LinkType,
                   linkUrl: process.env.NEXT_PUBLIC_STORAGE_URL + user?.portfolioUrl ?? '',
-                  isPortfolio: true,
                 },
               ]
             : []),
@@ -154,7 +153,9 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
                   <RowBlock href={link.linkUrl} target="_blank" key={link.linkUrl}>
                     <Icons icon={getIconByLinkType(link.linkType)} size={14} color="#424242" />
                     <Txt size="typo5" weight="regular" color="#212121">
-                      {link.isPortfolio ? user.nickname + '의 포트폴리오' : link.linkUrl}
+                      {link.linkType === 'PORTFOLIO'
+                        ? user.nickname + '의 포트폴리오'
+                        : link.linkUrl}
                     </Txt>
                   </RowBlock>
                 ))}
