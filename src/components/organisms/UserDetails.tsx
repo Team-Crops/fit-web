@@ -1,17 +1,17 @@
 import { useCallback, useMemo } from 'react';
+import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
 import { Loading } from '#/components/atoms';
-import { IconName, Icons } from '#/components/atoms/Icons';
+import { Icons } from '#/components/atoms/Icons';
 import { Txt } from '#/components/atoms/Text';
 import { DataBlock } from '#/components/molecules/TeamRecommend/DataBlock';
-import { usePositionsQuery } from '#/hooks/use-positions';
 import { useRecommendLikeUserMutation } from '#/hooks/use-recommend';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useUserQuery } from '#/hooks/use-user';
-import { Link, User } from '#/types';
+import { LinkList, User } from '#/types';
 import { LinkType } from '#/types/link';
 import { getIconByLinkType } from '#/utilities/icon';
 import { getBackgroundStatusText } from '#/utilities/user';
@@ -45,7 +45,7 @@ const ContactBlock = styled.div`
   gap: 10px;
   align-items: center;
 `;
-const RowBlock = styled.div`
+const RowBlock = styled(Link)`
   display: flex;
   gap: 10px;
   align-items: center;
@@ -63,7 +63,7 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
   const { data: regions } = useRegionsQuery();
   const { trigger: likeUser } = useRecommendLikeUserMutation();
 
-  const details: { name: string; value: string | Link[] }[] = useMemo(
+  const details: { name: string; value: string | LinkList[] }[] = useMemo(
     () => [
       { name: '학력/경력', value: getBackgroundStatusText(user?.backgroundStatus) ?? '-' },
       { name: '학교명', value: user?.backgroundText ?? '-' },
@@ -85,7 +85,13 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
         name: '포트폴리오',
         value: [
           ...(user?.portfolioUrl
-            ? [{ linkType: 'LINK' as LinkType, linkUrl: user?.portfolioUrl ?? '' }]
+            ? [
+                {
+                  linkType: 'LINK' as LinkType,
+                  linkUrl: process.env.NEXT_PUBLIC_STORAGE_URL + user?.portfolioUrl ?? '',
+                  isPortfolio: true,
+                },
+              ]
             : []),
           ...(user?.linkList ?? []),
         ],
@@ -145,10 +151,10 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
                 key={detail.name}
                 title={detail.name}
                 content={detail.value.map((link) => (
-                  <RowBlock key={link.linkUrl}>
+                  <RowBlock href={link.linkUrl} target="_blank" key={link.linkUrl}>
                     <Icons icon={getIconByLinkType(link.linkType)} size={14} color="#424242" />
-                    <Txt size="typo5" weight="regular">
-                      {link.linkUrl}
+                    <Txt size="typo5" weight="regular" color="#212121">
+                      {link.isPortfolio ? user.nickname + '의 포트폴리오' : link.linkUrl}
                     </Txt>
                   </RowBlock>
                 ))}

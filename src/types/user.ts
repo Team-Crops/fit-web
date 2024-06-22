@@ -1,4 +1,4 @@
-import type { Link } from './link';
+import type { LinkList } from './link';
 
 export enum UserBackgroundStatusStudent {
   HIGH_SCHOOL_GRADUATE = 'HIGH_SCHOOL_GRADUATE',
@@ -38,7 +38,7 @@ export interface User {
   profileImageUrl: string | null;
   email: string | null;
   status: string | null;
-  linkList: Link[] | null;
+  linkList: LinkList[] | null;
   isLiked?: boolean;
 }
 
