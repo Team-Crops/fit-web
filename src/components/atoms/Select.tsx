@@ -61,9 +61,6 @@ const ArrowIcon = transientStyled(Icons)<{ $isError: boolean; $isOpened: boolean
   right: 10px;
   transform: translateY(-50%);
 
-  width: 12px;
-  height: 12px;
-
   transition: 0.25s;
 
   ${({ $isError, $isOpened }) =>
@@ -259,7 +256,7 @@ export const Select: React.FC<SelectProps> & {
         <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
           {label ?? placeholder}
-          <ArrowIcon icon="arrowDown" $isError={error} $isOpened={isOpened} />
+          <ArrowIcon icon="arrowDown" size={12} $isError={error} $isOpened={isOpened} />
           <OptionList position={optionsPosition} hidden={!isOpened} ref={optionsRef}>
             {children}
           </OptionList>
