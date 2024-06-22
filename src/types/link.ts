@@ -1,4 +1,4 @@
-export interface LinkList {
+export interface Link {
   linkUrl: string;
   linkType: LinkType;
   isPortfolio?: boolean;

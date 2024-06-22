@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 
 import styled from '@emotion/styled';
 
@@ -11,7 +11,7 @@ import { useRecommendLikeUserMutation } from '#/hooks/use-recommend';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { useSkillsQuery } from '#/hooks/use-skills';
 import { useUserQuery } from '#/hooks/use-user';
-import { LinkList, User } from '#/types';
+import { Link, User } from '#/types';
 import { LinkType } from '#/types/link';
 import { getIconByLinkType } from '#/utilities/icon';
 import { getBackgroundStatusText } from '#/utilities/user';
@@ -45,7 +45,7 @@ const ContactBlock = styled.div`
   gap: 10px;
   align-items: center;
 `;
-const RowBlock = styled(Link)`
+const RowBlock = styled(NextLink)`
   display: flex;
   gap: 10px;
   align-items: center;
@@ -63,7 +63,7 @@ export const UserDetails = ({ userId, showIsLiked, showContacts, ...props }: Use
   const { data: regions } = useRegionsQuery();
   const { trigger: likeUser } = useRecommendLikeUserMutation();
 
-  const details: { name: string; value: string | LinkList[] }[] = useMemo(
+  const details: { name: string; value: string | Link[] }[] = useMemo(
     () => [
       { name: '학력/경력', value: getBackgroundStatusText(user?.backgroundStatus) ?? '-' },
       { name: '학교명', value: user?.backgroundText ?? '-' },
