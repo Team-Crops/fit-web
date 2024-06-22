@@ -8,7 +8,7 @@ export type { FetchState } from './fetch-state';
 
 export type { PresignedUrl, FileDomain } from './file';
 
-export type { LinkList } from './link';
+export type { LinkList, LinkType } from './link';
 
 export { MatchingStatus } from './matching';
 export type { Matching, MatchingRoom, MatchingUser } from './matching';
