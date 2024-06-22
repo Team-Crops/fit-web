@@ -16,7 +16,6 @@ export const TeamRecommend = () => {
     mutate: mutateCachedUsers,
     isValidating,
     setSize,
-    isLoading,
   } = useRecommendUserQuery(options);
 
   const queryTrigger = useCallback(() => setSize((s) => s + 1), [setSize]);
@@ -56,7 +55,6 @@ export const TeamRecommend = () => {
           hasNext={users[users.length - 1].length > 0}
           queryTrigger={queryTrigger}
           mutateCachedLike={mutateCachedLike}
-          isLoading={isLoading}
         />
       )}
     </>
