@@ -44,7 +44,7 @@ const FoldIcon = transientStyled(Icons)<{
   $isFolded: boolean;
 }>`
   position: absolute;
-  top: 28px;
+  top: 30px;
   left: 16px;
 
   transform: ${({ $isFolded }) => ($isFolded ? 'rotate(0deg)' : 'rotate(180deg)')};
