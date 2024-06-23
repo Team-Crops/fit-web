@@ -70,18 +70,20 @@ export const ChatParticipant = ({
           <UserDetails userId={userId} />
           <Toolbox>
             {onReportUser && (
-              <Button
-                variant={'angular'}
-                height={'20'}
-                color="primary"
-                disabled={!isReportable}
-                onClick={() => {
-                  setShowDetails(false);
-                  setShowReportPopup(true);
-                }}
-              >
-                신고하기
-              </Button>
+              <Tooltip text="이미 신고된 유저입니다." disabled={isReportable}>
+                <Button
+                  variant={'angular'}
+                  height={'20'}
+                  color={isReportable ? 'primary' : 'secondary'}
+                  disabled={!isReportable}
+                  onClick={() => {
+                    setShowDetails(false);
+                    setShowReportPopup(true);
+                  }}
+                >
+                  신고하기
+                </Button>
+              </Tooltip>
             )}
             {onKickUser && (
               <Button
