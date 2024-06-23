@@ -10,4 +10,5 @@ export type LinkType =
   | 'VELOG'
   | 'LINKEDIN'
   | 'INSTAGRAM'
-  | 'TISTORY';
+  | 'TISTORY'
+  | 'PORTFOLIO';

@@ -1,7 +1,7 @@
 import { IconName } from '#/components/atoms/Icons';
-import { Link } from '#/types';
+import { LinkType } from '#/types';
 
-export function getIconByLinkType(linkType: Link['linkType']): IconName {
+export function getIconByLinkType(linkType: LinkType): IconName {
   switch (linkType) {
     case 'FACEBOOK':
       return 'facebook';

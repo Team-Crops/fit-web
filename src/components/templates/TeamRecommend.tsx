@@ -5,10 +5,11 @@ import { useCallback, useState } from 'react';
 import { RecommendUserQueryOptions, useRecommendUserQuery } from '#/hooks/use-recommend';
 import { RecommendFilter } from './TeamRecommend/RecommendFilter';
 import { UserCardList } from './TeamRecommend/UserCardList';
-import { Loading } from '../atoms';
 
 export const TeamRecommend = () => {
-  const [options, setOptions] = useState<RecommendUserQueryOptions>({});
+  const [options, setOptions] = useState<RecommendUserQueryOptions>({
+    liked: false,
+  });
 
   const {
     data: users,
@@ -44,17 +45,18 @@ export const TeamRecommend = () => {
     [mutateCachedUsers, users]
   );
 
-  if (!users) return <Loading />;
   return (
     <>
       <RecommendFilter defaultOptions={options} trigger={setOptions} />
-      <UserCardList
-        users={users?.flat()}
-        isLoadingUsers={isValidating}
-        hasNext={users[users.length - 1].length > 0}
-        queryTrigger={queryTrigger}
-        mutateCachedLike={mutateCachedLike}
-      />
+      {users && (
+        <UserCardList
+          users={users?.flat()}
+          isLoadingUsers={isValidating}
+          hasNext={users[users.length - 1].length > 0}
+          queryTrigger={queryTrigger}
+          mutateCachedLike={mutateCachedLike}
+        />
+      )}
     </>
   );
 };
