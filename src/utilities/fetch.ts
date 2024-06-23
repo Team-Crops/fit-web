@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import returnFetch from 'return-fetch';
 
 import { getTokens } from '#/utilities/session';
@@ -24,6 +25,9 @@ export const fitFetcher = async <T>(...args: Parameters<typeof fitFetch>) => {
   const res = await fitFetch(...args);
   try {
     const json = await res.json();
+    if (!res.ok && json?.message) {
+      toast.error(json.message);
+    }
     return res.ok ? (json as T) : Promise.reject(json as Error);
   } catch (error) {
     return res.ok ? (null as T) : Promise.reject(error as Error);
