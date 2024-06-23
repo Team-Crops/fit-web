@@ -1,3 +1,6 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Footer } from '#/components/templates/Footer';
 import { Header } from '#/components/templates/Header';
 import { LoginPopup } from '#/components/templates/LoginPopup';
@@ -23,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <ToastContainer />
       </body>
     </html>
   );
