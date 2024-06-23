@@ -35,7 +35,11 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
         {editMode ? (
           <form
             ref={formRef}
-            action={async () => {
+            onBlur={() => setEditMode(false)}
+            onSubmit={async (e) => {
+              e.stopPropagation();
+              e.preventDefault();
+
               const updatedProject = await mutateProject({ name: editedName });
               mutateProjects((projects) => [
                 ...(projects?.filter((p) => p.id !== projectId) ?? []),
