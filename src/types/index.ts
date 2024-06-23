@@ -20,7 +20,7 @@ export type { PolicyType, PolicyAgreement, Policy } from './policy';
 export type { Position } from './position';
 
 export { ProjectStatus, ReportType } from './project';
-export type { Project } from './project';
+export type { Project, ProjectUser } from './project';
 
 export type { RecommendUser } from './recommend';
 

@@ -6,11 +6,14 @@ import { Txt } from '.';
 
 interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   text: string;
+  disabled?: boolean;
 }
 
-export const Tooltip = ({ text, children, ...props }: TooltipProps) => {
+export const Tooltip = ({ text, disabled, children, ...props }: TooltipProps) => {
   const [visibility, setVisibility] = useState(false);
-  return (
+  return disabled ? (
+    <>{children}</>
+  ) : (
     <Container {...props}>
       <div onMouseOver={() => setVisibility(true)} onMouseLeave={() => setVisibility(false)}>
         {children}
