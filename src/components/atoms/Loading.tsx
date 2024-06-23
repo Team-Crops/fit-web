@@ -7,14 +7,21 @@ import { FitLogo } from '.';
 export const Loading = forwardRef<HTMLDivElement>(({}, ref) => {
   return (
     <Container ref={ref}>
-      <FitLogo variant="symbol" />
+      <FlexBlock>
+        <FitLogo variant="symbol" />
+      </FlexBlock>
     </Container>
   );
 });
 
 Loading.displayName = 'Loading';
 
-const Container = styled.div`
-  display: inline-block;
+const FlexBlock = styled.div`
+  display: flex;
+  width: fit-content;
   animation: spin-elastic-out 2s infinite;
+`;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
 `;
