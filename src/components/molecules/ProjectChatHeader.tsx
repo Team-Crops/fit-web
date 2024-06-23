@@ -1,6 +1,8 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
+
+import { mutate } from 'swr';
 
 import { Button, Input, Txt } from '#/components/atoms';
 import { useProjectMutator, useProjectsQuery } from '#/hooks/use-projects';
@@ -17,27 +19,28 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
   const [editedName, setEditedName] = useState('');
 
   const { trigger: mutateProject, isMutating: isMutatingProject } = useProjectMutator(projectId);
-  const { data: projects } = useProjectsQuery();
+  const { data: projects, mutate: mutateProjects } = useProjectsQuery();
 
   const project = useMemo(() => projects?.find((p) => p.id === projectId), [projects, projectId]);
+
+  useEffect(() => {
+    if (project?.name) {
+      setEditedName(project?.name);
+    }
+  }, [project?.name]);
 
   return (
     <Container>
       <TextContainer>
         {editMode ? (
-          <Txt
-            size="typo3"
-            weight="bold"
-            color={project?.name ? '#212121' : '#bdbdbd'}
-            onClick={() => setEditMode(true)}
-          >
-            {project?.name ?? '프로젝트 이름'}
-          </Txt>
-        ) : (
           <form
             ref={formRef}
             action={async () => {
-              await mutateProject({ name: editedName });
+              const updatedProject = await mutateProject({ name: editedName });
+              mutateProjects((projects) => [
+                ...(projects?.filter((p) => p.id !== projectId) ?? []),
+                updatedProject,
+              ]);
               setEditMode(false);
             }}
           >
@@ -50,6 +53,15 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
             />
             <button type="submit" hidden />
           </form>
+        ) : (
+          <Txt
+            size="typo3"
+            weight="bold"
+            color={project?.name ? '#212121' : '#bdbdbd'}
+            onClick={() => setEditMode(true)}
+          >
+            {project?.name ?? '프로젝트 이름'}
+          </Txt>
         )}
         <Txt size="typo5" weight="medium" color="#9e9e9e">
           {project?.createdAt} ~ {project?.completedAt}
@@ -68,7 +80,9 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
         }
         disabled={isMutatingProject}
       >
-        {project?.completedAt ? '프로젝트 진행하기' : '프로젝트 종료하기'}
+        <Txt size="typo6" weight="regular" style={{ whiteSpace: 'nowrap' }}>
+          {project?.completedAt ? '프로젝트 진행하기' : '프로젝트 종료하기'}
+        </Txt>
       </Button>
     </Container>
   );
@@ -76,6 +90,7 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
 
 const Container = styled.div`
   display: flex;
+  gap: 8px;
   justify-content: space-between;
 `;
 
