@@ -17,8 +17,10 @@ export const ProjectSummary = ({ projectId }: ProjectSummaryProps) => {
 
   return (
     <Container>
-      <Txt>{project?.name}</Txt>
-      <Txt>
+      <Txt size="typo2" weight="bold">
+        {project?.name}
+      </Txt>
+      <Txt size="typo5" weight="medium" color="#9e9e9e">
         {project?.createdAt} ~ {project?.completedAt}
       </Txt>
     </Container>
@@ -28,4 +30,5 @@ export const ProjectSummary = ({ projectId }: ProjectSummaryProps) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 30px 60px;
 `;
