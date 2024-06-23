@@ -63,6 +63,7 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:3.2.5"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:ae5aba791464d630ca9a0aea17b5f989316a30f061971dd4a341acf3391d54193e93acbbdbf841ea867d9fd77d6c54188d5cf4aabe94f970365b1efb3feb6d36#npm:18.2.0"],\
+          ["react-toastify", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:10.0.5"],\
           ["return-fetch", "npm:0.4.5"],\
           ["socket.io-client", "npm:2.5.0"],\
           ["storybook", "npm:8.0.0"],\
@@ -8432,6 +8433,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["clsx", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/cache/clsx-npm-2.1.1-96125b98be-c4c8eb865f.zip/node_modules/clsx/",\
+        "packageDependencies": [\
+          ["clsx", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["color", [\
       ["npm:4.2.3", {\
         "packageLocation": "./.yarn/cache/color-npm-4.2.3-4a23227581-7fbe7cfb81.zip/node_modules/color/",\
@@ -11051,6 +11061,7 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:3.2.5"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:ae5aba791464d630ca9a0aea17b5f989316a30f061971dd4a341acf3391d54193e93acbbdbf841ea867d9fd77d6c54188d5cf4aabe94f970365b1efb3feb6d36#npm:18.2.0"],\
+          ["react-toastify", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:10.0.5"],\
           ["return-fetch", "npm:0.4.5"],\
           ["socket.io-client", "npm:2.5.0"],\
           ["storybook", "npm:8.0.0"],\
@@ -15649,6 +15660,33 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/react-refresh-npm-0.14.0-78ef5eeb73-b8ae07ad15.zip/node_modules/react-refresh/",\
         "packageDependencies": [\
           ["react-refresh", "npm:0.14.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-toastify", [\
+      ["npm:10.0.5", {\
+        "packageLocation": "./.yarn/cache/react-toastify-npm-10.0.5-86b63c99fc-66c68ec3d6.zip/node_modules/react-toastify/",\
+        "packageDependencies": [\
+          ["react-toastify", "npm:10.0.5"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:10.0.5", {\
+        "packageLocation": "./.yarn/__virtual__/react-toastify-virtual-fab3ea1a3d/0/cache/react-toastify-npm-10.0.5-86b63c99fc-66c68ec3d6.zip/node_modules/react-toastify/",\
+        "packageDependencies": [\
+          ["react-toastify", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:10.0.5"],\
+          ["@types/react", "npm:18.2.65"],\
+          ["@types/react-dom", "npm:18.2.22"],\
+          ["clsx", "npm:2.1.1"],\
+          ["react", "npm:18.2.0"],\
+          ["react-dom", "virtual:ae5aba791464d630ca9a0aea17b5f989316a30f061971dd4a341acf3391d54193e93acbbdbf841ea867d9fd77d6c54188d5cf4aabe94f970365b1efb3feb6d36#npm:18.2.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/react-dom",\
+          "@types/react",\
+          "react-dom",\
+          "react"\
         ],\
         "linkType": "HARD"\
       }]\
