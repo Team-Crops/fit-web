@@ -7,7 +7,9 @@ import { FitLogo } from '.';
 export const Loading = forwardRef<HTMLDivElement>(({}, ref) => {
   return (
     <Container ref={ref}>
-      <FitLogo variant="symbol" />
+      <Spinner>
+        <FitLogo variant="symbol" />
+      </Spinner>
     </Container>
   );
 });
@@ -15,6 +17,11 @@ export const Loading = forwardRef<HTMLDivElement>(({}, ref) => {
 Loading.displayName = 'Loading';
 
 const Container = styled.div`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+`;
+
+const Spinner = styled.div`
+  width: fit-content;
   animation: spin-elastic-out 2s infinite;
 `;
