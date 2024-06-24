@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import returnFetch from 'return-fetch';
 
+import { ApiError } from '#/types';
 import { getTokens } from '#/utilities/session';
 
 export const fitFetch = returnFetch({
@@ -22,10 +23,15 @@ export const fitFetch = returnFetch({
 });
 
 export const fitFetcher = async <T>(...args: Parameters<typeof fitFetch>) => {
+  const toastExclusionCodes = [
+    ApiError.INVALID_ACCESS_TOKEN_CODE,
+    ApiError.MATCHING_NOT_FOUND_CODE,
+  ];
+
   const res = await fitFetch(...args);
   try {
     const json = await res.json();
-    if (!res.ok && json?.message) {
+    if (!res.ok && json.message && !toastExclusionCodes.includes(json.code)) {
       toast.error(json.message);
     }
     return res.ok ? (json as T) : Promise.reject(json as Error);
