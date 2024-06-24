@@ -75,11 +75,24 @@ const dibsFilter = [
 interface RecommendFilterBlockProps {
   options: RecommendUserQueryOptions;
   setOptions: Dispatch<SetStateAction<RecommendUserQueryOptions>>;
+  trigger: (options: RecommendUserQueryOptions) => void;
 }
 
-export const RecommendFilterBlock = ({ options, setOptions }: RecommendFilterBlockProps) => {
+export const RecommendFilterBlock = ({
+  options,
+  setOptions,
+  trigger,
+}: RecommendFilterBlockProps) => {
   const { data: positionList } = usePositionsQuery();
   const { data: regions } = useRegionsQuery();
+
+  const handleDibsClick = useCallback(
+    (dibsValue: boolean) => () => {
+      setOptions((opts) => ({ ...opts, liked: dibsValue }));
+      trigger({ ...options, liked: dibsValue });
+    },
+    [setOptions, options, trigger]
+  );
 
   const handlePositionClick = useCallback(
     (positionId: Position['id']) => {
@@ -106,7 +119,7 @@ export const RecommendFilterBlock = ({ options, setOptions }: RecommendFilterBlo
             size="typo4"
             weight="bold"
             selected={options.liked === dibs.value}
-            onClick={() => setOptions((opts) => ({ ...opts, liked: dibs.value }))}
+            onClick={handleDibsClick(dibs.value)}
           >
             {dibs.label}
           </DibsBlock>
@@ -116,11 +129,7 @@ export const RecommendFilterBlock = ({ options, setOptions }: RecommendFilterBlo
         variant={'outlined'}
         height={'40'}
         color={'primary'}
-        onClick={() =>
-          setOptions({
-            liked: false,
-          })
-        }
+        onClick={() => setOptions((opts) => ({ liked: opts.liked }))}
       >
         필터 초기화
       </InitFilterButton>
@@ -149,6 +158,7 @@ export const RecommendFilterBlock = ({ options, setOptions }: RecommendFilterBlo
                 backgroundStatus: e.target.value as UserBackgroundStatus,
               }))
             }
+            placeholder="선택하세요"
           />
         </Filter>
         <Filter title="프로젝트 경험 수" titleWidth={220}>

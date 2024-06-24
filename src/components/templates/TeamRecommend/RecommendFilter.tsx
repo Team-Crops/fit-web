@@ -44,7 +44,7 @@ export const RecommendFilter = ({ defaultOptions, trigger }: RecommendFilterProp
           팀원 추천
         </Button>
       </StyledFlexBlock>
-      <RecommendFilterBlock options={options} setOptions={setOptions} />
+      <RecommendFilterBlock options={options} setOptions={setOptions} trigger={trigger} />
     </StyledSection>
   );
 };
