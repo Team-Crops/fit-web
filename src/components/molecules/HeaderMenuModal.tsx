@@ -75,6 +75,7 @@ export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) =>
   const handleLogout = useCallback(() => {
     localStorage.clear();
     mutateMe(undefined, false);
+    location.href = '/';
     toggleMenu();
   }, [mutateMe, toggleMenu]);
 
@@ -112,7 +113,7 @@ export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) =>
             마이페이지로 이동
           </Txt>
         </LinkBlock>
-        <LinkBlock href={'/mypage'} onClick={handleLogout}>
+        <LinkBlock href={'/'} onClick={handleLogout}>
           <Icons icon={'logout'} size={20} color="#FF706C" />
           <Txt size="typo6" weight="regular" color="#212121">
             로그아웃
