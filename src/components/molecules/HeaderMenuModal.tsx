@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
+import { mutate } from 'swr';
+
 import { usePositionsQuery } from '#/hooks/use-positions';
 import { useMeQuery } from '#/hooks/use-user';
 import { Icons, Txt } from '../atoms';
@@ -70,13 +72,13 @@ interface HeaderMenuModalProps {
 }
 export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) => {
   const { data: positions } = usePositionsQuery();
-  const { data: me, mutate: mutateMe } = useMeQuery();
+  const { data: me } = useMeQuery();
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
     localStorage.clear();
-    mutateMe(undefined, false);
+    mutate(() => true, undefined, { revalidate: false });
     toggleMenu();
-  }, [mutateMe, toggleMenu]);
+  }, [toggleMenu]);
 
   if (!isOpen) return null;
   return (
@@ -112,7 +114,7 @@ export const HeaderMenuModal = ({ isOpen, toggleMenu }: HeaderMenuModalProps) =>
             마이페이지로 이동
           </Txt>
         </LinkBlock>
-        <LinkBlock href={'/mypage'} onClick={handleLogout}>
+        <LinkBlock href={'/'} onClick={handleLogout}>
           <Icons icon={'logout'} size={20} color="#FF706C" />
           <Txt size="typo6" weight="regular" color="#212121">
             로그아웃
