@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Loading } from '#/components/atoms';
@@ -17,13 +18,15 @@ export const LoginGuard = ({ children }: LoginGuardProps) => {
   const { isLoading, error } = useMeQuery();
   const showLoginPopup = useLoginGuardStore((state) => state.showLoginPopup);
 
+  useEffect(() => {
+    if (error && error.code === ApiError.INVALID_ACCESS_TOKEN_CODE) {
+      router.replace('/');
+      showLoginPopup();
+    }
+  }, [error, router, showLoginPopup]);
+
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (error && error.code === ApiError.INVALID_ACCESS_TOKEN_CODE) {
-    showLoginPopup();
-    router.back();
   }
 
   return (
