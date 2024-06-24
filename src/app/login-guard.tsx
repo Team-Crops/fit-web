@@ -20,10 +20,10 @@ export const LoginGuard = ({ children }: LoginGuardProps) => {
 
   useEffect(() => {
     if (error && error.code === ApiError.INVALID_ACCESS_TOKEN_CODE) {
-      router.push('/');
+      router.replace('/');
       showLoginPopup();
     }
-  }, [error]);
+  }, [error, router, showLoginPopup]);
 
   if (isLoading) {
     return <Loading />;
