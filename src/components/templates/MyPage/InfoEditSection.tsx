@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { usePresignedUrlLazyQuery } from '#/hooks/use-file';
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { useTempAuthStore } from '#/stores/tempAuth';
-import { Me } from '#/types';
+import { Me, User } from '#/types';
 import { uploadFile } from '#/utilities/storage';
 import { Button } from '#atoms/Button';
 import { ActivityEdit } from '#organisms/MyPage/ActivityEdit';
@@ -33,11 +33,7 @@ const checkRequiredValue = (tempUser: Me | null) => {
   if (tempUser.username === '' || tempUser.username === null) {
     alert('이름을 입력해주세요.');
     return false;
-  } else if (
-    tempUser.email === null ||
-    tempUser.email.split('@')[0] === '' ||
-    tempUser.email.split('@')[1] === ''
-  ) {
+  } else if (tempUser.email === null) {
     alert('이메일을 입력해주세요.');
     return false;
   } else if (tempUser.nickname === '' || tempUser.nickname === null) {
@@ -61,7 +57,20 @@ const checkRequiredValue = (tempUser: Me | null) => {
   } else if (tempUser.skillIdList === null || tempUser.skillIdList.length === 0) {
     alert('사용 가능한 기술/툴을 선택해주세요.');
     return false;
-  } else return true;
+  } else {
+    return true;
+  }
+};
+
+const checkValidation = (user: User) => {
+  if (user.email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(user.email)) {
+      alert('이메일 형식이 올바르지 않습니다.');
+      return false;
+    }
+  }
+  return true;
 };
 
 export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
@@ -75,7 +84,9 @@ export const InfoEditSection = ({ handleEditing }: InfoEditSectionProps) => {
   const { trigger: mutateUser } = useMeMutation();
 
   const submitModifyHandler = async () => {
-    if (!checkRequiredValue(tempUser)) return;
+    if (!tempUser || !checkRequiredValue(tempUser) || !checkValidation(tempUser)) {
+      return;
+    }
     let profileImageUrl = me?.profileImageUrl;
     let portfolioUrl = me?.portfolioUrl;
     if (tempImage !== null) {
