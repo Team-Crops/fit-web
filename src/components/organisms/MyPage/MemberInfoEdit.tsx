@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -8,7 +8,6 @@ import { UserBackgroundStatus } from '#/types';
 import { isUserStudent, isUserWorker } from '#/utilities/user';
 import { CheckBox } from '#atoms/CheckBox';
 import { Input } from '#atoms/Input';
-import { Select } from '#atoms/Select';
 import { Txt } from '#atoms/Text';
 import { BasicInfoEdit } from '#molecules/MyPage/BasicInfoEdit';
 import { MyInfoBlock } from '#molecules/MyPage/MyInfoBlock';
@@ -33,10 +32,6 @@ const StyledTextarea = styled.textarea`
   &::placeholder {
     color: #bdbdbd;
   }
-`;
-const EmailBlock = styled.div`
-  display: flex;
-  gap: 3px;
 `;
 const Hyphen = styled.div`
   width: 10px;
@@ -69,10 +64,6 @@ const isUserStudentOrWorker = (backgroundStatus: UserBackgroundStatus) => {
 
 export const MemberInfoEdit = () => {
   const tempUser = useTempAuthStore((state) => state.tempUser);
-  const [tempEmail, setTempEmail] = useState<{ id: string; domain: string }>({
-    id: '',
-    domain: '',
-  });
   const [tempPhone, setTempPhone] = useState<{ first: string; second: string; third: string }>({
     first: '',
     second: '',
@@ -86,27 +77,11 @@ export const MemberInfoEdit = () => {
         alert('최대 글자수를 초과하였습니다.');
         return;
       }
-      if (tempUser !== null) setTempUser({ ...tempUser, [key]: value });
+      if (tempUser !== null) {
+        setTempUser({ ...tempUser, [key]: value });
+      }
     },
     [tempUser, setTempUser]
-  );
-
-  const handleUpdateTempEmail = useCallback(
-    (key: 'id' | 'domain', value: string, maxLength?: number) => {
-      if (maxLength && value.length > maxLength) {
-        alert('최대 글자수를 초과하였습니다.');
-        return;
-      }
-      if (tempUser === null) return;
-      if (key === 'id') {
-        setTempEmail({ ...tempEmail, id: value });
-        setTempUser({ ...tempUser, email: `${value}@${tempEmail.domain}` });
-      } else {
-        setTempEmail({ ...tempEmail, domain: value });
-        setTempUser({ ...tempUser, email: `${tempEmail.id}@${value}` });
-      }
-    },
-    [setTempUser, tempEmail, tempUser]
   );
 
   const handleUpdateTempPhone = useCallback(
@@ -141,10 +116,6 @@ export const MemberInfoEdit = () => {
 
   // init
   useEffect(() => {
-    if (tempUser !== null && tempUser.email !== null) {
-      const email = tempUser.email.split('@');
-      setTempEmail({ id: email[0], domain: email[1] });
-    }
     if (tempUser !== null && tempUser.phoneNumber !== null) {
       const phone = tempUser.phoneNumber.split('-');
       setTempPhone({ first: phone[0], second: phone[1], third: phone[2] });
@@ -172,27 +143,15 @@ export const MemberInfoEdit = () => {
           />
         </BasicInfoEdit>
         <BasicInfoEdit title={'이메일'} titleWidth={97} essential>
-          <EmailBlock>
-            <Input
-              value={tempEmail.id}
-              onChange={(e) => handleUpdateTempEmail('id', e.target.value, 20)}
-              width="118px"
-              placeholder="이메일 입력"
-            />
-            <Select
-              value={tempEmail.domain}
-              onChange={(e) => handleUpdateTempEmail('domain', e.target.value)}
-              width="128px"
-              placeholder="선택하세요"
-            >
-              <Select.Option value="google.com">google.com</Select.Option>
-              <Select.Option value="naver.com">naver.com</Select.Option>
-            </Select>
-          </EmailBlock>
+          <Input
+            value={tempUser.email ?? ''}
+            onChange={(e) => handleUpdateTempUser('email', e.target.value, 100)}
+            placeholder="이메일 입력"
+          />
         </BasicInfoEdit>
         <BasicInfoEdit title={'닉네임'} titleWidth={97} essential>
           <Input
-            value={tempUser.nickname === null ? '' : tempUser.nickname}
+            value={tempUser.nickname ?? ''}
             onChange={(e) => handleUpdateTempUser('nickname', e.target.value, 20)}
             width="207px"
             placeholder="닉네임 입력"
