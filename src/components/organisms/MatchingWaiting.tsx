@@ -132,7 +132,7 @@ export const MatchingWaiting = (props: MatchingQueuedProps) => {
         const hours = Math.floor(totalHours % 24);
         setRemainTime(`${days}일 ${hours}시간`);
       }
-    }, 1000 * 60);
+    }, 1000);
     const revalidateMatchingTimer = setInterval(() => mutate(MATCHING_QUERY_KEY), 5000);
     return () => {
       clearInterval(calculateTimer);
