@@ -35,16 +35,21 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
         {editMode ? (
           <form
             ref={formRef}
-            onBlur={() => setEditMode(false)}
+            onBlur={() => {
+              formRef.current?.requestSubmit();
+              setEditMode(false);
+            }}
             onSubmit={async (e) => {
-              e.stopPropagation();
               e.preventDefault();
 
               const updatedProject = await mutateProject({ name: editedName });
-              mutateProjects((projects) => [
-                ...(projects?.filter((p) => p.id !== projectId) ?? []),
-                updatedProject,
-              ]);
+              mutateProjects(
+                (projects) => [
+                  ...(projects?.filter((p) => p.id !== projectId) ?? []),
+                  updatedProject,
+                ],
+                { revalidate: false }
+              );
               setEditMode(false);
             }}
           >
@@ -52,7 +57,6 @@ export const ProjectChatHeader: React.FC<ProjectChatHeaderProps> = ({ projectId 
               type="text"
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
-              onBlur={() => formRef.current?.submit()}
               disabled={isMutatingProject}
             />
             <button type="submit" hidden />
