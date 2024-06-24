@@ -125,7 +125,7 @@ export const MatchingWaiting = (props: MatchingQueuedProps) => {
   useEffect(() => {
     const calculateTimer = setInterval(() => {
       if (isMatching(matching)) {
-        const expiredAt = Temporal.Instant.from(`${matching.expiredAt}+09:00`);
+        const expiredAt = Temporal.Instant.from(matching.expiredAt);
         const duration = expiredAt.since(Temporal.Now.instant());
         const totalHours = duration.total({ unit: 'hour' });
         const days = Math.floor(totalHours / 24);
