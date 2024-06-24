@@ -14,3 +14,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {},
 };
+
+export const Wide: Story = {
+  args: {},
+  render: () => (
+    <div style={{ width: '300px', backgroundColor: 'blue' }}>
+      <Loading />
+    </div>
+  ),
+};
