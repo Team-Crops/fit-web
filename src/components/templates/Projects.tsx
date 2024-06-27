@@ -7,8 +7,9 @@ import { EmptyProjectList } from '#/components/organisms/EmptyProjectList';
 import { ProjectList } from '#/components/organisms/ProjectList';
 import { useProjectsQuery } from '#/hooks/use-projects';
 import { useMeQuery } from '#/hooks/use-user';
+import { Project } from '#/types';
 
-export const Projects: React.FC = () => {
+export const Projects = ({ unfoldedProjectIds = [] }: { unfoldedProjectIds?: Project['id'][] }) => {
   const { data: me } = useMeQuery();
   const { data: projects } = useProjectsQuery();
 
@@ -24,7 +25,7 @@ export const Projects: React.FC = () => {
         {me.nickname} 님의 프로젝트를 효과적으로 관리하고, 참여하세요!
       </Txt>
       {projects && projects?.length === 0 && <EmptyProjectList />}
-      {projects && projects?.length > 0 && <ProjectList />}
+      {projects && projects?.length > 0 && <ProjectList unfoldedProjectIds={unfoldedProjectIds} />}
     </Container>
   );
 };
