@@ -17,7 +17,13 @@ interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ChatBubble = ({ user, message, myBubble = false, ...props }: ChatBubbleProps) => {
-  const plainTime = useMemo(() => Temporal.PlainTime.from(message.createdAt), [message.createdAt]);
+  const plainTime = useMemo(
+    () =>
+      Temporal.Instant.from(message.createdAt)
+        .toZonedDateTimeISO(Temporal.Now.zonedDateTimeISO())
+        .toPlainTime(),
+    [message.createdAt]
+  );
   return (
     <Container myBubble={myBubble}>
       <ColoredProfile imageUrl={user.profileImageUrl} nickname={user.nickname} size={40} />
