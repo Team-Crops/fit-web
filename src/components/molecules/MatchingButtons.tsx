@@ -127,7 +127,7 @@ export const MatchingReadyButton = ({
 
   return matchingMe?.isHost ? (
     <MatchingButton
-      disabled={!room?.matchingUsers.every((u) => u.isReady) || isStartMutating}
+      disabled={!room?.matchingUsers.every((u) => u.isReady || u.isHost) || isStartMutating}
       onClick={async () => {
         await start();
         router.push('/projects');
