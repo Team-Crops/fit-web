@@ -10,21 +10,16 @@ import { ChatRoom } from './ChatRoom';
 
 interface ProjectChatRoomProps {
   projectId: Project['id'];
+  isFolded: boolean;
+  toggleFold: () => void;
 }
 
-export const ProjectChatRoom = ({ projectId }: ProjectChatRoomProps) => {
-  const [isFolded, setIsFolded] = useState(true);
-
+export const ProjectChatRoom = ({ projectId, isFolded, toggleFold }: ProjectChatRoomProps) => {
   return (
     <Container $isFolded={isFolded}>
       {isFolded && <ProjectSummary projectId={projectId} />}
       {!isFolded && <ChatRoom projectId={projectId} />}
-      <FoldIcon
-        $isFolded={isFolded}
-        icon="arrowDown"
-        size={28}
-        onClick={() => setIsFolded((v) => !v)}
-      />
+      <FoldIcon $isFolded={isFolded} icon="arrowDown" size={28} onClick={() => toggleFold()} />
     </Container>
   );
 };
