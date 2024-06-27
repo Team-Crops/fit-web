@@ -15,7 +15,7 @@ export type { Link, LinkType } from './link';
 export { MatchingStatus } from './matching';
 export type { Matching, MatchingRoom, MatchingUser } from './matching';
 
-export type { Message, TextMessage, ImageMessage, NoticeMessage } from './message';
+export type { Message, TextMessage, ImageMessage, NoticeMessage, ControlMessage } from './message';
 
 export type { PolicyType, PolicyAgreement, Policy } from './policy';
 
