@@ -62,7 +62,7 @@ export const ChatParticipant = ({
           )}
         </UserProfileContainer>
       )}
-      <Nickname size="typo5" weight="medium" color="rgba(33, 33, 33, 1)">
+      <Nickname size="typo5" weight="medium" color="#212121">
         {nickname ?? ''}
       </Nickname>
       {userId && showDetails && (
