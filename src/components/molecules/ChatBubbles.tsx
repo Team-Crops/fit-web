@@ -12,9 +12,8 @@ import { useMeQuery } from '#/hooks/use-user';
 import { useChatStore } from '#/stores';
 import { Chat } from '#/types';
 import { isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
-import { isControlMessage, convertDtoToMessage } from '#/utilities/message';
+import { convertDtoToMessage } from '#/utilities/message';
 import { ChatBubble } from './ChatBubble';
-import { ControlBubble } from './ControlBubble';
 import { NoticeBubble } from './NoticeBubble';
 
 interface ChatBubblesProps {
@@ -85,8 +84,6 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
             message={message}
             myBubble={me?.id === message.userId}
           />
-        ) : isControlMessage(message) ? (
-          <ControlBubble key={index} message={message} />
         ) : null
       )}
       {hasNext && <Loading ref={topRef} />}

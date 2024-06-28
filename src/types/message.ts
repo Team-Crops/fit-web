@@ -25,14 +25,7 @@ export interface ImageMessage extends Message {
 }
 
 export interface NoticeMessage extends Message {
-  messageType: 'NOTICE';
-  content: undefined;
-  imageUrl: undefined;
-  notice: string;
-}
-
-export interface ControlMessage extends Message {
-  messageType: 'JOIN' | 'EXIT' | 'COMPLETE' | 'READY';
+  messageType: 'NOTICE' | 'JOIN' | 'EXIT' | 'COMPLETE' | 'READY';
   content: undefined;
   imageUrl: undefined;
   notice: string;
