@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
-import useSWRSubscription from 'swr/subscription';
 
 import { Chat, Message } from '#/types';
 import { fitFetcher } from '#/utilities';
-import { fitSocket } from '#/utilities/socket';
+import { convertDtoToMessage } from '#/utilities/message';
 
 const CHAT_MESSAGES_QUERY_KEY =
   (id: Chat['id']) => (index: number, previousPageData: ChatMessagesPage | null) => {
@@ -21,14 +20,6 @@ const CHAT_MESSAGES_QUERY_KEY =
   };
 
 const CHAT_RECENT_MESSAGE_QUERY_KEY = (id: Chat['id']) => `/v1/chat/room/${id}/recent`;
-
-export function useChatSubscription(id: Chat['id']) {
-  return useSWRSubscription(id.toString(), (id, { next }) => {
-    const socket = fitSocket({ roomId: id });
-    socket.on('get_message', (message: Message) => next(null, message));
-    return () => socket.disconnect();
-  });
-}
 
 interface ChatMessagesResponse {
   pageResult: {
@@ -54,15 +45,7 @@ export function useChatMessagesQuery(id: Chat['id']) {
   return useSWRInfinite(CHAT_MESSAGES_QUERY_KEY(id), async (url) => {
     const json = await fitFetcher<ChatMessagesResponse>(url);
     return {
-      messages: json.pageResult.values.map((v) => ({
-        createdAt: v.createdAt,
-        messageType: v.messageType,
-        id: v.messageId,
-        userId: v.userId,
-        content: v.content,
-        imageUrl: v.imageUrl,
-        notice: v.notice,
-      })),
+      messages: json.pageResult.values.map((v) => convertDtoToMessage(v)),
       hasNext: json.pageResult.hasNext,
     } as { messages: Message[]; hasNext: boolean };
   });

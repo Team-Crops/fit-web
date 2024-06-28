@@ -10,9 +10,9 @@ import { nullUser } from '#/entities';
 import { useChatMessagesQuery } from '#/hooks/use-chat';
 import { useMeQuery } from '#/hooks/use-user';
 import { useChatStore } from '#/stores';
-import { Chat, Message } from '#/types';
+import { Chat } from '#/types';
 import { isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
-import { isControlMessage } from '#/utilities/message';
+import { isControlMessage, convertDtoToMessage } from '#/utilities/message';
 import { ChatBubble } from './ChatBubble';
 import { ControlBubble } from './ControlBubble';
 import { NoticeBubble } from './NoticeBubble';
@@ -42,7 +42,8 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
   const { data: pages, size, setSize } = useChatMessagesQuery(chatId);
 
   useEffect(() => {
-    socket.on('get_message', (message: Message) => {
+    socket.on('get_message', (data: string) => {
+      const message = convertDtoToMessage(JSON.parse(data));
       unshiftMessage(chatId, message);
     });
     return () => socket.off('get_message');
