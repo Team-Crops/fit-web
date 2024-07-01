@@ -2,7 +2,15 @@ import { User } from '.';
 
 export interface Message {
   id: number;
-  type: 'TEXT' | 'IMAGE' | 'NOTICE' | 'JOIN' | 'EXIT' | 'COMPLETE' | 'READY';
+  messageType:
+    | 'TEXT'
+    | 'IMAGE'
+    | 'NOTICE'
+    | 'JOIN'
+    | 'EXIT'
+    | 'COMPLETE'
+    | 'READY'
+    | 'CANCEL_READY';
   createdAt: string;
   userId?: User['id'];
   content?: string;
