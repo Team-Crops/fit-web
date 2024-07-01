@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { usePositionsQuery } from '#/hooks/use-positions';
-import { useTempAuthStore } from '#/stores/tempAuth';
 import { Position, Skill } from '#/types';
 import { Txt } from '#atoms/Text';
 import { PositionBadge } from './PositionBadge';

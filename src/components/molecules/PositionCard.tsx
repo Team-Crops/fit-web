@@ -1,4 +1,4 @@
-import React from 'react';
+import { HTMLAttributes } from 'react';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { Txt } from '#/components/atoms';
 import { media } from '#/utilities';
 
-interface PositionCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface PositionCardProps extends HTMLAttributes<HTMLDivElement> {
   name: string;
   imageUrl: string;
   selected: boolean;

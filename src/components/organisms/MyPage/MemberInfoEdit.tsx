@@ -72,8 +72,8 @@ export const MemberInfoEdit = () => {
   const setTempUser = useTempAuthStore((state) => state.setTempUser);
 
   const handleUpdateTempUser = useCallback(
-    (key: string, value: any, maxLength?: number) => {
-      if (maxLength && value.length > maxLength) {
+    (key: string, value: string | boolean, maxLength?: number) => {
+      if (maxLength && (value as string).length > maxLength) {
         alert('최대 글자수를 초과하였습니다.');
         return;
       }

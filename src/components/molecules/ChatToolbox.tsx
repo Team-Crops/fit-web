@@ -63,7 +63,8 @@ export const ChatToolbox = ({ projectId, matchingId }: ChatToolboxProps) => {
         ))}
       </ImageContainer>
       <Form
-        action={() => {
+        onSubmit={(e) => {
+          e.preventDefault();
           if (imageUrls.length > 0) {
             imageUrls.map((url) => emitImage(url));
             setImageUrls([]);

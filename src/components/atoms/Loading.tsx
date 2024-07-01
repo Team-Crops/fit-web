@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { FitLogo } from '.';
 
-export const Loading = forwardRef<HTMLDivElement>(({}, ref) => {
+export const Loading = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <Container ref={ref}>
       <Spinner>
