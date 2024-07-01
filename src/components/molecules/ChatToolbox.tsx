@@ -3,28 +3,29 @@ import React, { useCallback, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Icons, Input, Loading } from '#/components/atoms';
+import { useChatId, useChatMessageEmitter } from '#/hooks';
 import { usePresignedUrlLazyQuery } from '#/hooks/use-file';
 import { useMeQuery } from '#/hooks/use-user';
-import { useChatStore } from '#/stores';
-import { Chat } from '#/types';
-import { getStorageUrl } from '#/utilities';
-import { uploadFile } from '#/utilities/storage';
+import { Matching, Project } from '#/types';
+import { getStorageUrl, uploadFile } from '#/utilities';
 import { RemovableImage } from './RemovableImage';
 
 interface ChatToolboxProps {
-  chatId: Chat['id'];
+  projectId?: Project['id'];
+  matchingId?: Matching['id'];
 }
 
-export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
+export const ChatToolbox = ({ projectId, matchingId }: ChatToolboxProps) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [message, setMessage] = useState('');
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-  const socket = useChatStore((state) => state.chats[chatId].socket);
-
   const { data: user } = useMeQuery();
   const { trigger: getPresignedUrl } = usePresignedUrlLazyQuery();
+
+  const chatId = useChatId({ projectId, matchingId });
+  const { emitText, emitImage } = useChatMessageEmitter(chatId);
 
   const onUploadImage = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     async (e) => {
@@ -64,11 +65,11 @@ export const ChatToolbox = ({ chatId }: ChatToolboxProps) => {
       <Form
         action={() => {
           if (imageUrls.length > 0) {
-            imageUrls.map((url) => socket.emit('/chat/image', { content: url }));
+            imageUrls.map((url) => emitImage(url));
             setImageUrls([]);
           }
           if (message) {
-            socket.emit('/chat/text', { content: message });
+            emitText(message);
             setMessage('');
           }
         }}

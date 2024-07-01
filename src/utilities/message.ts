@@ -1,16 +1,16 @@
 import { ImageMessage, Message, NoticeMessage, TextMessage, User } from '#/types';
 
 export function isTextMessage(message: Message): message is TextMessage {
-  return message.messageType === 'TEXT';
+  return message.type === 'TEXT';
 }
 
 export function isImageMessage(message: Message): message is ImageMessage {
-  return message.messageType === 'IMAGE';
+  return message.type === 'IMAGE';
 }
 
 export function isNoticeMessage(message: Message): message is NoticeMessage {
   const noticeMessageTypes = ['NOTICE', 'JOIN', 'EXIT', 'COMPLETE', 'READY'];
-  return noticeMessageTypes.includes(message.messageType);
+  return noticeMessageTypes.includes(message.type);
 }
 
 interface MessageDto {
@@ -28,6 +28,6 @@ export function convertDtoToMessage(messageDto: MessageDto): Message {
   return {
     ...message,
     id: messageId,
-    messageType: messageType as Message['messageType'],
+    type: messageType as Message['type'],
   };
 }
