@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Input, Label, Txt } from '#/components/atoms';
 import { CareerSelect } from '#/components/molecules/CareerSelect';
 import { Me, UserBackgroundStatus } from '#/types';
-import { isUserStudent, isUserWorker, media } from '#/utilities';
+import { isUserStudent, isUserWorker } from '#/utilities';
 
 const Container = styled.div`
   display: flex;

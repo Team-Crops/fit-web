@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
@@ -32,7 +33,11 @@ export function useMatchingQuery() {
           createdAt: json.createdAt,
         } as Matching;
       } catch (error) {
-        if (ApiError.isApiError(error) && error.code === ApiError.MATCHING_NOT_FOUND_CODE) {
+        if (
+          _.isObject(error) &&
+          ApiError.isApiError(error) &&
+          error.code === ApiError.MATCHING_NOT_FOUND_CODE
+        ) {
           return { id: null, status: MatchingStatus.REGISTER };
         }
         throw error;

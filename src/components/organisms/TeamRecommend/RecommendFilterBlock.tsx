@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -37,6 +37,8 @@ const DibsFilter = styled.div`
   border-bottom: 2px solid #eee;
 `;
 const DibsBlock = styled(Txt)<{ selected: boolean }>`
+  cursor: pointer;
+
   position: relative;
   bottom: -2px;
 
@@ -46,7 +48,6 @@ const DibsBlock = styled(Txt)<{ selected: boolean }>`
 
   border-bottom: 2px solid transparent;
 
-  cursor: pointer;
   ${({ selected }) =>
     selected &&
     css`

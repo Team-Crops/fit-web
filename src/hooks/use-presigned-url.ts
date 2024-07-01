@@ -1,6 +1,6 @@
 import useSWRMutation from 'swr/mutation';
 
-import type { PresignedUrl, FileDomain } from '#/types';
+import type { PresignedUrl } from '#/types';
 import { fitFetcher } from '#/utilities';
 
 const PRESIGNED_URL_QUERY_KEY = '/v1/file/pre-signed-url';

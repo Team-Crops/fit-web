@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -41,7 +41,7 @@ export const ActivityEdit = () => {
   );
 
   const handleUpdateTempUser = useCallback(
-    (key: string, value: any) => {
+    (key: string, value: unknown) => {
       if (tempUser !== null) setTempUser({ ...tempUser, [key]: value });
     },
     [tempUser, setTempUser]

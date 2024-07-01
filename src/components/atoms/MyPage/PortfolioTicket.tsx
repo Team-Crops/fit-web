@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import styled from '@emotion/styled';
 
 import { useTempAuthStore } from '#/stores/tempAuth';
-import { User } from '#/types';
 import { IconName, Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 

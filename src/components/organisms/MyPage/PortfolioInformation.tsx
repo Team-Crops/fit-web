@@ -35,23 +35,6 @@ const PortfolioContent = styled.div`
   display: flex;
   gap: 18px;
 `;
-const ClipBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-
-  width: 92px;
-  height: 98px;
-  padding: 0 10px;
-
-  text-align: center;
-  word-break: keep-all;
-
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-`;
 const PortfolioList = styled.div`
   display: flex;
   flex-direction: column;

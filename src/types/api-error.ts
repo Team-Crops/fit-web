@@ -12,10 +12,15 @@ export class ApiError {
     this.message = message;
   }
 
-  static isApiError(error: any): error is ApiError {
+  static isApiError(error: object): error is ApiError {
     if (!error) {
       return false;
     }
-    return typeof error.code === 'string' && typeof error.message === 'string';
+    return (
+      'code' in error &&
+      typeof error.code === 'string' &&
+      'message' in error &&
+      typeof error.message === 'string'
+    );
   }
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import Image from 'next/image';
+import { SVGProps } from 'react';
+import Image, { StaticImageData } from 'next/image';
 
 import {
   AccountIcon,
@@ -95,7 +95,7 @@ export type IconName =
   | 'velog';
 
 interface Icon {
-  SVGR: any;
+  SVGR: React.FC<React.SVGProps<SVGElement>> | StaticImageData;
   color?: string;
   style?: React.CSSProperties;
 }
@@ -281,7 +281,7 @@ const icons: Record<IconName, Icon> = {
   },
 };
 
-interface IconsProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IconsProps extends SVGProps<SVGElement> {
   icon: IconName;
   useCSSColor?: boolean;
 

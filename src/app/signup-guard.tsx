@@ -37,7 +37,7 @@ export const SignupGuard = () => {
   const popupComponent = useMemo(() => {
     switch (step) {
       case SignUpStep.TERMS_AGREEMENT:
-        return <SignUpTermsPopup onSuccess={() => setNextStep()} />;
+        return <SignUpTermsPopup />;
       case SignUpStep.PROFILE_CREATION:
         return <SignUpProfileCreationPopup onSuccess={() => setNextStep()} />;
       case SignUpStep.POSITION_SELECTION:

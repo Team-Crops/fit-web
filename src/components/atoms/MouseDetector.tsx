@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface MouseDetectorProps extends React.HTMLAttributes<HTMLDivElement> {
   onClickOutside?: () => void;
