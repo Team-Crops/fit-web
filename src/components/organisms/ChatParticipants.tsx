@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import { mutate } from 'swr';
-import { useShallow } from 'zustand/react/shallow';
 
 import {
   MatchingChatPositionGroup,
@@ -11,33 +10,32 @@ import { MatchingChatHeader } from '#/components/molecules/MatchingChatHeader';
 import { ProjectChatHeader } from '#/components/molecules/ProjectChatHeader';
 import {
   MATCHING_ROOM_QUERY_KEY,
+  useChatUsers,
   useMatchingRoomForceOutMutation,
-} from '#/hooks/use-matching-room';
-import { usePositionsQuery } from '#/hooks/use-positions';
-import { useReportUserMutator } from '#/hooks/use-projects';
-import { useMeQuery } from '#/hooks/use-user';
-import { useChatStore } from '#/stores';
-import type { Chat } from '#/types';
+  useMeQuery,
+  usePositionsQuery,
+  useReportUserMutator,
+} from '#/hooks';
+import type { Matching, Project } from '#/types';
 
 interface ChatParticipantsProps {
-  chatId: Chat['id'];
+  matchingId?: Matching['id'];
+  projectId?: Project['id'];
 
   onClickHeader?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export const ChatParticipants: React.FC<ChatParticipantsProps> = ({ chatId, onClickHeader }) => {
-  const { participants, projectId, matchingId } = useChatStore(
-    useShallow(({ chats }) => ({
-      participants: chats[chatId].users,
-      projectId: chats[chatId].projectId,
-      matchingId: chats[chatId].matchingId,
-    }))
-  );
-
+export const ChatParticipants: React.FC<ChatParticipantsProps> = ({
+  matchingId,
+  projectId,
+  onClickHeader,
+}) => {
   const { data: me } = useMeQuery();
   const { data: positions } = usePositionsQuery();
   const { trigger: kickUser } = useMatchingRoomForceOutMutation(matchingId ?? undefined);
   const { trigger: reportUser } = useReportUserMutator(projectId);
+
+  const participants = useChatUsers({ projectId, matchingId });
 
   return (
     <Container>
@@ -62,7 +60,7 @@ export const ChatParticipants: React.FC<ChatParticipantsProps> = ({ chatId, onCl
             name={position.displayName}
             participants={participants.filter((p) => p.positionId === position.id) ?? []}
             onKickUser={
-              participants.some((p) => p.isHost && p.id === me?.id)
+              participants.some((p) => p.id === me?.id && p.isHost)
                 ? async (userId) => {
                     await kickUser({ userId });
                     mutate(MATCHING_ROOM_QUERY_KEY(matchingId));
