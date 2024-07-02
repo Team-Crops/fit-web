@@ -48,7 +48,7 @@ export const RecommendBlock = () => {
         bigDescription={`클릭 한 번으로\n나와 꼭 맞는 팀과 매칭`}
         smallDescription={'기획-디자인-개발, 최적의 팀원들을 단 3일 안에 매칭!'}
         buttonText={'매칭하러 가기'}
-        buttonLink={'/matchingInfo'}
+        buttonLink={'/matching-info'}
       />
       <CardWrapper>
         {CardInfo.map((card, index) => {

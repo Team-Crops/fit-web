@@ -79,7 +79,7 @@ export const InfoMatchingBlock = () => {
         bigDescription={`내가 원하는 팀원과 함께 할 수 있는 기회`}
         smallDescription={'원하는 팀원의 특징을 설정해 추천을 받아보세요.'}
         buttonText={'추천 받기'}
-        buttonLink={'/recommend'}
+        buttonLink={'/team-recommend'}
       />
       <CardSwiper
         slidesPerView={1.65}

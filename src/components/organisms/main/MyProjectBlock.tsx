@@ -54,7 +54,7 @@ export const MyProjectBlock = () => {
           '팀원들과 소통하여 진행상황을 공유하고 관리할 수 있어요.\n또한, 피해를 주는 팀원에게 패널티를 부여할 수 있어요.'
         }
         buttonText={'내 프로젝트로 이동'}
-        buttonLink={'/project'}
+        buttonLink={'/projects'}
       />
       <CardWrapper>
         {CardInfo.map((card, index) => {
