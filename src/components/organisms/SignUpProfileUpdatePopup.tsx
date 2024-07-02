@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
-import { SignUpStep, Me } from '#/types';
+import { Me, SignUpStep } from '#/types';
 import { checkSignUpStep, media } from '#/utilities';
 import { PositionSelection } from './sign-up/PositionSelection';
 import { ProfileDetailsSubmission } from './sign-up/ProfileDetailsSubmission';

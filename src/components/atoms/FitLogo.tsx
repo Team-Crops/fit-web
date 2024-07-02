@@ -1,4 +1,4 @@
-import { SignatureLogo, MonochromeSignatureLogo, SymbolLogo } from '#/assets/logos';
+import { MonochromeSignatureLogo, SignatureLogo, SymbolLogo } from '#/assets/logos';
 
 interface LogoProps {
   variant?: 'signature' | 'symbol';
