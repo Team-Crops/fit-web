@@ -79,7 +79,7 @@ export const ChatBubbles = ({ projectId, matchingId }: ChatBubblesProps) => {
             />
           ) : null
         )}
-      {messages?.at(-1)?.hasNext && <Loading ref={topRef} />}
+      <Loading ref={topRef} hidden={!messages?.at(-1)?.hasNext} />
     </Container>
   );
 };
