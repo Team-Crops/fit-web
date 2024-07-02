@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useSearchParams, useRouter, notFound } from 'next/navigation';
+import { notFound, useRouter, useSearchParams } from 'next/navigation';
 
 import styled from '@emotion/styled';
 

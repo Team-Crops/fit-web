@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
-import { Txt, Icons, Toggle, Button, Tooltip } from '#/components/atoms';
+import { Button, Icons, Toggle, Tooltip, Txt } from '#/components/atoms';
 import { useMeMutation, useMeQuery } from '#/hooks/use-user';
 import { media } from '#/utilities';
 
