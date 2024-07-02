@@ -8,7 +8,7 @@ interface NoticeBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const NoticeBubble = ({ message }: NoticeBubbleProps) => {
-  return message.type === 'COMPLETE' ? null : (
+  return (
     <Bubble>
       <Txt size="typo5" weight="regular" color="#616161">
         {message.notice}

@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 
 import styled from '@emotion/styled';
 
@@ -11,12 +10,11 @@ import {
   useChatMessagesQuery,
   useChatSubscription,
   useMeQuery,
-  useMatchingRoomQuery,
-  useProjectsQuery,
-  useMatchingQuery,
 } from '#/hooks';
+import { useControlMessageHandler } from '#/hooks/use-control-message-handler';
+import { useNoticeMessageHandler } from '#/hooks/use-notice-message-handler';
 import { MatchingRoom, Project } from '#/types';
-import { isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
+import { isControlMessage, isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
 import { ChatBubble } from './ChatBubble';
 import { NoticeBubble } from './NoticeBubble';
 
@@ -26,12 +24,10 @@ interface ChatBubblesProps {
 }
 
 export const ChatBubbles = ({ projectId, matchingId }: ChatBubblesProps) => {
-  const router = useRouter();
   const topRef = useRef<HTMLDivElement>(null);
 
-  const { mutate: mutateCachedMatching } = useMatchingQuery();
-  const { mutate: mutateCachedRoom } = useMatchingRoomQuery(matchingId);
-  const { mutate: mutateCachedProjects } = useProjectsQuery();
+  const noticeMessageHandler = useNoticeMessageHandler(matchingId);
+  const controlMessageHandler = useControlMessageHandler({ projectId, matchingId });
 
   const participants = useChatUsers({ projectId, matchingId });
   const chatId = useChatId({ projectId, matchingId });
@@ -43,27 +39,14 @@ export const ChatBubbles = ({ projectId, matchingId }: ChatBubblesProps) => {
   useEffect(() => {
     if (recentMessage) {
       if (isNoticeMessage(recentMessage)) {
-        mutateCachedRoom();
-        if (recentMessage.type === 'COMPLETE' && matchingId) {
-          mutateCachedMatching();
-          router.replace(`/projects/${recentMessage.notice}`);
-        }
-        if (recentMessage.type === 'COMPLETE' && projectId) {
-          mutateCachedProjects();
-        }
+        noticeMessageHandler(recentMessage);
+      }
+      if (isControlMessage(recentMessage)) {
+        controlMessageHandler(recentMessage);
       }
       appendMessage(recentMessage);
     }
-  }, [
-    appendMessage,
-    matchingId,
-    mutateCachedMatching,
-    mutateCachedProjects,
-    mutateCachedRoom,
-    projectId,
-    recentMessage,
-    router,
-  ]);
+  }, [appendMessage, controlMessageHandler, noticeMessageHandler, recentMessage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {

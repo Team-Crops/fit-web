@@ -4,7 +4,7 @@ import useSWRMutation from 'swr/mutation';
 import { Project, ProjectStatus, type ReportType } from '#/types';
 import { fitFetcher } from '#/utilities';
 
-const PROJECTS_QUERY_KEY = '/v1/project';
+export const PROJECTS_QUERY_KEY = '/v1/project';
 const PROJECTS_MUTATION_KEY = (id: Project['id']) => `/v1/project/${id}`;
 const PROJECTS_REPORT_USER_MUTATION_KEY = (id: Project['id']) => `/v1/project/${id}/report`;
 
