@@ -1,4 +1,4 @@
-import React from 'react';
+import { HTMLAttributes } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -18,7 +18,7 @@ const LabelText = styled(Txt)`
   white-space: nowrap;
 `;
 
-interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
+interface LabelProps extends HTMLAttributes<HTMLDivElement> {
   text: string;
   position?: 'top' | 'left';
   gap?: React.CSSProperties['gap'];

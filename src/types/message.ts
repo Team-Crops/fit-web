@@ -2,15 +2,7 @@ import { User } from '.';
 
 export interface Message {
   id: number;
-  messageType:
-    | 'TEXT'
-    | 'IMAGE'
-    | 'NOTICE'
-    | 'JOIN'
-    | 'EXIT'
-    | 'COMPLETE'
-    | 'READY'
-    | 'CANCEL_READY';
+  type: 'TEXT' | 'IMAGE' | 'NOTICE' | 'JOIN' | 'EXIT' | 'READY' | 'CANCEL_READY' | 'COMPLETE';
   createdAt: string;
   userId?: User['id'];
   content?: string;
@@ -19,21 +11,28 @@ export interface Message {
 }
 
 export interface TextMessage extends Message {
-  messageType: 'TEXT';
+  type: 'TEXT';
   content: string;
   imageUrl: undefined;
   notice: undefined;
 }
 
 export interface ImageMessage extends Message {
-  messageType: 'IMAGE';
+  type: 'IMAGE';
   content: undefined;
   imageUrl: string;
   notice: undefined;
 }
 
 export interface NoticeMessage extends Message {
-  messageType: 'NOTICE' | 'JOIN' | 'EXIT' | 'COMPLETE' | 'READY' | 'CANCEL_READY';
+  type: 'NOTICE' | 'JOIN' | 'EXIT' | 'READY' | 'CANCEL_READY';
+  content: undefined;
+  imageUrl: undefined;
+  notice: string;
+}
+
+export interface ControlMessage extends Message {
+  type: 'COMPLETE';
   content: undefined;
   imageUrl: undefined;
   notice: string;

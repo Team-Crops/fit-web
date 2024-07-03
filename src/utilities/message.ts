@@ -1,21 +1,27 @@
 import { ImageMessage, Message, NoticeMessage, TextMessage, User } from '#/types';
+import { ControlMessage } from '#/types/message';
 
 export function isTextMessage(message: Message): message is TextMessage {
-  return message.messageType === 'TEXT';
+  return message.type === 'TEXT';
 }
 
 export function isImageMessage(message: Message): message is ImageMessage {
-  return message.messageType === 'IMAGE';
+  return message.type === 'IMAGE';
 }
 
 export function isNoticeMessage(message: Message): message is NoticeMessage {
-  const noticeMessageTypes = ['NOTICE', 'JOIN', 'EXIT', 'COMPLETE', 'READY'];
-  return noticeMessageTypes.includes(message.messageType);
+  const noticeMessageTypes = ['NOTICE', 'JOIN', 'EXIT', 'READY', 'CANCEL_READY'];
+  return noticeMessageTypes.includes(message.type);
+}
+
+export function isControlMessage(message: Message): message is ControlMessage {
+  const controlMessageTypes = ['COMPLETE'];
+  return controlMessageTypes.includes(message.type);
 }
 
 interface MessageDto {
   messageId: number;
-  messageType: 'TEXT' | 'IMAGE' | 'NOTICE' | 'JOIN' | 'EXIT' | 'COMPLETE' | 'READY';
+  messageType: Message['type'];
   createdAt: string;
   userId?: User['id'];
   content?: string;
@@ -28,6 +34,6 @@ export function convertDtoToMessage(messageDto: MessageDto): Message {
   return {
     ...message,
     id: messageId,
-    messageType: messageType as Message['messageType'],
+    type: messageType as Message['type'],
   };
 }

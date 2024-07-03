@@ -3,12 +3,14 @@ import styled from '@emotion/styled';
 import { Txt } from '#/components/atoms';
 import { ChatBubbles } from '#/components/molecules/ChatBubbles';
 import { ChatToolbox } from '#/components/molecules/ChatToolbox';
+import { MatchingRoom, Project } from '#/types';
 
 interface ChatProps {
-  chatId: number;
+  projectId?: Project['id'];
+  matchingId?: MatchingRoom['id'];
 }
 
-export const Chat = ({ chatId }: ChatProps) => {
+export const Chat = ({ projectId, matchingId }: ChatProps) => {
   return (
     <Container>
       <Header>
@@ -16,9 +18,9 @@ export const Chat = ({ chatId }: ChatProps) => {
           채팅방
         </Txt>
       </Header>
-      <ChatBubbles chatId={chatId} />
+      <ChatBubbles projectId={projectId} matchingId={matchingId} />
       <ChatToolboxContainer>
-        <ChatToolbox chatId={chatId} />
+        <ChatToolbox projectId={projectId} matchingId={matchingId} />
       </ChatToolboxContainer>
     </Container>
   );

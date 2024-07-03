@@ -2,8 +2,6 @@
 
 import styled from '@emotion/styled';
 
-import _ from 'lodash';
-
 import { MatchingButtons } from '#/components/molecules/MatchingButtons';
 import { useMeQuery } from '#/hooks/use-user';
 import { UserDetails } from './UserDetails';

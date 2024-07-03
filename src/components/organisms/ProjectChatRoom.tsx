@@ -1,11 +1,9 @@
-import { useState } from 'react';
-
 import styled from '@emotion/styled';
 
 import { Icons } from '#/components/atoms';
 import { ProjectSummary } from '#/components/molecules/ProjectSummary';
 import { Project } from '#/types';
-import { transientStyled, transientOptions } from '#/utilities/transient-styled';
+import { transientOptions, transientStyled } from '#/utilities/transient-styled';
 import { ChatRoom } from './ChatRoom';
 
 interface ProjectChatRoomProps {

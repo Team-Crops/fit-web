@@ -11,11 +11,7 @@ import { policies } from '#/entities';
 import { usePolicyAgreesMutation, usePolicyAgreesQuery } from '#/hooks/use-policy-agrees';
 import { PolicyAgreement, PolicyType } from '#/types';
 
-interface SignUpTermsPopupProps {
-  onSuccess: () => void;
-}
-
-export const SignUpTermsPopup: React.FC<SignUpTermsPopupProps> = ({ onSuccess }) => {
+export const SignUpTermsPopup = () => {
   const [policyAgrees, setPolicyAgrees] = useState<Record<PolicyType, PolicyAgreement>>(
     Object.values(policies).reduce(
       (acc, { type }) => ({ ...acc, [type]: { type, version: '', isAgreed: false } }),

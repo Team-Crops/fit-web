@@ -1,61 +1,52 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
-import _ from 'lodash';
-import { useShallow } from 'zustand/react/shallow';
-
 import { Loading } from '#/components/atoms';
 import { nullUser } from '#/entities';
-import { useChatMessagesQuery } from '#/hooks/use-chat';
-import { useMeQuery } from '#/hooks/use-user';
-import { useChatStore } from '#/stores';
-import { Chat } from '#/types';
-import { isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
-import { convertDtoToMessage } from '#/utilities/message';
+import {
+  useChatId,
+  useChatMessagesQuery,
+  useChatSubscription,
+  useChatUsers,
+  useControlMessageHandler,
+  useMeQuery,
+  useNoticeMessageHandler,
+} from '#/hooks';
+import { MatchingRoom, Project } from '#/types';
+import { isControlMessage, isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
 import { ChatBubble } from './ChatBubble';
 import { NoticeBubble } from './NoticeBubble';
 
 interface ChatBubblesProps {
-  chatId: Chat['id'];
+  projectId?: Project['id'];
+  matchingId?: MatchingRoom['id'];
 }
 
-export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
+export const ChatBubbles = ({ projectId, matchingId }: ChatBubblesProps) => {
   const topRef = useRef<HTMLDivElement>(null);
 
-  const [hasNext, setHasNext] = useState<boolean>(true);
-  const [pageCursor, setPageCursor] = useState(0);
+  const noticeMessageHandler = useNoticeMessageHandler(matchingId);
+  const controlMessageHandler = useControlMessageHandler({ projectId, matchingId });
 
-  const { participants, socket, messages, unshiftMessage, appendMessages } = useChatStore(
-    useShallow(({ chats, unshiftMessage, appendMessages }) => ({
-      participants: chats[chatId].users,
-      socket: chats[chatId].socket,
-      messages: chats[chatId].messages,
-      unshiftMessage,
-      appendMessages,
-    }))
-  );
+  const participants = useChatUsers({ projectId, matchingId });
+  const chatId = useChatId({ projectId, matchingId });
 
   const { data: me } = useMeQuery();
-
-  const { data: pages, size, setSize } = useChatMessagesQuery(chatId);
-
-  useEffect(() => {
-    socket.on('get_message', (data: string) => {
-      const message = convertDtoToMessage(JSON.parse(data));
-      unshiftMessage(chatId, message);
-    });
-    return () => socket.off('get_message');
-  }, [chatId, socket, unshiftMessage]);
+  const { data: messages, setSize, append: appendMessage } = useChatMessagesQuery(chatId);
+  const { data: recentMessage } = useChatSubscription(chatId);
 
   useEffect(() => {
-    if (pages && pages.length > pageCursor) {
-      const page = pages[pageCursor];
-      appendMessages(chatId, page.messages);
-      setHasNext(page.hasNext);
-      setPageCursor((c) => c + 1);
+    if (recentMessage) {
+      if (isNoticeMessage(recentMessage)) {
+        noticeMessageHandler(recentMessage);
+      }
+      if (isControlMessage(recentMessage)) {
+        controlMessageHandler(recentMessage);
+      }
+      appendMessage(recentMessage);
     }
-  }, [appendMessages, chatId, pageCursor, pages, size]);
+  }, [appendMessage, controlMessageHandler, noticeMessageHandler, recentMessage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -74,19 +65,21 @@ export const ChatBubbles = ({ chatId }: ChatBubblesProps) => {
       <div />
       <div />
       <div />
-      {messages?.map((message, index) =>
-        isNoticeMessage(message) ? (
-          <NoticeBubble key={index} message={message} />
-        ) : isTextMessage(message) || isImageMessage(message) ? (
-          <ChatBubble
-            key={index}
-            user={participants.find((p) => p.id === message.userId) ?? nullUser}
-            message={message}
-            myBubble={me?.id === message.userId}
-          />
-        ) : null
-      )}
-      {hasNext && <Loading ref={topRef} />}
+      {messages
+        ?.flatMap((m) => m.messages)
+        ?.map((message) =>
+          isNoticeMessage(message) ? (
+            <NoticeBubble key={message.id} message={message} />
+          ) : isTextMessage(message) || isImageMessage(message) ? (
+            <ChatBubble
+              key={message.id}
+              user={participants.find((p) => p.id === message.userId) ?? nullUser}
+              message={message}
+              myBubble={me?.id === message.userId}
+            />
+          ) : null
+        )}
+      <Loading ref={topRef} hidden={!messages?.at(-1)?.hasNext} />
     </Container>
   );
 };

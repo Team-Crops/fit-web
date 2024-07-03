@@ -1,4 +1,4 @@
-import { CSSProperties, HTMLAttributes } from 'react';
+import { CSSProperties } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';

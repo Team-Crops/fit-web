@@ -23,7 +23,7 @@ export interface Matching {
 }
 
 export interface MatchingRoom {
-  id: number;
+  id: NonNullable<Matching['id']>;
 
   hostId: User['id'];
   chatId: number;
