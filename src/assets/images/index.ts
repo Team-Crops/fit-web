@@ -15,8 +15,8 @@ export { default as mainSection1Fragment2 } from './main-section-1-fragment-2.pn
 export { default as mainSection1Fragment3 } from './main-section-1-fragment-3.png';
 export { default as mainSection1Logo } from './main-section-1-logo.png';
 export { default as mainSection2 } from './main-section-2.png';
-export { default as mainSection3Arrow } from './main-section-3-arrow.svg';
-export { default as mainSection3Background } from './main-section-3-background.svg';
+export { default as MainSection3Arrow } from './main-section-3-arrow.svg';
+export { default as mainSection3Background } from './main-section-3-background.svg?url';
 
 export { default as matchingPageBackground1 } from './matching-page-background-1.png';
 export { default as matchingPageDoughnut } from './matching-page-doughnut.png';

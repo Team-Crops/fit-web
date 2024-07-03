@@ -4,7 +4,8 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { Txt } from '#atoms/Text';
+import { MainSection3Arrow, mainSection3Background } from '#/assets/images';
+import { Txt } from '#/components/atoms';
 
 const StyledSection = styled.section`
   position: relative;
@@ -17,7 +18,7 @@ const StyledSection = styled.section`
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  padding: 552px 0 100px;
+  padding: 550px 0 300px;
 
   text-align: center;
   white-space: pre-wrap;
@@ -41,12 +42,13 @@ const Block = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 373px;
-  height: 136px;
-  margin-bottom: 46px;
+  width: 100%;
+  max-width: 400px;
+  height: 140px;
+  margin-bottom: 40px;
 
   border: 1px solid #bdbdbd;
-  border-radius: 23px;
+  border-radius: 24px;
 `;
 const FilledBlock = styled.div`
   display: flex;
@@ -54,16 +56,17 @@ const FilledBlock = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 471px;
-  height: 216px;
-  margin: 39px 0 325px;
+  width: 100%;
+  max-width: 500px;
+  height: 220px;
+  margin: 40px 0;
 
   background: #ff706c;
   border: 1px solid #bdbdbd;
-  border-radius: 23px;
+  border-radius: 24px;
 `;
 
-export const ThirdSection = () => {
+export const MainSection3 = () => {
   return (
     <StyledSection>
       <Title size={'main1'} weight={'bold'} color="#000">
@@ -84,7 +87,7 @@ export const ThirdSection = () => {
           여러 구인 사이트에서{`\n`} 일일히 조건과 정보를 파악
         </Txt>
       </Block>
-      <Image src={'/images/main_section3_arrow.svg'} alt={'arrow'} width={118} height={60} />
+      <MainSection3Arrow />
       <FilledBlock>
         <Txt size={'typo3'} weight={'medium'} color="#ffffffc4" marginBottom={12}>
           Sol
@@ -94,11 +97,10 @@ export const ThirdSection = () => {
         </Txt>
       </FilledBlock>
       <BackgroundImage
-        src={'/images/main_section3_background.svg'}
-        alt={'image'}
-        width={0}
-        height={0}
-        sizes="100vw"
+        src={mainSection3Background}
+        alt={'background image'}
+        style={{ objectFit: 'cover' }}
+        fill
       />
     </StyledSection>
   );

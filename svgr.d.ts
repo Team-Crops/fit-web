@@ -1,10 +1,11 @@
 declare module '*.svg' {
-  import { FC, SVGProps } from 'react';
+  import type { FC, SVGProps } from 'react';
   const content: FC<SVGProps<SVGElement>>;
   export default content;
 }
 
 declare module '*.svg?url' {
-  const content: unknown;
+  import type { StaticImageData } from 'next/image';
+  const content: StaticImageData;
   export default content;
 }
