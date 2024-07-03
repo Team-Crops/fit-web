@@ -1,15 +1,13 @@
 import { MainSection1 } from '#/components/templates/MainSection1';
-import { FourthSection } from '#templates/main/FourthSection';
-import { SecondSection } from '#templates/main/SecondSection';
-import { ThirdSection } from '#templates/main/ThirdSection';
+import { MainSection2 } from '#/components/templates/MainSection2';
 
 export default function Home() {
   return (
     <>
       <MainSection1 />
-      <SecondSection />
-      <ThirdSection />
-      <FourthSection />
+      <MainSection2 />
+      {/* <ThirdSection /> */}
+      {/* <FourthSection /> */}
     </>
   );
 }

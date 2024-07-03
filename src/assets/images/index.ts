@@ -14,7 +14,7 @@ export { default as mainSection1Fragment1 } from './main-section-1-fragment-1.pn
 export { default as mainSection1Fragment2 } from './main-section-1-fragment-2.png';
 export { default as mainSection1Fragment3 } from './main-section-1-fragment-3.png';
 export { default as mainSection1Logo } from './main-section-1-logo.png';
-export { default as mainSection2 } from './main-section-2.svg?url';
+export { default as mainSection2 } from './main-section-2.png';
 export { default as mainSection3Arrow } from './main-section-3-arrow.svg';
 export { default as mainSection3Background } from './main-section-3-background.svg';
 
