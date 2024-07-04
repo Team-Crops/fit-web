@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 
 import { Icons } from '#/components/atoms/Icons';
@@ -44,6 +46,12 @@ export const TimeAvailabilitySubmission: React.FC<TimeAvailabilitySubmissionProp
   onUserModified,
 }) => {
   const { data: regions } = useRegionsQuery();
+
+  // init
+  useEffect(() => {
+    onUserModified({ projectCount: 0 });
+  }, [onUserModified]);
+
   return (
     <Container>
       <TitleContainer>
