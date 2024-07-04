@@ -10,7 +10,8 @@ const Card = styled.div<Pick<MainDescriptionCardProps, 'width' | 'height'>>`
   display: flex;
   flex-direction: column;
 
-  width: ${({ width }) => width}px;
+  width: 100%;
+  max-width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   padding: 40px;
 

@@ -2,6 +2,9 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
+import { Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import {
   mainSection3Recommend1,
   mainSection3Recommend2,
@@ -9,29 +12,6 @@ import {
 } from '#/assets/images';
 import { MainDescriptionBlock } from '#molecules/MainDescriptionBlock';
 import { MainDescriptionCard } from '#molecules/MainDescriptionCard';
-
-const Block = styled.div`
-  position: relative;
-
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-
-  width: 100vw;
-  max-width: 1920px;
-  padding: 20px;
-`;
-const CardWrapper = styled.div`
-  display: flex;
-  gap: 19px;
-`;
-const BackgroundImage = styled(Image)`
-  pointer-events: none;
-  position: absolute;
-  top: 815px;
-  left: -105px;
-`;
 
 const CardInfo = [
   {
@@ -56,20 +36,80 @@ export const IntroRecommendBlock = () => {
         buttonText={'추천 받기'}
         buttonLink={'/team-recommend'}
       />
-      <CardWrapper>
-        {CardInfo.map((card, index) => (
-          <MainDescriptionCard
-            key={index}
-            width={600}
-            height={500}
-            index={index + 1}
-            title={card.title}
-            description={card.description}
-            image={card.image}
-          />
+      <CardSwiper
+        modules={[Autoplay]}
+        spaceBetween={40}
+        slidesPerView={1.85}
+        loop
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+      >
+        {CardInfo.concat(CardInfo).map((card, index) => (
+          <SwiperSlide key={index}>
+            <MainDescriptionCard
+              width={600}
+              height={500}
+              index={(index % 2) + 1}
+              title={card.title}
+              description={card.description}
+              image={card.image}
+            />
+          </SwiperSlide>
         ))}
-      </CardWrapper>
-      <BackgroundImage src={mainSection3RecommendBackground} alt={'background'} />
+        <BackgroundImage src={mainSection3RecommendBackground} alt={'background'} />
+      </CardSwiper>
     </Block>
   );
 };
+
+const Block = styled.div`
+  position: relative;
+
+  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  align-items: center;
+
+  width: 100vw;
+  padding: 20px;
+`;
+
+const CardSwiper = styled(Swiper)`
+  position: relative;
+  width: 1200px;
+
+  .swiper-wrapper {
+    padding: 40px;
+  }
+
+  .swiper-slide {
+    transition: opacity 400ms;
+  }
+
+  .swiper-slide-prev {
+    opacity: 0;
+  }
+
+  .swiper-slide-next {
+    &::after {
+      content: '';
+
+      position: absolute;
+      z-index: 10;
+      top: -40px;
+      left: -40px;
+
+      width: calc(100% + 80px);
+      height: calc(100% + 80px);
+
+      background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 100%) 80%);
+    }
+  }
+`;
+
+const BackgroundImage = styled(Image)`
+  pointer-events: none;
+  position: absolute;
+  bottom: -70px;
+  left: -75px;
+`;

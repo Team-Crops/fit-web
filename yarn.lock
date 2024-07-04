@@ -8248,7 +8248,7 @@ __metadata:
     stylelint-config-standard: "npm:^36.0.0"
     stylelint-order: "npm:^6.0.4"
     supports-color: "npm:^9.4.0"
-    swiper: "npm:^11.0.5"
+    swiper: "npm:^11"
     swr: "npm:^2.2.5"
     typescript: "npm:5.3.2"
     typescript-eslint: "npm:^7.15.0"
@@ -13592,10 +13592,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.0.5":
-  version: 11.0.7
-  resolution: "swiper@npm:11.0.7"
-  checksum: 10c0/d27b8c3b5deccde730317c2fe868350fad039e9776c8c6dfd11a89d9e732a66c1292292ca635141a7e0bbb363fcac1291c9fd716bf7a8e3b85d320e58ff94eba
+"swiper@npm:^11":
+  version: 11.1.4
+  resolution: "swiper@npm:11.1.4"
+  checksum: 10c0/a1e4b87f414f67f5da6a07b33d5ee20e54062d21f8bed88195d5d56decff6afddf683e130118b7fa12668de221f794ae63f6c073761b683a4b90bbd5eb585202
   languageName: node
   linkType: hard
 

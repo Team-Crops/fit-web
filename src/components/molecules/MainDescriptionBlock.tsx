@@ -14,13 +14,18 @@ const Block = styled.div`
   gap: 12px;
   align-items: end;
   justify-content: space-between;
+
+  width: 100%;
+  max-width: 1200px;
 `;
+
 const TextBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
   text-align: left;
 `;
+
 const LinkButton = styled(Button)`
   display: flex;
   gap: 12px;

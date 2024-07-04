@@ -17,15 +17,15 @@ export const MainSection2 = () => {
         <Txt size={'main1'} weight={'bold'} color="#000">
           어떻게 팀원을 구하지?
         </Txt>
-        <ImageContainer>
-          <Image
-            src={mainSection2}
-            alt={'Speech bubbles discussing new project member challenges'}
-            style={{ objectFit: 'contain' }}
-            fill
-          />
-        </ImageContainer>
       </ContentBlock>
+      <ImageContainer>
+        <Image
+          src={mainSection2}
+          alt={'Speech bubbles discussing new project member challenges'}
+          style={{ objectFit: 'contain' }}
+          fill
+        />
+      </ImageContainer>
     </StyledSection>
   );
 };
@@ -35,8 +35,6 @@ const StyledSection = styled.section`
   justify-content: center;
 
   width: 100%;
-  max-width: 1920px;
-  margin: 0 auto;
   padding-bottom: 100px;
 
   background: linear-gradient(180deg, #f0f3ffff, #f0f3ff00);
@@ -49,7 +47,8 @@ const ContentBlock = styled.div`
   flex-direction: column;
   gap: 8px;
 
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
   margin-top: 200px;
 `;
 
