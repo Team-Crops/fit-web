@@ -1,9 +1,3 @@
-export { default as mainProject1 } from './main-project-1.svg';
-export { default as mainProject2 } from './main-project-2.svg';
-export { default as mainProjectBackground } from './main-project-background.png';
-export { default as mainRecommend1 } from './main-recommend-1.svg';
-export { default as mainRecommend2 } from './main-recommend-2.svg';
-export { default as mainRecommendBackground } from './main-recommend-background.png';
 export { default as mainSection1Background } from './main-section-1-background.png';
 export { default as mainSection1Character } from './main-section-1-character.png';
 export { default as mainSection1Fragment1 } from './main-section-1-fragment-1.png';
@@ -17,6 +11,12 @@ export { default as mainSection3MatchingBackground } from './main-section-3-matc
 export { default as mainSection3Matching1 } from './main-section-3-matching-1.svg?url';
 export { default as mainSection3Matching2 } from './main-section-3-matching-2.svg?url';
 export { default as mainSection3Matching3 } from './main-section-3-matching-3.svg?url';
+export { default as mainSection3Project1 } from './main-section-3-project-1.svg?url';
+export { default as mainSection3Project2 } from './main-section-3-project-2.svg?url';
+export { default as mainSection3ProjectBackground } from './main-section-3-project-background.png';
+export { default as mainSection3Recommend1 } from './main-section-3-recommend-1.svg?url';
+export { default as mainSection3Recommend2 } from './main-section-3-recommend-2.svg?url';
+export { default as mainSection3RecommendBackground } from './main-section-3-recommend-background.png';
 
 export { default as matchingPageBackground1 } from './matching-page-background-1.png';
 export { default as matchingPageDoughnut } from './matching-page-doughnut.png';
