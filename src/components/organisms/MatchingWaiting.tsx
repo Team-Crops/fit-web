@@ -4,8 +4,6 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 import { Temporal } from '@js-temporal/polyfill';
 
-import 'swiper/css';
-import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { mutate } from 'swr';
