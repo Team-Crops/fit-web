@@ -40,15 +40,14 @@ const CardInfo = [
     imgWidth: 345,
     imgHeight: 489,
     imgIsCenter: true,
-    imgLeftPx: -25,
   },
 ];
 
-export const MyProjectBlock = () => {
+export const IntroProjectBlock = () => {
   return (
     <Block>
       <MainDescriptionBlock
-        title={'내 프로젝트'}
+        title={'프로젝트 모음'}
         bigDescription={`원활한 진행,\n한 눈에 볼 수 있는 성과`}
         smallDescription={
           '팀원들과 소통하여 진행상황을 공유하고 관리할 수 있어요.\n또한, 피해를 주는 팀원에게 패널티를 부여할 수 있어요.'
@@ -68,7 +67,6 @@ export const MyProjectBlock = () => {
               imgUrl={card.imgUrl}
               imgWidth={card.imgWidth}
               imgHeight={card.imgHeight}
-              imgLeftPx={card.imgLeftPx}
             />
           );
         })}
