@@ -10,7 +10,7 @@ export function isImageMessage(message: Message): message is ImageMessage {
 }
 
 export function isNoticeMessage(message: Message): message is NoticeMessage {
-  const noticeMessageTypes = ['NOTICE', 'JOIN', 'EXIT', 'READY', 'CANCEL_READY'];
+  const noticeMessageTypes = ['NOTICE', 'JOIN', 'EXIT', 'READY', 'CANCEL_READY', 'FORCED_OUT'];
   return noticeMessageTypes.includes(message.type);
 }
 
