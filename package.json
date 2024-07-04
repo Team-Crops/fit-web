@@ -25,7 +25,7 @@
     "react-toastify": "^10.0.5",
     "return-fetch": "^0.4.5",
     "socket.io-client": "^2",
-    "swiper": "^11.0.5",
+    "swiper": "^11",
     "swr": "^2.2.5",
     "zustand": "^4.5.2"
   },

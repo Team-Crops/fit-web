@@ -11,9 +11,12 @@ const SpaceCSS = css`
 `;
 const StyledHeader = styled.header`
   position: fixed;
-  z-index: 3;
+  z-index: 9999;
+
   background: #fff;
   border-bottom: 1px solid #eee;
+
+  padding: 0 20px;
 
   ${SpaceCSS}
 `;

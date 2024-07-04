@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
@@ -70,7 +69,6 @@ const CardInfo = [
     imgUrl: '/images/main_matching_img1.svg',
     imgWidth: 345,
     imgHeight: 345,
-    imgLeftPx: 70,
   },
   {
     width: 707,
@@ -79,7 +77,6 @@ const CardInfo = [
     imgUrl: '/images/main_matching_img2.svg',
     imgWidth: 649,
     imgHeight: 328,
-    imgLeftPx: -80,
   },
   {
     width: 707,
@@ -88,7 +85,6 @@ const CardInfo = [
     imgUrl: '/images/main_matching_img3.svg',
     imgWidth: 605,
     imgHeight: 328,
-    imgLeftPx: -50,
   },
 ];
 export const MatchingSequenceSwiper = () => {
@@ -135,7 +131,6 @@ export const MatchingSequenceSwiper = () => {
                 imgUrl={card.imgUrl}
                 imgWidth={card.imgWidth}
                 imgHeight={card.imgHeight}
-                imgLeftPx={card.imgLeftPx}
               />
             </SwiperSlide>
           );

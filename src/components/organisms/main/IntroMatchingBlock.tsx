@@ -63,7 +63,6 @@ export const IntroMatchingBlock = () => {
         ))}
       </CardSwiper>
       <BackgroundImage src={mainSection3MatchingBackground} alt={'clipboard'} width={550} />
-      <BlurBlock />
     </Block>
   );
 };
@@ -71,21 +70,38 @@ export const IntroMatchingBlock = () => {
 const Block = styled.div`
   position: relative;
 
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
   gap: 80px;
+  align-items: center;
 
-  width: 100vw;
-  max-width: 1920px;
+  width: 100%;
   padding: 20px;
 `;
 
 const CardSwiper = styled(Swiper)`
+  position: relative;
   width: 1235px;
 
   .swiper-wrapper {
     padding: 40px;
+  }
+
+  .swiper-slide-next {
+    &::after {
+      content: '';
+
+      position: absolute;
+      z-index: 10;
+      top: -40px;
+      left: -40px;
+
+      width: calc(100% + 80px);
+      height: calc(100% + 80px);
+
+      background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 100%) 50%);
+    }
   }
 `;
 
@@ -94,18 +110,4 @@ const BackgroundImage = styled(Image)`
   position: absolute;
   top: 30px;
   left: -360px;
-`;
-
-const BlurBlock = styled.div`
-  pointer-events: none;
-
-  position: absolute;
-  z-index: 1;
-  top: 230px;
-  right: 0;
-
-  width: 400px;
-  height: 650px;
-
-  background-image: linear-gradient(270deg, #fff 0.05%, rgb(255 255 255 / 0%) 132.02%);
 `;
