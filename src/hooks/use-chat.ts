@@ -28,14 +28,16 @@ const CHAT_MESSAGES_QUERY_KEY =
 
 const CHAT_RECENT_MESSAGE_QUERY_KEY = (id: Chat['id']) => `/v1/chat/room/${id}/recent`;
 
-export function useChatSubscription(id?: Chat['id']) {
+export function useChatSubscription(id?: Chat['id'], handler?: (message: Message) => void) {
   return useSWRSubscription(
     id !== undefined ? [id] : null,
     ([id], { next }: SWRSubscriptionOptions<Message, Error>) => {
       const socket = fitSocket({ roomId: id });
-      socket.on('get_message', (message: string) =>
-        next(null, convertDtoToMessage(JSON.parse(message)))
-      );
+      socket.on('get_message', (data: string) => {
+        const message = convertDtoToMessage(JSON.parse(data));
+        handler?.(message);
+        next(null, message);
+      });
       return () => socket.disconnect();
     }
   );
