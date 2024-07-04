@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -13,7 +13,7 @@ import {
   useMeQuery,
   useNoticeMessageHandler,
 } from '#/hooks';
-import { MatchingRoom, Project } from '#/types';
+import { MatchingRoom, Message, Project } from '#/types';
 import { isControlMessage, isImageMessage, isNoticeMessage, isTextMessage } from '#/utilities';
 import { ChatBubble } from './ChatBubble';
 import { NoticeBubble } from './NoticeBubble';
@@ -26,27 +26,28 @@ interface ChatBubblesProps {
 export const ChatBubbles = ({ projectId, matchingId }: ChatBubblesProps) => {
   const topRef = useRef<HTMLDivElement>(null);
 
-  const noticeMessageHandler = useNoticeMessageHandler(matchingId);
-  const controlMessageHandler = useControlMessageHandler({ projectId, matchingId });
-
   const participants = useChatUsers({ projectId, matchingId });
   const chatId = useChatId({ projectId, matchingId });
 
   const { data: me } = useMeQuery();
   const { data: messages, setSize, append: appendMessage } = useChatMessagesQuery(chatId);
-  const { data: recentMessage } = useChatSubscription(chatId);
 
-  useEffect(() => {
-    if (recentMessage) {
-      if (isNoticeMessage(recentMessage)) {
-        noticeMessageHandler(recentMessage);
+  const handleNoticeMessage = useNoticeMessageHandler(matchingId);
+  const handleControlMessage = useControlMessageHandler({ projectId, matchingId });
+  const handleMessage = useMemo(
+    () => (message: Message) => {
+      if (isNoticeMessage(message)) {
+        handleNoticeMessage(message);
       }
-      if (isControlMessage(recentMessage)) {
-        controlMessageHandler(recentMessage);
+      if (isControlMessage(message)) {
+        handleControlMessage(message);
       }
-      appendMessage(recentMessage);
-    }
-  }, [appendMessage, controlMessageHandler, noticeMessageHandler, recentMessage]);
+      appendMessage(message);
+    },
+    [appendMessage, handleControlMessage, handleNoticeMessage]
+  );
+
+  useChatSubscription(chatId, (message) => handleMessage(message));
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
