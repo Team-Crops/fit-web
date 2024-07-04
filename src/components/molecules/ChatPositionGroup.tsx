@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 import { Txt } from '#/components/atoms/Text';
+import { useMeQuery } from '#/hooks';
 import type { ReportUserMutationArg } from '#/hooks/use-projects';
 import { ChatUser, Position } from '#/types';
 import { ChatParticipant } from './ChatParticipant';
@@ -18,6 +19,7 @@ const ChatPositionGroup = ({
   onKickUser,
   onReportUser,
 }: ChatPositionGroupProps) => {
+  const { data: me } = useMeQuery();
   return (
     <Container>
       <NameContainer>
@@ -35,7 +37,9 @@ const ChatPositionGroup = ({
             isHost={participant.isHost}
             isReady={participant.isReady}
             isReportable={participant.isReportable}
-            onKickUser={onKickUser ? () => onKickUser(participant.id) : undefined}
+            onKickUser={
+              onKickUser && participant.id !== me?.id ? () => onKickUser(participant.id) : undefined
+            }
             onReportUser={
               onReportUser
                 ? (args) => onReportUser({ ...args, targetUserId: participant.id })
