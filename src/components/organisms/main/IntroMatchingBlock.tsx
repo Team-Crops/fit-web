@@ -32,7 +32,7 @@ const CardInfo = [
   },
 ];
 
-export const InfoMatchingBlock = () => {
+export const IntroMatchingBlock = () => {
   return (
     <Block>
       <MainDescriptionBlock

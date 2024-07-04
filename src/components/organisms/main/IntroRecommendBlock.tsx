@@ -46,7 +46,7 @@ const CardInfo = [
   },
 ];
 
-export const RecommendBlock = () => {
+export const IntroRecommendBlock = () => {
   return (
     <Block>
       <MainDescriptionBlock
