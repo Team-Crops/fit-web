@@ -50,7 +50,7 @@ export const TimeAvailabilitySubmission: React.FC<TimeAvailabilitySubmissionProp
   // init
   useEffect(() => {
     onUserModified({ projectCount: 0 });
-  }, []);
+  }, [onUserModified]);
 
   return (
     <Container>
