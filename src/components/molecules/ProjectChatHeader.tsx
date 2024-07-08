@@ -2,8 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { mutate } from 'swr';
-
 import { Button, Input, Txt } from '#/components/atoms';
 import { useProjectMutator, useProjectsQuery } from '#/hooks/use-projects';
 import { Project, ProjectStatus } from '#/types';
