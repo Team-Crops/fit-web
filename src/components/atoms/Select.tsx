@@ -253,9 +253,15 @@ export const Select: React.FC<SelectProps> & {
   return (
     <SelectContext.Provider value={{ value, onChange, setLabel }}>
       <SelectContainer className={className} ref={containerRef} width={width}>
-        <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
+        <input
+          type="text"
+          readOnly
+          value={value === undefined ? '' : value}
+          style={{ display: 'none' }}
+          {...props}
+        />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
-          {((value !== null || value !== undefined) && label) ?? placeholder}
+          {value === null || value === undefined ? placeholder : label}
           <ArrowIcon icon="arrowDown" size={12} $isError={error} $isOpened={isOpened} />
           <OptionList position={optionsPosition} hidden={!isOpened} ref={optionsRef}>
             {children}
