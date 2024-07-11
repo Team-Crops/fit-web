@@ -16,6 +16,7 @@ const BadgeBlock = styled.div<{ selected: boolean }>`
 
   white-space: nowrap;
 
+  background-color: ${({ selected }) => (selected ? '#ffffff' : 'transparent')};
   border: 1px solid ${({ selected }) => (selected ? '#FF908D' : '#9E9E9E')};
   border-radius: 5px;
 `;
