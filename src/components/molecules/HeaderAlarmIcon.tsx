@@ -2,16 +2,18 @@ import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
+import { mutate } from 'swr';
+
 import { Icons } from '#/components/atoms';
-import { useAlarmQuery } from '#/hooks';
+import { ALARM_QUERY_KEY, useAlarmQuery } from '#/hooks';
 
 export const HeaderAlarmIcon = () => {
-  const { data, mutate } = useAlarmQuery();
+  const { data } = useAlarmQuery();
 
   useEffect(() => {
-    const interval = setInterval(() => mutate(), 10000);
+    const interval = setInterval(() => mutate(ALARM_QUERY_KEY(0)), 10000);
     return () => clearInterval(interval);
-  }, [mutate]);
+  }, []);
 
   return (
     <Container>
