@@ -1,11 +1,10 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { Txt } from '#/components/atoms';
 import { Button } from '#/components/atoms/Button';
 import { Select } from '#/components/atoms/Select';
-import { Txt } from '#/components/atoms/Text';
 import { CareerSelect } from '#/components/molecules/CareerSelect';
 import { PositionBadge } from '#/components/molecules/MyPage/PositionBadge';
 import { Filter } from '#/components/molecules/TeamRecommend/Filter';
@@ -16,62 +15,44 @@ import { RecommendUserQueryOptions } from '#/hooks/use-recommend';
 import { useRegionsQuery } from '#/hooks/use-regions';
 import { Position, UserBackgroundStatus } from '#/types';
 
+const FilterTopBlock = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 75px;
+  padding: 0 30px;
+
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+`;
 const Block = styled.div`
   display: flex;
   flex-direction: column;
 
   width: 100%;
-  height: 456px;
 
   background-color: #fafafa;
   border: 1px solid #eee;
   border-radius: 10px;
 `;
-const DibsFilter = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  width: 100%;
-  height: 78px;
-
-  border-bottom: 2px solid #eee;
-`;
-const DibsBlock = styled(Txt)<{ selected: boolean }>`
-  cursor: pointer;
-
-  position: relative;
-  bottom: -2px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-bottom: 2px solid transparent;
-
-  ${({ selected }) =>
-    selected &&
-    css`
-      border-bottom: 2px solid #ff706c;
-    `}
-`;
 const InitFilterButton = styled(Button)`
-  margin: 20px 40px 14px auto;
+  border-radius: 50px;
 `;
-const FilterGridBlock = styled.div`
+const FilterGridBlock = styled.div<{ isBorder?: boolean }>`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px 196px;
-  padding: 0 231px 0 90px;
+  gap: 20px 150px;
+  padding: 40px 30px;
+  ${({ isBorder }) => (isBorder ? 'border-bottom: 1px solid #eee;' : '')}
 `;
 const PositionWrapper = styled.div`
   display: flex;
   gap: 10px;
 `;
-
-const dibsFilter = [
-  { label: '전체', value: false },
-  { label: '찜만 보기', value: true },
-];
+const SubmitButton = styled(Button)`
+  margin: 0 30px 20px;
+`;
 
 interface RecommendFilterBlockProps {
   options: RecommendUserQueryOptions;
@@ -86,14 +67,6 @@ export const RecommendFilterBlock = ({
 }: RecommendFilterBlockProps) => {
   const { data: positionList } = usePositionsQuery();
   const { data: regions } = useRegionsQuery();
-
-  const handleDibsClick = useCallback(
-    (dibsValue: boolean) => () => {
-      setOptions((opts) => ({ ...opts, liked: dibsValue }));
-      trigger({ ...options, liked: dibsValue });
-    },
-    [setOptions, options, trigger]
-  );
 
   const handlePositionClick = useCallback(
     (positionId: Position['id']) => {
@@ -113,29 +86,22 @@ export const RecommendFilterBlock = ({
 
   return (
     <Block>
-      <DibsFilter>
-        {dibsFilter.map((dibs) => (
-          <DibsBlock
-            key={dibs.label}
-            size="typo4"
-            weight="bold"
-            selected={options.liked === dibs.value}
-            onClick={handleDibsClick(dibs.value)}
-          >
-            {dibs.label}
-          </DibsBlock>
-        ))}
-      </DibsFilter>
-      <InitFilterButton
-        variant={'outlined'}
-        height={'40'}
-        color={'primary'}
-        onClick={() => setOptions((opts) => ({ liked: opts.liked }))}
-      >
-        필터 초기화
-      </InitFilterButton>
-      <FilterGridBlock>
-        <Filter title="포지션" titleWidth={206} fullColumn>
+      <FilterTopBlock>
+        <Txt size="typo4" weight="bold">
+          필터
+        </Txt>
+        <InitFilterButton
+          variant={'outlined'}
+          height={'40'}
+          color={'secondary'}
+          onClick={() => setOptions((opts) => ({ liked: opts.liked }))}
+        >
+          초기화
+        </InitFilterButton>
+      </FilterTopBlock>
+
+      <FilterGridBlock isBorder>
+        <Filter title="포지션" titleWidth={173} fullColumn>
           <PositionWrapper>
             {positionList?.map((position) => (
               <PositionBadge
@@ -147,10 +113,12 @@ export const RecommendFilterBlock = ({
             ))}
           </PositionWrapper>
         </Filter>
-        <Filter title="사용 가능한 기술 툴" titleWidth={206} fullColumn>
+        <Filter title="사용 가능한 기술 툴" titleWidth={173} fullColumn>
           <TechSelect options={options} setOptions={setOptions} />
         </Filter>
-        <Filter title="학력/경력" titleWidth={206}>
+      </FilterGridBlock>
+      <FilterGridBlock>
+        <Filter title="학력/경력" titleWidth={173}>
           <CareerSelect
             value={options.backgroundStatus}
             onChange={(e) =>
@@ -178,24 +146,9 @@ export const RecommendFilterBlock = ({
             ))}
           </Select>
         </Filter>
-        <Filter title="주 활동 지역" titleWidth={206}>
-          <Select
-            value={options.regionId}
-            onChange={(e) =>
-              setOptions((opts) => ({ ...opts, regionId: Number.parseInt(e.target.value) }))
-            }
-            width="130px"
-            placeholder="선택하세요"
-          >
-            {regions?.map((region) => (
-              <Select.Option key={region.id} value={region.id}>
-                {region.displayName}
-              </Select.Option>
-            ))}
-          </Select>
-        </Filter>
-        <Filter title="활동 가능 시간" titleWidth={220} direction="column">
-          <PositionWrapper style={{ marginTop: '16px' }}>
+
+        <Filter title="활동 가능 시간" titleWidth={173}>
+          <PositionWrapper>
             {availableActivityHours.map((value) => (
               <PositionBadge
                 key={value}
@@ -218,7 +171,31 @@ export const RecommendFilterBlock = ({
             ))}
           </PositionWrapper>
         </Filter>
+        <Filter title="주 활동 지역" titleWidth={220}>
+          <Select
+            value={options.regionId}
+            onChange={(e) =>
+              setOptions((opts) => ({ ...opts, regionId: Number.parseInt(e.target.value) }))
+            }
+            width="130px"
+            placeholder="선택하세요"
+          >
+            {regions?.map((region) => (
+              <Select.Option key={region.id} value={region.id}>
+                {region.displayName}
+              </Select.Option>
+            ))}
+          </Select>
+        </Filter>
       </FilterGridBlock>
+      <SubmitButton
+        onClick={() => trigger(options)}
+        variant={'round'}
+        height={'50'}
+        color={'primary'}
+      >
+        팀원 추천
+      </SubmitButton>
     </Block>
   );
 };

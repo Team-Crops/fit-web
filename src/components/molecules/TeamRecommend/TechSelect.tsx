@@ -23,7 +23,6 @@ const TechSelectButton = styled.div`
 
   width: 676px;
   height: 30px;
-  margin-bottom: 35px;
 
   background: #fff;
   border: 1px solid #bdbdbd;
