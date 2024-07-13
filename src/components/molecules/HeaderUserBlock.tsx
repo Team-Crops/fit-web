@@ -31,11 +31,14 @@ const AlarmBlock = styled.div`
   position: relative;
   z-index: 2;
 `;
+
+type OpenModal = 'alarm' | 'menu' | null;
+
 export const HeaderUserBlock = () => {
-  const [openModal, setOpenModal] = useState<'alarm' | 'menu' | null>(null);
+  const [openModal, setOpenModal] = useState<OpenModal>(null);
 
   const openModalHandler = useCallback(
-    (type: 'alarm' | 'menu' | null) => () => {
+    (type: OpenModal) => () => {
       if (openModal === type) setOpenModal(null);
       else setOpenModal(type);
     },
