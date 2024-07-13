@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Icons } from '#atoms/Icons';
+import { HeaderAlarmIcon } from './HeaderAlarmIcon';
 import { HeaderAlarmModal } from './HeaderAlarmModal';
 import { HeaderMenuModal } from './HeaderMenuModal';
 import { ProfileBlock } from '../organisms/ProfileBlock';
@@ -48,7 +48,7 @@ export const HeaderUserBlock = () => {
   return (
     <FlexBlock>
       <AlarmBlock onClick={openModalHandler('alarm')}>
-        <Icons icon="bell" width={28} height={35} />
+        <HeaderAlarmIcon />
         <HeaderAlarmModal isOpen={openModal === 'alarm'} toggleModal={openModalHandler(null)} />
       </AlarmBlock>
       <MenuBlock onClick={openModalHandler('menu')}>
