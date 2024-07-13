@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Icons } from '#atoms/Icons';
-import { HeaderAlarmModal } from './HeaderAlarmBlock';
+import { HeaderAlarmModal } from './HeaderAlarmModal';
 import { HeaderMenuModal } from './HeaderMenuModal';
 import { ProfileBlock } from '../organisms/ProfileBlock';
 

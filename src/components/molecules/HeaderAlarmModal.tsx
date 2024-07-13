@@ -26,12 +26,12 @@ const AlarmList = styled.div`
   max-height: 500px;
 `;
 
-interface HeaderAlarmBlockProps {
+interface HeaderAlarmModalProps {
   isOpen: boolean;
   toggleModal: () => void;
 }
 
-export const HeaderAlarmModal = ({ isOpen, toggleModal }: HeaderAlarmBlockProps) => {
+export const HeaderAlarmModal = ({ isOpen, toggleModal }: HeaderAlarmModalProps) => {
   const { data: alarms, setSize } = useAlarmQuery();
   const observerRef = useRef<IntersectionObserver | null>(null);
 
