@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import styled from '@emotion/styled';
+
 import { ProjectDivider } from '#/components/molecules/ProjectDivider';
 import { ProjectChatRoom } from '#/components/organisms/ProjectChatRoom';
 import { useProjectsQuery } from '#/hooks/use-projects';
@@ -27,7 +29,7 @@ export const ProjectList = ({
   const completedProjects = useMemo(() => projects?.filter((p) => p.completedAt), [projects]);
 
   return (
-    <>
+    <Container>
       {inProgressProjects?.length ? <ProjectDivider /> : null}
       {inProgressProjects?.map((project) => (
         <ProjectChatRoom
@@ -46,6 +48,12 @@ export const ProjectList = ({
           toggleFold={() => toggleFold(project.id)}
         />
       ))}
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
