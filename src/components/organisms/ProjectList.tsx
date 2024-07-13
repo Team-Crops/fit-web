@@ -28,7 +28,7 @@ export const ProjectList = ({
 
   return (
     <>
-      <ProjectDivider />
+      {inProgressProjects?.length ? <ProjectDivider /> : null}
       {inProgressProjects?.map((project) => (
         <ProjectChatRoom
           key={project.id}
@@ -37,7 +37,7 @@ export const ProjectList = ({
           toggleFold={() => toggleFold(project.id)}
         />
       ))}
-      <ProjectDivider done />
+      {completedProjects?.length ? <ProjectDivider done /> : null}
       {completedProjects?.map((project) => (
         <ProjectChatRoom
           key={project.id}
