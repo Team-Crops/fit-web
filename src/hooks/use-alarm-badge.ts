@@ -24,8 +24,6 @@ export const useAlarmBadge = () => {
     if (data?.[0].pageResult.values?.at(0)?.isRead === false) {
       clearInterval(intervalId);
       setBadged(true);
-    } else {
-      setBadged(false);
     }
   }, [data, intervalId]);
 
