@@ -11,7 +11,11 @@ export const ALARM_QUERY_KEY = (index: number, previousPageData?: AlarmQueryResp
 };
 
 export function useAlarmQuery() {
-  return useSWRInfinite(ALARM_QUERY_KEY, async (url) => {
-    return await fitFetcher<AlarmQueryResponse>(url);
-  });
+  return useSWRInfinite(
+    ALARM_QUERY_KEY,
+    async (url) => {
+      return await fitFetcher<AlarmQueryResponse>(url);
+    },
+    { revalidateOnFocus: false, dedupingInterval: 1000 * 60 * 10 }
+  );
 }
