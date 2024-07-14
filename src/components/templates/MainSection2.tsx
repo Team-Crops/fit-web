@@ -32,6 +32,8 @@ export const MainSection2 = () => {
 
 const StyledSection = styled.section`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 
   width: 100%;
@@ -54,5 +56,7 @@ const ContentBlock = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
+  width: 100%;
+  max-width: 1200px;
   height: calc(100vw * ${mainSection2.height / mainSection2.width});
 `;
