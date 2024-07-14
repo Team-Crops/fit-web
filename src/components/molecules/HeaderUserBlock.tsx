@@ -1,7 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { mutate } from 'swr';
+
+import { ALARM_QUERY_KEY } from '#/hooks';
 import { HeaderAlarmIcon } from './HeaderAlarmIcon';
 import { HeaderAlarmModal } from './HeaderAlarmModal';
 import { HeaderMenuModal } from './HeaderMenuModal';
@@ -35,27 +38,29 @@ const AlarmBlock = styled.div`
 type OpenModal = 'alarm' | 'menu' | null;
 
 export const HeaderUserBlock = () => {
-  const [openModal, setOpenModal] = useState<OpenModal>(null);
+  const [openedModal, setOpenModal] = useState<OpenModal>(null);
 
-  const openModalHandler = useCallback(
-    (type: OpenModal) => () => {
-      if (openModal === type) setOpenModal(null);
-      else setOpenModal(type);
-    },
-    [openModal]
-  );
+  const toggleModal = useCallback((type: OpenModal) => {
+    setOpenModal((prev) => (prev === type ? null : type));
+  }, []);
+
+  useEffect(() => {
+    if (openedModal === 'alarm') {
+      mutate(ALARM_QUERY_KEY);
+    }
+  }, [openedModal]);
 
   return (
     <FlexBlock>
-      <AlarmBlock onClick={openModalHandler('alarm')}>
+      <AlarmBlock onClick={() => toggleModal('alarm')}>
         <HeaderAlarmIcon />
-        <HeaderAlarmModal isOpen={openModal === 'alarm'} toggleModal={openModalHandler(null)} />
+        <HeaderAlarmModal isOpen={openedModal === 'alarm'} toggleModal={() => toggleModal(null)} />
       </AlarmBlock>
-      <MenuBlock onClick={openModalHandler('menu')}>
+      <MenuBlock onClick={() => toggleModal('menu')}>
         <ProfileBlock size={45} />
-        <HeaderMenuModal isOpen={openModal === 'menu'} toggleMenu={openModalHandler(null)} />
+        <HeaderMenuModal isOpen={openedModal === 'menu'} toggleMenu={() => toggleModal(null)} />
       </MenuBlock>
-      {openModal !== null && <Background onClick={openModalHandler(null)} />}
+      {openedModal !== null && <Background onClick={() => toggleModal(null)} />}
     </FlexBlock>
   );
 };
