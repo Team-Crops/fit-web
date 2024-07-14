@@ -50,6 +50,9 @@ const Header = styled.div`
 const ChatToolboxContainer = styled.div`
   position: absolute;
   bottom: 0;
+
   width: 100%;
   padding: 30px;
+
+  background: linear-gradient(180deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 10000%) 50%);
 `;

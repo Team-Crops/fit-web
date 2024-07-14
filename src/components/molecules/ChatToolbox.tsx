@@ -76,7 +76,9 @@ export const ChatToolbox = ({ projectId, matchingId }: ChatToolboxProps) => {
         }}
       >
         <input ref={imageInputRef} hidden type="file" accept="image/*" onChange={onUploadImage} />
-        <ToolIcon icon="image" size={36} onClick={() => imageInputRef.current?.click()} />
+        <Tool onClick={() => imageInputRef.current?.click()}>
+          <Icons icon="image" size={24} />
+        </Tool>
         <TextInput
           placeholder="대기방의 팀원에게 메세지를 보내보세요"
           typo="typo5"
@@ -110,7 +112,7 @@ const Form = styled.form`
   align-items: center;
 `;
 
-const ToolIcon = styled(Icons)`
+const Tool = styled.div`
   cursor: pointer;
 
   padding: 12px;
