@@ -36,27 +36,29 @@ export const IntroRecommendBlock = () => {
         buttonText={'추천 받기'}
         buttonLink={'/team-recommend'}
       />
-      <CardSwiper
-        modules={[Autoplay]}
-        spaceBetween={40}
-        slidesPerView={1.85}
-        loop
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-      >
-        {CardInfo.concat(CardInfo).map((card, index) => (
-          <SwiperSlide key={index}>
-            <MainDescriptionCard
-              width={600}
-              height={500}
-              index={(index % 2) + 1}
-              title={card.title}
-              description={card.description}
-              image={card.image}
-            />
-          </SwiperSlide>
-        ))}
+      <SwiperContainer>
+        <CardSwiper
+          modules={[Autoplay]}
+          spaceBetween={40}
+          slidesPerView={1.85}
+          loop
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+        >
+          {CardInfo.concat(CardInfo).map((card, index) => (
+            <SwiperSlide key={index}>
+              <MainDescriptionCard
+                width={600}
+                height={500}
+                index={(index % 2) + 1}
+                title={card.title}
+                description={card.description}
+                image={card.image}
+              />
+            </SwiperSlide>
+          ))}
+        </CardSwiper>
         <BackgroundImage src={mainSection3RecommendBackground} alt={'background'} />
-      </CardSwiper>
+      </SwiperContainer>
     </Block>
   );
 };
@@ -64,7 +66,6 @@ export const IntroRecommendBlock = () => {
 const Block = styled.div`
   position: relative;
 
-  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
   gap: 80px;
@@ -74,8 +75,11 @@ const Block = styled.div`
   padding: 20px;
 `;
 
-const CardSwiper = styled(Swiper)`
+const SwiperContainer = styled.div`
   position: relative;
+`;
+
+const CardSwiper = styled(Swiper)`
   width: 1200px;
 
   .swiper-wrapper {
