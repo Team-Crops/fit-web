@@ -1,24 +1,15 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 
-import { mutate } from 'swr';
-
 import { Icons } from '#/components/atoms';
-import { ALARM_QUERY_KEY, useAlarmQuery } from '#/hooks';
+import { useAlarmBadge } from '#/hooks/use-alarm-badge';
 
 export const HeaderAlarmIcon = () => {
-  const { data } = useAlarmQuery();
-
-  useEffect(() => {
-    const interval = setInterval(() => mutate(ALARM_QUERY_KEY(0)), 10000);
-    return () => clearInterval(interval);
-  }, []);
+  const badged = useAlarmBadge();
 
   return (
     <Container>
       <Icons icon="bell" width={28} height={35} />
-      {data?.[0].pageResult.values?.at(0)?.isRead === false && <Badge />}
+      {badged && <Badge />}
     </Container>
   );
 };
