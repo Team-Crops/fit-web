@@ -1,9 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { Icons } from '#atoms/Icons';
-import { HeaderAlarmModal } from './HeaderAlarmBlock';
+import { mutate } from 'swr';
+
+import { ALARM_QUERY_KEY } from '#/hooks';
+import { HeaderAlarmIcon } from './HeaderAlarmIcon';
+import { HeaderAlarmModal } from './HeaderAlarmModal';
 import { HeaderMenuModal } from './HeaderMenuModal';
 import { ProfileBlock } from '../organisms/ProfileBlock';
 
@@ -31,28 +34,33 @@ const AlarmBlock = styled.div`
   position: relative;
   z-index: 2;
 `;
-export const HeaderUserBlock = () => {
-  const [openModal, setOpenModal] = useState<'alarm' | 'menu' | null>(null);
 
-  const openModalHandler = useCallback(
-    (type: 'alarm' | 'menu' | null) => () => {
-      if (openModal === type) setOpenModal(null);
-      else setOpenModal(type);
-    },
-    [openModal]
-  );
+type OpenModal = 'alarm' | 'menu' | null;
+
+export const HeaderUserBlock = () => {
+  const [openedModal, setOpenModal] = useState<OpenModal>(null);
+
+  const toggleModal = useCallback((type: OpenModal) => {
+    setOpenModal((prev) => (prev === type ? null : type));
+  }, []);
+
+  useEffect(() => {
+    if (openedModal === 'alarm') {
+      mutate(ALARM_QUERY_KEY);
+    }
+  }, [openedModal]);
 
   return (
     <FlexBlock>
-      <AlarmBlock onClick={openModalHandler('alarm')}>
-        <Icons icon="bell" width={28} height={35} />
-        <HeaderAlarmModal isOpen={openModal === 'alarm'} toggleModal={openModalHandler(null)} />
+      <AlarmBlock onClick={() => toggleModal('alarm')}>
+        <HeaderAlarmIcon />
+        <HeaderAlarmModal isOpen={openedModal === 'alarm'} toggleModal={() => toggleModal(null)} />
       </AlarmBlock>
-      <MenuBlock onClick={openModalHandler('menu')}>
+      <MenuBlock onClick={() => toggleModal('menu')}>
         <ProfileBlock size={45} />
-        <HeaderMenuModal isOpen={openModal === 'menu'} toggleMenu={openModalHandler(null)} />
+        <HeaderMenuModal isOpen={openedModal === 'menu'} toggleMenu={() => toggleModal(null)} />
       </MenuBlock>
-      {openModal !== null && <Background onClick={openModalHandler(null)} />}
+      {openedModal !== null && <Background onClick={() => toggleModal(null)} />}
     </FlexBlock>
   );
 };

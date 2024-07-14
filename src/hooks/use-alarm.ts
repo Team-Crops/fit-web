@@ -3,7 +3,7 @@ import useSWRInfinite from 'swr/infinite';
 import { AlarmQueryResponse } from '#/types';
 import { fitFetcher } from '#/utilities';
 
-const ALARM_QUERY_KEY = (index: number, previousPageData: AlarmQueryResponse | null) => {
+export const ALARM_QUERY_KEY = (index: number, previousPageData?: AlarmQueryResponse | null) => {
   if (previousPageData && previousPageData.pageResult.values.length === 0) {
     return null;
   }
@@ -11,7 +11,11 @@ const ALARM_QUERY_KEY = (index: number, previousPageData: AlarmQueryResponse | n
 };
 
 export function useAlarmQuery() {
-  return useSWRInfinite(ALARM_QUERY_KEY, async (url) => {
-    return await fitFetcher<AlarmQueryResponse>(url);
-  });
+  return useSWRInfinite(
+    ALARM_QUERY_KEY,
+    async (url) => {
+      return await fitFetcher<AlarmQueryResponse>(url);
+    },
+    { revalidateOnFocus: false, dedupingInterval: 1000 * 60 * 10 }
+  );
 }
