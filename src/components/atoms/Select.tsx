@@ -13,6 +13,8 @@ import { Children, createContext, useContext, useEffect, useMemo, useRef, useSta
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { isNil } from 'lodash';
+
 import { transientStyled } from '#/utilities/transient-styled';
 import { Icons } from '#atoms/Icons';
 
@@ -253,9 +255,9 @@ export const Select: React.FC<SelectProps> & {
   return (
     <SelectContext.Provider value={{ value, onChange, setLabel }}>
       <SelectContainer className={className} ref={containerRef} width={width}>
-        <input type="text" readOnly value={value} style={{ display: 'none' }} {...props} />
+        <input type="text" readOnly value={value ?? ''} style={{ display: 'none' }} {...props} />
         <SelectButton error={error} value={value} onClick={() => setOpened((prev) => !prev)}>
-          {((value !== null || value !== undefined) && label) ?? placeholder}
+          {isNil(value) ? placeholder : label}
           <ArrowIcon icon="arrowDown" size={12} $isError={error} $isOpened={isOpened} />
           <OptionList position={optionsPosition} hidden={!isOpened} ref={optionsRef}>
             {children}
