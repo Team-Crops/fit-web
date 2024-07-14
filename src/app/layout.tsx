@@ -1,5 +1,8 @@
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import 'swiper/css/pagination';
 
 import { Footer } from '#/components/templates/Footer';
 import { Header } from '#/components/templates/Header';

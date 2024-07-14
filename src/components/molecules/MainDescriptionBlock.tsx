@@ -8,20 +8,27 @@ import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
 
 const Block = styled.div`
+  z-index: 10;
+
   display: flex;
+  gap: 12px;
   align-items: end;
   justify-content: space-between;
-  margin-bottom: 100px;
+
+  width: 100%;
+  max-width: 1200px;
 `;
+
 const TextBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
   text-align: left;
 `;
+
 const LinkButton = styled(Button)`
   display: flex;
-  gap: 13px;
+  gap: 12px;
   align-items: center;
   justify-content: center;
 `;
@@ -59,7 +66,7 @@ export const MainDescriptionBlock = ({
         </Txt>
       </TextBlock>
       <LinkButton variant={'round'} height={'70'} color={'primary'} onClick={onClickLinkButton}>
-        <Txt size={'typo4'} weight={'bold'} color="#fff">
+        <Txt size={'typo4'} weight={'bold'} color="#fff" style={{ whiteSpace: 'nowrap' }}>
           {buttonText}
         </Txt>
         <Icons icon={'arrowRight'} color="#fff" width={24} />

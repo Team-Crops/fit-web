@@ -2,10 +2,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
+import {
+  mainSection3Matching1,
+  mainSection3Matching2,
+  mainSection3Matching3,
+} from '#/assets/images';
 import { Icons } from '#/components/atoms/Icons';
 import { MainDescriptionCard } from '#/components/molecules/MainDescriptionCard';
 
@@ -67,28 +71,19 @@ const CardInfo = [
     width: 707,
     title: '랜덤 팀 매칭 시작',
     description: `내 프로필을 작성한 후 원하는 포지션의 사람들과 프로젝트 시작할\n준비를 해보세요! 그러면 최적의 랜덤 팀 매칭을 받을 수 있어요!`,
-    imgUrl: '/images/main_matching_img1.svg',
-    imgWidth: 345,
-    imgHeight: 345,
-    imgLeftPx: 70,
+    image: mainSection3Matching1,
   },
   {
     width: 707,
     title: '대기방 생성',
     description: `프로젝트 최소 인원이 모이면 생성되는 대기방에서\n예비 팀원들과 대화를 나눠보세요!`,
-    imgUrl: '/images/main_matching_img2.svg',
-    imgWidth: 649,
-    imgHeight: 328,
-    imgLeftPx: -80,
+    image: mainSection3Matching2,
   },
   {
     width: 707,
     title: '프로젝트 시작',
     description: `매칭 팀원들과 프로젝트를 시작해 보세요!\n만들어진 팀은 "내 프로젝트" 페이지에서 확인할 수 있어요.`,
-    imgUrl: '/images/main_matching_img3.svg',
-    imgWidth: 605,
-    imgHeight: 328,
-    imgLeftPx: -50,
+    image: mainSection3Matching3,
   },
 ];
 export const MatchingSequenceSwiper = () => {
@@ -132,10 +127,7 @@ export const MatchingSequenceSwiper = () => {
                 index={index + 1}
                 title={card.title}
                 description={card.description}
-                imgUrl={card.imgUrl}
-                imgWidth={card.imgWidth}
-                imgHeight={card.imgHeight}
-                imgLeftPx={card.imgLeftPx}
+                image={card.image}
               />
             </SwiperSlide>
           );

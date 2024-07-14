@@ -73,7 +73,7 @@ const RAW_RUNTIME_STATE =
           ["stylelint-config-standard", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:36.0.0"],\
           ["stylelint-order", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:6.0.4"],\
           ["supports-color", "npm:9.4.0"],\
-          ["swiper", "npm:11.0.7"],\
+          ["swiper", "npm:11.1.4"],\
           ["swr", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:2.2.5"],\
           ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["typescript-eslint", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.15.0"],\
@@ -11394,7 +11394,7 @@ const RAW_RUNTIME_STATE =
           ["stylelint-config-standard", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:36.0.0"],\
           ["stylelint-order", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:6.0.4"],\
           ["supports-color", "npm:9.4.0"],\
-          ["swiper", "npm:11.0.7"],\
+          ["swiper", "npm:11.1.4"],\
           ["swr", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:2.2.5"],\
           ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["typescript-eslint", "virtual:67a01b8379dbfa206d4ad50c4ea9820edff287ac6e8e45e1c251d66e9a321bdbb9d5b5cf53117f97ad8d35663c2e78c57d82e9a46aa615d46102bbc530488947#npm:7.15.0"],\
@@ -17655,10 +17655,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["swiper", [\
-      ["npm:11.0.7", {\
-        "packageLocation": "./.yarn/cache/swiper-npm-11.0.7-d14c0a02a9-d27b8c3b5d.zip/node_modules/swiper/",\
+      ["npm:11.1.4", {\
+        "packageLocation": "./.yarn/cache/swiper-npm-11.1.4-d9e487eecf-a1e4b87f41.zip/node_modules/swiper/",\
         "packageDependencies": [\
-          ["swiper", "npm:11.0.7"]\
+          ["swiper", "npm:11.1.4"]\
         ],\
         "linkType": "HARD"\
       }]\

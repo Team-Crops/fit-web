@@ -9,7 +9,8 @@ const StyledFooter = styled.footer`
   justify-content: center;
 
   width: 100%;
-  height: 393px;
+  height: 400px;
+  padding: 0 20px;
 
   background-color: #f5f5f5;
   border-top: 1px solid #bdbdbd;
