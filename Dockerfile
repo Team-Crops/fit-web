@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat
 COPY .yarn/releases ./.yarn/releases
 COPY package.json yarn.lock .yarnrc.yml ./
 
-COPY next.config.js tsconfig.json ./
+COPY next-env.d.ts next.config.js svgr.d.ts tsconfig.json ./
 COPY ./public ./public
 COPY ./src ./src
 
