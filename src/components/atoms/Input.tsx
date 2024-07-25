@@ -4,10 +4,11 @@ import styled from '@emotion/styled';
 
 import { Txt, TxtProps, TxtSizeCSS, TxtWeightCSS } from './Text';
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  width: ${({ width }) => width};
 `;
 
 interface CommonInputProps {
@@ -17,41 +18,45 @@ interface CommonInputProps {
 }
 
 const CommonInput = styled.input<CommonInputProps>`
-  appearance: none;
-
+  width: 100%;
   padding: 10px;
+  appearance: none;
 
   ${({ typo }) => TxtSizeCSS({ size: typo })}
   ${({ weight }) => TxtWeightCSS({ weight })}
 `;
 
 const FilledInput = styled(CommonInput)`
-  width: ${({ width }) => width};
-  height: 33px;
-  border: 1px solid #eeeeee;
-  border-radius: 5px;
-  background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.2)' : '#eeeeee')};
-  &:focus {
-    outline: 2px solid #ffc7c6;
-    border: 1px solid #ff706c;
-    background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.1)' : '#fff')};
-  }
+  padding: 10px;
 
   color: #212121;
+
+  background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.2)' : '#eeeeee')};
+  border: 1px solid #eee;
+  border-radius: 5px;
+
   &::placeholder {
     color: #9e9e9e;
+  }
+
+  &:focus {
+    background: ${({ error }) => (error ? 'rgba(255, 8, 0, 0.1)' : '#fff')};
+    border: 1px solid #ff706c;
+    outline: 2px solid #ffc7c6;
   }
 `;
 
 const StandardInput = styled(CommonInput)`
-  border-bottom: 3px solid #ff908d;
-  &:focus {
-    border-bottom: 3px solid #ff706c;
-  }
-
+  padding: 10px 0;
   color: #212121;
+  border-bottom: 3px solid #ff908d;
+
   &::placeholder {
     color: #bdbdbd;
+  }
+
+  &:focus {
+    border-bottom: 3px solid #ff706c;
   }
 `;
 
@@ -74,7 +79,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string;
 }
 
-export const Input = ({
+export const Input: React.FC<InputProps> = ({
   variant = 'filled',
   helperText,
   error = false,
@@ -82,14 +87,12 @@ export const Input = ({
   weight = 'medium',
   width = '100%',
   ...props
-}: InputProps) => {
+}) => {
   return (
-    <InputContainer>
-      {variant === 'filled' && (
-        <FilledInput typo={typo} weight={weight} error={error} width={width} {...props} />
-      )}
+    <InputContainer width={width}>
+      {variant === 'filled' && <FilledInput typo={typo} weight={weight} error={error} {...props} />}
       {variant === 'standard' && (
-        <StandardInput typo={typo} weight={weight} error={error} width={width} {...props} />
+        <StandardInput typo={typo} weight={weight} error={error} {...props} />
       )}
       {helperText && (
         <HelperText size="typo6" weight="regular" error={error}>

@@ -1,13 +1,17 @@
 'use client';
 
-import { FooterContent } from '#organisms/FooterContent';
 import styled from '@emotion/styled';
+
+import { FooterContent } from '#organisms/FooterContent';
 
 const StyledFooter = styled.footer`
   display: flex;
   justify-content: center;
+
   width: 100%;
-  height: 393px;
+  height: 400px;
+  padding: 0 20px;
+
   background-color: #f5f5f5;
   border-top: 1px solid #bdbdbd;
 `;

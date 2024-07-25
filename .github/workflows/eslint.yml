@@ -8,13 +8,14 @@
 # and https://eslint.org
 
 name: ESLint
+run-name: Check ${{ github.ref_name }} code quality with ESLint
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main', 'dev']
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: ['main', 'dev']
   schedule:
     - cron: '20 16 * * 3'
 
@@ -32,7 +33,7 @@ jobs:
 
       - name: Install ESLint
         run: |
-          yarn add eslint
+          yarn add eslint@8
           yarn add @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint

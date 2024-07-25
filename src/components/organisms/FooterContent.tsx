@@ -1,10 +1,8 @@
 import Link from 'next/link';
 
-import { Divider } from '#atoms/Divider';
-import { FitLogo } from '#atoms/FitLogo';
-import { Icons } from '#atoms/Icons';
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
+
+import { Divider, FitLogo, Icons, Txt } from '#/components/atoms';
 
 const ContentBlock = styled.div`
   width: 1200px;
@@ -17,8 +15,8 @@ const FlexBlock = styled.div`
 `;
 const PolicyLinkBlock = styled.div`
   display: flex;
-  align-items: flex-end;
   gap: 13px;
+  align-items: flex-end;
 `;
 const PolicyDivider = styled.div`
   width: 1px;
@@ -27,14 +25,14 @@ const PolicyDivider = styled.div`
   background-color: #bdbdbd;
 `;
 const FooterDivider = styled(Divider)`
-  border-top: 1px solid #bdbdbd;
   margin: 23px 0 39px;
+  border-top: 1px solid #bdbdbd;
 `;
 const TxtBlock = styled.div`
   display: flex;
   flex-direction: column;
-  white-space: pre-wrap;
   gap: 11px;
+  white-space: pre-wrap;
 `;
 const LinkBlock = styled.div`
   display: flex;
@@ -45,9 +43,9 @@ export const FooterContent = () => {
   return (
     <ContentBlock>
       <FlexBlock>
-        <FitLogo width={118} height={39} color="gray" />
+        <FitLogo color="gray" />
         <PolicyLinkBlock>
-          <Link href={'/policy/term'}>
+          <Link href={'/policy/terms'}>
             <Txt size={'typo5'} weight={'bold'} color="#757575">
               서비스 이용약관
             </Txt>
@@ -73,10 +71,7 @@ export const FooterContent = () => {
           </Txt>
         </TxtBlock>
         <LinkBlock>
-          <Link
-            href={'https://www.instagram.com/f.it.official?igsh=dWw4OHo0cTZ1ZXli'}
-            target="__blank"
-          >
+          <Link href={process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? ''} target="_blank">
             <Icons icon={'instagram'} color="#9E9E9E" width={37} />
           </Link>
         </LinkBlock>

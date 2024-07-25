@@ -1,29 +1,36 @@
 import { useCallback } from 'react';
-
 import { useRouter } from 'next/navigation';
+
+import styled from '@emotion/styled';
 
 import { Button } from '#atoms/Button';
 import { Icons } from '#atoms/Icons';
 import { Txt } from '#atoms/Text';
-import styled from '@emotion/styled';
 
 const Block = styled.div`
+  z-index: 10;
+
   display: flex;
-  justify-content: space-between;
+  gap: 12px;
   align-items: end;
-  margin-bottom: 100px;
+  justify-content: space-between;
+
+  width: 100%;
+  max-width: 1200px;
 `;
+
 const TextBlock = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
   text-align: left;
-  gap: 20px;
 `;
+
 const LinkButton = styled(Button)`
   display: flex;
-  justify-content: center;
+  gap: 12px;
   align-items: center;
-  gap: 13px;
+  justify-content: center;
 `;
 
 interface MainDescriptionBlockProps {
@@ -51,7 +58,7 @@ export const MainDescriptionBlock = ({
         <Txt size={'typo2'} weight={'bold'} color="#FF908D">
           {title}
         </Txt>
-        <Txt size={'display2'} weight={'bold'} color="#212121">
+        <Txt size={'main2'} weight={'bold'} color="#212121">
           {bigDescription}
         </Txt>
         <Txt size={'typo3'} weight={'regular'} color="#616161">
@@ -59,7 +66,7 @@ export const MainDescriptionBlock = ({
         </Txt>
       </TextBlock>
       <LinkButton variant={'round'} height={'70'} color={'primary'} onClick={onClickLinkButton}>
-        <Txt size={'typo4'} weight={'bold'} color="#fff">
+        <Txt size={'typo4'} weight={'bold'} color="#fff" style={{ whiteSpace: 'nowrap' }}>
           {buttonText}
         </Txt>
         <Icons icon={'arrowRight'} color="#fff" width={24} />

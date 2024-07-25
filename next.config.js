@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compiler: {
+    emotion: true,
+  },
   webpack: (config) => {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
@@ -24,6 +27,17 @@ const nextConfig = {
     fileLoaderRule.exclude = /\.svg$/i;
 
     return config;
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'd2ueefa0uvyh4f.cloudfront.net',
+      },
+    ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

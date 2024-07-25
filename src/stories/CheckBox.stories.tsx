@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { CheckBox } from '#atoms/CheckBox';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { CheckBox } from '#atoms/CheckBox';
 
 const meta = {
   title: 'Atoms/CheckBox',
@@ -33,10 +33,12 @@ function DefaultTemplate(args: Story['args']) {
   );
 }
 
-export const Default: Story = {
+export const WithState: Story = {
   args: {
     checked: false,
     disabled: false,
   },
   render: DefaultTemplate,
 };
+
+export const WithoutState: Story = {};

@@ -1,26 +1,67 @@
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Regular.woff2');
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Bold.woff2');
-  font-weight: 700;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Medium.woff2');
-  font-weight: 500;
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
 }
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Light.woff2');
-  font-weight: 300;
+
+@keyframes float {
+  50% {
+    transform: translateY(-25%);
+  }
 }
-@font-face {
-  font-family: 'SpoqaHanSansNeo';
-  src: url('../../public/fonts/SpoqaHanSansNeo-Thin.woff2');
-  font-weight: 100;
+
+@keyframes spin-elastic-out {
+  0% {
+    transform: rotate(0deg);
+  }
+  16% {
+    transform: rotate(475deg);
+  }
+  28% {
+    transform: rotate(313deg);
+  }
+  44% {
+    transform: rotate(378deg);
+  }
+  59% {
+    transform: rotate(352deg);
+  }
+  73% {
+    transform: rotate(363deg);
+  }
+  88% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 * {
@@ -29,7 +70,8 @@
 
 html,
 body,
-input {
+input,
+textarea {
   padding: 0;
   margin: 0;
   font-family:
@@ -44,7 +86,6 @@ input {
     'Noto Sans KR',
     'Malgun Gothic',
     sans-serif;
-  font-size: 20px;
 }
 
 html {
@@ -52,7 +93,7 @@ html {
 }
 
 body {
-  min-width: max-content;
+  width: 100vw;
   margin: 0 auto;
 }
 

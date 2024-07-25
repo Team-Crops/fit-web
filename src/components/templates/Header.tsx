@@ -1,8 +1,9 @@
 'use client';
 
-import { HeaderContent } from '#organisms/HeaderContent';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { HeaderContent } from '#organisms/HeaderContent';
 
 const SpaceCSS = css`
   width: 100%;
@@ -10,11 +11,14 @@ const SpaceCSS = css`
 `;
 const StyledHeader = styled.header`
   position: fixed;
-  ${SpaceCSS}
+  z-index: 9999;
 
-  border-bottom: 1px solid #eee;
   background: #fff;
-  z-index: 3;
+  border-bottom: 1px solid #eee;
+
+  padding: 0 20px;
+
+  ${SpaceCSS}
 `;
 const HeaderSpace = styled.div`
   ${SpaceCSS}

@@ -1,6 +1,6 @@
-import { Button } from '#atoms/Button';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Button } from '#atoms/Button';
 
 const meta = {
   title: 'Atoms/Button',
@@ -16,6 +16,7 @@ export const Primary: Story = {
     variant: 'angular',
     height: '20',
     color: 'primary',
+    disabled: false,
     children: 'Button',
   },
 };

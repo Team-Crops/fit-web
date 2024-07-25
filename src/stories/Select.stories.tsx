@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { Select } from '#atoms/Select';
 import { Meta, StoryObj } from '@storybook/react';
+
+import { Select } from '#atoms/Select';
 
 const meta = {
   title: 'Atoms/Select',

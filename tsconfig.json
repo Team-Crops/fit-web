@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,14 +24,37 @@
       }
     ],
     "paths": {
-      "#app/*": ["./src/app/*"],
-      "#atoms/*": ["./src/components/atoms/*"],
-      "#molecules/*": ["./src/components/molecules/*"],
-      "#organisms/*": ["./src/components/organisms/*"],
-      "#templates/*": ["./src/components/templates/*"],
-      "#utilities/*": ["./src/utilities/*"]
+      "#/*": [
+        "./src/*"
+      ],
+      "#app/*": [
+        "./src/app/*"
+      ],
+      "#atoms/*": [
+        "./src/components/atoms/*"
+      ],
+      "#molecules/*": [
+        "./src/components/molecules/*"
+      ],
+      "#organisms/*": [
+        "./src/components/organisms/*"
+      ],
+      "#templates/*": [
+        "./src/components/templates/*"
+      ],
+      "#utilities/*": [
+        "./src/utilities/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "svgr.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

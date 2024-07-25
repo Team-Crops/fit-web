@@ -1,32 +1,40 @@
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 
-import { Txt } from '#atoms/Text';
 import styled from '@emotion/styled';
 
-const Card = styled.div<{ width: number; height: number }>`
+import { Txt } from '#atoms/Text';
+
+const Card = styled.div<Pick<MainDescriptionCardProps, 'width' | 'height'>>`
+  z-index: 1;
+
   display: flex;
-  gap: 30px;
-  width: ${({ width }) => width}px;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   padding: 40px;
-  border-radius: 40px;
+
   background: #fff;
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  border-radius: 40px;
+  box-shadow: 0 0 40px 0 rgb(0 0 0 / 10%);
 `;
-const Index = styled(Txt)``;
+const TextBlock = styled.div`
+  display: flex;
+  gap: 30px;
+
+  width: 100%;
+
+  text-align: left;
+  white-space: pre-wrap;
+`;
 const ContentBlock = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 20px;
-  text-align: left;
 `;
-const ImageBlock = styled.div<{ imgIsCenter?: boolean }>`
+const ImageBlock = styled.div`
   position: relative;
-  display: flex;
-  align-items: center;
-  ${({ imgIsCenter }) => imgIsCenter && 'justify-content: center;'};
   width: 100%;
   height: 100%;
 `;
@@ -37,10 +45,7 @@ interface MainDescriptionCardProps {
   index?: number;
   title: string;
   description: string;
-  imgUrl: string;
-  imgWidth: number;
-  imgHeight: number;
-  imgIsCenter?: boolean;
+  image: StaticImageData;
 }
 export const MainDescriptionCard = ({
   width,
@@ -48,29 +53,38 @@ export const MainDescriptionCard = ({
   index,
   title,
   description,
-  imgUrl,
-  imgWidth,
-  imgHeight,
-  imgIsCenter,
+  image,
 }: MainDescriptionCardProps) => {
   return (
     <Card width={width} height={height}>
-      {index && (
-        <Index size={'typo1'} weight={'medium'} color="#FF706C">
-          {index.toString().padStart(2, '0')}
-        </Index>
-      )}
-      <ContentBlock>
-        <Txt size={'typo1'} weight={'bold'} color="#212121">
-          {title}
-        </Txt>
-        <Txt size={'typo4'} weight={'regular'} color="#616161">
-          {description}
-        </Txt>
-        <ImageBlock imgIsCenter={imgIsCenter}>
-          <Image src={imgUrl} alt="image" width={imgWidth} height={imgHeight} />
-        </ImageBlock>
-      </ContentBlock>
+      <TextBlock>
+        {index && (
+          <Txt size={'typo1'} weight={'medium'} color="#FF706C">
+            {index.toString().padStart(2, '0')}
+          </Txt>
+        )}
+        <ContentBlock>
+          <Txt size={'typo1'} weight={'bold'} color="#212121">
+            {title}
+          </Txt>
+          <Txt
+            size={'typo4'}
+            weight={'regular'}
+            color="#616161"
+            style={{ whiteSpace: 'break-spaces' }}
+          >
+            {description}
+          </Txt>
+        </ContentBlock>
+      </TextBlock>
+      <ImageBlock>
+        <Image
+          src={image}
+          alt="description image"
+          fill
+          style={{ objectFit: 'contain', padding: '28px' }}
+        />
+      </ImageBlock>
     </Card>
   );
 };
