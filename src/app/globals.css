@@ -90,11 +90,16 @@ textarea {
 
 html {
   background-color: #fff;
+  min-width: 1500px;
 }
 
 body {
+  min-width: 1500px;
   width: 100vw;
   margin: 0 auto;
+}
+header {
+  min-width: 1500px;
 }
 
 input,
