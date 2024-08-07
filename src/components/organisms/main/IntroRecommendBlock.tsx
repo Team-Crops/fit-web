@@ -71,7 +71,7 @@ const Block = styled.div`
   gap: 80px;
   align-items: center;
 
-  width: 100vw;
+  width: 100%;
   padding: 20px;
 `;
 

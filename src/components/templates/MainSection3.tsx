@@ -81,7 +81,7 @@ const BackgroundImage = styled(Image)`
   z-index: -10;
   top: -70px;
 
-  width: 100vw;
+  width: 100%;
   height: calc(100vw * ${mainSection3Background.height / mainSection3Background.width});
 `;
 
