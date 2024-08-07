@@ -18,14 +18,13 @@ const Block = styled.div`
   gap: 80px;
   align-items: center;
 
-  width: 100vw;
+  width: 100%;
   padding: 20px;
 `;
 const CardWrapper = styled.div`
   position: relative;
 
   display: flex;
-  flex-wrap: wrap;
   gap: 32px;
   justify-content: center;
 

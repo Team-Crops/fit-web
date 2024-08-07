@@ -3,6 +3,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { media } from '#/utilities';
 import { HeaderContent } from '#organisms/HeaderContent';
 
 const SpaceCSS = css`
@@ -13,15 +14,21 @@ const StyledHeader = styled.header`
   position: fixed;
   z-index: 9999;
 
+  padding: 0 20px;
+
   background: #fff;
   border-bottom: 1px solid #eee;
 
-  padding: 0 20px;
-
   ${SpaceCSS}
+  ${media.xxlarge} {
+    position: relative;
+  }
 `;
 const HeaderSpace = styled.div`
   ${SpaceCSS}
+  ${media.xxlarge} {
+    display: none;
+  }
 `;
 
 export const Header = () => {
