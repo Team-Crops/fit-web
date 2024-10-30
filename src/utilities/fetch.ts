@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import returnFetch from 'return-fetch';
 
 import { ApiError } from '#/types';
@@ -32,7 +31,7 @@ export const fitFetcher = async <T>(...args: Parameters<typeof fitFetch>) => {
   try {
     const json = await res.json();
     if (!res.ok && json.message && !toastExclusionCodes.includes(json.code)) {
-      toast.error(json.message);
+      // toast.error(json.message);
     }
     return res.ok ? (json as T) : Promise.reject(json as Error);
   } catch (error) {
